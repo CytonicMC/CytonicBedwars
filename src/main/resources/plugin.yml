@@ -1,0 +1,11 @@
+name: WebNetBedWars
+version: 'hi'
+description: 'stuff'
+authors:
+  - Foxikle
+  - Webhead1104
+main: dev.foxikle.webnetbedwars.WebNetBedWars
+api-version: '1.20'
+commands:
+  debug:
+    description: Debugging command :)

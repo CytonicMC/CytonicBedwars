@@ -1,0 +1,198 @@
+# Config :)
+
+Teams:
+  Red Team:
+    TAB_PREFIX: '&c[R] '
+    TEAM_COLOR: RED
+    BED_ITEM: RED_BED
+    SPAWN_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    GENERATOR_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    ITEM_SHOP_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    TEAM_SHOP_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    TEAM_CHEST_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+  Yellow Team:
+    TAB_PREFIX: '&e[Y] '
+    TEAM_COLOR: YELLOW
+    BED_ITEM: YELLOW_BED
+    SPAWN_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    GENERATOR_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    ITEM_SHOP_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    TEAM_SHOP_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    TEAM_CHEST_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+  Blue Team:
+    TAB_PREFIX: '&9[B] '
+    TEAM_COLOR: BLUE
+    BED_ITEM: BLUE_BED
+    SPAWN_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    GENERATOR_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    ITEM_SHOP_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    TEAM_SHOP_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    TEAM_CHEST_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+  Green Team:
+    TAB_PREFIX: '&a[G] '
+    TEAM_COLOR: GREEN
+    BED_ITEM: LIME_BED
+    SPAWN_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    GENERATOR_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    ITEM_SHOP_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    TEAM_SHOP_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
+
+    TEAM_CHEST_LOCATION:
+      ==: org.bukkit.Location
+      world: world
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      pitch: 90.0
+      yaw: 0.0
