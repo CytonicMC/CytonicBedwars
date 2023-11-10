@@ -1,5 +1,5 @@
 name: WebNetBedWars
-version: 'hi'
+version: '${version}'
 description: 'stuff'
 authors:
   - Foxikle

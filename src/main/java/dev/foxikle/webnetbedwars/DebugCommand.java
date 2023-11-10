@@ -1,5 +1,6 @@
 package dev.foxikle.webnetbedwars;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DebugCommand implements CommandExecutor, TabCompleter {
@@ -24,7 +26,12 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                 if(args.length >= 1){
                     switch (args[0].toLowerCase()){
                         case "start" -> {
-
+                            player.sendMessage(ChatColor.GREEN + "Starting game!");
+                            plugin.getGameManager().start();
+                        }
+                        case "end" -> {
+                            player.sendMessage(ChatColor.GREEN + "ending game!");
+                            plugin.getGameManager().cleanup();
                         }
                         case "listteams" -> {
                             plugin.getGameManager().getTeamlist().forEach(team -> player.sendMessage(team.prefix() + team.displayName()));
@@ -38,6 +45,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return null;
+        return List.of("end", "listteams", "start");
     }
 }
