@@ -17,7 +17,16 @@ public class BlockBreakListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent e){
+    public void onBlockBreak(BlockBreakEvent e) {
+        if(e.getBlock().getType().name().contains("BED")){
+            e.setDropItems(false);
+            plugin.getGameManager().getTeamlist().forEach(team -> {
+                if(e.getBlock().getType() == team.bedType()){
+                    plugin.getGameManager().breakBed(e.getPlayer(), team);
+                }
+            });
+            return;
+        }
         for (MetadataValue mv : e.getBlock().getMetadata("blockdata")) {
             if(mv.asBoolean() && mv.getOwningPlugin() instanceof WebNetBedWars){
                 return;
