@@ -1,5 +1,6 @@
 package dev.foxikle.webnetbedwars;
 
+import dev.foxikle.customnpcs.api.NPCApi;
 import dev.foxikle.webnetbedwars.listeners.*;
 import dev.foxikle.webnetbedwars.managers.GameManager;
 import net.minecraft.world.level.block.Blocks;
@@ -22,6 +23,7 @@ public final class WebNetBedWars extends JavaPlugin {
         registerCommands();
         registerListeners();
         gameManager.setup();
+        NPCApi.initialize();
         //aF == resistence
 
         Arrays.stream(Blocks.GLASS.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredFields()).forEach(field -> {
