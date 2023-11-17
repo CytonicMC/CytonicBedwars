@@ -1,46 +1,58 @@
 package dev.foxikle.webnetbedwars.managers;
 
+import dev.foxikle.customnpcs.api.Action;
+import dev.foxikle.customnpcs.api.ActionType;
+import dev.foxikle.customnpcs.api.NPCApi;
+import dev.foxikle.customnpcs.api.conditions.Conditional;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
 import dev.foxikle.webnetbedwars.data.objects.Team;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import net.minecraft.world.level.block.Blocks;
-
-
-import java.lang.reflect.Field;
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class GameManager {
     private final WebNetBedWars plugin;
     private List<Team> teamlist = new ArrayList<>();
+
     private Map<Team, List<UUID>> playerTeams = new HashMap<>();
-    private Map<Team, org.bukkit.scoreboard.Team> mcTeams = new HashMap<>();
+    private Map<Team, Boolean> beds = new HashMap<>();
+    private final Map<Team, org.bukkit.scoreboard.Team> mcTeams = new HashMap<>();
+    private final List<NPCApi.NPC> npcs = new ArrayList<>();
+
+    private static final String NPC_SKIN_VALUE = "ewogICJ0aW1lc3RhbXAiIDogMTY2MjQ2NzA5Njc1NywKICAicHJvZmlsZUlkIiA6ICJmNTgyNGRmNGIwMTU0MDA4OGRhMzUyYTQxODU1MDQ0NCIsCiAgInByb2ZpbGVOYW1lIiA6ICJGb3hHYW1lcjUzOTIiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTI5YWI4YmRiMjI4ZTQ3MjZiNzQ1MzZhY2EwNTlhMTZjYWNjNzBjNThlNGEyZGFhMTQzZDIxOWYzNzRhOGI0YSIKICAgIH0KICB9Cn0=";
+    private static final String NPC_SKIN_SIGNATURE = "yKToy4cFqIM5A3JWqXkeOaWjOd8MjAm+ECb1ga8tlBZzGvsLVHVaatVcvdYvLqxeUcWrrGLE8F4cqdVl+XyqUyILjmqw8elFwKCS28fIryuvAMaH28SRjDUsAVtTyt6xHSh2yx30IvuN+OmatcTTYQO0AmTzG6VlrOd4COzfrcOEteZb6yqh43hfxpawlavdQw7LQ3ecFXe5JPINNzXPEbbcAYeV9Gh9j6ej9n2P8KsMcTfEjb+UWh82fLegPt3pBQWdXUJVyh1SualBqVaX8hqk38KbfwtC7A9FWvycY7OacjXOyTeWEqZnGUNwc1YgXnS5EidzG/xXNJz2pgzOBlwtAv80jAXnVQcyJkuhSijSehKvMuEEd1gcY7O3itAdSb0636zjAhcKsqskzUhaRNK8QNpbIowBDA2t4EXaFkGSpBSRrOVthox6MhxDLC+ZKADNuiGEtVgpw6vY5gfulovaIX7wOWGLrxGrA6JsA9Fq7XuwHq8d8k8kI6XNRSxdKoKgHhdmlzjPax/GelXt6a9VkRoagtY8EmnliWyOorIMazjdDKq+QmddHH3sDAeahLtXoCf64Jus8bqqyNL4B0E3HwlKjQ2XZw1v/G9c70uJscaoUgpATwvHg2+dH0uxs2MSkN/GZM3GWbmyerFz+AapDjsZhBhylJ570jcbuS4=";
 
     private StatsManager statsManager;
     private GameState gameState;
+    private ScoreboardManager scoreboardManager;
+    private WorldManager worldManager;
 
     public boolean STARTED = false;
 
     public GameManager(WebNetBedWars plugin) {
         this.plugin = plugin;
         statsManager = new StatsManager();
+        scoreboardManager = new ScoreboardManager(this, plugin);
+        worldManager = new WorldManager(plugin, this);
     }
 
     public void setup() {
+        worldManager.createSpawnPlatform();
+        scoreboardManager.init();
         gameState = GameState.WAITING;
         FileConfiguration config = plugin.getConfig();
         ConfigurationSection section = config.getConfigurationSection("Teams");
         for (String key : section.getKeys(false)) {
             ConfigurationSection teamSection = section.getConfigurationSection(key);
-            teamlist.add(new Team(
+            Team t = new Team(
                     key,
                     teamSection.getString("TAB_PREFIX"),
                     ChatColor.valueOf(teamSection.getString("TEAM_COLOR")),
@@ -50,11 +62,14 @@ public class GameManager {
                     teamSection.getLocation("ITEM_SHOP_LOCATION"),
                     teamSection.getLocation("TEAM_SHOP_LOCATION"),
                     teamSection.getLocation("TEAM_CHEST_LOCATION")
-                    ));
+                    );
+            teamlist.add(t);
+            beds.put(t, true);
         }
     }
 
     public void start() {
+        worldManager.removeSpawnPlatform();
         STARTED = true;
         setGameState(GameState.PLAY);
         Bukkit.getOnlinePlayers().forEach(player -> statsManager.propagatePlayer(player.getUniqueId()));
@@ -73,7 +88,47 @@ public class GameManager {
                 }
             });
         });
-    }
+        for (Team t : teamlist) {
+            NPCApi.NPC teamShop = new NPCApi.NPC(t.teamShopLocation().getWorld());
+            teamShop.setHeading(t.teamShopLocation().getYaw())
+                    .setPostion(t.teamShopLocation())
+                    .setName("<aqua><bold>TEAM SHOP</bold></aqua>")
+                    .setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE)
+                    .setInteractable(true)
+                    .setActions(
+                            List.of(
+                                    new Action(
+                                            ActionType.RUN_COMMAND,
+                                            new ArrayList<>(List.of("openteamshop")),
+                                            0,
+                                            Conditional.SelectionMode.ONE,
+                                            List.of()
+                                    )
+                            )
+                    )
+                    .create();
+            npcs.add(teamShop);
+
+            NPCApi.NPC itemShop = new NPCApi.NPC(t.itemShopLocation().getWorld());
+            itemShop.setHeading(t.itemShopLocation().getYaw())
+                    .setPostion(t.itemShopLocation())
+                    .setName("<GOLD><bold>ITEM SHOP</bold></gold>")
+                    .setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE)
+                    .setInteractable(true)
+                    .setActions(
+                            List.of(
+                                    new Action(
+                                            ActionType.RUN_COMMAND,
+                                            new ArrayList<>(List.of("openitemshop")),
+                                            0,
+                                            Conditional.SelectionMode.ONE,
+                                            List.of()
+                                    )
+                            )
+                    )
+                    .create();
+            npcs.add(itemShop);
+        }    }
 
     private Map<Team, List<UUID>> splitPlayersIntoTeams(List<UUID> players) {
         int numTeams = teamlist.size();
@@ -123,11 +178,39 @@ public class GameManager {
         return teamlist;
     }
 
+    public Map<Team, Boolean> getBeds() {
+        return beds;
+    }
+
+    public ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
+    }
+
+    public Map<Team, List<UUID>> getPlayerTeams() {
+        return playerTeams;
+    }
+
     public void cleanup(){
         STARTED = false;
         setGameState(GameState.CLEANUP);
         mcTeams.values().forEach(org.bukkit.scoreboard.Team::unregister);
+        npcs.forEach(NPCApi.NPC::remove);
     }
 
+    @Nullable
+    public Team getPlayerTeam(UUID uuid){
+        for (Team t : teamlist) {
+            if(playerTeams.get(t).contains(uuid))
+                return t;
+        }
+        return null;
+    }
+
+    public void breakBed(Player player, Team t){
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1000f, 1f);
+        Bukkit.broadcastMessage(getPlayerTeam(player.getUniqueId()).color() + player.getName() + ChatColor.YELLOW + " destroyed " + t.color() + t.displayName() + ChatColor.YELLOW + "'s bed!");
+        // todo: display animations, messages, etc.
+        beds.put(t, false);
+    }
 
 }
