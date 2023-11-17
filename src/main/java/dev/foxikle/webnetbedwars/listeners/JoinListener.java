@@ -15,7 +15,8 @@ public class JoinListener implements Listener {
     @EventHandler
     private void onJoin(PlayerJoinEvent event){
         if(plugin.getGameManager().STARTED){
-            // handle spectators?
+            plugin.getGameManager().getScoreboardManager().addScoreboard(event.getPlayer());
+            //todo handle spectators?
         }
     }
 }
