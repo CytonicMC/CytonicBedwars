@@ -1,4 +1,17 @@
 # Config :)
+Map: Testing World
+ServerIP: webnet.mcst.io
+Mode: 4v4v4v4
+MinPlayers: 8
+MaxPlayers: 16
+SpawnPlatformCenter:
+  ==: org.bukkit.Location
+  world: world
+  x: 3
+  y: 123
+  z: 4
+  pitch: 0.0
+  yaw: 0.0
 
 Teams:
   Red Team:
@@ -8,11 +21,11 @@ Teams:
     SPAWN_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
-      yaw: 0.0
+      x: -58.5
+      y: 52.0
+      z: 8.5
+      pitch: 0.0
+      yaw: -90.0
 
     GENERATOR_LOCATION:
       ==: org.bukkit.Location
@@ -26,20 +39,20 @@ Teams:
     ITEM_SHOP_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
-      yaw: 0.0
+      x: -64.5
+      y: 51
+      z: 7.5
+      pitch: 0.0
+      yaw: -90.0
 
     TEAM_SHOP_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
-      yaw: 0.0
+      x: -64.5
+      y: 51
+      z: 9.5
+      pitch: 0.0
+      yaw: -90.0
 
     TEAM_CHEST_LOCATION:
       ==: org.bukkit.Location
@@ -57,10 +70,10 @@ Teams:
     SPAWN_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
+      x: 7.5
+      y: 52.0
+      z: 57.5
+      pitch: 0.0
       yaw: 0.0
 
     GENERATOR_LOCATION:
@@ -69,24 +82,24 @@ Teams:
       x: 0.0
       y: 0.0
       z: 0.0
-      pitch: 90.0
+      pitch: 0.0
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
+      x: 8.5
+      y: 51.0
+      z: -63.5
+      pitch: 0.0
       yaw: 0.0
 
     TEAM_SHOP_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
+      x: 6.5
+      y: 51.0
+      z: -63.5
       pitch: 90.0
       yaw: 0.0
 
@@ -106,11 +119,11 @@ Teams:
     SPAWN_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
-      yaw: 0.0
+      x: 7.5
+      y: 52.5
+      z: 73.5
+      pitch: 0.0
+      yaw: 180.0
 
     GENERATOR_LOCATION:
       ==: org.bukkit.Location
@@ -124,20 +137,20 @@ Teams:
     ITEM_SHOP_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
-      yaw: 0.0
+      x: 6.5
+      y: 51.0
+      z: 79.5
+      pitch: 0.0
+      yaw: 180.0
 
     TEAM_SHOP_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
+      x: 8.5
+      y: 51.0
+      z: 79.5
       pitch: 90.0
-      yaw: 0.0
+      yaw: 180.0
 
     TEAM_CHEST_LOCATION:
       ==: org.bukkit.Location
@@ -155,11 +168,11 @@ Teams:
     SPAWN_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
-      yaw: 0.0
+      x: 73.5
+      y: 52.0
+      z: 8.5
+      pitch: 0.0
+      yaw: 90.0
 
     GENERATOR_LOCATION:
       ==: org.bukkit.Location
@@ -173,20 +186,20 @@ Teams:
     ITEM_SHOP_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
-      yaw: 0.0
+      x: 79.5
+      y: 51.0
+      z: 9.5
+      pitch: 0.0
+      yaw: 90.0
 
     TEAM_SHOP_LOCATION:
       ==: org.bukkit.Location
       world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
-      yaw: 0.0
+      x: 79.5
+      y: 51.0
+      z: 7.5
+      pitch: 0.0
+      yaw: 90.0
 
     TEAM_CHEST_LOCATION:
       ==: org.bukkit.Location
