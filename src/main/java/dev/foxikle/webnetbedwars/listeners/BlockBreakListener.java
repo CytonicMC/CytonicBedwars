@@ -3,6 +3,7 @@ package dev.foxikle.webnetbedwars.listeners;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +19,11 @@ public class BlockBreakListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
+        if(plugin.getGameManager().spectators.contains(e.getPlayer().getUniqueId())){
+            e.getPlayer().sendMessage(ChatColor.RED + "You cannot do this as a spectator!");
+            e.setCancelled(true);
+            return;
+        }
         if(e.getBlock().getType().name().contains("BED")){
             e.setDropItems(false);
             plugin.getGameManager().getTeamlist().forEach(team -> {
