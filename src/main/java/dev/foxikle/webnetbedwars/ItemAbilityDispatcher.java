@@ -14,6 +14,7 @@ public class ItemAbilityDispatcher {
     }
 
     public void dispatch(String abilityKey, Player user, PlayerInteractEvent event) {
+        event.setCancelled(true);
         switch (abilityKey) {
             case "FIREBALL" -> {
                 if(event.getAction().isRightClick()) {
