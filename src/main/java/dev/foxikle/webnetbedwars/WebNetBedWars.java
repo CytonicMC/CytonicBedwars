@@ -1,20 +1,27 @@
 package dev.foxikle.webnetbedwars;
 
 import dev.foxikle.customnpcs.api.NPCApi;
+import dev.foxikle.webnetbedwars.commands.DebugCommand;
+import dev.foxikle.webnetbedwars.commands.ItemCommand;
 import dev.foxikle.webnetbedwars.listeners.*;
 import dev.foxikle.webnetbedwars.managers.GameManager;
+import me.flame.menus.menu.Menus;
 import net.minecraft.world.level.block.Blocks;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 public final class WebNetBedWars extends JavaPlugin {
 
     private GameManager gameManager;
+    public static WebNetBedWars INSTANCE;
+    private ItemAbilityDispatcher itemAbilityDispatcher;
 
     @Override
     public void onEnable() {
+        INSTANCE = this;
         File file = new File("plugins/WebNetBedWars/config.yml");
         if(!file.exists())
             this.saveResource("config.yml", false);
@@ -24,8 +31,13 @@ public final class WebNetBedWars extends JavaPlugin {
         registerListeners();
         gameManager.setup();
         NPCApi.initialize();
-        //aF == resistence
+        changeBlastResistence();
+        itemAbilityDispatcher = new ItemAbilityDispatcher(this);
+        Menus.init(this);
+    }
 
+    private void changeBlastResistence(){
+        //aF == resistence
         Arrays.stream(Blocks.GLASS.getClass().getSuperclass().getSuperclass().getSuperclass().getSuperclass().getDeclaredFields()).forEach(field -> {
             if(field.getType() == float.class){
                 try {
@@ -72,6 +84,7 @@ public final class WebNetBedWars extends JavaPlugin {
                 }
             }
         });
+
     }
 
     @Override
@@ -82,19 +95,29 @@ public final class WebNetBedWars extends JavaPlugin {
     private void registerListeners(){
         getServer().getPluginManager().registerEvents(new DamageListener(this), this);
         getServer().getPluginManager().registerEvents(new JoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new LeaveListener(this), this);
         getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(this), this);
         getServer().getPluginManager().registerEvents(new ExplosionListener(this), this);
         getServer().getPluginManager().registerEvents(new InteractListener(this), this);
+        getServer().getPluginManager().registerEvents(new MoveListener(this), this);
+        getServer().getPluginManager().registerEvents(new GamemodeChangeListener(this), this);
+
     }
 
 
 
     private void registerCommands(){
         getCommand("debug").setExecutor(new DebugCommand(this));
+        getCommand("item").setExecutor(new ItemCommand());
+        getCommand("item").setAliases(List.of("i"));
     }
 
     public GameManager getGameManager() {
         return gameManager;
+    }
+
+    public ItemAbilityDispatcher getItemAbilityDispatcher() {
+        return itemAbilityDispatcher;
     }
 }
