@@ -1,6 +1,5 @@
 package dev.foxikle.webnetbedwars;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -38,7 +37,7 @@ public class ItemAbilityDispatcher {
             }
             case "SPECTATOR_COMPASS" -> plugin.getGameManager().getMenuManager().getSpectatorSelectorMenu().open(user);
             case "LOBBY_REQUEST" -> user.sendMessage("No leaving >:)");
-            case "SPECTATOR_BOOTS" -> user.sendMessage("Zoom!");
+            case "SPECTATOR_BOOTS" -> plugin.getGameManager().getMenuManager().getSpectatorSpeedMenu().open(user);
         }
     }
 }
