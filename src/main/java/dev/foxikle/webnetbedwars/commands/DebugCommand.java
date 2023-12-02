@@ -1,5 +1,8 @@
-package dev.foxikle.webnetbedwars;
+package dev.foxikle.webnetbedwars.commands;
 
+import dev.foxikle.webnetbedwars.WebNetBedWars;
+import dev.foxikle.webnetbedwars.data.enums.GameState;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DebugCommand implements CommandExecutor, TabCompleter {
@@ -30,11 +32,20 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                             plugin.getGameManager().start();
                         }
                         case "end" -> {
-                            player.sendMessage(ChatColor.GREEN + "ending game!");
+                            player.sendMessage(ChatColor.GREEN + "Ending game!");
                             plugin.getGameManager().cleanup();
                         }
                         case "listteams" -> {
                             plugin.getGameManager().getTeamlist().forEach(team -> player.sendMessage(team.prefix() + team.displayName()));
+                        }
+                        case "freeze", "f" -> {
+                            if(plugin.getGameManager().getGameState() != GameState.FROZEN){
+                                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&eThe game is now &b&lFROZEN&r&e!"));
+                                plugin.getGameManager().freeze();
+                            } else {
+                                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&eThe game is now &6&lTHAWED&r&e!"));
+                                plugin.getGameManager().thaw();
+                            }
                         }
                     }
                 }
@@ -45,6 +56,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return List.of("end", "listteams", "start");
+        return List.of("end", "listteams", "start", "freeze");
     }
 }
