@@ -7,6 +7,7 @@ import dev.foxikle.customnpcs.api.conditions.Conditional;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
 import dev.foxikle.webnetbedwars.data.objects.Team;
+import dev.foxikle.webnetbedwars.runnables.RespawnRunnable;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -288,11 +289,13 @@ public class GameManager {
             default -> {
                 if(cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
                 statsManager.addPlayerDeath(dead.getUniqueId());
-                Bukkit.broadcastMessage(String.valueOf(cause));
+                plugin.getLogger().info(String.valueOf(cause));
                message += ChatColor.GRAY + " died under mysterious circumstances";
             }
         }
+
         if(finalkill) {
+            dead.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "You DIED!", ChatColor.YELLOW + "You won't repsawn", 5, 15, 5);
             message += ChatColor.DARK_RED + "" + ChatColor.BOLD + " FINAL KILL!";
             dead.setGameMode(GameMode.SPECTATOR);
             Bukkit.broadcastMessage(message);
@@ -300,9 +303,18 @@ public class GameManager {
         }
         // respawn logic...
         Bukkit.broadcastMessage(message);
+        dead.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "You DIED!", ChatColor.YELLOW + "You will repsawn soon", 5, 15, 5);
+        dead.setGameMode(GameMode.SPECTATOR);
         dead.getInventory().clear();
         dead.setHealth(20.0);
-        dead.setNoDamageTicks(100);
+        dead.setFireTicks(0); // reset fire
+
+        new RespawnRunnable(plugin, 6, dead).runTaskTimer(plugin, 0, 20);
+    }
+
+    public void respawnPlayer(Player dead) {
+        dead.setGameMode(GameMode.SURVIVAL);
+        dead.setNoDamageTicks(100);// make them invincible for 5 sec
         dead.teleport(getPlayerTeam(dead.getUniqueId()).spawnLocation());
         alivePlayers.add(dead.getUniqueId());
     }
