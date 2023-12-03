@@ -26,7 +26,7 @@ dependencies {
 }
 
 group = "dev.foxikle"
-version = "0.01-alpha1"
+version = "0.01-alpha2"
 description = "WebNet's bedwars plugin"
 java.sourceCompatibility = JavaVersion.VERSION_16
 
@@ -58,7 +58,7 @@ tasks {
     }
 
     reobfJar {
-        outputJar.set(layout.buildDirectory.file(providers.gradleProperty("testServerdir").get() + "WebNetBedwars-${project.version}.jar"))
+        outputJar.set(layout.buildDirectory.file(providers.gradleProperty("testServerdir").get() + "/WebNetBedwars-${project.version}.jar"))
     }
 
     shadowJar {
