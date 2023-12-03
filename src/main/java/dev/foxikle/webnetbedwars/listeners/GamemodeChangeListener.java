@@ -23,6 +23,13 @@ public class GamemodeChangeListener implements Listener {
     public void onGamemodeChange(PlayerGameModeChangeEvent event){
         Player player = event.getPlayer();
         if(event.getNewGameMode() == GameMode.SPECTATOR) {
+
+            player.getInventory().clear();
+
+            player.getInventory().setBoots(Items.SPECTATOR_ARMOR);
+            player.getInventory().setLeggings(Items.SPECTATOR_ARMOR);
+            player.getInventory().setChestplate(Items.SPECTATOR_ARMOR);
+            player.setHealth(player.getMaxHealth());
             event.setCancelled(true);
             player.setGameMode(GameMode.ADVENTURE);
             Bukkit.getOnlinePlayers().forEach(p ->{
