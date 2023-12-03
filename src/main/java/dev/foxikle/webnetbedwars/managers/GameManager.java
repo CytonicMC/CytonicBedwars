@@ -7,13 +7,11 @@ import dev.foxikle.customnpcs.api.conditions.Conditional;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
 import dev.foxikle.webnetbedwars.data.objects.Team;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -23,9 +21,13 @@ public class GameManager {
     private List<Team> teamlist = new ArrayList<>();
 
     private Map<Team, List<UUID>> playerTeams = new HashMap<>();
+    private List<UUID> alivePlayers = new ArrayList<>();
     private Map<Team, Boolean> beds = new HashMap<>();
     private final Map<Team, org.bukkit.scoreboard.Team> mcTeams = new HashMap<>();
     private final List<NPCApi.NPC> npcs = new ArrayList<>();
+    public List<UUID> spectators = new ArrayList<>();
+
+    private GameState beforeFrozen;
 
     private static final String NPC_SKIN_VALUE = "ewogICJ0aW1lc3RhbXAiIDogMTY2MjQ2NzA5Njc1NywKICAicHJvZmlsZUlkIiA6ICJmNTgyNGRmNGIwMTU0MDA4OGRhMzUyYTQxODU1MDQ0NCIsCiAgInByb2ZpbGVOYW1lIiA6ICJGb3hHYW1lcjUzOTIiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTI5YWI4YmRiMjI4ZTQ3MjZiNzQ1MzZhY2EwNTlhMTZjYWNjNzBjNThlNGEyZGFhMTQzZDIxOWYzNzRhOGI0YSIKICAgIH0KICB9Cn0=";
     private static final String NPC_SKIN_SIGNATURE = "yKToy4cFqIM5A3JWqXkeOaWjOd8MjAm+ECb1ga8tlBZzGvsLVHVaatVcvdYvLqxeUcWrrGLE8F4cqdVl+XyqUyILjmqw8elFwKCS28fIryuvAMaH28SRjDUsAVtTyt6xHSh2yx30IvuN+OmatcTTYQO0AmTzG6VlrOd4COzfrcOEteZb6yqh43hfxpawlavdQw7LQ3ecFXe5JPINNzXPEbbcAYeV9Gh9j6ej9n2P8KsMcTfEjb+UWh82fLegPt3pBQWdXUJVyh1SualBqVaX8hqk38KbfwtC7A9FWvycY7OacjXOyTeWEqZnGUNwc1YgXnS5EidzG/xXNJz2pgzOBlwtAv80jAXnVQcyJkuhSijSehKvMuEEd1gcY7O3itAdSb0636zjAhcKsqskzUhaRNK8QNpbIowBDA2t4EXaFkGSpBSRrOVthox6MhxDLC+ZKADNuiGEtVgpw6vY5gfulovaIX7wOWGLrxGrA6JsA9Fq7XuwHq8d8k8kI6XNRSxdKoKgHhdmlzjPax/GelXt6a9VkRoagtY8EmnliWyOorIMazjdDKq+QmddHH3sDAeahLtXoCf64Jus8bqqyNL4B0E3HwlKjQ2XZw1v/G9c70uJscaoUgpATwvHg2+dH0uxs2MSkN/GZM3GWbmyerFz+AapDjsZhBhylJ570jcbuS4=";
@@ -34,6 +36,7 @@ public class GameManager {
     private GameState gameState;
     private ScoreboardManager scoreboardManager;
     private WorldManager worldManager;
+    private MenuManager menuManager;
 
     public boolean STARTED = false;
 
@@ -42,6 +45,7 @@ public class GameManager {
         statsManager = new StatsManager();
         scoreboardManager = new ScoreboardManager(this, plugin);
         worldManager = new WorldManager(plugin, this);
+        menuManager = new MenuManager(plugin);
     }
 
     public void setup() {
@@ -52,6 +56,9 @@ public class GameManager {
         ConfigurationSection section = config.getConfigurationSection("Teams");
         for (String key : section.getKeys(false)) {
             ConfigurationSection teamSection = section.getConfigurationSection(key);
+            try {
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam(key).unregister();
+            } catch (Exception ignored){}
             Team t = new Team(
                     key,
                     teamSection.getString("TAB_PREFIX"),
@@ -68,6 +75,16 @@ public class GameManager {
         }
     }
 
+    public void freeze(){
+        beforeFrozen = gameState;
+        gameState = GameState.FROZEN;
+    }
+
+    public void thaw(){
+        gameState = beforeFrozen;
+        beforeFrozen = null;
+    }
+
     public void start() {
         worldManager.removeSpawnPlatform();
         STARTED = true;
@@ -75,6 +92,7 @@ public class GameManager {
         Bukkit.getOnlinePlayers().forEach(player -> statsManager.propagatePlayer(player.getUniqueId()));
         // split players into teams
         List<UUID> players = new ArrayList<>();
+        alivePlayers = players;
         Bukkit.getOnlinePlayers().forEach(player -> players.add(player.getUniqueId()));
         playerTeams = splitPlayersIntoTeams(players);
 
@@ -174,6 +192,10 @@ public class GameManager {
         return statsManager;
     }
 
+    public MenuManager getMenuManager() {
+        return menuManager;
+    }
+
     public List<Team> getTeamlist() {
         return teamlist;
     }
@@ -213,4 +235,79 @@ public class GameManager {
         beds.put(t, false);
     }
 
+    public void kill(Player dead, @Nullable Player killer, EntityDamageEvent.DamageCause cause) {
+        alivePlayers.remove(dead.getUniqueId());
+        //todo: Death animation, not direct respawn!
+        boolean finalkill = false;
+        String message = ChatColor.translateAlternateColorCodes('&', getPlayerTeam(dead.getUniqueId()).prefix()) + dead.getName() + ChatColor.RESET;
+        if(!beds.get(getPlayerTeam(dead.getUniqueId()))) {
+            finalkill = true;
+        }
+        switch (cause) {
+            case KILL -> {
+                if(killer == null) {
+                    kill(dead, null, EntityDamageEvent.DamageCause.CUSTOM);
+                } else {
+                    statsManager.addPlayerDeath(dead.getUniqueId());
+                    statsManager.addPlayerKill(killer.getUniqueId());
+                   message += ChatColor.GRAY + " was slain by " + ChatColor.translateAlternateColorCodes('&', getPlayerTeam(killer.getUniqueId()).prefix()) + killer.getName();
+                }
+            }
+            case FALL -> {
+                statsManager.addPlayerDeath(dead.getUniqueId());
+               message += ChatColor.GRAY + " has fallen to their death";
+            }
+            case FIRE, FIRE_TICK -> {
+                statsManager.addPlayerDeath(dead.getUniqueId());
+               message += ChatColor.GRAY + " was roasted like a turkey";
+            }
+            case LAVA -> {
+                statsManager.addPlayerDeath(dead.getUniqueId());
+               message += ChatColor.GRAY + " discovered lava is hot";
+            }
+            case VOID -> {
+                statsManager.addPlayerDeath(dead.getUniqueId());
+               message += ChatColor.GRAY + " fell into the abyss";
+            }
+            case FREEZE -> {
+                statsManager.addPlayerDeath(dead.getUniqueId());
+               message += ChatColor.GRAY + " turned into an ice cube";
+            }
+            case DROWNING -> {
+                statsManager.addPlayerDeath(dead.getUniqueId());
+               message += ChatColor.GRAY + " forgot how to swim";
+            }
+            case ENTITY_EXPLOSION, BLOCK_EXPLOSION -> {
+                statsManager.addPlayerDeath(dead.getUniqueId());
+               message += ChatColor.GRAY + " went " + ChatColor.RED + "" + ChatColor.BOLD + "BOOM!";
+            }
+            case PROJECTILE -> {
+                statsManager.addPlayerDeath(dead.getUniqueId());
+                message += ChatColor.GRAY + " was remotley terminated";
+            }
+            default -> {
+                if(cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
+                statsManager.addPlayerDeath(dead.getUniqueId());
+                Bukkit.broadcastMessage(String.valueOf(cause));
+               message += ChatColor.GRAY + " died under mysterious circumstances";
+            }
+        }
+        if(finalkill) {
+            message += ChatColor.DARK_RED + "" + ChatColor.BOLD + " FINAL KILL!";
+            dead.setGameMode(GameMode.SPECTATOR);
+            Bukkit.broadcastMessage(message);
+            return;
+        }
+        // respawn logic...
+        Bukkit.broadcastMessage(message);
+        dead.getInventory().clear();
+        dead.setHealth(20.0);
+        dead.setNoDamageTicks(100);
+        dead.teleport(getPlayerTeam(dead.getUniqueId()).spawnLocation());
+        alivePlayers.add(dead.getUniqueId());
+    }
+
+    public List<UUID> getAlivePlayers() {
+        return alivePlayers;
+    }
 }

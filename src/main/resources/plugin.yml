@@ -11,3 +11,7 @@ depend:
 commands:
   debug:
     description: Debugging command :)
+  item:
+    description: A command to give you items
+    aliases:
+      - i
