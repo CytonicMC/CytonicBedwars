@@ -102,7 +102,9 @@ public final class WebNetBedWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InteractListener(this), this);
         getServer().getPluginManager().registerEvents(new MoveListener(this), this);
         getServer().getPluginManager().registerEvents(new GamemodeChangeListener(this), this);
-
+        getServer().getPluginManager().registerEvents(new ArmorEquipListener(this), this);
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(this), this);
+        getServer().getPluginManager().registerEvents(new DropItemListener(this), this);
     }
 
 
