@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("io.papermc.paperweight.userdev") version "1.5.5"
+    id("io.papermc.paperweight.userdev") version "1.5.10"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -63,6 +63,6 @@ tasks {
 
     shadowJar {
         relocate("org.bstats", "dev.foxikle.dependencies.bstats")
-        relocate("fr.mrmicky.fastboard", "com.yourpackage.fastboard")
+        relocate("fr.mrmicky.fastboard", "dev.foxikle.fastboard")
     }
 }

@@ -47,6 +47,9 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                                 plugin.getGameManager().thaw();
                             }
                         }
+                        case "itemshop" -> {
+                            plugin.getGameManager().getMenuManager().getItemShopMainPage(player).open(player);
+                        }
                     }
                 }
             }
@@ -56,6 +59,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return List.of("end", "listteams", "start", "freeze");
+        return List.of("end", "listteams", "start", "freeze", "itemshop");
     }
 }
