@@ -48,6 +48,7 @@ public class GamemodeChangeListener implements Listener {
             }, 1);
         } else {
             // un-ivisafy if they are respawning, etc.
+            player.getInventory().clear();
             plugin.getGameManager().spectators.remove(player.getUniqueId());
             player.removePotionEffect(PotionEffectType.INVISIBILITY);
             Bukkit.getOnlinePlayers().forEach(p -> {
