@@ -255,7 +255,7 @@ public class GameManager {
             }
             case FALL -> {
                 statsManager.addPlayerDeath(dead.getUniqueId());
-               message += ChatColor.GRAY + " was fell to their death";
+               message += ChatColor.GRAY + " has fallen to their death";
             }
             case FIRE -> {
                 statsManager.addPlayerDeath(dead.getUniqueId());
