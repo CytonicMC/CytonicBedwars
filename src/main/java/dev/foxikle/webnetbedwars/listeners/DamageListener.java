@@ -5,6 +5,7 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
@@ -18,8 +19,12 @@ public class DamageListener implements Listener {
 
 
     @EventHandler
-    public void onKill(EntityDamageByEntityEvent event) {
+    public void onDamageByEntity(EntityDamageByEntityEvent event) {
         if(event.getEntity() instanceof Player player) {
+            if(plugin.getGameManager().spectators.contains(player.getUniqueId())) {
+                event.setCancelled(true);
+                return;
+            }
 
             if(event.getDamager() instanceof Player damager) {
                 plugin.getGameManager().getStatsManager().addPlayerDamageDealt(damager.getUniqueId(), event.getFinalDamage());
@@ -36,6 +41,40 @@ public class DamageListener implements Listener {
                 if(event.getDamager() instanceof Fireball && event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                     return;
                 }
+                plugin.getGameManager().kill(player, null, event.getCause());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        if(event.getEntity() instanceof Player player) {
+            if(plugin.getGameManager().spectators.contains(player.getUniqueId())) {
+                event.setCancelled(true);
+                return;
+            }
+
+            plugin.getGameManager().getStatsManager().addPlayerDamageTaken(player.getUniqueId(), event.getFinalDamage());
+
+            if(player.getHealth() - event.getFinalDamage() <= 0) {
+                event.setCancelled(true);
+                plugin.getGameManager().kill(player, null, event.getCause());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDamageByBlock(EntityDamageByBlockEvent event) {
+        if(event.getEntity() instanceof Player player) {
+            if(plugin.getGameManager().spectators.contains(player.getUniqueId())) {
+                event.setCancelled(true);
+                return;
+            }
+
+            plugin.getGameManager().getStatsManager().addPlayerDamageTaken(player.getUniqueId(), event.getFinalDamage());
+
+            if(player.getHealth() - event.getFinalDamage() <= 0) {
+                event.setCancelled(true);
                 plugin.getGameManager().kill(player, null, event.getCause());
             }
         }
