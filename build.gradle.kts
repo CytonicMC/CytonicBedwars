@@ -63,6 +63,6 @@ tasks {
 
     shadowJar {
         relocate("org.bstats", "dev.foxikle.dependencies.bstats")
-        relocate("fr.mrmicky.fastboard", "com.yourpackage.fastboard")
+        relocate("fr.mrmicky.fastboard", "dev.foxikle.fastboard")
     }
 }
