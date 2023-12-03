@@ -41,9 +41,11 @@ public class GamemodeChangeListener implements Listener {
             player.setFlying(true);
             plugin.getGameManager().spectators.add(player.getUniqueId());
 
-            player.getInventory().setItem(0, Items.SPECTATOR_TARGET_SELECTOR);
-            player.getInventory().setItem(4, Items.SPECTATOR_SPEED_SELECTOR);
-            player.getInventory().setItem(8, Items.SPECTATOR_LOBBY_REQEST);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                player.getInventory().setItem(0, Items.SPECTATOR_TARGET_SELECTOR);
+                player.getInventory().setItem(4, Items.SPECTATOR_SPEED_SELECTOR);
+                player.getInventory().setItem(8, Items.SPECTATOR_LOBBY_REQEST);
+            }, 1);
         } else {
             // un-ivisafy if they are respawning, etc.
             plugin.getGameManager().spectators.remove(player.getUniqueId());
