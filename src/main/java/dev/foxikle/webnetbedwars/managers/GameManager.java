@@ -48,6 +48,7 @@ public class GameManager {
         scoreboardManager = new ScoreboardManager(this, plugin);
         worldManager = new WorldManager(plugin, this);
         menuManager = new MenuManager(plugin);
+        economyManager = new EconomyManager(plugin);
     }
 
     public void setup() {
