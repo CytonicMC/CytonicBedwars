@@ -301,7 +301,7 @@ public class GameManager {
         }
 
         if(finalkill) {
-            dead.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "You DIED!", ChatColor.YELLOW + "You won't repsawn", 5, 15, 5);
+            dead.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "YOU DIED!", ChatColor.YELLOW + "You won't repsawn", 5, 55, 5);
             message += ChatColor.DARK_RED + "" + ChatColor.BOLD + " FINAL KILL!";
             dead.setGameMode(GameMode.SPECTATOR);
             Bukkit.broadcastMessage(message);
