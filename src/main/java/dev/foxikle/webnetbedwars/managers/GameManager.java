@@ -1,9 +1,9 @@
 package dev.foxikle.webnetbedwars.managers;
 
-import dev.foxikle.customnpcs.api.Action;
-import dev.foxikle.customnpcs.api.ActionType;
-import dev.foxikle.customnpcs.api.NPCApi;
-import dev.foxikle.customnpcs.api.conditions.Conditional;
+import dev.foxikle.customnpcs.actions.Action;
+import dev.foxikle.customnpcs.actions.ActionType;
+import dev.foxikle.customnpcs.actions.conditions.Conditional;
+import dev.foxikle.customnpcs.api.NPC;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
 import dev.foxikle.webnetbedwars.data.objects.Team;
@@ -25,7 +25,7 @@ public class GameManager {
     private List<UUID> alivePlayers = new ArrayList<>();
     private Map<Team, Boolean> beds = new HashMap<>();
     private final Map<Team, org.bukkit.scoreboard.Team> mcTeams = new HashMap<>();
-    private final List<NPCApi.NPC> npcs = new ArrayList<>();
+    private final List<NPC> npcs = new ArrayList<>();
     public List<UUID> spectators = new ArrayList<>();
 
     private GameState beforeFrozen;
@@ -110,13 +110,13 @@ public class GameManager {
             });
         });
         for (Team t : teamlist) {
-            NPCApi.NPC teamShop = new NPCApi.NPC(t.teamShopLocation().getWorld());
-            teamShop.setHeading(t.teamShopLocation().getYaw())
-                    .setPostion(t.teamShopLocation())
-                    .setName("<aqua><bold>TEAM SHOP</bold></aqua>")
-                    .setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE)
-                    .setInteractable(true)
-                    .setActions(
+            NPC teamShop = new NPC(t.teamShopLocation().getWorld());
+            teamShop.getSettings().setDirection(t.teamShopLocation().getYaw());
+                    teamShop.setPostion(t.teamShopLocation());
+                    teamShop.getSettings().setName("<aqua><bold>TEAM SHOP</bold></aqua>");
+                    teamShop.setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE);
+                    teamShop.getSettings().setInteractable(true);
+                    teamShop.setActions(
                             List.of(
                                     new Action(
                                             ActionType.RUN_COMMAND,
@@ -130,13 +130,13 @@ public class GameManager {
                     .create();
             npcs.add(teamShop);
 
-            NPCApi.NPC itemShop = new NPCApi.NPC(t.itemShopLocation().getWorld());
-            itemShop.setHeading(t.itemShopLocation().getYaw())
-                    .setPostion(t.itemShopLocation())
-                    .setName("<GOLD><bold>ITEM SHOP</bold></gold>")
-                    .setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE)
-                    .setInteractable(true)
-                    .setActions(
+            NPC itemShop = new NPC(t.itemShopLocation().getWorld());
+            itemShop.getSettings().setDirection(t.itemShopLocation().getYaw());
+                    itemShop.setPostion(t.itemShopLocation());
+                    itemShop.getSettings().setName("<GOLD><bold>ITEM SHOP</bold></gold>");
+                    itemShop.setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE);
+                    itemShop.getSettings().setInteractable(true);
+                    itemShop.setActions(
                             List.of(
                                     new Action(
                                             ActionType.RUN_COMMAND,
@@ -224,7 +224,7 @@ public class GameManager {
         STARTED = false;
         setGameState(GameState.CLEANUP);
         mcTeams.values().forEach(org.bukkit.scoreboard.Team::unregister);
-        npcs.forEach(NPCApi.NPC::remove);
+        npcs.forEach(NPC::remove);
     }
 
     @Nullable
