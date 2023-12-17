@@ -47,9 +47,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                                 plugin.getGameManager().thaw();
                             }
                         }
-                        case "itemshop" -> {
-                            plugin.getGameManager().getMenuManager().getItemShopMainPage(player).open(player);
-                        }
+                        case "itemshop" -> plugin.getGameManager().getMenuManager().getBlocksShop().open(player);
                     }
                 }
             }

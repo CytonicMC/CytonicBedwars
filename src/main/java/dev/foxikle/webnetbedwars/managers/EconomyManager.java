@@ -2,6 +2,7 @@ package dev.foxikle.webnetbedwars.managers;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.utils.Items;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -14,7 +15,7 @@ public class EconomyManager {
     }
 
     public boolean takeItem (String id, int quantity, Player player) {
-        int toRemove = 0;
+        int toRemove = quantity;
         if(itemCount(player, id) >= quantity) {
             for (ItemStack stack : player.getInventory().getContents()) {
                 if (stack != null) {
@@ -34,7 +35,6 @@ public class EconomyManager {
                         if (stack.getItemMeta() != null) {
                             if (stack.getItemMeta().getPersistentDataContainer().getKeys().contains(Items.NAMESPACE)) {
                                 if(stack.getItemMeta().getPersistentDataContainer().get(Items.NAMESPACE, PersistentDataType.STRING).equals(id)) {
-                                    toRemove -= stack.getAmount() - toRemove;
                                     stack.setAmount(stack.getAmount() - toRemove);
                                     return true;
                                 }
@@ -61,5 +61,14 @@ public class EconomyManager {
             }
         }
         return count;
+    }
+
+    public boolean hasSpace(Player player) {
+        for (ItemStack stack : player.getInventory().getStorageContents()) {
+            if (stack == null || stack.getType() == Material.AIR) {
+                return true;
+            }
+        }
+        return false;
     }
 }
