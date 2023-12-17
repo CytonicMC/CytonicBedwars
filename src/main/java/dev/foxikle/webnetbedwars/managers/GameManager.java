@@ -5,9 +5,11 @@ import dev.foxikle.customnpcs.actions.ActionType;
 import dev.foxikle.customnpcs.actions.conditions.Conditional;
 import dev.foxikle.customnpcs.api.NPC;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
+import dev.foxikle.webnetbedwars.data.enums.ArmorLevel;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
 import dev.foxikle.webnetbedwars.data.objects.Team;
 import dev.foxikle.webnetbedwars.runnables.RespawnRunnable;
+import dev.foxikle.webnetbedwars.utils.Items;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,6 +29,7 @@ public class GameManager {
     private final Map<Team, org.bukkit.scoreboard.Team> mcTeams = new HashMap<>();
     private final List<NPC> npcs = new ArrayList<>();
     public List<UUID> spectators = new ArrayList<>();
+    public Map<UUID, ArmorLevel> armorLevels = new HashMap<>();
 
     private GameState beforeFrozen;
     private GameState gameState;
@@ -71,7 +74,10 @@ public class GameManager {
                     teamSection.getLocation("GENERATOR_LOCATION"),
                     teamSection.getLocation("ITEM_SHOP_LOCATION"),
                     teamSection.getLocation("TEAM_SHOP_LOCATION"),
-                    teamSection.getLocation("TEAM_CHEST_LOCATION")
+                    teamSection.getLocation("TEAM_CHEST_LOCATION"),
+                    Material.valueOf(teamSection.getString("WOOL_ITEM")),
+                    Material.valueOf(teamSection.getString("GLASS_ITEM")),
+                    Material.valueOf(teamSection.getString("TERRACOTTA_ITEM"))
                     );
             teamlist.add(t);
             beds.put(t, true);
@@ -106,6 +112,7 @@ public class GameManager {
                 if(p != null){
                     mcTeams.get(team).addEntry(p.getName());
                     p.teleport(team.spawnLocation());
+                    setArmor(uuid, ArmorLevel.NONE);
                 }
             });
         });
@@ -323,10 +330,19 @@ public class GameManager {
         dead.setGameMode(GameMode.SURVIVAL);
         dead.setNoDamageTicks(100);// make them invincible for 5 sec
         dead.teleport(getPlayerTeam(dead.getUniqueId()).spawnLocation());
-        alivePlayers.add(dead.getUniqueId());
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            dead.getInventory().setLeggings(Items.get(String.format(armorLevels.get(dead.getUniqueId()).getLegsID(), getPlayerTeam(dead.getUniqueId()).color().name())));
+            dead.getInventory().setBoots(Items.get(String.format(armorLevels.get(dead.getUniqueId()).getBootsID(), getPlayerTeam(dead.getUniqueId()).color().name())));
+            dead.getInventory().setChestplate(Items.get(String.format("%s_CHEST", getPlayerTeam(dead.getUniqueId()).color().name())));
+        }, 5);
+         alivePlayers.add(dead.getUniqueId());
     }
 
     public List<UUID> getAlivePlayers() {
         return alivePlayers;
+    }
+
+    public void setArmor(UUID uuid, ArmorLevel level) {
+        armorLevels.put(uuid, level);
     }
 }
