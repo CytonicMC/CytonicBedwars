@@ -2,7 +2,7 @@ package dev.foxikle.webnetbedwars.managers;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.utils.Items;
-import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -61,5 +61,14 @@ public class EconomyManager {
             }
         }
         return count;
+    }
+
+    public boolean hasSpace(Player player) {
+        for (ItemStack stack : player.getInventory().getStorageContents()) {
+            if (stack == null || stack.getType() == Material.AIR) {
+                return true;
+            }
+        }
+        return false;
     }
 }
