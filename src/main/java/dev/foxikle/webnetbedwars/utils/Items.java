@@ -150,6 +150,15 @@ public class Items {
     public static ItemStack MENU_DIAMOND_BOOTS = createItem("Permanent Diamond Armor", "DIAMOND_BOOTS", Material.DIAMOND_BOOTS, false, false, List.of(), Map.of(), ChatColor.DARK_GREEN + "> 6 Emeralds");
     public static ItemStack MENU_IRON_BOOTS = createItem("Permanent Iron Armor", "IRON_BOOTS", Material.IRON_BOOTS, false, false, List.of(), Map.of(), ChatColor.GOLD + "> 12 Gold");
     public static ItemStack MENU_CHAINMAIL_BOOTS = createItem("Permanent Chainmail Armor", "CHAINMAIL_BOOTS", Material.CHAINMAIL_BOOTS, false, false, List.of(), Map.of(), ChatColor.GRAY + "> 40 Iron");
+    public static ItemStack MENU_SHEARS = createItem("Shears", "SHEARS", Material.SHEARS, false, true, List.of(), Map.of(), "", ChatColor.GRAY + "> 24 Iron");
+    public static ItemStack MENU_WOODEN_AXE = createItem("Wooden Axe", "WOODEN_AXE", Material.WOODEN_AXE, false, true, List.of(), Map.of(), "", ChatColor.GRAY + "> 10 Iron");
+    public static ItemStack MENU_STONE_AXE = createItem("Stone Axe", "STONE_AXE", Material.STONE_AXE, false, true, List.of(), Map.of(), "", ChatColor.GRAY + "> 20 Iron");
+    public static ItemStack MENU_IRON_AXE = createItem("Iron Axe", "IRON_AXE", Material.IRON_AXE, false, true, List.of(), Map.of(), "", ChatColor.GOLD + "> 6 Gold");
+    public static ItemStack MENU_DIAMOND_AXE = createItem("Diamond Axe", "DIAMOND_AXE", Material.DIAMOND_AXE, false, true, List.of(), Map.of(), "", ChatColor.DARK_GREEN + "> 3 Emeralds");
+    public static ItemStack MENU_WOODEN_PICKAXE = createItem("Wooden Pickaxe", "WOODEN_PICKAXE", Material.WOODEN_PICKAXE, false, true, List.of(), Map.of(), "", ChatColor.GRAY + "> 10 Iron");
+    public static ItemStack MENU_STONE_PICKAXE = createItem("Stone Pickaxe", "STONE_PICKAXE", Material.STONE_PICKAXE, false, true, List.of(), Map.of(), "", ChatColor.GRAY + "> 20 Iron");
+    public static ItemStack MENU_IRON_PICKAXE = createItem("Iron Pickaxe", "IRON_PICKAXE", Material.IRON_PICKAXE, false, true, List.of(), Map.of(), "", ChatColor.GOLD + "> 6 Gold");
+    public static ItemStack MENU_DIAMOND_PICKAXE = createItem("Diamond Pickaxe", "DIAMOND_PICKAXE", Material.DIAMOND_PICKAXE, false, true, List.of(), Map.of(), "", ChatColor.DARK_GREEN + "> 3 Emeralds");
 
 
     // curency items
@@ -186,6 +195,20 @@ public class Items {
     public static ItemStack IRON_BOOTS = createItem("Iron Boots", "IRON_BOOTS", Material.IRON_BOOTS, true, true, List.of(36), Map.of());
     public static ItemStack CHAINMAIL_BOOTS = createItem("Chainmail Boots", "CHAINMAIL_BOOTS", Material.CHAINMAIL_BOOTS, true, true, List.of(36), Map.of());
 
+
+    // tools
+
+    public static ItemStack SHEARS = createItem("Shears", "SHEARS", Material.SHEARS, false, true, List.of(), Map.of());
+
+    public static ItemStack WOODEN_AXE = createItem("Wooden Axe", "WOODEN_AXE", Material.WOODEN_AXE, false, true, List.of(), Map.of());
+    public static ItemStack STONE_AXE = createItem("Stone Axe", "STONE_AXE", Material.STONE_AXE, false, true, List.of(), Map.of());
+    public static ItemStack IRON_AXE = createItem("Iron Axe", "IRON_AXE", Material.IRON_AXE, false, true, List.of(), Map.of());
+    public static ItemStack DIAMOND_AXE = createItem("Diamond Axe", "DIAMOND_AXE", Material.DIAMOND_AXE, false, true, List.of(), Map.of());
+
+    public static ItemStack WOODEN_PICKAXE = createItem("Wooden Pickaxe", "WOODEN_PICKAXE", Material.WOODEN_PICKAXE, false, true, List.of(), Map.of());
+    public static ItemStack STONE_PICKAXE = createItem("Stone Pickaxe", "STONE_PICKAXE", Material.STONE_PICKAXE, false, true, List.of(), Map.of());
+    public static ItemStack IRON_PICKAXE = createItem("Iron Pickaxe", "IRON_PICKAXE", Material.IRON_PICKAXE, false, true, List.of(), Map.of());
+    public static ItemStack DIAMOND_PICKAXE = createItem("Diamond Pickaxe", "DIAMOND_PICKAXE", Material.DIAMOND_PICKAXE, false, true, List.of(), Map.of());
 
     //todo: IDEA: Grappling hook that works kinda like skyblocks moody grappleshot -- could be a global cap, or someth
 
@@ -233,8 +256,8 @@ public class Items {
         return item;
     }
 
-    @Nullable
     public static ItemStack get(String id){
+        if(id == null) return new ItemStack(Material.AIR);
         return itemRegistry.get(id);
     }
 
