@@ -6,7 +6,9 @@ import dev.foxikle.customnpcs.actions.conditions.Conditional;
 import dev.foxikle.customnpcs.api.NPC;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.ArmorLevel;
+import dev.foxikle.webnetbedwars.data.enums.AxeLevel;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
+import dev.foxikle.webnetbedwars.data.enums.PickaxeLevel;
 import dev.foxikle.webnetbedwars.data.objects.Team;
 import dev.foxikle.webnetbedwars.runnables.RespawnRunnable;
 import dev.foxikle.webnetbedwars.utils.Items;
@@ -29,7 +31,12 @@ public class GameManager {
     private final Map<Team, org.bukkit.scoreboard.Team> mcTeams = new HashMap<>();
     private final List<NPC> npcs = new ArrayList<>();
     public List<UUID> spectators = new ArrayList<>();
+
     public Map<UUID, ArmorLevel> armorLevels = new HashMap<>();
+    public Map<UUID, AxeLevel> axes = new HashMap<>();
+    public Map<UUID, PickaxeLevel> pickaxes = new HashMap<>();
+    public Map<UUID, Boolean> shears = new HashMap<>();
+
 
     private GameState beforeFrozen;
     private GameState gameState;
@@ -41,7 +48,7 @@ public class GameManager {
     private final ScoreboardManager scoreboardManager;
     private final WorldManager worldManager;
     private final MenuManager menuManager;
-    private final EconomyManager economyManager;
+    private final PlayerInventoryManager playerInventoryManager;
 
     public boolean STARTED = false;
 
@@ -51,7 +58,7 @@ public class GameManager {
         scoreboardManager = new ScoreboardManager(this, plugin);
         worldManager = new WorldManager(plugin, this);
         menuManager = new MenuManager(plugin);
-        economyManager = new EconomyManager(plugin);
+        playerInventoryManager = new PlayerInventoryManager(plugin);
     }
 
     public void setup() {
@@ -109,10 +116,13 @@ public class GameManager {
             List<UUID> uuids = playerTeams.get(team);
             uuids.forEach(uuid -> {
                 Player p = Bukkit.getPlayer(uuid);
-                if(p != null){
+                if(p != null) {
                     mcTeams.get(team).addEntry(p.getName());
                     p.teleport(team.spawnLocation());
                     setArmor(uuid, ArmorLevel.NONE);
+                    setAxe(uuid, AxeLevel.NONE);
+                    setPickaxe(uuid, PickaxeLevel.NONE);
+                    shears.put(uuid, false);
                 }
             });
         });
@@ -207,8 +217,8 @@ public class GameManager {
         return menuManager;
     }
 
-    public EconomyManager getEconomyManager() {
-        return economyManager;
+    public PlayerInventoryManager getPlayerInventoryManager() {
+        return playerInventoryManager;
     }
 
     public List<Team> getTeamlist() {
@@ -252,7 +262,12 @@ public class GameManager {
 
     public void kill(Player dead, @Nullable Player killer, EntityDamageEvent.DamageCause cause) {
         alivePlayers.remove(dead.getUniqueId());
-        //todo: Death animation, not direct respawn!
+        statsManager.addPlayerDeath(dead.getUniqueId());
+
+        //degrade tools
+        setAxe(dead.getUniqueId(), AxeLevel.getOrdered(axes.get(dead.getUniqueId()), -1));
+        setPickaxe(dead.getUniqueId(), PickaxeLevel.getOrdered(pickaxes.get(dead.getUniqueId()), -1));
+
         boolean finalkill = false;
         String message = ChatColor.translateAlternateColorCodes('&', getPlayerTeam(dead.getUniqueId()).prefix()) + dead.getName() + ChatColor.RESET;
         if(!beds.get(getPlayerTeam(dead.getUniqueId()))) {
@@ -263,46 +278,20 @@ public class GameManager {
                 if(killer == null) {
                     kill(dead, null, EntityDamageEvent.DamageCause.CUSTOM);
                 } else {
-                    statsManager.addPlayerDeath(dead.getUniqueId());
                     statsManager.addPlayerKill(killer.getUniqueId());
                    message += ChatColor.GRAY + " was slain by " + ChatColor.translateAlternateColorCodes('&', getPlayerTeam(killer.getUniqueId()).prefix()) + killer.getName();
                 }
             }
-            case FALL -> {
-                statsManager.addPlayerDeath(dead.getUniqueId());
-               message += ChatColor.GRAY + " has fallen to their death";
-            }
-            case FIRE, FIRE_TICK -> {
-                statsManager.addPlayerDeath(dead.getUniqueId());
-               message += ChatColor.GRAY + " was roasted like a turkey";
-            }
-            case LAVA -> {
-                statsManager.addPlayerDeath(dead.getUniqueId());
-               message += ChatColor.GRAY + " discovered lava is hot";
-            }
-            case VOID -> {
-                statsManager.addPlayerDeath(dead.getUniqueId());
-               message += ChatColor.GRAY + " fell into the abyss";
-            }
-            case FREEZE -> {
-                statsManager.addPlayerDeath(dead.getUniqueId());
-               message += ChatColor.GRAY + " turned into an ice cube";
-            }
-            case DROWNING -> {
-                statsManager.addPlayerDeath(dead.getUniqueId());
-               message += ChatColor.GRAY + " forgot how to swim";
-            }
-            case ENTITY_EXPLOSION, BLOCK_EXPLOSION -> {
-                statsManager.addPlayerDeath(dead.getUniqueId());
-               message += ChatColor.GRAY + " went " + ChatColor.RED + "" + ChatColor.BOLD + "BOOM!";
-            }
-            case PROJECTILE -> {
-                statsManager.addPlayerDeath(dead.getUniqueId());
-                message += ChatColor.GRAY + " was remotley terminated";
-            }
+            case FALL -> message += ChatColor.GRAY + " has fallen to their death";
+            case FIRE, FIRE_TICK -> message += ChatColor.GRAY + " was roasted like a turkey";
+            case LAVA -> message += ChatColor.GRAY + " discovered lava is hot";
+            case VOID -> message += ChatColor.GRAY + " fell into the abyss";
+            case FREEZE -> message += ChatColor.GRAY + " turned into an ice cube";
+            case DROWNING -> message += ChatColor.GRAY + " forgot how to swim";
+            case ENTITY_EXPLOSION, BLOCK_EXPLOSION -> message += ChatColor.GRAY + " went " + ChatColor.RED + "" + ChatColor.BOLD + "BOOM!";
+            case PROJECTILE -> message += ChatColor.GRAY + " was remotley terminated";
             default -> {
                 if(cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
-                statsManager.addPlayerDeath(dead.getUniqueId());
                 plugin.getLogger().info(String.valueOf(cause));
                message += ChatColor.GRAY + " died under mysterious circumstances";
             }
@@ -330,12 +319,20 @@ public class GameManager {
         dead.setGameMode(GameMode.SURVIVAL);
         dead.setNoDamageTicks(100);// make them invincible for 5 sec
         dead.teleport(getPlayerTeam(dead.getUniqueId()).spawnLocation());
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            dead.getInventory().setLeggings(Items.get(String.format(armorLevels.get(dead.getUniqueId()).getLegsID(), getPlayerTeam(dead.getUniqueId()).color().name())));
-            dead.getInventory().setBoots(Items.get(String.format(armorLevels.get(dead.getUniqueId()).getBootsID(), getPlayerTeam(dead.getUniqueId()).color().name())));
-            dead.getInventory().setChestplate(Items.get(String.format("%s_CHEST", getPlayerTeam(dead.getUniqueId()).color().name())));
-        }, 5);
-         alivePlayers.add(dead.getUniqueId());
+
+        // set armor
+        dead.getInventory().setLeggings(Items.get(String.format(armorLevels.get(dead.getUniqueId()).getLegsID(), getPlayerTeam(dead.getUniqueId()).color().name())));
+        dead.getInventory().setBoots(Items.get(String.format(armorLevels.get(dead.getUniqueId()).getBootsID(), getPlayerTeam(dead.getUniqueId()).color().name())));
+        dead.getInventory().setChestplate(Items.get(String.format("%s_CHEST", getPlayerTeam(dead.getUniqueId()).color().name())));
+
+        // set tools
+        //todo: check for enchants / team upgrades
+        dead.getInventory().addItem(Items.get(pickaxes.get(dead.getUniqueId()).getItemID()), Items.get(axes.get(dead.getUniqueId()).getItemID()));
+        if(shears.get(dead.getUniqueId())) {
+            dead.getInventory().addItem(Items.SHEARS);
+        }
+
+        alivePlayers.add(dead.getUniqueId());
     }
 
     public List<UUID> getAlivePlayers() {
@@ -344,5 +341,13 @@ public class GameManager {
 
     public void setArmor(UUID uuid, ArmorLevel level) {
         armorLevels.put(uuid, level);
+    }
+
+    public void setAxe(UUID uuid, AxeLevel level) {
+        axes.put(uuid, level);
+    }
+
+    public void setPickaxe(UUID uuid, PickaxeLevel level) {
+        pickaxes.put(uuid, level);
     }
 }

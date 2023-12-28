@@ -1,16 +1,19 @@
 package dev.foxikle.webnetbedwars.managers;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
+import dev.foxikle.webnetbedwars.data.enums.AxeLevel;
+import dev.foxikle.webnetbedwars.data.enums.PickaxeLevel;
 import dev.foxikle.webnetbedwars.utils.Items;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-public class EconomyManager {
+public class PlayerInventoryManager {
     private final WebNetBedWars plugin;
 
-    public EconomyManager(WebNetBedWars plugin) {
+    public PlayerInventoryManager(WebNetBedWars plugin) {
         this.plugin = plugin;
     }
 
@@ -67,6 +70,48 @@ public class EconomyManager {
         for (ItemStack stack : player.getInventory().getStorageContents()) {
             if (stack == null || stack.getType() == Material.AIR) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean setAxe(AxeLevel level, Player player) {
+        if(level == AxeLevel.WOODEN) { // doesn't have an axe to remove
+            player.getInventory().addItem(Items.WOODEN_AXE);
+            return true;
+        }
+        ItemStack[] items = player.getInventory().getContents();
+        for (int i = 0; i < player.getInventory().getContents().length; i++) {
+            ItemStack item = items[i];
+            ItemMeta meta = item.getItemMeta();
+            String oldID = AxeLevel.getOrdered(level, -1).getItemID();
+            if(meta.getPersistentDataContainer().has(Items.NAMESPACE)) {
+                String id = meta.getPersistentDataContainer().get(Items.NAMESPACE, PersistentDataType.STRING);
+                if(id.equals(oldID)) {
+                    player.getInventory().setItem(i, Items.get(level.getItemID()));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean setPickaxe(PickaxeLevel level, Player player) {
+        if(level == PickaxeLevel.WOODEN) { // doesn't have an axe to remove
+            player.getInventory().addItem(Items.WOODEN_PICKAXE);
+            return true;
+        }
+        ItemStack[] items = player.getInventory().getContents();
+        for (int i = 0; i < player.getInventory().getContents().length; i++) {
+            ItemStack item = items[i];
+            ItemMeta meta = item.getItemMeta();
+            String oldID = PickaxeLevel.getOrdered(level, -1).getItemID();
+            if(meta.getPersistentDataContainer().has(Items.NAMESPACE)) {
+                String id = meta.getPersistentDataContainer().get(Items.NAMESPACE, PersistentDataType.STRING);
+                if(id.equals(oldID)) {
+                    player.getInventory().setItem(i, Items.get(level.getItemID()));
+                    return true;
+                }
             }
         }
         return false;

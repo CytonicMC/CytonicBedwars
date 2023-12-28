@@ -24,6 +24,7 @@ public class ProjectileShootListener implements Listener {
                 public void run() {
                     if (trident.getLocation().y() <= -40) {
                         Ghast g = trident.getWorld().spawn(trident.getLocation(), Ghast.class);
+                        g.setSilent(true);
                         trident.hitEntity(g);
                         Bukkit.getScheduler().runTaskLater(plugin, g::remove, 1);
                         trident.setDamage(1);
