@@ -53,7 +53,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                         }
                         case "itemshop" -> {
                             if(!plugin.getGameManager().STARTED) {
-                                player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "WARNING:" + ChatColor.RESET + "" + ChatColor.RED + "The game has not been started. Some shop pages may not work!");
+                                player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "!! WARNING !!" + ChatColor.RESET + " " + ChatColor.RED + "The game has not been started. Some shop pages may not work!");
                             }
 
                             plugin.getGameManager().getMenuManager().getBlocksShop().open(player);
