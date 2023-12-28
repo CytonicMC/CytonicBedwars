@@ -28,7 +28,7 @@ dependencies {
 group = "dev.foxikle"
 version = "0.01-alpha2"
 description = "WebNet's bedwars plugin"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 tasks {
     assemble {
