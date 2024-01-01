@@ -20,7 +20,7 @@ dependencies {
     api("net.wesjd:anvilgui:1.9.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:3.0.2")
     compileOnly ("me.clip:placeholderapi:2.11.3")
-    implementation("fr.mrmicky:fastboard:2.0.1")
+    implementation("fr.mrmicky:fastboard:2.0.2")
     compileOnly("dev.foxikle:customnpcs:1.5.2-pre2")
     implementation("com.github.coderFlameyosFlow:WoodyMenus:1.5.7")
 }
