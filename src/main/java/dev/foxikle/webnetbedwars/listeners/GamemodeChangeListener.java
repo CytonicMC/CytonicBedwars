@@ -41,11 +41,15 @@ public class GamemodeChangeListener implements Listener {
             player.setFlying(true);
             plugin.getGameManager().spectators.add(player.getUniqueId());
 
-            player.getInventory().setItem(0, Items.SPECTATOR_TARGET_SELECTOR);
-            player.getInventory().setItem(4, Items.SPECTATOR_SPEED_SELECTOR);
-            player.getInventory().setItem(8, Items.SPECTATOR_LOBBY_REQEST);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                player.getInventory().setItem(0, Items.SPECTATOR_TARGET_SELECTOR);
+                player.getInventory().setItem(4, Items.SPECTATOR_SPEED_SELECTOR);
+                player.getInventory().setItem(8, Items.SPECTATOR_LOBBY_REQEST);
+            }, 1);
         } else {
             // un-ivisafy if they are respawning, etc.
+            if(event.getPlayer().getGameMode() == GameMode.ADVENTURE)
+                player.getInventory().clear(); // only clear the inventory if they are coming from a spectator
             plugin.getGameManager().spectators.remove(player.getUniqueId());
             player.removePotionEffect(PotionEffectType.INVISIBILITY);
             Bukkit.getOnlinePlayers().forEach(p -> {
