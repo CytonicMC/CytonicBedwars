@@ -4,6 +4,7 @@ import dev.foxikle.customnpcs.actions.Action;
 import dev.foxikle.customnpcs.actions.ActionType;
 import dev.foxikle.customnpcs.actions.conditions.Conditional;
 import dev.foxikle.customnpcs.api.NPC;
+import dev.foxikle.customnpcs.data.Settings;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.ArmorLevel;
 import dev.foxikle.webnetbedwars.data.enums.AxeLevel;
@@ -128,13 +129,11 @@ public class GameManager {
         });
         for (Team t : teamlist) {
             NPC teamShop = new NPC(t.teamShopLocation().getWorld());
-            teamShop.getSettings().setDirection(t.teamShopLocation().getYaw());
-                    teamShop.setPostion(t.teamShopLocation());
-                    teamShop.getSettings().setName("<aqua><bold>TEAM SHOP</bold></aqua>");
-                    teamShop.setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE);
-                    teamShop.getSettings().setInteractable(true);
-                    teamShop.setActions(
-                            List.of(
+            Settings teamSettings = new Settings(true, false, false, t.teamShopLocation().getYaw(), NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE, "Shop Keeper", "<aqua><bold>TEAM SHOP</bold></aqua>");
+
+            teamShop.setPostion(t.teamShopLocation())
+                    .setActions(
+                            List.of (
                                     new Action(
                                             ActionType.RUN_COMMAND,
                                             new ArrayList<>(List.of("openteamshop")),
@@ -145,15 +144,15 @@ public class GameManager {
                             )
                     )
                     .create();
+            teamShop.setSettings(teamSettings);
+            teamShop.reloadSettings();
             npcs.add(teamShop);
 
             NPC itemShop = new NPC(t.itemShopLocation().getWorld());
-            itemShop.getSettings().setDirection(t.itemShopLocation().getYaw());
-                    itemShop.setPostion(t.itemShopLocation());
-                    itemShop.getSettings().setName("<GOLD><bold>ITEM SHOP</bold></gold>");
-                    itemShop.setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE);
-                    itemShop.getSettings().setInteractable(true);
-                    itemShop.setActions(
+            Settings itemSettings = new Settings(true, false, false, t.itemShopLocation().getYaw(), NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE, "Shop Keeper", "<GOLD><bold>ITEM SHOP</bold></gold>");
+            itemShop
+                    .setPostion(t.itemShopLocation())
+                    .setActions(
                             List.of(
                                     new Action(
                                             ActionType.RUN_COMMAND,
@@ -165,6 +164,8 @@ public class GameManager {
                             )
                     )
                     .create();
+            itemShop.setSettings(itemSettings);
+            itemShop.reloadSettings();
             npcs.add(itemShop);
         }
     }
