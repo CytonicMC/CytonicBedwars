@@ -19,6 +19,7 @@ public class BlockBreakListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
+        if(e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         if(plugin.getGameManager().spectators.contains(e.getPlayer().getUniqueId())){
             e.getPlayer().sendMessage(ChatColor.RED + "You cannot do this as a spectator!");
             e.setCancelled(true);
@@ -38,9 +39,7 @@ public class BlockBreakListener implements Listener {
                 return;
             }
         }
-        if(e.getPlayer().getGameMode() != GameMode.CREATIVE) {
-            e.getPlayer().sendMessage(Component.text("You can only break blocks placed by players!", NamedTextColor.RED));
-            e.setCancelled(true);
-        }
+        e.getPlayer().sendMessage(Component.text("You can only break blocks placed by players!", NamedTextColor.RED));
+        e.setCancelled(true);
     }
 }

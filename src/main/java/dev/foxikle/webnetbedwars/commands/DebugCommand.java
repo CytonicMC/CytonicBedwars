@@ -2,8 +2,6 @@ package dev.foxikle.webnetbedwars.commands;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -31,17 +29,13 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                     switch (args[0].toLowerCase()){
                         case "start" -> {
                             if(plugin.getGameManager().STARTED) {
-                                player.sendMessage(Component.text("The game has already been started! run '/debug end' to end it!", NamedTextColor.RED));
+                                player.sendMessage( ChatColor.RED + "The game has already been started! Use '/debug stop' to end it!");
                                 return true;
                             }
                             player.sendMessage(ChatColor.GREEN + "Starting game!");
                             plugin.getGameManager().start();
                         }
                         case "end" -> {
-                            if(plugin.getGameManager().STARTED) {
-                                player.sendMessage(Component.text("The game has not been started! run '/debug start' to start it!", NamedTextColor.RED));
-                                return true;
-                            }
                             player.sendMessage(ChatColor.GREEN + "Ending game!");
                             plugin.getGameManager().cleanup();
                         }
@@ -57,6 +51,13 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                                 plugin.getGameManager().thaw();
                             }
                         }
+                        case "itemshop" -> {
+                            if(!plugin.getGameManager().STARTED) {
+                                player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "!! WARNING !!" + ChatColor.RESET + " " + ChatColor.RED + "The game has not been started. Some shop pages may not work!");
+                            }
+
+                            plugin.getGameManager().getMenuManager().getBlocksShop().open(player);
+                        }
                     }
                 }
             }
@@ -66,6 +67,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return List.of("end", "listteams", "start", "freeze");
+        return List.of("end", "listteams", "start", "freeze", "itemshop");
     }
 }

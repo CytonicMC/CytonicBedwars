@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("io.papermc.paperweight.userdev") version "1.5.5"
+    id("io.papermc.paperweight.userdev") version "1.5.10"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -31,7 +31,7 @@ dependencies {
 group = "dev.foxikle"
 version = "0.01-alpha2"
 description = "WebNet's bedwars plugin"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 tasks {
     assemble {
