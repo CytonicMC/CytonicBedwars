@@ -44,6 +44,7 @@ public class MenuManager {
             meta.setDisplayName(ChatColor.GREEN + Bukkit.getPlayer(uuid).getName());
             head.setItemMeta(meta);
             MenuItem item = ItemBuilder.of(head).buildItem((slot, event) -> {
+                if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                 Player player = event.getPlayer();
                 player.teleport(Bukkit.getPlayer(uuid));
                 return ActionResponse.DONE;
@@ -64,6 +65,7 @@ public class MenuManager {
         tenthSpeed.setItemMeta(tenthMeta);
 
         menu.setItem(11, ItemBuilder.of(tenthSpeed).buildItem((slot, event) -> {
+            if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
             event.getPlayer().setFlySpeed(0.01f);
             event.getPlayer().closeInventory();
             event.getPlayer().sendMessage(ChatColor.GREEN + "Your flight speed is now " + ChatColor.GOLD + "0.1x");
@@ -77,6 +79,7 @@ public class MenuManager {
         halfSpeed.setItemMeta(halfMeta);
 
         menu.setItem(12, ItemBuilder.of(halfSpeed).buildItem((slot, event) -> {
+            if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
             event.getPlayer().setFlySpeed(0.05f);
             event.getPlayer().closeInventory();
             event.getPlayer().sendMessage(ChatColor.GREEN + "Your flight speed is now " + ChatColor.GOLD + "0.5x");
@@ -90,6 +93,7 @@ public class MenuManager {
         normalSpeed.setItemMeta(normalMeta);
 
         menu.setItem(13, ItemBuilder.of(normalSpeed).buildItem((slot, event) -> {
+            if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
             event.getPlayer().setFlySpeed(0.1f);
             event.getPlayer().closeInventory();
             event.getPlayer().sendMessage(ChatColor.GREEN + "Your flight speed is now " + ChatColor.GOLD + "1x");
@@ -103,6 +107,7 @@ public class MenuManager {
         x2Speed.setItemMeta(x2Meta);
 
         menu.setItem(14, ItemBuilder.of(x2Speed).buildItem((slot, event) -> {
+            if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
             event.getPlayer().setFlySpeed(0.2f);
             event.getPlayer().closeInventory();
             event.getPlayer().sendMessage(ChatColor.GREEN + "Your flight speed is now " + ChatColor.GOLD + "2x");
@@ -116,6 +121,7 @@ public class MenuManager {
         x5Speed.setItemMeta(x5Meta);
 
         menu.setItem(15, ItemBuilder.of(x5Speed).buildItem((slot, event) -> {
+            if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
             event.getPlayer().setFlySpeed(0.5f);
             event.getPlayer().closeInventory();
             event.getPlayer().sendMessage(ChatColor.GREEN + "Your flight speed is now " + ChatColor.GOLD + "5x");
@@ -134,36 +140,42 @@ public class MenuManager {
         blocks.setItem(1, Items.MENU_BLOCKS);
         blocks.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCombatShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getArmorShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getToolShop(event.getPlayer()).open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(5, ItemBuilder.of(Items.MENU_POTIONS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getPotionShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(6, ItemBuilder.of(Items.MENU_UTILS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getUtilShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCustomShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -171,6 +183,7 @@ public class MenuManager {
 
         blocks.setItem(21, ItemBuilder.of(Items.MENU_WOOL)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 4, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             ItemStack clone = Items.getTeamMapped(MappableItem.WOOL, plugin.getGameManager().getPlayerTeam(event.getPlayer().getUniqueId())).clone();
@@ -191,6 +204,7 @@ public class MenuManager {
 
         blocks.setItem(22, ItemBuilder.of(Items.MENU_BLAST_GLASS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 12, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             ItemStack clone = Items.getTeamMapped(MappableItem.GLASS, plugin.getGameManager().getPlayerTeam(event.getPlayer().getUniqueId())).clone();
@@ -211,6 +225,7 @@ public class MenuManager {
 
         blocks.setItem(23, ItemBuilder.of(Items.MENU_END_STONE)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 24, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             ItemStack clone = Items.END_STONE.clone();
@@ -231,6 +246,7 @@ public class MenuManager {
 
         blocks.setItem(30, ItemBuilder.of(Items.MENU_TERRACOTTA)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             ItemStack clone = Items.getTeamMapped(MappableItem.TERRACOTTA, plugin.getGameManager().getPlayerTeam(event.getPlayer().getUniqueId())).clone();
@@ -251,6 +267,7 @@ public class MenuManager {
 
         blocks.setItem(31, ItemBuilder.of(Items.MENU_OBSIDIAN)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 6, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             ItemStack clone = Items.OBSIDIAN.clone();
@@ -271,6 +288,7 @@ public class MenuManager {
 
         blocks.setItem(32, ItemBuilder.of(Items.MENU_PLANKS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 4, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             ItemStack clone = Items.PLANKS.clone();
@@ -303,12 +321,14 @@ public class MenuManager {
 
         blocks.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getBlocksShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCombatShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -316,24 +336,28 @@ public class MenuManager {
         blocks.setItem(2, Items.MENU_ARMOR);
         blocks.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getToolShop(event.getPlayer()).open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(5, ItemBuilder.of(Items.MENU_POTIONS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getPotionShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(6, ItemBuilder.of(Items.MENU_UTILS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getUtilShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCustomShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -341,6 +365,7 @@ public class MenuManager {
 
         blocks.setItem(22, ItemBuilder.of(Items.MENU_CHAINMAIL_BOOTS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 40, event.getPlayer())) {
                         event.getPlayer().getInventory().setLeggings(Items.CHAINMAIL_LEGS);
                         event.getPlayer().getInventory().setBoots(Items.CHAINMAIL_BOOTS);
@@ -355,6 +380,7 @@ public class MenuManager {
 
         blocks.setItem(30, ItemBuilder.of(Items.MENU_IRON_BOOTS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 12, event.getPlayer())) {
                         event.getPlayer().getInventory().setLeggings(Items.IRON_LEGS);
                         event.getPlayer().getInventory().setBoots(Items.IRON_BOOTS);
@@ -369,6 +395,7 @@ public class MenuManager {
 
         blocks.setItem(31, ItemBuilder.of(Items.MENU_DIAMOND_BOOTS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 6, event.getPlayer())) {
                         event.getPlayer().getInventory().setLeggings(Items.DIAMOND_LEGS);
                         event.getPlayer().getInventory().setBoots(Items.DIAMOND_BOOTS);
@@ -383,6 +410,7 @@ public class MenuManager {
 
         blocks.setItem(32, ItemBuilder.of(Items.MENU_NETHERITE_BOOTS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 16, event.getPlayer())) {
                         event.getPlayer().getInventory().setLeggings(Items.NETHERITE_LEGS);
                         event.getPlayer().getInventory().setBoots(Items.NETHERITE_BOOTS);
@@ -409,12 +437,14 @@ public class MenuManager {
         {
             weapons.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
                     .buildItem((slot, event) -> {
+                        if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                         getBlocksShop().open(event.getPlayer());
                         return ActionResponse.DONE;
                     })
             );
             weapons.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
                     .buildItem((slot, event) -> {
+                        if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                         getArmorShop().open(event.getPlayer());
                         return ActionResponse.DONE;
                     })
@@ -422,24 +452,28 @@ public class MenuManager {
             weapons.setItem(3, Items.MENU_COMBAT);
             weapons.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
                     .buildItem((slot, event) -> {
+                        if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                         getToolShop(event.getPlayer()).open(event.getPlayer());
                         return ActionResponse.DONE;
                     })
             );
             weapons.setItem(5, ItemBuilder.of(Items.MENU_POTIONS)
                     .buildItem((slot, event) -> {
+                        if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                         getPotionShop().open(event.getPlayer());
                         return ActionResponse.DONE;
                     })
             );
             weapons.setItem(6, ItemBuilder.of(Items.MENU_UTILS)
                     .buildItem((slot, event) -> {
+                        if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                         getUtilShop().open(event.getPlayer());
                         return ActionResponse.DONE;
                     })
             );
             weapons.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
                     .buildItem((slot, event) -> {
+                        if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                         getCustomShop().open(event.getPlayer());
                         return ActionResponse.DONE;
                     })
@@ -448,6 +482,7 @@ public class MenuManager {
 
         weapons.setItem(19, ItemBuilder.of(Items.MENU_STONE_SWORD)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.STONE_SWORD.clone());
@@ -466,6 +501,7 @@ public class MenuManager {
 
         weapons.setItem(20, ItemBuilder.of(Items.MENU_IRON_SWORD)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 7, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.IRON_SWORD.clone());
@@ -484,6 +520,7 @@ public class MenuManager {
 
         weapons.setItem(21, ItemBuilder.of(Items.MENU_DIAMOND_SWORD)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 6, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.DIAMOND_SWORD.clone());
@@ -502,6 +539,7 @@ public class MenuManager {
 
         weapons.setItem(22, ItemBuilder.of(Items.MENU_SHIELD)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 3, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.SHIELD.clone());
@@ -520,6 +558,7 @@ public class MenuManager {
 
         weapons.setItem(23, ItemBuilder.of(Items.MENU_CROSSBOW_1)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 12, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.CROSSBOW_1.clone());
@@ -538,6 +577,7 @@ public class MenuManager {
 
         weapons.setItem(24, ItemBuilder.of(Items.MENU_CROSSBOW_2)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 20, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.CROSSBOW_2.clone());
@@ -556,6 +596,7 @@ public class MenuManager {
 
         weapons.setItem(25, ItemBuilder.of(Items.MENU_CROSSBOW_3)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 6, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.CROSSBOW_3.clone());
@@ -574,6 +615,7 @@ public class MenuManager {
 
         weapons.setItem(28, ItemBuilder.of(Items.MENU_BOW_1)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 10, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.BOW_1.clone());
@@ -592,6 +634,7 @@ public class MenuManager {
 
         weapons.setItem(29, ItemBuilder.of(Items.MENU_BOW_2)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 18, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.BOW_2.clone());
@@ -610,6 +653,7 @@ public class MenuManager {
 
         weapons.setItem(30, ItemBuilder.of(Items.MENU_BOW_3)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 5, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.BOW_3.clone());
@@ -628,6 +672,7 @@ public class MenuManager {
 
         weapons.setItem(31, ItemBuilder.of(Items.MENU_ARROW)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 2, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             ItemStack clone = Items.ARROW.clone();
@@ -648,6 +693,7 @@ public class MenuManager {
 
         weapons.setItem(32, ItemBuilder.of(Items.MENU_TRIDENT_1)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 12, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.TRIDENT_1.clone());
@@ -666,6 +712,7 @@ public class MenuManager {
 
         weapons.setItem(33, ItemBuilder.of(Items.MENU_TRIDENT_2)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 5, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.TRIDENT_2.clone());
@@ -684,6 +731,7 @@ public class MenuManager {
 
         weapons.setItem(34, ItemBuilder.of(Items.MENU_TRIDENT_3)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 5, event.getPlayer())) {
                         if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
                             event.getPlayer().getInventory().addItem(Items.TRIDENT_3.clone());
@@ -709,7 +757,7 @@ public class MenuManager {
     }
 
     public Menu getToolShop(Player player) {
-        if(!plugin.getGameManager().STARTED)
+        if (!plugin.getGameManager().STARTED)
             throw new IllegalStateException("The game must be started to generate a tool shop!");
 
         Menu tools = Menus.menu().title("Item Shop ➜ Tools").rows(5).addAllModifiers().create();
@@ -718,6 +766,7 @@ public class MenuManager {
 
         tools.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getBlocksShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -725,6 +774,7 @@ public class MenuManager {
 
         tools.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getArmorShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -732,6 +782,7 @@ public class MenuManager {
 
         tools.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCombatShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -740,6 +791,7 @@ public class MenuManager {
         tools.setItem(4, Items.MENU_TOOLS);
         tools.setItem(5, ItemBuilder.of(Items.MENU_POTIONS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getPotionShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -747,6 +799,7 @@ public class MenuManager {
 
         tools.setItem(6, ItemBuilder.of(Items.MENU_UTILS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getUtilShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -754,6 +807,7 @@ public class MenuManager {
 
         tools.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCustomShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -765,8 +819,8 @@ public class MenuManager {
             case NONE -> tools.setItem(30, ItemBuilder.of(Items.MENU_WOODEN_AXE)
                     .buildItem((slot, event) -> {
                         if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        if(plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
-                            if(plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, event.getPlayer())) {
                                 plugin.getGameManager().setAxe(player.getUniqueId(), AxeLevel.WOODEN);
                                 plugin.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.WOODEN, player);
                                 event.getPlayer().sendMessage(ChatColor.GREEN + "You purchased a wooden axe!");
@@ -784,8 +838,8 @@ public class MenuManager {
             case WOODEN -> tools.setItem(30, ItemBuilder.of(Items.MENU_STONE_AXE)
                     .buildItem((slot, event) -> {
                         if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        if(plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
-                            if(plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, event.getPlayer())) {
                                 plugin.getGameManager().setAxe(player.getUniqueId(), AxeLevel.STONE);
                                 plugin.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.STONE, player);
                                 event.getPlayer().sendMessage(ChatColor.GREEN + "You purchased a stone axe!");
@@ -804,8 +858,8 @@ public class MenuManager {
             case STONE -> tools.setItem(30, ItemBuilder.of(Items.MENU_IRON_AXE)
                     .buildItem((slot, event) -> {
                         if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        if(plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
-                            if(plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, event.getPlayer())) {
                                 plugin.getGameManager().setAxe(player.getUniqueId(), AxeLevel.IRON);
                                 plugin.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.IRON, player);
                                 event.getPlayer().sendMessage(ChatColor.GREEN + "You purchased an iron axe!");
@@ -824,8 +878,8 @@ public class MenuManager {
             case IRON -> tools.setItem(30, ItemBuilder.of(Items.MENU_DIAMOND_AXE)
                     .buildItem((slot, event) -> {
                         if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        if(plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
-                            if(plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 3, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 3, event.getPlayer())) {
                                 plugin.getGameManager().setAxe(player.getUniqueId(), AxeLevel.DIAMOND);
                                 plugin.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.DIAMOND, player);
                                 event.getPlayer().sendMessage(ChatColor.GREEN + "You purchased a diamond axe!");
@@ -840,14 +894,15 @@ public class MenuManager {
                         return ActionResponse.DONE;
                     })
             );
-            case DIAMOND -> tools.setItem(30, ItemBuilder.of(Items.MENU_DIAMOND_AXE.clone()).setLore(ChatColor.GREEN + "" + ChatColor.BOLD + "Already purchased!")
-                    .buildItem((slot, event) -> {
-                        if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
-                        event.getPlayer().sendMessage(ChatColor.RED + "You already purchased a diamond axe!");
-                        return ActionResponse.DONE;
-                    })
-            );
+            case DIAMOND ->
+                    tools.setItem(30, ItemBuilder.of(Items.MENU_DIAMOND_AXE.clone()).setLore(ChatColor.GREEN + "" + ChatColor.BOLD + "Already purchased!")
+                            .buildItem((slot, event) -> {
+                                if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                                event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                                event.getPlayer().sendMessage(ChatColor.RED + "You already purchased a diamond axe!");
+                                return ActionResponse.DONE;
+                            })
+                    );
             default -> tools.setItem(30, ItemBuilder.of(Items.SPECTATOR_ARMOR).buildItem());
         }
 
@@ -855,8 +910,8 @@ public class MenuManager {
             case NONE -> tools.setItem(31, ItemBuilder.of(Items.MENU_WOODEN_PICKAXE)
                     .buildItem((slot, event) -> {
                         if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        if(plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
-                            if(plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, event.getPlayer())) {
                                 plugin.getGameManager().setPickaxe(player.getUniqueId(), PickaxeLevel.WOODEN);
                                 plugin.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.WOODEN, player);
                                 event.getPlayer().sendMessage(ChatColor.GREEN + "You purchased a wooden pickaxe!");
@@ -874,8 +929,8 @@ public class MenuManager {
             case WOODEN -> tools.setItem(31, ItemBuilder.of(Items.MENU_STONE_PICKAXE)
                     .buildItem((slot, event) -> {
                         if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        if(plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
-                            if(plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, event.getPlayer())) {
                                 plugin.getGameManager().setPickaxe(player.getUniqueId(), PickaxeLevel.STONE);
                                 plugin.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.STONE, player);
                                 event.getPlayer().sendMessage(ChatColor.GREEN + "You purchased a stone pickaxe!");
@@ -894,8 +949,8 @@ public class MenuManager {
             case STONE -> tools.setItem(31, ItemBuilder.of(Items.MENU_IRON_PICKAXE)
                     .buildItem((slot, event) -> {
                         if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        if(plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
-                            if(plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, event.getPlayer())) {
                                 plugin.getGameManager().setPickaxe(player.getUniqueId(), PickaxeLevel.IRON);
                                 plugin.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.IRON, player);
                                 event.getPlayer().sendMessage(ChatColor.GREEN + "You purchased an iron pickaxe!");
@@ -914,8 +969,8 @@ public class MenuManager {
             case IRON -> tools.setItem(31, ItemBuilder.of(Items.MENU_DIAMOND_PICKAXE)
                     .buildItem((slot, event) -> {
                         if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        if(plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
-                            if(plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 3, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 3, event.getPlayer())) {
                                 plugin.getGameManager().setPickaxe(player.getUniqueId(), PickaxeLevel.DIAMOND);
                                 plugin.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.DIAMOND, player);
                                 event.getPlayer().sendMessage(ChatColor.GREEN + "You purchased a diamond pickaxe!");
@@ -930,18 +985,19 @@ public class MenuManager {
                         return ActionResponse.DONE;
                     })
             );
-            case DIAMOND -> tools.setItem(31, ItemBuilder.of(Items.MENU_DIAMOND_PICKAXE.clone()).setLore(ChatColor.GREEN + "" + ChatColor.BOLD + "Already purchased!")
-                    .buildItem((slot, event) -> {
-                        if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                        event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
-                        event.getPlayer().sendMessage(ChatColor.RED + "You already purchased a diamond axe!");
-                        return ActionResponse.DONE;
-                    })
-            );
+            case DIAMOND ->
+                    tools.setItem(31, ItemBuilder.of(Items.MENU_DIAMOND_PICKAXE.clone()).setLore(ChatColor.GREEN + "" + ChatColor.BOLD + "Already purchased!")
+                            .buildItem((slot, event) -> {
+                                if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                                event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                                event.getPlayer().sendMessage(ChatColor.RED + "You already purchased a diamond axe!");
+                                return ActionResponse.DONE;
+                            })
+                    );
             default -> tools.setItem(31, ItemBuilder.of(Items.SPECTATOR_ARMOR).buildItem());
         }
 
-        if(plugin.getGameManager().shears.get(player.getUniqueId())) {
+        if (plugin.getGameManager().shears.get(player.getUniqueId())) {
             tools.setItem(32, ItemBuilder.of(Items.MENU_SHEARS.clone()).setLore(ChatColor.GREEN + "" + ChatColor.BOLD + "Already purchased!")
                     .buildItem((slot, event) -> {
                         if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
@@ -953,8 +1009,8 @@ public class MenuManager {
         } else {
             tools.setItem(32, ItemBuilder.of(Items.MENU_SHEARS).buildItem((slot, event) -> {
                 if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
-                if(plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
-                    if(plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, event.getPlayer())) {
+                if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, event.getPlayer())) {
                         plugin.getGameManager().shears.put(player.getUniqueId(), true);
 
                         event.getPlayer().getInventory().addItem(Items.SHEARS);
@@ -976,55 +1032,141 @@ public class MenuManager {
     }
 
     public Menu getPotionShop() {
-        Menu blocks = Menus.menu().title("Item Shop ➜ Potions").rows(5).addAllModifiers().create();
+        Menu potions = Menus.menu().title("Item Shop ➜ Potions").rows(5).addAllModifiers().create();
 
         // header
 
-        blocks.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
+        potions.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getBlocksShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
+        potions.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getArmorShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
+        potions.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCombatShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
+        potions.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     Menu toolshop = getToolShop(event.getPlayer());
                     plugin.getLogger().info(toolshop.toString());
                     Bukkit.getScheduler().runTaskLater(plugin, () -> toolshop.open(event.getPlayer()), 1);
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(5, Items.MENU_POTIONS);
-        blocks.setItem(6, ItemBuilder.of(Items.MENU_UTILS)
+        potions.setItem(5, Items.MENU_POTIONS);
+        potions.setItem(6, ItemBuilder.of(Items.MENU_UTILS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getUtilShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
+        potions.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCustomShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
 
-        blocks.setItem(14, Items.MENU_SELECTED_PAGE);
+        potions.setItem(14, Items.MENU_SELECTED_PAGE);
+
+        potions.setItem(29, ItemBuilder.of(Items.MENU_FIRE_RESISTENCE_POTION)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.FIRE_RESISTENCE_POTION.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Fire Resistance potion!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 6 Gold to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        potions.setItem(30, ItemBuilder.of(Items.MENU_INVISIBILITY_POTION)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.INVISIBILITY_POTION.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought an Invisibility potion!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 1 Emerald to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        potions.setItem(32, ItemBuilder.of(Items.MENU_JUMP_BOOST_POTION)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.JUMP_BOOST_POTION.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Jump Boost potion!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 1 Emerald to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        potions.setItem(33, ItemBuilder.of(Items.MENU_SPEED_POTION)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.SPEED_POTION.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Speed potion!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 1 Emerald to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
 
 
-        blocks.getFiller().fill(Items.MENU_FILLER); // fill the border
-        return blocks;
+        potions.getFiller().fill(Items.MENU_FILLER); // fill the border
+        return potions;
     }
 
     public Menu getUtilShop() {
@@ -1034,30 +1176,35 @@ public class MenuManager {
 
         blocks.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getBlocksShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getArmorShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCombatShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getToolShop(event.getPlayer()).open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(5, ItemBuilder.of(Items.MENU_POTIONS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getPotionShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -1065,6 +1212,7 @@ public class MenuManager {
         blocks.setItem(6, Items.MENU_UTILS);
         blocks.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCustomShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
@@ -1084,36 +1232,42 @@ public class MenuManager {
 
         blocks.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getBlocksShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getArmorShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCombatShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getToolShop(event.getPlayer()).open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(5, ItemBuilder.of(Items.MENU_POTIONS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getPotionShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
         blocks.setItem(6, ItemBuilder.of(Items.MENU_UTILS)
                 .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getUtilShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })

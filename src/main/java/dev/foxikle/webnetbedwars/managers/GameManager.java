@@ -24,11 +24,11 @@ import java.util.*;
 
 public class GameManager {
     private final WebNetBedWars plugin;
-    private List<Team> teamlist = new ArrayList<>();
+    private final List<Team> teamlist = new ArrayList<>();
 
     private Map<Team, List<UUID>> playerTeams = new HashMap<>();
     private List<UUID> alivePlayers = new ArrayList<>();
-    private Map<Team, Boolean> beds = new HashMap<>();
+    private final Map<Team, Boolean> beds = new HashMap<>();
     private final Map<Team, org.bukkit.scoreboard.Team> mcTeams = new HashMap<>();
     private final List<NPC> npcs = new ArrayList<>();
     public List<UUID> spectators = new ArrayList<>();
