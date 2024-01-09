@@ -1032,32 +1032,32 @@ public class MenuManager {
     }
 
     public Menu getPotionShop() {
-        Menu blocks = Menus.menu().title("Item Shop ➜ Potions").rows(5).addAllModifiers().create();
+        Menu potions = Menus.menu().title("Item Shop ➜ Potions").rows(5).addAllModifiers().create();
 
         // header
 
-        blocks.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
+        potions.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getBlocksShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
+        potions.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getArmorShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
+        potions.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCombatShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
+        potions.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     Menu toolshop = getToolShop(event.getPlayer());
@@ -1066,15 +1066,15 @@ public class MenuManager {
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(5, Items.MENU_POTIONS);
-        blocks.setItem(6, ItemBuilder.of(Items.MENU_UTILS)
+        potions.setItem(5, Items.MENU_POTIONS);
+        potions.setItem(6, ItemBuilder.of(Items.MENU_UTILS)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getUtilShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
+        potions.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCustomShop().open(event.getPlayer());
@@ -1082,11 +1082,91 @@ public class MenuManager {
                 })
         );
 
-        blocks.setItem(14, Items.MENU_SELECTED_PAGE);
+        potions.setItem(14, Items.MENU_SELECTED_PAGE);
+
+        potions.setItem(29, ItemBuilder.of(Items.MENU_FIRE_RESISTENCE_POTION)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.FIRE_RESISTENCE_POTION.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Fire Resistance potion!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 6 Gold to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        potions.setItem(30, ItemBuilder.of(Items.MENU_INVISIBILITY_POTION)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.INVISIBILITY_POTION.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought an Invisibility potion!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 1 Emerald to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        potions.setItem(32, ItemBuilder.of(Items.MENU_JUMP_BOOST_POTION)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.JUMP_BOOST_POTION.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Jump Boost potion!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 1 Emerald to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        potions.setItem(33, ItemBuilder.of(Items.MENU_SPEED_POTION)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.SPEED_POTION.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Speed potion!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 1 Emerald to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
 
 
-        blocks.getFiller().fill(Items.MENU_FILLER); // fill the border
-        return blocks;
+        potions.getFiller().fill(Items.MENU_FILLER); // fill the border
+        return potions;
     }
 
     public Menu getUtilShop() {

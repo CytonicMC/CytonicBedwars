@@ -7,19 +7,21 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.v1_20_R3.potion.CraftPotionEffectType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionType;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class Items {
@@ -159,7 +161,10 @@ public class Items {
     public static ItemStack MENU_STONE_PICKAXE = createItem("Stone Pickaxe", "STONE_PICKAXE", Material.STONE_PICKAXE, false, true, List.of(), Map.of(), "", ChatColor.GRAY + "> 20 Iron");
     public static ItemStack MENU_IRON_PICKAXE = createItem("Iron Pickaxe", "IRON_PICKAXE", Material.IRON_PICKAXE, false, true, List.of(), Map.of(), "", ChatColor.GOLD + "> 6 Gold");
     public static ItemStack MENU_DIAMOND_PICKAXE = createItem("Diamond Pickaxe", "DIAMOND_PICKAXE", Material.DIAMOND_PICKAXE, false, true, List.of(), Map.of(), "", ChatColor.DARK_GREEN + "> 3 Emeralds");
-
+    public static ItemStack MENU_FIRE_RESISTENCE_POTION = createPotion("Fire Resistence (60s)", "FIRE_RES_POT", PotionType.FIRE_RESISTANCE, 1200, 1, "", ChatColor.GOLD + "> 6 Gold");
+    public static ItemStack MENU_INVISIBILITY_POTION = createPotion("Invisibility (30s)", "INVIS_POT", PotionType.INVISIBILITY, 600, 1, "", ChatColor.DARK_GREEN + "> 2 Emeralds");
+    public static ItemStack MENU_JUMP_BOOST_POTION = createPotion("Jump Boost (60s)", "JUMP_BOOST_POT", PotionType.JUMP, 1200, 5, "", ChatColor.DARK_GREEN + "> 1 Emerald");
+    public static ItemStack MENU_SPEED_POTION = createPotion("Speed (60s)", "SPEED_POT", PotionType.SPEED, 1200, 2, "", ChatColor.DARK_GREEN + "> 1 Emerald");
 
     // curency items
     public static ItemStack IRON = createItem("Iron", "IRON", Material.IRON_NUGGET, false, false, List.of(), new HashMap<>());
@@ -210,6 +215,14 @@ public class Items {
     public static ItemStack IRON_PICKAXE = createItem("Iron Pickaxe", "IRON_PICKAXE", Material.IRON_PICKAXE, false, true, List.of(), Map.of());
     public static ItemStack DIAMOND_PICKAXE = createItem("Diamond Pickaxe", "DIAMOND_PICKAXE", Material.DIAMOND_PICKAXE, false, true, List.of(), Map.of());
 
+
+    // potion types:
+    // Fire res, Invis, jump, speed
+
+    public static ItemStack FIRE_RESISTENCE_POTION = createPotion("Fire Resistence (60s)", "FIRE_RES_POT", PotionType.FIRE_RESISTANCE, 1200, 1);
+    public static ItemStack INVISIBILITY_POTION = createPotion("Invisibility (30s)", "INVIS_POT", PotionType.INVISIBILITY, 600, 1);
+    public static ItemStack JUMP_BOOST_POTION = createPotion("Jump Boost (60s)", "JUMP_BOOST_POT", PotionType.JUMP, 1200, 5);
+    public static ItemStack SPEED_POTION = createPotion("Speed (60s)", "SPEED_POT", PotionType.SPEED, 1200, 2);
     //todo: IDEA: Grappling hook that works kinda like skyblocks moody grappleshot -- could be a global cap, or someth
 
 
@@ -248,6 +261,30 @@ public class Items {
         pdc.set(NO_DROP, PersistentDataType.BOOLEAN, true);
         pdc.set(MOVE_BLACKLIST, PersistentDataType.BOOLEAN, true);
         pdc.set(ALLOWED_SLOTS, PersistentDataType.INTEGER_ARRAY, Stream.of(36, 37, 38, 39).mapToInt(Integer::intValue).toArray());
+
+        pdc.set(NAMESPACE, PersistentDataType.STRING, id);
+
+        item.setItemMeta(meta);
+        itemRegistry.put(id, item);
+        return item;
+    }
+
+    private static ItemStack createPotion(String name, String id,  PotionType pot, int duration, int amplifier, String... lore) {
+        PotionEffect effect = new PotionEffect(pot.getEffectType(), duration, amplifier-1, true, true, true);
+        ItemStack item = new ItemStack(Material.POTION);
+        PotionMeta meta = (PotionMeta) item.getItemMeta();
+
+        meta.setColor(pot.getEffectType().getColor());
+
+        meta.clearCustomEffects();
+        meta.addCustomEffect(effect, true);
+
+        meta.setLore(Arrays.stream(lore).toList());
+        meta.setDisplayName(ChatColor.RESET + name);
+        meta.addItemFlags(ItemFlag.values());
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        meta.setUnbreakable(true);
+
 
         pdc.set(NAMESPACE, PersistentDataType.STRING, id);
 
