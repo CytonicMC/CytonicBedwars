@@ -298,6 +298,8 @@ public class GameManager {
             }
         }
 
+        dead.teleport(plugin.getConfig().getLocation("SpawnPlatformCenter"));
+
         if(finalkill) {
             dead.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "YOU DIED!", ChatColor.YELLOW + "You won't repsawn", 5, 55, 5);
             message += ChatColor.DARK_RED + "" + ChatColor.BOLD + " FINAL KILL!";
