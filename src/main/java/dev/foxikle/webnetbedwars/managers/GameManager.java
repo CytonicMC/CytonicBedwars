@@ -266,8 +266,8 @@ public class GameManager {
         statsManager.addPlayerDeath(dead.getUniqueId());
 
         //degrade tools
-        setAxe(dead.getUniqueId(), AxeLevel.getOrdered(axes.get(dead.getUniqueId()), -1));
-        setPickaxe(dead.getUniqueId(), PickaxeLevel.getOrdered(pickaxes.get(dead.getUniqueId()), -1));
+        setAxe(dead.getUniqueId(), AxeLevel.getOrdered(getAxe(dead.getUniqueId()), -1));
+        setPickaxe(dead.getUniqueId(), PickaxeLevel.getOrdered(getPickaxe(dead.getUniqueId()), -1));
 
         boolean finalkill = false;
         String message = ChatColor.translateAlternateColorCodes('&', getPlayerTeam(dead.getUniqueId()).prefix()) + dead.getName() + ChatColor.RESET;
@@ -350,5 +350,13 @@ public class GameManager {
 
     public void setPickaxe(UUID uuid, PickaxeLevel level) {
         pickaxes.put(uuid, level);
+    }
+
+    public PickaxeLevel getPickaxe(UUID uuid) {
+        return pickaxes.getOrDefault(uuid, PickaxeLevel.NONE);
+    }
+
+    public AxeLevel getAxe(UUID uuid) {
+        return axes.getOrDefault(uuid, AxeLevel.NONE);
     }
 }
