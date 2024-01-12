@@ -2,6 +2,7 @@ package dev.foxikle.webnetbedwars.commands;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
+import dev.foxikle.webnetbedwars.mobs.BedBug;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -58,6 +59,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
                             plugin.getGameManager().getMenuManager().getBlocksShop().open(player);
                         }
+                        case "bedbug" -> new BedBug(plugin.getGameManager().getPlayerTeam(player.getUniqueId()), player.getLocation());
                     }
                 }
             }
@@ -67,6 +69,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return List.of("end", "listteams", "start", "freeze", "itemshop");
+        return List.of("end", "listteams", "start", "freeze", "itemshop", "bedbug");
     }
 }
