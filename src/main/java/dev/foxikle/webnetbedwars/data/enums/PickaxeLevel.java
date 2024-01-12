@@ -19,6 +19,7 @@ public enum PickaxeLevel {
     }
 
     public static PickaxeLevel getOrdered(PickaxeLevel level, int i) {
+        if(level == null) level = NONE;
         if(level.getOrder() == 0 && i < 1) return WOODEN; // can't go below wooden
         return getByOrder(level.getOrder() + i);
     }
