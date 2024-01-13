@@ -7,6 +7,7 @@ plugins {
 
 repositories {
     mavenLocal()
+    maven("https://repo.infernalsuite.com/repository/maven-snapshots/" )
     maven("https://repo.maven.apache.org/maven2/")
     maven("https://repo.codemc.io/repository/maven-snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
@@ -24,6 +25,7 @@ dependencies {
     compileOnly ("me.clip:placeholderapi:2.11.5")
     implementation("fr.mrmicky:fastboard:2.0.2")
     compileOnly("dev.foxikle:customnpcs:1.6-pre3")
+    compileOnly("com.infernalsuite.aswm:api:1.20.2-R0.1-SNAPSHOT")
     implementation("com.github.coderFlameyosFlow:WoodyMenus:1.5.7")
     compileOnly("com.infernalsuite.aswm:api:1.20.2-R0.1-SNAPSHOT")
 }

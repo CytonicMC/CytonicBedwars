@@ -8,7 +8,7 @@ BridgeEggBlockDespawn: 3600
 BridgeEggBlockLimit: 32
 SpawnPlatformCenter:
   ==: org.bukkit.Location
-  world: world
+  world: skywars
   x: 3
   y: 123
   z: 4
