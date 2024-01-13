@@ -2,6 +2,7 @@ package dev.foxikle.webnetbedwars.commands;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
+import dev.foxikle.webnetbedwars.mobs.BedBug;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -28,6 +29,10 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                 if(args.length >= 1){
                     switch (args[0].toLowerCase()){
                         case "start" -> {
+                            if(plugin.getGameManager().STARTED) {
+                                player.sendMessage( ChatColor.RED + "The game has already been started! Use '/debug stop' to end it!");
+                                return true;
+                            }
                             player.sendMessage(ChatColor.GREEN + "Starting game!");
                             plugin.getGameManager().start();
                         }
@@ -48,8 +53,13 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                             }
                         }
                         case "itemshop" -> {
-                            plugin.getGameManager().getMenuManager().getItemShopMainPage(player).open(player);
+                            if(!plugin.getGameManager().STARTED) {
+                                player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "!! WARNING !!" + ChatColor.RESET + " " + ChatColor.RED + "The game has not been started. Some shop pages may not work!");
+                            }
+
+                            plugin.getGameManager().getMenuManager().getBlocksShop().open(player);
                         }
+                        case "bedbug" -> new BedBug(plugin.getGameManager().getPlayerTeam(player.getUniqueId()), player.getLocation());
                     }
                 }
             }
@@ -59,6 +69,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return List.of("end", "listteams", "start", "freeze", "itemshop");
+        return List.of("end", "listteams", "start", "freeze", "itemshop", "bedbug");
     }
 }

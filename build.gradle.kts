@@ -12,23 +12,26 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://repo.foxikle.dev/public")
     maven("https://jitpack.io/")
+    maven("https://repo.infernalsuite.com/repository/maven-snapshots/")
+    maven("https://repo.rapture.pw/repository/maven-releases/")
     mavenCentral()
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.20.2-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
     api("net.wesjd:anvilgui:1.9.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:3.0.2")
     compileOnly ("me.clip:placeholderapi:2.11.5")
     implementation("fr.mrmicky:fastboard:2.0.2")
-    compileOnly("dev.foxikle:customnpcs:1.5.2-pre2")
+    compileOnly("dev.foxikle:customnpcs:1.6-pre3")
     implementation("com.github.coderFlameyosFlow:WoodyMenus:1.5.7")
+    compileOnly("com.infernalsuite.aswm:api:1.20.2-R0.1-SNAPSHOT")
 }
 
 group = "dev.foxikle"
 version = "0.01-alpha2"
 description = "WebNet's bedwars plugin"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 tasks {
     assemble {
@@ -58,7 +61,7 @@ tasks {
     }
 
     reobfJar {
-        outputJar.set(layout.buildDirectory.file(providers.gradleProperty("testServerdir").get() + "/WebNetBedwars-${project.version}.jar"))
+        outputJar.set(layout.buildDirectory.file(providers.gradleProperty("plugin_dir").get() + "/WebNetBedwars-${project.version}.jar"))
     }
 
     shadowJar {
