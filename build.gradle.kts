@@ -1,7 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("io.papermc.paperweight.userdev") version "1.5.10"
+    id("io.papermc.paperweight.userdev") version "1.5.11"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -21,7 +21,7 @@ dependencies {
     paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
     api("net.wesjd:anvilgui:1.9.0-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:3.0.2")
-    compileOnly ("me.clip:placeholderapi:2.11.3")
+    compileOnly ("me.clip:placeholderapi:2.11.5")
     implementation("fr.mrmicky:fastboard:2.0.2")
     compileOnly("dev.foxikle:customnpcs:1.6-pre3")
     implementation("com.github.coderFlameyosFlow:WoodyMenus:1.5.7")
