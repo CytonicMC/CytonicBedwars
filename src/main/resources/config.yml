@@ -6,7 +6,7 @@ MinPlayers: 8
 MaxPlayers: 16
 SpawnPlatformCenter:
   ==: org.bukkit.Location
-  world: world
+  world: skywars
   x: 3
   y: 123
   z: 4

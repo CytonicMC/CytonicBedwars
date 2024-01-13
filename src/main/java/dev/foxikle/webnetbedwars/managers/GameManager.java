@@ -62,6 +62,7 @@ public class GameManager {
     }
 
     public void setup() {
+        worldManager.loadWorld();
         worldManager.createSpawnPlatform();
         scoreboardManager.init();
         gameState = GameState.WAITING;

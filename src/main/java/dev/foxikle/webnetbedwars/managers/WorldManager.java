@@ -1,17 +1,33 @@
 package dev.foxikle.webnetbedwars.managers;
 
+import com.infernalsuite.aswm.api.SlimePlugin;
+import com.infernalsuite.aswm.api.exceptions.CorruptedWorldException;
+import com.infernalsuite.aswm.api.exceptions.NewerFormatException;
+import com.infernalsuite.aswm.api.exceptions.UnknownWorldException;
+import com.infernalsuite.aswm.api.exceptions.WorldLockedException;
+import com.infernalsuite.aswm.api.loaders.SlimeLoader;
+import com.infernalsuite.aswm.api.world.SlimeWorld;
+import com.infernalsuite.aswm.api.world.properties.SlimeProperties;
+import com.infernalsuite.aswm.api.world.properties.SlimePropertyMap;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.io.IOException;
+import java.util.logging.Level;
 
 import static org.bukkit.Material.AIR;
 
 public class WorldManager {
     private final WebNetBedWars plugin;
     private final GameManager gameManager;
+    private boolean readOnly;
 
     public WorldManager(WebNetBedWars plugin, GameManager gameManager) {
         this.plugin = plugin;
@@ -219,7 +235,8 @@ public class WorldManager {
             world.getBlockAt(x, y + 3, z - 4).setType(Material.DARK_PRISMARINE_SLAB);
         });
     }
-//fixme use a for loop or recusion to simplify
+
+    //fixme use a for loop or recusion to simplify
     public void removeSpawnPlatform() {
         FileConfiguration config = plugin.getConfig();
         Location loc = config.getLocation("SpawnPlatformCenter");
@@ -421,4 +438,30 @@ public class WorldManager {
         });
     }
 
-}
+    public void loadWorld() {
+            {
+                SlimePlugin plugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+
+                SlimeLoader sqlLoader = plugin.getLoader("mysql");
+
+                // create a new and empty property map
+                SlimePropertyMap properties = new SlimePropertyMap();
+
+                properties.setString(SlimeProperties.DIFFICULTY, "normal");
+                properties.setInt(SlimeProperties.SPAWN_X, 123);
+                properties.setInt(SlimeProperties.SPAWN_Y, 112);
+                properties.setInt(SlimeProperties.SPAWN_Z, 170);
+// add as many as you would like
+
+                try {
+                    // note that this method should be called asynchronously
+                    SlimeWorld world = plugin.loadWorld(sqlLoader, "skywars", readOnly, properties);
+
+                    // note that this method must be called synchronously
+                    plugin.loadWorld(world);
+                } catch (UnknownWorldException | IOException | CorruptedWorldException | NewerFormatException |
+                         WorldLockedException exception) {
+                }
+            }
+        }
+    }
