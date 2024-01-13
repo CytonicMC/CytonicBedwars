@@ -7,11 +7,15 @@ import dev.foxikle.webnetbedwars.listeners.*;
 import dev.foxikle.webnetbedwars.managers.GameManager;
 import me.flame.menus.menu.Menus;
 import net.minecraft.world.level.block.Blocks;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.spigotmc.SpigotConfig;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 public final class WebNetBedWars extends JavaPlugin {
 
@@ -34,6 +38,8 @@ public final class WebNetBedWars extends JavaPlugin {
         changeBlastResistence();
         itemAbilityDispatcher = new ItemAbilityDispatcher(this);
         Menus.init(this);
+        removeAdvancements();
+        Bukkit.reloadData();
     }
 
     private void changeBlastResistence(){
@@ -106,6 +112,9 @@ public final class WebNetBedWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryClickListener(this), this);
         getServer().getPluginManager().registerEvents(new DropItemListener(this), this);
         getServer().getPluginManager().registerEvents(new ProjectileShootListener(this), this);
+        getServer().getPluginManager().registerEvents(new PotionDrinkListener(this), this);
+        getServer().getPluginManager().registerEvents(new SilverfishBurrowListener(this), this);
+        getServer().getPluginManager().registerEvents(new ProjectileLandListener(this), this);
     }
 
 
@@ -122,5 +131,9 @@ public final class WebNetBedWars extends JavaPlugin {
 
     public ItemAbilityDispatcher getItemAbilityDispatcher() {
         return itemAbilityDispatcher;
+    }
+
+    public void removeAdvancements() {
+        Bukkit.spigot().getSpigotConfig().set("advancements.disabled", List.of("*"));
     }
 }

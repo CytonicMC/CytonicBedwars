@@ -1,9 +1,11 @@
 # Config :)
 Map: Testing World
-ServerIP: webnet.mcst.io
+ServerIP: alpha.foxikle.dev
 Mode: 4v4v4v4
 MinPlayers: 8
 MaxPlayers: 16
+BridgeEggBlockDespawn: 3600
+BridgeEggBlockLimit: 32
 SpawnPlatformCenter:
   ==: org.bukkit.Location
   world: skywars

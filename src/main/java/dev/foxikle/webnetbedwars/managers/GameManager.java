@@ -4,6 +4,7 @@ import dev.foxikle.customnpcs.actions.Action;
 import dev.foxikle.customnpcs.actions.ActionType;
 import dev.foxikle.customnpcs.actions.conditions.Conditional;
 import dev.foxikle.customnpcs.api.NPC;
+import dev.foxikle.customnpcs.data.Settings;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.ArmorLevel;
 import dev.foxikle.webnetbedwars.data.enums.AxeLevel;
@@ -17,17 +18,18 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 public class GameManager {
     private final WebNetBedWars plugin;
-    private List<Team> teamlist = new ArrayList<>();
+    private final List<Team> teamlist = new ArrayList<>();
 
     private Map<Team, List<UUID>> playerTeams = new HashMap<>();
     private List<UUID> alivePlayers = new ArrayList<>();
-    private Map<Team, Boolean> beds = new HashMap<>();
+    private final Map<Team, Boolean> beds = new HashMap<>();
     private final Map<Team, org.bukkit.scoreboard.Team> mcTeams = new HashMap<>();
     private final List<NPC> npcs = new ArrayList<>();
     public List<UUID> spectators = new ArrayList<>();
@@ -71,8 +73,8 @@ public class GameManager {
         for (String key : section.getKeys(false)) {
             ConfigurationSection teamSection = section.getConfigurationSection(key);
             try {
-            Bukkit.getScoreboardManager().getMainScoreboard().getTeam(key).unregister();
-            } catch (Exception ignored){}
+                Bukkit.getScoreboardManager().getMainScoreboard().getTeam(key).unregister();
+            } catch (Exception ignored) {}
             Team t = new Team(
                     key,
                     teamSection.getString("TAB_PREFIX"),
@@ -86,18 +88,18 @@ public class GameManager {
                     Material.valueOf(teamSection.getString("WOOL_ITEM")),
                     Material.valueOf(teamSection.getString("GLASS_ITEM")),
                     Material.valueOf(teamSection.getString("TERRACOTTA_ITEM"))
-                    );
+            );
             teamlist.add(t);
             beds.put(t, true);
         }
     }
 
-    public void freeze(){
+    public void freeze() {
         beforeFrozen = gameState;
         gameState = GameState.FROZEN;
     }
 
-    public void thaw(){
+    public void thaw() {
         gameState = beforeFrozen;
         beforeFrozen = null;
     }
@@ -117,7 +119,7 @@ public class GameManager {
             List<UUID> uuids = playerTeams.get(team);
             uuids.forEach(uuid -> {
                 Player p = Bukkit.getPlayer(uuid);
-                if(p != null) {
+                if (p != null) {
                     mcTeams.get(team).addEntry(p.getName());
                     p.teleport(team.spawnLocation());
                     setArmor(uuid, ArmorLevel.NONE);
@@ -129,12 +131,10 @@ public class GameManager {
         });
         for (Team t : teamlist) {
             NPC teamShop = new NPC(t.teamShopLocation().getWorld());
-            teamShop.getSettings().setDirection(t.teamShopLocation().getYaw());
-                    teamShop.setPostion(t.teamShopLocation());
-                    teamShop.getSettings().setName("<aqua><bold>TEAM SHOP</bold></aqua>");
-                    teamShop.setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE);
-                    teamShop.getSettings().setInteractable(true);
-                    teamShop.setActions(
+            Settings teamSettings = new Settings(true, false, false, t.teamShopLocation().getYaw(), NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE, "Shop Keeper", "<aqua><bold>TEAM SHOP</bold></aqua>");
+
+            teamShop.setPostion(t.teamShopLocation())
+                    .setActions(
                             List.of(
                                     new Action(
                                             ActionType.RUN_COMMAND,
@@ -146,15 +146,15 @@ public class GameManager {
                             )
                     )
                     .create();
+            teamShop.setSettings(teamSettings);
+            teamShop.reloadSettings();
             npcs.add(teamShop);
 
             NPC itemShop = new NPC(t.itemShopLocation().getWorld());
-            itemShop.getSettings().setDirection(t.itemShopLocation().getYaw());
-                    itemShop.setPostion(t.itemShopLocation());
-                    itemShop.getSettings().setName("<GOLD><bold>ITEM SHOP</bold></gold>");
-                    itemShop.setSkin("shopkeeper", NPC_SKIN_SIGNATURE, NPC_SKIN_VALUE);
-                    itemShop.getSettings().setInteractable(true);
-                    itemShop.setActions(
+            Settings itemSettings = new Settings(true, false, false, t.itemShopLocation().getYaw(), NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE, "Shop Keeper", "<GOLD><bold>ITEM SHOP</bold></gold>");
+            itemShop
+                    .setPostion(t.itemShopLocation())
+                    .setActions(
                             List.of(
                                     new Action(
                                             ActionType.RUN_COMMAND,
@@ -166,6 +166,8 @@ public class GameManager {
                             )
                     )
                     .create();
+            itemShop.setSettings(itemSettings);
+            itemShop.reloadSettings();
             npcs.add(itemShop);
         }
     }
@@ -238,7 +240,7 @@ public class GameManager {
         return playerTeams;
     }
 
-    public void cleanup(){
+    public void cleanup() {
         STARTED = false;
         setGameState(GameState.CLEANUP);
         mcTeams.values().forEach(org.bukkit.scoreboard.Team::unregister);
@@ -246,15 +248,15 @@ public class GameManager {
     }
 
     @Nullable
-    public Team getPlayerTeam(UUID uuid){
+    public Team getPlayerTeam(UUID uuid) {
         for (Team t : teamlist) {
-            if(playerTeams.get(t).contains(uuid))
+            if (playerTeams.get(t).contains(uuid))
                 return t;
         }
         return null;
     }
 
-    public void breakBed(Player player, Team t){
+    public void breakBed(Player player, Team t) {
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1000f, 1f);
         Bukkit.broadcastMessage(getPlayerTeam(player.getUniqueId()).color() + player.getName() + ChatColor.YELLOW + " destroyed " + t.color() + t.displayName() + ChatColor.YELLOW + "'s bed!");
         // todo: display animations, messages, etc.
@@ -266,21 +268,21 @@ public class GameManager {
         statsManager.addPlayerDeath(dead.getUniqueId());
 
         //degrade tools
-        setAxe(dead.getUniqueId(), AxeLevel.getOrdered(axes.get(dead.getUniqueId()), -1));
-        setPickaxe(dead.getUniqueId(), PickaxeLevel.getOrdered(pickaxes.get(dead.getUniqueId()), -1));
+        setAxe(dead.getUniqueId(), AxeLevel.getOrdered(getAxe(dead.getUniqueId()), -1));
+        setPickaxe(dead.getUniqueId(), PickaxeLevel.getOrdered(getPickaxe(dead.getUniqueId()), -1));
 
         boolean finalkill = false;
         String message = ChatColor.translateAlternateColorCodes('&', getPlayerTeam(dead.getUniqueId()).prefix()) + dead.getName() + ChatColor.RESET;
-        if(!beds.get(getPlayerTeam(dead.getUniqueId()))) {
+        if (!beds.get(getPlayerTeam(dead.getUniqueId()))) {
             finalkill = true;
         }
         switch (cause) {
             case KILL -> {
-                if(killer == null) {
+                if (killer == null) {
                     kill(dead, null, EntityDamageEvent.DamageCause.CUSTOM);
                 } else {
                     statsManager.addPlayerKill(killer.getUniqueId());
-                   message += ChatColor.GRAY + " was slain by " + ChatColor.translateAlternateColorCodes('&', getPlayerTeam(killer.getUniqueId()).prefix()) + killer.getName();
+                    message += ChatColor.GRAY + " was slain by " + ChatColor.translateAlternateColorCodes('&', getPlayerTeam(killer.getUniqueId()).prefix()) + killer.getName();
                 }
             }
             case FALL -> message += ChatColor.GRAY + " has fallen to their death";
@@ -292,13 +294,14 @@ public class GameManager {
             case ENTITY_EXPLOSION, BLOCK_EXPLOSION -> message += ChatColor.GRAY + " went " + ChatColor.RED + "" + ChatColor.BOLD + "BOOM!";
             case PROJECTILE -> message += ChatColor.GRAY + " was remotley terminated";
             default -> {
-                if(cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
                 plugin.getLogger().info(String.valueOf(cause));
-               message += ChatColor.GRAY + " died under mysterious circumstances";
+                message += ChatColor.GRAY + " died under mysterious circumstances";
             }
         }
 
-        if(finalkill) {
+        dead.teleport(plugin.getConfig().getLocation("SpawnPlatformCenter"));
+
+        if (finalkill) {
             dead.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "YOU DIED!", ChatColor.YELLOW + "You won't repsawn", 5, 55, 5);
             message += ChatColor.DARK_RED + "" + ChatColor.BOLD + " FINAL KILL!";
             dead.setGameMode(GameMode.SPECTATOR);
@@ -328,8 +331,8 @@ public class GameManager {
 
         // set tools
         //todo: check for enchants / team upgrades
-        dead.getInventory().addItem(Items.get(pickaxes.get(dead.getUniqueId()).getItemID()), Items.get(axes.get(dead.getUniqueId()).getItemID()));
-        if(shears.get(dead.getUniqueId())) {
+        dead.getInventory().addItem(Items.get(getPickaxe(dead.getUniqueId()).getItemID()), Items.get(getAxe(dead.getUniqueId()).getItemID()));
+        if (shears.get(dead.getUniqueId())) {
             dead.getInventory().addItem(Items.SHEARS);
         }
 
@@ -340,15 +343,29 @@ public class GameManager {
         return alivePlayers;
     }
 
-    public void setArmor(UUID uuid, ArmorLevel level) {
+    public void setArmor(UUID uuid, @NotNull ArmorLevel level) {
         armorLevels.put(uuid, level);
     }
 
-    public void setAxe(UUID uuid, AxeLevel level) {
+    public void setAxe(UUID uuid, @NotNull AxeLevel level) {
         axes.put(uuid, level);
     }
 
-    public void setPickaxe(UUID uuid, PickaxeLevel level) {
+    public void setPickaxe(UUID uuid, @NotNull PickaxeLevel level) {
         pickaxes.put(uuid, level);
+    }
+
+    public PickaxeLevel getPickaxe(UUID uuid) {
+        if (pickaxes.getOrDefault(uuid, PickaxeLevel.NONE) == null) {
+            return PickaxeLevel.NONE;
+        }
+        return pickaxes.getOrDefault(uuid, PickaxeLevel.NONE);
+    }
+
+    public AxeLevel getAxe(UUID uuid) {
+        if (axes.getOrDefault(uuid, AxeLevel.NONE) == null) {
+            return AxeLevel.NONE;
+        }
+        return axes.getOrDefault(uuid, AxeLevel.NONE);
     }
 }
