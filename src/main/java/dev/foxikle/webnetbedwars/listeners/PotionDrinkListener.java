@@ -7,8 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
-import java.nio.Buffer;
-
 public class PotionDrinkListener implements Listener {
 
     private final WebNetBedWars plugin;
