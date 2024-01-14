@@ -43,10 +43,10 @@ Teams:
 
     GENERATOR_LOCATION:
       world: LushRush
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
+      x: -62.0
+      y: 51.0
+      z: 3.0
+      pitch: 0.0
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
@@ -90,9 +90,9 @@ Teams:
 
     GENERATOR_LOCATION:
       world: LushRush
-      x: 0.0
-      y: 0.0
-      z: 0.0
+      x: 13.0
+      y: 51.0
+      z: -61.0
       pitch: 0.0
       yaw: 0.0
 
@@ -137,9 +137,9 @@ Teams:
 
     GENERATOR_LOCATION:
       world: LushRush
-      x: 0.0
-      y: 0.0
-      z: 0.0
+      x: 2.0
+      y: 51.0
+      z: 77.0
       pitch: 90.0
       yaw: 0.0
 
@@ -184,10 +184,10 @@ Teams:
 
     GENERATOR_LOCATION:
       world: LushRush
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
+      x: 77.0
+      y: 51.0
+      z: 14.0
+      pitch: 0.0
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
