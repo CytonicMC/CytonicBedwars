@@ -1170,47 +1170,47 @@ public class MenuManager {
     }
 
     public Menu getUtilShop() {
-        Menu blocks = Menus.menu().title("Item Shop ➜ Utilities").rows(5).addAllModifiers().create();
+        Menu utilShop = Menus.menu().title("Item Shop ➜ Utilities").rows(5).addAllModifiers().create();
 
         // header
 
-        blocks.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
+        utilShop.setItem(1, ItemBuilder.of(Items.MENU_BLOCKS)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getBlocksShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
+        utilShop.setItem(2, ItemBuilder.of(Items.MENU_ARMOR)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getArmorShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
+        utilShop.setItem(3, ItemBuilder.of(Items.MENU_COMBAT)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCombatShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
+        utilShop.setItem(4, ItemBuilder.of(Items.MENU_TOOLS)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getToolShop(event.getPlayer()).open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(5, ItemBuilder.of(Items.MENU_POTIONS)
+        utilShop.setItem(5, ItemBuilder.of(Items.MENU_POTIONS)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getPotionShop().open(event.getPlayer());
                     return ActionResponse.DONE;
                 })
         );
-        blocks.setItem(6, Items.MENU_UTILS);
-        blocks.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
+        utilShop.setItem(6, Items.MENU_UTILS);
+        utilShop.setItem(7, ItemBuilder.of(Items.MENU_CUSTOM_ITEMS)
                 .buildItem((slot, event) -> {
                     if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                     getCustomShop().open(event.getPlayer());
@@ -1218,11 +1218,214 @@ public class MenuManager {
                 })
         );
 
-        blocks.setItem(15, Items.MENU_SELECTED_PAGE);
+        utilShop.setItem(15, Items.MENU_SELECTED_PAGE);
 
+        utilShop.setItem(20, ItemBuilder.of(Items.MENU_FIREBALL)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 40, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.FIREBALL.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a fireball!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 40 Iron to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
 
-        blocks.getFiller().fill(Items.MENU_FILLER); // fill the border
-        return blocks;
+        utilShop.setItem(21, ItemBuilder.of(Items.MENU_BED_BUG)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 40, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.BED_BUG.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Bed Bug!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 40 Iron to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        utilShop.setItem(22, ItemBuilder.of(Items.MENU_POPUP_TOWER)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 24, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.POPUP_TOWER.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Popup Tower!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 24 Iron to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        utilShop.setItem(23, ItemBuilder.of(Items.MENU_BRIDGE_EGG)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.BRIDGE_EGG.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Bridge Egg!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 1 Emerald to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        utilShop.setItem(24, ItemBuilder.of(Items.MENU_TNT)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 8, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.TNT.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a TNT!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 8 Gold to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        utilShop.setItem(29, ItemBuilder.of(Items.MENU_SPONGE)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 2, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.SPONGE.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a sponge!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 2 Gold to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        utilShop.setItem(30, ItemBuilder.of(Items.MENU_WATER_BUCKET)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 2, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.WATER_BUCKET.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Water Bucket!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 2 Gold to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        utilShop.setItem(31, ItemBuilder.of(Items.MENU_ENDER_PEARL)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 4, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.ENDER_PEARL.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought an Ender Pearl!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 4 Emeralds to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        utilShop.setItem(32, ItemBuilder.of(Items.MENU_BED_PROTECTOR)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("IRON", 128, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                            event.getPlayer().sendMessage(ChatColor.RED + "This item is not yet available! Please pester @foxikle on Discord about this!");
+                            /*
+                            event.getPlayer().getInventory().addItem(Items.BED_PROTECTOR.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Bed Protector!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                             */
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 128 Iron to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        utilShop.setItem(33, ItemBuilder.of(Items.MENU_GOLDEN_APPLE)
+                .buildItem((slot, event) -> {
+                    if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
+                    if (plugin.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 3, event.getPlayer())) {
+                        if (plugin.getGameManager().getPlayerInventoryManager().hasSpace(event.getPlayer())) {
+                            event.getPlayer().getInventory().addItem(Items.GOLDEN_APPLE.clone());
+                            event.getPlayer().sendMessage(ChatColor.GREEN + "You bought a Water Bucket!");
+                            event.getPlayer().playSound(event.getPlayer().getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1f);
+                        } else {
+                            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                            event.getPlayer().sendMessage(ChatColor.RED + "You don't have space in your inventory!");
+                        }
+                    } else {
+                        event.getPlayer().sendMessage(ChatColor.RED + "You need at least 3 Gold to buy this!");
+                        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_NO, SoundCategory.MASTER, 1, 1);
+                    }
+                    return ActionResponse.DONE;
+                })
+        );
+
+        utilShop.getFiller().fill(Items.MENU_FILLER); // fill the border
+        return utilShop;
     }
 
     public Menu getCustomShop() {
@@ -1273,6 +1476,8 @@ public class MenuManager {
                 })
         );
         blocks.setItem(7, Items.MENU_CUSTOM_ITEMS);
+
+        blocks.setItem(22, Items.COMING_SOON);
 
         blocks.setItem(16, Items.MENU_SELECTED_PAGE);
 
