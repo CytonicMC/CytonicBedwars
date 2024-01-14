@@ -119,6 +119,7 @@ public final class WebNetBedWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SilverfishBurrowListener(this), this);
         getServer().getPluginManager().registerEvents(new ProjectileLandListener(this), this);
         getServer().getPluginManager().registerEvents(new BlockDestroyListener(this), this);
+        getServer().getPluginManager().registerEvents(new MobSpawnListener(this), this);
     }
 
 
