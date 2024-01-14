@@ -46,7 +46,11 @@ public class MenuManager {
             MenuItem item = ItemBuilder.of(head).buildItem((slot, event) -> {
                 if (event.getAction() == InventoryAction.COLLECT_TO_CURSOR) return ActionResponse.DONE;
                 Player player = event.getPlayer();
-                player.teleport(Bukkit.getPlayer(uuid));
+                if (Bukkit.getPlayer(uuid) != null) {
+                    player.teleport(Bukkit.getPlayer(uuid));
+                } else {
+                    player.sendMessage(ChatColor.RED + "That player is offline!");
+                }
                 return ActionResponse.DONE;
             });
             menu.addItem(item);
