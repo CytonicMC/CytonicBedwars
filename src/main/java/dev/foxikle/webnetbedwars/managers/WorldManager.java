@@ -452,7 +452,6 @@ public class WorldManager {
         CompletableFuture<SlimeWorld> callback = new CompletableFuture<>();
 
         callback.completeAsync(() -> {
-            this.plugin.getLogger().warning("Completing Async");
             try {
                 world = plugin.loadWorld(sqlLoader, databaseMapName, true, properties);
             } catch (UnknownWorldException | IOException | CorruptedWorldException | NewerFormatException |
