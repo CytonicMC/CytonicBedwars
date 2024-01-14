@@ -141,12 +141,17 @@ public class GameManager {
             uuids.forEach(uuid -> {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) {
+                    p.setGameMode(GameMode.SURVIVAL);
                     mcTeams.get(team).addEntry(p.getName());
                     p.teleport(team.spawnLocation());
                     setArmor(uuid, ArmorLevel.NONE);
                     setAxe(uuid, AxeLevel.NONE);
                     setPickaxe(uuid, PickaxeLevel.NONE);
                     shears.put(uuid, false);
+
+                    p.setInvulnerable(false);
+                    p.getInventory().addItem(Items.DEFAULT_SWORD);
+                    playerInventoryManager.setArmor(p, team, ArmorLevel.NONE);
                 }
             });
         });
