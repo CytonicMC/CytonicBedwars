@@ -32,7 +32,7 @@ public class WorldManager {
     }
 
     public void createSpawnPlatform() {
-        Location loc = plugin.getLocation("SpawnPlatformcenter.clone()");
+        Location loc = plugin.getLocation("SpawnPlatformCenter");
         int x = (int) loc.getX();
         int y = (int) loc.getY();
         int z = (int) loc.getZ();
@@ -234,7 +234,7 @@ public class WorldManager {
 
     //fixme use a for loop or recusion to simplify
     public void removeSpawnPlatform() {
-        Location loc = plugin.getLocation("SpawnPlatformcenter.clone()");
+        Location loc = plugin.getLocation("SpawnPlatformCenter");
         int x = (int) loc.getX();
         int y = (int) loc.getY();
         int z = (int) loc.getZ();
