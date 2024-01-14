@@ -8,6 +8,11 @@ MinPlayers: 8
 MaxPlayers: 16
 BridgeEggBlockDespawn: 3600
 BridgeEggBlockLimit: 32
+GeneratorsWaitTime:
+  iron: 30
+  gold: 70
+  diamond:
+  emerald:
 WorldSpawn:
   x: 3
   y: 125
