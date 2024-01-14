@@ -22,7 +22,7 @@ public class MoveListener implements Listener {
                 plugin.getGameManager().kill(event.getPlayer(), null, EntityDamageEvent.DamageCause.VOID);
             event.setCancelled(true);
         }
-        Location spawn = plugin.getConfig().getLocation("SpawnPlatformCenter");
+        Location spawn = plugin.getLocation("SpawnPlatformCenter");
         if(distance(event.getTo().x(), spawn.x(), event.getTo().z(), spawn.z()) > 105.0) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "You cannot travel too far from the map!");
