@@ -386,4 +386,8 @@ public class GameManager {
         }
         return axes.getOrDefault(uuid, AxeLevel.NONE);
     }
+
+    public WorldManager getWorldManager() {
+        return worldManager;
+    }
 }
