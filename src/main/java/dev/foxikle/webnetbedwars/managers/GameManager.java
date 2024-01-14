@@ -70,7 +70,6 @@ public class GameManager {
     }
 
     public void setup() {
-        this.plugin.getLogger().warning(Thread.currentThread().getName());
         SlimePlugin plugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
         worldManager.fetchWorld().whenComplete((slimeWorld, throwable) -> { // depends on waiting for the world to load...
             Bukkit.getScheduler().runTask(this.plugin, () -> {
@@ -386,5 +385,9 @@ public class GameManager {
             return AxeLevel.NONE;
         }
         return axes.getOrDefault(uuid, AxeLevel.NONE);
+    }
+
+    public WorldManager getWorldManager() {
+        return worldManager;
     }
 }
