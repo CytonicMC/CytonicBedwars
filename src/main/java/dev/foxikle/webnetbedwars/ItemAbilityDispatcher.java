@@ -38,6 +38,12 @@ public class ItemAbilityDispatcher {
             case "SPECTATOR_COMPASS" -> plugin.getGameManager().getMenuManager().getSpectatorSelectorMenu().open(user);
             case "LOBBY_REQUEST" -> user.sendMessage("No leaving >:)");
             case "SPECTATOR_SPEED_SELECTOR" -> plugin.getGameManager().getMenuManager().getSpectatorSpeedMenu().open(user);
+            case "POPUP_TOWER" -> {
+                if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                    event.getItem().setAmount(event.getItem().getAmount() - 1);
+                    plugin.getGameManager().getWorldManager().pastePopupTower(event.getClickedBlock().getLocation().add(0, 1, 0), plugin.getGameManager().getPlayerTeam(user.getUniqueId()).woolType());
+                }
+            }
             default -> { // not an ability
                 return;
             }
