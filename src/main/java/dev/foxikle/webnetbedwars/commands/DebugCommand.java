@@ -2,7 +2,9 @@ package dev.foxikle.webnetbedwars.commands;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
 import dev.foxikle.webnetbedwars.data.enums.GameState;
+import dev.foxikle.webnetbedwars.data.enums.MappableItem;
 import dev.foxikle.webnetbedwars.mobs.BedBug;
+import dev.foxikle.webnetbedwars.utils.Items;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -30,15 +32,19 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                     switch (args[0].toLowerCase()){
                         case "start" -> {
                             if(plugin.getGameManager().STARTED) {
-                                player.sendMessage( ChatColor.RED + "The game has already been started! Use '/debug stop' to end it!");
+                                player.sendMessage( ChatColor.RED + "The game has already been started! Use '/debug stop' or '/debug end' to end it!");
                                 return true;
                             }
                             player.sendMessage(ChatColor.GREEN + "Starting game!");
                             plugin.getGameManager().start();
                         }
-                        case "end" -> {
-                            player.sendMessage(ChatColor.GREEN + "Ending game!");
-                            plugin.getGameManager().cleanup();
+                        case "end", "stop" -> {
+                            if(plugin.getGameManager().STARTED) {
+                                player.sendMessage(ChatColor.GREEN + "Ending game!");
+                                plugin.getGameManager().cleanup();
+                            } else {
+                                player.sendMessage(ChatColor.RED + "The game is not started! Start it first with '/debug start'!");
+                            }
                         }
                         case "listteams" -> {
                             plugin.getGameManager().getTeamlist().forEach(team -> player.sendMessage(team.prefix() + team.displayName()));
@@ -60,6 +66,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
                             plugin.getGameManager().getMenuManager().getBlocksShop().open(player);
                         }
                         case "bedbug" -> new BedBug(plugin.getGameManager().getPlayerTeam(player.getUniqueId()), player.getLocation());
+                        case "popup" -> plugin.getGameManager().getWorldManager().pastePopupTower(player.getLocation(), Items.getTeamMapped(MappableItem.WOOL, plugin.getGameManager().getPlayerTeam(player.getUniqueId())).getType());
                     }
                 }
             }
@@ -69,6 +76,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return List.of("end", "listteams", "start", "freeze", "itemshop", "bedbug");
+        return List.of("end", "listteams", "start", "freeze", "itemshop", "bedbug", "popup");
     }
 }
