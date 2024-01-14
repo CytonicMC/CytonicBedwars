@@ -14,12 +14,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 import static org.bukkit.Material.AIR;
@@ -27,7 +24,7 @@ import static org.bukkit.Material.AIR;
 public class WorldManager {
     private final WebNetBedWars plugin;
     private final GameManager gameManager;
-    private boolean readOnly;
+    private SlimeWorld world;
 
     public WorldManager(WebNetBedWars plugin, GameManager gameManager) {
         this.plugin = plugin;
@@ -35,8 +32,7 @@ public class WorldManager {
     }
 
     public void createSpawnPlatform() {
-        FileConfiguration config = plugin.getConfig();
-        Location loc = config.getLocation("SpawnPlatformCenter");
+        Location loc = plugin.getLocation("SpawnPlatformCenter");
         int x = (int) loc.getX();
         int y = (int) loc.getY();
         int z = (int) loc.getZ();
@@ -238,8 +234,7 @@ public class WorldManager {
 
     //fixme use a for loop or recusion to simplify
     public void removeSpawnPlatform() {
-        FileConfiguration config = plugin.getConfig();
-        Location loc = config.getLocation("SpawnPlatformCenter");
+        Location loc = plugin.getLocation("SpawnPlatformCenter");
         int x = (int) loc.getX();
         int y = (int) loc.getY();
         int z = (int) loc.getZ();
@@ -438,30 +433,34 @@ public class WorldManager {
         });
     }
 
-    public void loadWorld() {
-            {
-                SlimePlugin plugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+    public CompletableFuture<SlimeWorld> fetchWorld() {
+        this.plugin.getLogger().info("Fetching World");
 
-                SlimeLoader sqlLoader = plugin.getLoader("mysql");
+        SlimePlugin plugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
 
-                // create a new and empty property map
-                SlimePropertyMap properties = new SlimePropertyMap();
+        SlimeLoader sqlLoader = plugin.getLoader("mysql");
+        String databaseMapName = this.plugin.getConfig().getString("DatabaseMapName");
 
-                properties.setString(SlimeProperties.DIFFICULTY, "normal");
-                properties.setInt(SlimeProperties.SPAWN_X, 123);
-                properties.setInt(SlimeProperties.SPAWN_Y, 112);
-                properties.setInt(SlimeProperties.SPAWN_Z, 170);
-// add as many as you would like
+        // create a new and empty property map
+        SlimePropertyMap properties = new SlimePropertyMap();
 
-                try {
-                    // note that this method should be called asynchronously
-                    SlimeWorld world = plugin.loadWorld(sqlLoader, "skywars", readOnly, properties);
+        properties.setValue(SlimeProperties.DIFFICULTY, "normal");
+        properties.setValue(SlimeProperties.SPAWN_X, this.plugin.getConfig().getInt("WorldSpawn.x"));
+        properties.setValue(SlimeProperties.SPAWN_Y, this.plugin.getConfig().getInt("WorldSpawn.y"));
+        properties.setValue(SlimeProperties.SPAWN_Z, this.plugin.getConfig().getInt("WorldSpawn.z"));
 
-                    // note that this method must be called synchronously
-                    plugin.loadWorld(world);
-                } catch (UnknownWorldException | IOException | CorruptedWorldException | NewerFormatException |
-                         WorldLockedException exception) {
-                }
+        CompletableFuture<SlimeWorld> callback = new CompletableFuture<>();
+
+        callback.completeAsync(() -> {
+            this.plugin.getLogger().warning("Completing Async");
+            try {
+                world = plugin.loadWorld(sqlLoader, databaseMapName, true, properties);
+            } catch (UnknownWorldException | IOException | CorruptedWorldException | NewerFormatException |
+                     WorldLockedException e) {
+                this.plugin.getLogger().log(Level.SEVERE, "An error occoured whilst fetching map '" + databaseMapName + "' from the database!", e);
             }
-        }
+            return world;
+        });
+        return callback;
     }
+}

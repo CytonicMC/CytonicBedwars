@@ -8,6 +8,7 @@ main: dev.foxikle.webnetbedwars.WebNetBedWars
 api-version: '1.20'
 depend:
   - CustomNPCs
+  - SlimeWorldManager
 commands:
   debug:
     description: Debugging command :)

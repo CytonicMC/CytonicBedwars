@@ -1,5 +1,8 @@
 package dev.foxikle.webnetbedwars.managers;
 
+import com.infernalsuite.aswm.api.SlimePlugin;
+import com.infernalsuite.aswm.api.exceptions.UnknownWorldException;
+import com.infernalsuite.aswm.api.exceptions.WorldLockedException;
 import dev.foxikle.customnpcs.actions.Action;
 import dev.foxikle.customnpcs.actions.ActionType;
 import dev.foxikle.customnpcs.actions.conditions.Conditional;
@@ -13,6 +16,7 @@ import dev.foxikle.webnetbedwars.data.enums.PickaxeLevel;
 import dev.foxikle.webnetbedwars.data.objects.Team;
 import dev.foxikle.webnetbedwars.runnables.RespawnRunnable;
 import dev.foxikle.webnetbedwars.utils.Items;
+import net.minecraft.world.level.biome.TheEndBiomeSource;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,7 +25,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 
 public class GameManager {
     private final WebNetBedWars plugin;
@@ -64,34 +70,47 @@ public class GameManager {
     }
 
     public void setup() {
-        worldManager.loadWorld();
-        worldManager.createSpawnPlatform();
-        scoreboardManager.init();
-        gameState = GameState.WAITING;
-        FileConfiguration config = plugin.getConfig();
-        ConfigurationSection section = config.getConfigurationSection("Teams");
-        for (String key : section.getKeys(false)) {
-            ConfigurationSection teamSection = section.getConfigurationSection(key);
-            try {
-                Bukkit.getScoreboardManager().getMainScoreboard().getTeam(key).unregister();
-            } catch (Exception ignored) {}
-            Team t = new Team(
-                    key,
-                    teamSection.getString("TAB_PREFIX"),
-                    ChatColor.valueOf(teamSection.getString("TEAM_COLOR")),
-                    Material.valueOf(teamSection.getString("BED_ITEM")),
-                    teamSection.getLocation("SPAWN_LOCATION"),
-                    teamSection.getLocation("GENERATOR_LOCATION"),
-                    teamSection.getLocation("ITEM_SHOP_LOCATION"),
-                    teamSection.getLocation("TEAM_SHOP_LOCATION"),
-                    teamSection.getLocation("TEAM_CHEST_LOCATION"),
-                    Material.valueOf(teamSection.getString("WOOL_ITEM")),
-                    Material.valueOf(teamSection.getString("GLASS_ITEM")),
-                    Material.valueOf(teamSection.getString("TERRACOTTA_ITEM"))
-            );
-            teamlist.add(t);
-            beds.put(t, true);
-        }
+        this.plugin.getLogger().warning(Thread.currentThread().getName());
+        SlimePlugin plugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+        worldManager.fetchWorld().whenComplete((slimeWorld, throwable) -> { // depends on waiting for the world to load...
+            Bukkit.getScheduler().runTask(this.plugin, () -> {
+                try {
+                    plugin.loadWorld(slimeWorld, true);
+                } catch (UnknownWorldException | WorldLockedException | IOException e) {
+                    this.plugin.getLogger().log(Level.SEVERE, "An error occoured whilst loading map!", e);
+                }
+            });
+            Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+                worldManager.createSpawnPlatform();
+                scoreboardManager.init();
+                gameState = GameState.WAITING;
+                FileConfiguration config = this.plugin.getConfig();
+                ConfigurationSection section = config.getConfigurationSection("Teams");
+                for (String key : section.getKeys(false)) {
+                    ConfigurationSection teamSection = section.getConfigurationSection(key);
+                    try {
+                        Bukkit.getScoreboardManager().getMainScoreboard().getTeam(key).unregister();
+                    } catch (Exception ignored) {
+                    }
+                    Team t = new Team(
+                            key,
+                            teamSection.getString("TAB_PREFIX"),
+                            ChatColor.valueOf(teamSection.getString("TEAM_COLOR")),
+                            Material.valueOf(teamSection.getString("BED_ITEM")),
+                            this.plugin.getLocation(teamSection.getCurrentPath() + ".SPAWN_LOCATION"),
+                            this.plugin.getLocation(teamSection.getCurrentPath() + ".GENERATOR_LOCATION"),
+                            this.plugin.getLocation(teamSection.getCurrentPath() + ".ITEM_SHOP_LOCATION"),
+                            this.plugin.getLocation(teamSection.getCurrentPath() + ".TEAM_SHOP_LOCATION"),
+                            this.plugin.getLocation(teamSection.getCurrentPath() + ".TEAM_CHEST_LOCATION"),
+                            Material.valueOf(teamSection.getString("WOOL_ITEM")),
+                            Material.valueOf(teamSection.getString("GLASS_ITEM")),
+                            Material.valueOf(teamSection.getString("TERRACOTTA_ITEM"))
+                    );
+                    teamlist.add(t);
+                    beds.put(t, true);
+                }
+            }, 1);
+        });
     }
 
     public void freeze() {
@@ -299,7 +318,7 @@ public class GameManager {
             }
         }
 
-        dead.teleport(plugin.getConfig().getLocation("SpawnPlatformCenter"));
+        dead.teleport(plugin.getLocation("SpawnPlatformCenter"));
 
         if (finalkill) {
             dead.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "YOU DIED!", ChatColor.YELLOW + "You won't repsawn", 5, 55, 5);
