@@ -6,51 +6,77 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Egg;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.BlockIterator;
+
+import java.util.Iterator;
 
 public class BridgeEggRunnable extends BukkitRunnable {
 
-    private final WebNetBedWars plugin;
     private final Egg egg;
-    private final ItemStack blockToPlace;
-    private final Player thrower;
-    private final int despawn;
-    private int leftToPlace;
-    public BridgeEggRunnable(WebNetBedWars plugin, Egg egg, ItemStack blockToPlace, Player thrower) {
-        this.plugin = plugin;
-        this.egg = egg;
-        this.blockToPlace = blockToPlace;
-        this.thrower = thrower;
+    private final Location playerLocation;
+    private final int maxDistance;
+    private final BlockData blockData;
+    private final WebNetBedWars plugin;
+    private final int degradeTime;
 
-        this.leftToPlace = plugin.getConfig().getInt("BridgeEggBlockLimit");
-        this.despawn = plugin.getConfig().getInt("BridgeEggBlockDespawn");
+    private Location lastLocation;
+
+    public BridgeEggRunnable(Egg egg, Location playerLocation, int distance, BlockData blockData, WebNetBedWars plugin) {
+        this.egg = egg;
+        this.playerLocation = playerLocation;
+        this.maxDistance = distance;
+        this.blockData = blockData;
+        this.plugin = plugin;
+        degradeTime = plugin.getConfig().getInt("BridgeEggBlockDespawn");
     }
 
     @Override
     public void run() {
-        if(leftToPlace <= 0) {
+        if (egg.isDead()) {
             cancel();
-            egg.remove();
-            return;
-        }
+        } else {
+            Location twoBlocksDown = egg.getLocation().subtract(0, 2, 0);
+            double distanceFromStart = twoBlocksDown.distance(playerLocation);
 
-        if(egg.isDead()) {
-            cancel();
-            return;
+            if (lastLocation == null)
+                lastLocation = twoBlocksDown;
+
+            if (distanceFromStart < maxDistance) {
+                scheduleSegmentPlace(twoBlocksDown);
+            } else {
+                egg.remove();
+                cancel();
+            }
+
+            lastLocation = twoBlocksDown;
         }
-        Location location = egg.getLocation();
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            Block block = location.getBlock();
-            block.setType(blockToPlace.getType());
+    }
+
+    private void scheduleSegmentPlace(Location location) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> placeSegment(location), 5);
+    }
+
+    private void placeSegment(Location location) {
+        var segmentRaytrace = new BlockIterator(location, 0, 1);
+        replaceNonSolidBlocks(segmentRaytrace);
+
+        location.getWorld().playSound(location, Sound.BLOCK_LAVA_POP, 2.0f, 3.0f);
+    }
+
+    private void replaceNonSolidBlocks(Iterator<Block> blocks) {
+        blocks.forEachRemaining(this::setData);
+    }
+
+    private void setData(Block block) {
+        if (block.getType() == Material.AIR) {
+            block.setBlockData(blockData);
             block.setMetadata("blockdata", new FixedMetadataValue(plugin, true));
-            thrower.playSound(thrower.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1F, 1F);
-            new BlockDamageRunnable(despawn, block.getLocation()).runTaskTimerAsynchronously(plugin, 0, 1);
-            Bukkit.getScheduler().runTaskLater(plugin, () -> block.setType(Material.AIR), despawn);
-        }, 10);
-        leftToPlace--;
+            Bukkit.getScheduler().runTaskLater(plugin, () -> block.setType(Material.AIR), degradeTime);
+            new BlockDamageRunnable(degradeTime, block.getLocation()).runTaskTimerAsynchronously(plugin, 0, 1);
+        }
     }
 }
