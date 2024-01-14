@@ -57,6 +57,7 @@ public class GameManager {
     private final WorldManager worldManager;
     private final MenuManager menuManager;
     private final PlayerInventoryManager playerInventoryManager;
+    private final GeneratorManager generatorManager;
 
     public boolean STARTED = false;
 
@@ -67,6 +68,7 @@ public class GameManager {
         worldManager = new WorldManager(plugin, this);
         menuManager = new MenuManager(plugin);
         playerInventoryManager = new PlayerInventoryManager(plugin);
+        generatorManager = new GeneratorManager(plugin, this);
     }
 
     public void setup() {
@@ -127,6 +129,7 @@ public class GameManager {
         worldManager.removeSpawnPlatform();
         STARTED = true;
         setGameState(GameState.PLAY);
+        generatorManager.registerTeamGenerators();
         Bukkit.getOnlinePlayers().forEach(player -> statsManager.propagatePlayer(player.getUniqueId()));
         // split players into teams
         List<UUID> players = new ArrayList<>();
