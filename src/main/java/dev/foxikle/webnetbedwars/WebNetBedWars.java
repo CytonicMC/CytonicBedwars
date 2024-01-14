@@ -143,11 +143,11 @@ public final class WebNetBedWars extends JavaPlugin {
     public Location getLocation(String path) {
         return new Location(
                 Bukkit.getWorld(getConfig().getString("MapName")),
-                getConfig().getInt(path + ".x"),
-                getConfig().getInt(path + ".y"),
-                getConfig().getInt(path + ".z"),
-                (float) getConfig().getDouble(path + ".pitch"),
-                (float) getConfig().getDouble(path + ".yaw")
+                getConfig().getDouble(path + ".x"),
+                getConfig().getDouble(path + ".y"),
+                getConfig().getDouble(path + ".z"),
+                (float) getConfig().getDouble(path + ".yaw"),
+                (float) getConfig().getDouble(path + ".pitch")
                 );
 
     }
