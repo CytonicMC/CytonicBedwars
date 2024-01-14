@@ -37,6 +37,8 @@ public class BlockDestroyListener implements Listener {
     public void onPhysics(BlockPhysicsEvent e) {
         if(e.getBlock().getType() == Material.WATER) return;
         if(e.getBlock().getType().name().contains("GLASS")) return;
+        if(e.getBlock().getType().name().contains("STAIRS")) return;
+        if(e.getBlock().getType().name().contains("WALL")) return;
         if (e.getBlock().getType().name().contains("BED")) {
             e.setCancelled(true);
             return;
