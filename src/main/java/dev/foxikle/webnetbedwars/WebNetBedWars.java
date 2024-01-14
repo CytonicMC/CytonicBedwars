@@ -1,5 +1,6 @@
 package dev.foxikle.webnetbedwars;
 
+import com.infernalsuite.aswm.api.SlimePlugin;
 import dev.foxikle.customnpcs.api.NPCApi;
 import dev.foxikle.webnetbedwars.commands.DebugCommand;
 import dev.foxikle.webnetbedwars.commands.ItemCommand;
@@ -8,14 +9,12 @@ import dev.foxikle.webnetbedwars.managers.GameManager;
 import me.flame.menus.menu.Menus;
 import net.minecraft.world.level.block.Blocks;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.spigotmc.SpigotConfig;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
 
 public final class WebNetBedWars extends JavaPlugin {
 
@@ -25,6 +24,10 @@ public final class WebNetBedWars extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        SlimePlugin plugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+        if(plugin == null) {
+            this.getServer().getPluginManager().disablePlugin(this);
+        }
         INSTANCE = this;
         File file = new File("plugins/WebNetBedWars/config.yml");
         if(!file.exists())
@@ -135,5 +138,17 @@ public final class WebNetBedWars extends JavaPlugin {
 
     public void removeAdvancements() {
         Bukkit.spigot().getSpigotConfig().set("advancements.disabled", List.of("*"));
+    }
+
+    public Location getLocation(String path) {
+        return new Location(
+                Bukkit.getWorld(getConfig().getString("MapName")),
+                getConfig().getInt(path + ".x"),
+                getConfig().getInt(path + ".y"),
+                getConfig().getInt(path + ".z"),
+                (float) getConfig().getDouble(path + ".pitch"),
+                (float) getConfig().getDouble(path + ".yaw")
+                );
+
     }
 }

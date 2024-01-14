@@ -1,14 +1,19 @@
 # Config :)
 Map: Testing World
+DatabaseMapName: LushRush # The name of the map in the database and in the server
+MapName: LushRush
 ServerIP: alpha.foxikle.dev
 Mode: 4v4v4v4
 MinPlayers: 8
 MaxPlayers: 16
 BridgeEggBlockDespawn: 3600
 BridgeEggBlockLimit: 32
+WorldSpawn:
+  x: 3
+  y: 125
+  z: 3
 SpawnPlatformCenter:
-  ==: org.bukkit.Location
-  world: skywars
+  world: LushRush
   x: 3
   y: 123
   z: 4
@@ -24,8 +29,7 @@ Teams:
     WOOL_ITEM: RED_WOOL
     TERRACOTTA_ITEM: RED_TERRACOTTA
     SPAWN_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: -58.5
       y: 52.0
       z: 8.5
@@ -33,8 +37,7 @@ Teams:
       yaw: -90.0
 
     GENERATOR_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -42,8 +45,7 @@ Teams:
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: -64.5
       y: 51
       z: 7.5
@@ -51,8 +53,7 @@ Teams:
       yaw: -90.0
 
     TEAM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: -64.5
       y: 51
       z: 9.5
@@ -60,8 +61,7 @@ Teams:
       yaw: -90.0
 
     TEAM_CHEST_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -76,8 +76,7 @@ Teams:
     WOOL_ITEM: YELLOW_WOOL
     TERRACOTTA_ITEM: YELLOW_TERRACOTTA
     SPAWN_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 7.5
       y: 52.0
       z: -57.5
@@ -85,8 +84,7 @@ Teams:
       yaw: 0.0
 
     GENERATOR_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -94,8 +92,7 @@ Teams:
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 8.5
       y: 51.0
       z: -63.5
@@ -103,8 +100,7 @@ Teams:
       yaw: 0.0
 
     TEAM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 6.5
       y: 51.0
       z: -63.5
@@ -112,8 +108,7 @@ Teams:
       yaw: 0.0
 
     TEAM_CHEST_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -128,8 +123,7 @@ Teams:
     WOOL_ITEM: BLUE_WOOL
     TERRACOTTA_ITEM: BLUE_TERRACOTTA
     SPAWN_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 7.5
       y: 52.5
       z: 73.5
@@ -137,8 +131,7 @@ Teams:
       yaw: 180.0
 
     GENERATOR_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -146,8 +139,7 @@ Teams:
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 6.5
       y: 51.0
       z: 79.5
@@ -155,8 +147,7 @@ Teams:
       yaw: 180.0
 
     TEAM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 8.5
       y: 51.0
       z: 79.5
@@ -164,8 +155,7 @@ Teams:
       yaw: 180.0
 
     TEAM_CHEST_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -180,8 +170,7 @@ Teams:
     WOOL_ITEM: LIME_WOOL
     TERRACOTTA_ITEM: LIME_TERRACOTTA
     SPAWN_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 73.5
       y: 52.0
       z: 8.5
@@ -189,8 +178,7 @@ Teams:
       yaw: 90.0
 
     GENERATOR_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -198,8 +186,7 @@ Teams:
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 79.5
       y: 51.0
       z: 9.5
@@ -207,8 +194,7 @@ Teams:
       yaw: 90.0
 
     TEAM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 79.5
       y: 51.0
       z: 7.5
@@ -216,8 +202,7 @@ Teams:
       yaw: 90.0
 
     TEAM_CHEST_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
