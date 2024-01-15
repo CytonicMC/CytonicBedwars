@@ -143,6 +143,7 @@ public class GameManager {
             uuids.forEach(uuid -> {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) {
+                    p.getInventory().clear();
                     p.setGameMode(GameMode.SURVIVAL);
                     mcTeams.get(team).addEntry(p.getName());
                     p.teleport(team.spawnLocation());
