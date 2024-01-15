@@ -129,6 +129,8 @@ public class GameManager {
         STARTED = true;
         setGameState(GameState.PLAY);
         generatorManager.registerTeamGenerators();
+        generatorManager.registerDiamondGenerators();
+        generatorManager.registerEmeraldGenerators();
         Bukkit.getOnlinePlayers().forEach(player -> statsManager.propagatePlayer(player.getUniqueId()));
         // split players into teams
         List<UUID> players = new ArrayList<>();
