@@ -22,8 +22,6 @@ public class JoinListener implements Listener {
 
         Location location = plugin.getLocation("SpawnPlatformCenter");
         location.add(.5, 2, 0.5);
-
-        p.sendMessage("we got to this");
         p.teleport(location);
 
         if(plugin.getGameManager().STARTED){
@@ -31,6 +29,11 @@ public class JoinListener implements Listener {
             if(plugin.getGameManager().getPlayerTeam(event.getPlayer().getUniqueId()) == null){
                 event.getPlayer().setGameMode(GameMode.SPECTATOR);
             }
+        } else {
+            p.getInventory().clear();
+            p.setGameMode(GameMode.ADVENTURE);
+            p.setInvulnerable(true);
+            p.clearActivePotionEffects();
         }
     }
 }

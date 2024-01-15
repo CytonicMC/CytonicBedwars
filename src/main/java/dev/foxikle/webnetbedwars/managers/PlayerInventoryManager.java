@@ -1,8 +1,10 @@
 package dev.foxikle.webnetbedwars.managers;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
+import dev.foxikle.webnetbedwars.data.enums.ArmorLevel;
 import dev.foxikle.webnetbedwars.data.enums.AxeLevel;
 import dev.foxikle.webnetbedwars.data.enums.PickaxeLevel;
+import dev.foxikle.webnetbedwars.data.objects.Team;
 import dev.foxikle.webnetbedwars.utils.Items;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -115,5 +117,11 @@ public class PlayerInventoryManager {
             }
         }
         return false;
+    }
+
+    public void setArmor(Player player, Team t, ArmorLevel level) {
+        player.getInventory().setChestplate(Items.get(String.format(ArmorLevel.CHESTPLATE.getBootsID(), t.color().name())));
+        player.getInventory().setBoots(Items.get(String.format(level.getBootsID(), t.color().name())));
+        player.getInventory().setLeggings(Items.get(String.format(level.getLegsID(), t.color().name())));
     }
 }

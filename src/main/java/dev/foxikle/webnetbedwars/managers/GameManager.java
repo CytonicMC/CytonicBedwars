@@ -129,6 +129,8 @@ public class GameManager {
         STARTED = true;
         setGameState(GameState.PLAY);
         generatorManager.registerTeamGenerators();
+        generatorManager.registerDiamondGenerators();
+        generatorManager.registerEmeraldGenerators();
         Bukkit.getOnlinePlayers().forEach(player -> statsManager.propagatePlayer(player.getUniqueId()));
         // split players into teams
         List<UUID> players = new ArrayList<>();
@@ -141,12 +143,18 @@ public class GameManager {
             uuids.forEach(uuid -> {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) {
+                    p.getInventory().clear();
+                    p.setGameMode(GameMode.SURVIVAL);
                     mcTeams.get(team).addEntry(p.getName());
                     p.teleport(team.spawnLocation());
                     setArmor(uuid, ArmorLevel.NONE);
                     setAxe(uuid, AxeLevel.NONE);
                     setPickaxe(uuid, PickaxeLevel.NONE);
                     shears.put(uuid, false);
+
+                    p.setInvulnerable(false);
+                    p.getInventory().addItem(Items.DEFAULT_SWORD);
+                    playerInventoryManager.setArmor(p, team, ArmorLevel.NONE);
                 }
             });
         });
