@@ -21,8 +21,8 @@ public class ItemShopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Player player = (Player) sender;
+        if (plugin.getGameManager().STARTED) {
             for (Team t : plugin.getGameManager().getTeamlist())
-                if (plugin.getGameManager().STARTED) {
                     if (player.getLocation().distance(t.itemShopLocation()) <= 5) {
                         plugin.getGameManager().getMenuManager().getBlocksShop().open(player);
                     }
