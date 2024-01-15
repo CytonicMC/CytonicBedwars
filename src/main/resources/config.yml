@@ -13,7 +13,7 @@ GeneratorsWaitTime: # in ticks
   iron: 40 # 2 seconds
   gold: 160 # 8 seconds
   diamond: 600 # 30 seconds
-  emerald: 1800 # 90 seconds
+  emerald: 2000 # 100 seconds
 
 GeneratorsItemLimit:
   iron: 48
