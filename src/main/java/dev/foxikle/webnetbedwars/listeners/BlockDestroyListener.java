@@ -2,7 +2,6 @@ package dev.foxikle.webnetbedwars.listeners;
 
 import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,19 +17,18 @@ public class BlockDestroyListener implements Listener {
 
     @EventHandler
     public void onBlockDestroy(BlockDestroyEvent e) {
-        if (e.getBlock().getType().name().contains("BED")) {
-            e.setCancelled(true);
-            e.setWillDrop(false);
-            e.setPlayEffect(false);
-            return;
-        }
-        boolean canbreak = false;
+       if (e.getBlock().getType().name().contains("BED")) {
+           e.setWillDrop(false);
+           return;
+       }
+       e.setWillDrop(false);
+       e.setPlayEffect(false);
+
         for (MetadataValue mv : e.getBlock().getMetadata("blockdata")) {
             if (mv.getOwningPlugin() instanceof WebNetBedWars) {
-                canbreak = mv.asBoolean();
+                e.setCancelled(!mv.asBoolean());
             }
         }
-        e.setCancelled(!canbreak);
     }
 
     @EventHandler
@@ -43,12 +41,10 @@ public class BlockDestroyListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        boolean canbreak = false;
         for (MetadataValue mv : e.getBlock().getMetadata("blockdata")) {
             if (mv.getOwningPlugin() instanceof WebNetBedWars) {
-                canbreak = mv.asBoolean();
+                e.setCancelled(!mv.asBoolean());
             }
         }
-        e.setCancelled(!canbreak);
     }
 }
