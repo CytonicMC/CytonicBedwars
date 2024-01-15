@@ -17,4 +17,4 @@ commands:
     aliases:
       - i
   openitemshop:
-    description: The item shop command
+    description: Opens the item shop
