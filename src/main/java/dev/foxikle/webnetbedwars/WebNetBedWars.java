@@ -125,6 +125,7 @@ public final class WebNetBedWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ItemPickupListener(this), this);
         getServer().getPluginManager().registerEvents(new HungerDepleteListener(this), this);
         getServer().getPluginManager().registerEvents(new QuitListener(this), this);
+        getServer().getPluginManager().registerEvents(new CraftingListener(this), this);
     }
 
 
