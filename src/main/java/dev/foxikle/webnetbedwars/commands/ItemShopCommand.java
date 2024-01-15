@@ -20,20 +20,12 @@ public class ItemShopCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player player) {
-            String message = ChatColor.BOLD + "" + ChatColor.DARK_RED + "YOU CAN NOT DO THIS";
+        Player player = (Player) sender;
             for (Team t : plugin.getGameManager().getTeamlist())
                 if (plugin.getGameManager().STARTED) {
                     if (player.getLocation().distance(t.itemShopLocation()) <= 5) {
                         plugin.getGameManager().getMenuManager().getBlocksShop().open(player);
-                    } else {
-                        player.sendMessage(message);
                     }
-                } else {
-                    player.sendMessage(message);
-                }
-        }else {
-            sender.sendMessage(ChatColor.BOLD + "" + ChatColor.DARK_RED + "YOU CAN NOT DO THIS");
         }
         return true;
     }
