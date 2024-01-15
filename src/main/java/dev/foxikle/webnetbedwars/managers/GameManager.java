@@ -16,7 +16,6 @@ import dev.foxikle.webnetbedwars.data.enums.PickaxeLevel;
 import dev.foxikle.webnetbedwars.data.objects.Team;
 import dev.foxikle.webnetbedwars.runnables.RespawnRunnable;
 import dev.foxikle.webnetbedwars.utils.Items;
-import net.minecraft.world.level.biome.TheEndBiomeSource;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 public class GameManager {
@@ -159,6 +159,12 @@ public class GameManager {
             });
         });
         for (Team t : teamlist) {
+
+            // remove bed if team is empty
+            if (playerTeams.get(t).isEmpty()) {
+                beds.put(t, false);
+            }
+
             NPC teamShop = new NPC(t.teamShopLocation().getWorld());
             Settings teamSettings = new Settings(true, false, false, t.teamShopLocation().getYaw(), NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE, "Shop Keeper", "<red><bold>Coming Soon</bold></red>");
 
@@ -293,6 +299,7 @@ public class GameManager {
     }
 
     public void kill(Player dead, @Nullable Player killer, EntityDamageEvent.DamageCause cause) {
+        if (spectators.contains(dead.getUniqueId())) return;
         alivePlayers.remove(dead.getUniqueId());
         statsManager.addPlayerDeath(dead.getUniqueId());
 
@@ -306,7 +313,7 @@ public class GameManager {
             finalkill = true;
         }
         switch (cause) {
-            case KILL -> {
+            case KILL, ENTITY_ATTACK -> {
                 if (killer == null) {
                     kill(dead, null, EntityDamageEvent.DamageCause.CUSTOM);
                 } else {
@@ -320,7 +327,8 @@ public class GameManager {
             case VOID -> message += ChatColor.GRAY + " fell into the abyss";
             case FREEZE -> message += ChatColor.GRAY + " turned into an ice cube";
             case DROWNING -> message += ChatColor.GRAY + " forgot how to swim";
-            case ENTITY_EXPLOSION, BLOCK_EXPLOSION -> message += ChatColor.GRAY + " went " + ChatColor.RED + "" + ChatColor.BOLD + "BOOM!";
+            case ENTITY_EXPLOSION, BLOCK_EXPLOSION ->
+                    message += ChatColor.GRAY + " went " + ChatColor.RED + "" + ChatColor.BOLD + "BOOM!";
             case PROJECTILE -> message += ChatColor.GRAY + " was remotley terminated";
             default -> {
                 plugin.getLogger().info(String.valueOf(cause));
@@ -328,15 +336,18 @@ public class GameManager {
             }
         }
 
-        dead.teleport(plugin.getLocation("SpawnPlatformCenter"));
-
         if (finalkill) {
+            dead.getWorld().strikeLightningEffect(dead.getLocation());
+            dead.teleport(plugin.getLocation("SpawnPlatformCenter"));
             dead.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "YOU DIED!", ChatColor.YELLOW + "You won't repsawn", 5, 55, 5);
             message += ChatColor.DARK_RED + "" + ChatColor.BOLD + " FINAL KILL!";
             dead.setGameMode(GameMode.SPECTATOR);
             Bukkit.broadcastMessage(message);
+            checkForWin();
             return;
         }
+
+        dead.teleport(plugin.getLocation("SpawnPlatformCenter"));
         // respawn logic...
         Bukkit.broadcastMessage(message);
         dead.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "You DIED!", ChatColor.YELLOW + "You will repsawn soon", 5, 15, 5);
@@ -401,5 +412,48 @@ public class GameManager {
 
     public WorldManager getWorldManager() {
         return worldManager;
+    }
+
+    public void checkForWin() {
+        int teamsWithBeds = 0;
+        int emptyTeams = 0;
+        List<Team> emptyTeamList = new ArrayList<>();
+        for (Team t : teamlist) {
+            if (getBeds().get(t)) {
+                teamsWithBeds++;
+            } else {
+                AtomicInteger numberOfAlivePlayers = new AtomicInteger();
+                playerTeams.get(t).forEach(uuid -> {
+                    if (!spectators.contains(uuid)) numberOfAlivePlayers.getAndIncrement();
+                });
+                if (numberOfAlivePlayers.get() <= 0) {
+                    emptyTeams++;
+                    emptyTeamList.add(t);
+                }
+            }
+        }
+        if (teamsWithBeds > 1) {
+            return;
+        }
+
+        if (emptyTeams >= teamlist.size() - 1) {
+            playerTeams.forEach((team, uuids) -> {
+                if (emptyTeamList.contains(team)) {
+                    uuids.forEach(uuid -> {
+                        Player player = Bukkit.getPlayer(uuid);
+                        if (player != null && player.isOnline()) {
+                            player.sendTitle(ChatColor.RED + "" + ChatColor.BOLD + "GAME OVER!", "Better luck next time!", 10, 120, 0);
+                        }
+                    });
+                } else {
+                    uuids.forEach(uuid -> {
+                        Player player = Bukkit.getPlayer(uuid);
+                        if (player != null && player.isOnline()) {
+                            player.sendTitle(ChatColor.GOLD + "" + ChatColor.BOLD + "VICTORY!", "", 10, 120, 0);
+                        }
+                    });
+                }
+            });
+        }
     }
 }

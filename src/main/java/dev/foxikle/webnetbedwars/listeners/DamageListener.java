@@ -1,6 +1,7 @@
 package dev.foxikle.webnetbedwars.listeners;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,12 +23,16 @@ public class DamageListener implements Listener {
     public void onDamageByEntity(EntityDamageByEntityEvent event) {
         if(!plugin.getGameManager().STARTED) return;
         if(event.getEntity() instanceof Player player) {
-            if(plugin.getGameManager().spectators.contains(player.getUniqueId())) {
+            if(plugin.getGameManager().spectators.contains(player.getUniqueId()) || player.getGameMode() == GameMode.ADVENTURE) {
                 event.setCancelled(true);
                 return;
             }
 
             if(event.getDamager() instanceof Player damager) {
+                if(plugin.getGameManager().spectators.contains(damager.getUniqueId()) || damager.getGameMode() == GameMode.ADVENTURE) {
+                    event.setCancelled(true);
+                    return;
+                }
                 plugin.getGameManager().getStatsManager().addPlayerDamageDealt(damager.getUniqueId(), event.getFinalDamage());
             }
             plugin.getGameManager().getStatsManager().addPlayerDamageTaken(player.getUniqueId(), event.getFinalDamage());
