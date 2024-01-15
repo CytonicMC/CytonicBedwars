@@ -394,14 +394,14 @@ public class GameManager {
             }
             case FALL -> message += ChatColor.GRAY + " has fallen to their death";
             case FIRE, FIRE_TICK -> message += ChatColor.GRAY + " was roasted like a turkey";
-            case LAVA -> message += ChatColor.GRAY + " discovered lava is hot";
-            case VOID -> message += ChatColor.GRAY + " fell into the abyss";
+            case LAVA -> message += ChatColor.GRAY + " discovered lava is, in fact, hot";
+            case VOID -> message += ChatColor.GRAY + " fell into the etherial abyss";
             case FREEZE -> message += ChatColor.GRAY + " turned into an ice cube";
             case DROWNING -> message += ChatColor.GRAY + " forgot how to swim";
             case ENTITY_EXPLOSION, BLOCK_EXPLOSION ->
                     message += ChatColor.GRAY + " went " + ChatColor.RED + "" + ChatColor.BOLD + "BOOM!";
             case PROJECTILE -> message += ChatColor.GRAY + " was remotley terminated";
-            case CUSTOM -> {}
+            case CUSTOM -> message += " died.";
             default -> {
                 plugin.getLogger().info(String.valueOf(cause));
                 message += ChatColor.GRAY + " died under mysterious circumstances";
