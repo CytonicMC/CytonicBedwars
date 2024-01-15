@@ -1,6 +1,8 @@
 package dev.foxikle.webnetbedwars.listeners;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
+import dev.foxikle.webnetbedwars.runnables.RespawnRunnable;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -24,7 +26,15 @@ public class JoinListener implements Listener {
         location.add(.5, 2, 0.5);
         p.teleport(location);
 
-        if(plugin.getGameManager().STARTED){
+        if(plugin.getGameManager().STARTED) {
+            if(plugin.getGameManager().getPlayerTeam(p.getUniqueId()) != null) {
+                p.sendMessage(ChatColor.YELLOW + "Hey, Welcome back! You'll be respawned in 10 seconds.");
+                p.getInventory().clear();
+                p.setGameMode(GameMode.SPECTATOR);
+                p.setInvulnerable(true);
+                p.clearActivePotionEffects();
+                new RespawnRunnable(plugin, 10, p).runTaskTimer(plugin, 0, 20);
+            }
             plugin.getGameManager().getScoreboardManager().addScoreboard(event.getPlayer());
             if(plugin.getGameManager().getPlayerTeam(event.getPlayer().getUniqueId()) == null){
                 event.getPlayer().setGameMode(GameMode.SPECTATOR);
