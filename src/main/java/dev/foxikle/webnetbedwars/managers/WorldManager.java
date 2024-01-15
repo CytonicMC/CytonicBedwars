@@ -13,6 +13,7 @@ import dev.foxikle.webnetbedwars.WebNetBedWars;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -433,6 +434,11 @@ public class WorldManager {
         });
     }
 
+    public void worldSetup() {
+        World test = Bukkit.getWorld(plugin.getConfig().getString("MapName"));
+        test.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        test.setTime(6000);}
+
     public CompletableFuture<SlimeWorld> fetchWorld() {
         this.plugin.getLogger().info("Fetching World");
 
@@ -448,6 +454,7 @@ public class WorldManager {
         properties.setValue(SlimeProperties.SPAWN_X, this.plugin.getConfig().getInt("WorldSpawn.x"));
         properties.setValue(SlimeProperties.SPAWN_Y, this.plugin.getConfig().getInt("WorldSpawn.y"));
         properties.setValue(SlimeProperties.SPAWN_Z, this.plugin.getConfig().getInt("WorldSpawn.z"));
+
 
         CompletableFuture<SlimeWorld> callback = new CompletableFuture<>();
 
