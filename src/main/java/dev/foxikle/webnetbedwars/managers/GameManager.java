@@ -160,7 +160,7 @@ public class GameManager {
         });
         for (Team t : teamlist) {
             NPC teamShop = new NPC(t.teamShopLocation().getWorld());
-            Settings teamSettings = new Settings(true, false, false, t.teamShopLocation().getYaw(), NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE, "Shop Keeper", "<aqua><bold>TEAM SHOP</bold></aqua>");
+            Settings teamSettings = new Settings(true, false, false, t.teamShopLocation().getYaw(), NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE, "Shop Keeper", "<red><bold>COMING SOON</bold></aqua>");
 
             teamShop.setPostion(t.teamShopLocation())
                     .setActions(
@@ -335,6 +335,9 @@ public class GameManager {
             message += ChatColor.DARK_RED + "" + ChatColor.BOLD + " FINAL KILL!";
             dead.setGameMode(GameMode.SPECTATOR);
             Bukkit.broadcastMessage(message);
+            for (Team t : plugin.getGameManager().getTeamlist()) {
+                Location TeamChest = t.chestLocation();
+        }
             return;
         }
         // respawn logic...
