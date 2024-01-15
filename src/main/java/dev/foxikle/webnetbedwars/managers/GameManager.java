@@ -17,6 +17,7 @@ import dev.foxikle.webnetbedwars.data.objects.Team;
 import dev.foxikle.webnetbedwars.runnables.RespawnRunnable;
 import dev.foxikle.webnetbedwars.utils.Items;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -172,6 +173,7 @@ public class GameManager {
 
                     p.setInvulnerable(false);
                     p.getInventory().addItem(Items.DEFAULT_SWORD);
+                    p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
                     playerInventoryManager.setArmor(p, team, ArmorLevel.NONE);
                 }
             });
