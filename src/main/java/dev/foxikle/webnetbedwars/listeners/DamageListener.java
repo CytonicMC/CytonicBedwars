@@ -1,7 +1,7 @@
 package dev.foxikle.webnetbedwars.listeners;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
-import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,8 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-
-import java.nio.Buffer;
 
 public class DamageListener implements Listener {
 
@@ -25,13 +23,16 @@ public class DamageListener implements Listener {
     public void onDamageByEntity(EntityDamageByEntityEvent event) {
         if(!plugin.getGameManager().STARTED) return;
         if(event.getEntity() instanceof Player player) {
-            if(plugin.getGameManager().spectators.contains(player.getUniqueId())) {
+            if(plugin.getGameManager().spectators.contains(player.getUniqueId()) || player.getGameMode() == GameMode.ADVENTURE) {
                 event.setCancelled(true);
                 return;
             }
 
             if(event.getDamager() instanceof Player damager) {
-                if(plugin.getGameManager().spectators.contains(damager.getUniqueId())) return;
+                if(plugin.getGameManager().spectators.contains(damager.getUniqueId()) || damager.getGameMode() == GameMode.ADVENTURE) {
+                    event.setCancelled(true);
+                    return;
+                }
                 plugin.getGameManager().getStatsManager().addPlayerDamageDealt(damager.getUniqueId(), event.getFinalDamage());
             }
             plugin.getGameManager().getStatsManager().addPlayerDamageTaken(player.getUniqueId(), event.getFinalDamage());
