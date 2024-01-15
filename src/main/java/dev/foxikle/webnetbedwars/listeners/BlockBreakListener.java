@@ -26,6 +26,11 @@ public class BlockBreakListener implements Listener {
             return;
         }
         if(e.getBlock().getType().name().contains("BED")){
+            if(plugin.getGameManager().getPlayerTeam(e.getPlayer().getUniqueId()).bedType() == e.getBlock().getType()) {
+                e.setCancelled(true);
+                e.getPlayer().sendMessage(ChatColor.RED + "You cannot break your own bed!");
+                return;
+            }
             e.setDropItems(false);
             plugin.getGameManager().getTeamlist().forEach(team -> {
                 if(e.getBlock().getType() == team.bedType()){

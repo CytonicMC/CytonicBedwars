@@ -1,5 +1,6 @@
 package dev.foxikle.webnetbedwars;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -38,6 +39,21 @@ public class ItemAbilityDispatcher {
             case "SPECTATOR_COMPASS" -> plugin.getGameManager().getMenuManager().getSpectatorSelectorMenu().open(user);
             case "LOBBY_REQUEST" -> user.sendMessage("No leaving >:)");
             case "SPECTATOR_SPEED_SELECTOR" -> plugin.getGameManager().getMenuManager().getSpectatorSpeedMenu().open(user);
+            case "POPUP_TOWER" -> {
+                if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                    event.getItem().setAmount(event.getItem().getAmount() - 1);
+                    plugin.getGameManager().getWorldManager().pastePopupTower(event.getClickedBlock().getLocation().add(0, 1, 0), plugin.getGameManager().getPlayerTeam(user.getUniqueId()).woolType());
+                }
+            }
+            case "SPONGE" -> {
+                event.setCancelled(false);
+                return;
+            }
+            case "WATER_BUCKET" -> {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> event.getItem().setAmount(0), 1);
+                event.setCancelled(false);
+                return;
+            }
             default -> { // not an ability
                 return;
             }

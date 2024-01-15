@@ -18,7 +18,8 @@ public class MoveListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event){
         if(!plugin.getGameManager().STARTED) return;
-        if(event.getTo().y() <= -40){
+        if(event.getTo().y() <= -64){
+            if(!plugin.getGameManager().spectators.contains(event.getPlayer().getUniqueId()))
                 plugin.getGameManager().kill(event.getPlayer(), null, EntityDamageEvent.DamageCause.VOID);
             event.setCancelled(true);
         }

@@ -46,11 +46,7 @@ public class ProjectileShootListener implements Listener {
                 bedbug.setShooter(event.getPlayer());
                 bedbug.getPersistentDataContainer().set(Items.NAMESPACE, PersistentDataType.BOOLEAN, true);
         } else if (event.getProjectile() instanceof Egg egg) {
-            Vector v = egg.getVelocity();
-            Location playerLoc = event.getPlayer().getLocation();
-            egg.teleport(playerLoc.add(event.getPlayer().getLocation().getDirection().toLocation(event.getPlayer().getWorld()).subtract(0, 1, 0)));
-            egg.setVelocity(v);
-                new BridgeEggRunnable(plugin, egg, Items.getTeamMapped(MappableItem.WOOL, plugin.getGameManager().getPlayerTeam(event.getPlayer().getUniqueId())), event.getPlayer()).runTaskTimer(plugin, 0, 1);
+            new BridgeEggRunnable(egg,event.getPlayer().getLocation(), plugin.getConfig().getInt("BridgeEggBlockLimit"), Items.getTeamMapped(MappableItem.WOOL, plugin.getGameManager().getPlayerTeam(event.getPlayer().getUniqueId())).getType().createBlockData(), plugin).runTaskTimer(plugin, 2, 1);
         }
     }
 }

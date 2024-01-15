@@ -10,16 +10,16 @@ import com.infernalsuite.aswm.api.world.SlimeWorld;
 import com.infernalsuite.aswm.api.world.properties.SlimeProperties;
 import com.infernalsuite.aswm.api.world.properties.SlimePropertyMap;
 import dev.foxikle.webnetbedwars.WebNetBedWars;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 import static org.bukkit.Material.AIR;
+import static org.bukkit.Material.SCAFFOLDING;
 
 public class WorldManager {
     private final WebNetBedWars plugin;
@@ -452,7 +452,6 @@ public class WorldManager {
         CompletableFuture<SlimeWorld> callback = new CompletableFuture<>();
 
         callback.completeAsync(() -> {
-            this.plugin.getLogger().warning("Completing Async");
             try {
                 world = plugin.loadWorld(sqlLoader, databaseMapName, true, properties);
             } catch (UnknownWorldException | IOException | CorruptedWorldException | NewerFormatException |
@@ -462,5 +461,97 @@ public class WorldManager {
             return world;
         });
         return callback;
+    }
+
+    public void pastePopupTower(Location center, Material wool) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 0, 1)), 0);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 0, -1)), 1);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 0, 1)), 2);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 0, -1)), 3);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(SCAFFOLDING, center.clone().add(0, 0, 0)), 4);
+
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 1, 1)), 5);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 1, -1)), 6);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 1, 1)), 7);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 1, -1)), 8);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(SCAFFOLDING, center.clone().add(0, 1, 0)), 9);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 2, 1)), 10);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 2, -1)), 11);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 2, 0)), 12);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 2, 0)), 13);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(SCAFFOLDING, center.clone().add(0, 2, 0)), 14);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 3, 1)), 15);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 3, -1)), 16);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 3, 0)), 17);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 3, 0)), 18);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(SCAFFOLDING, center.clone().add(0, 3, 0)), 19);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 3, 1)), 20);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 3, -1)), 21);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 3, 0)), 22);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 3, 0)), 23);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(SCAFFOLDING, center.clone().add(0, 3, 0)), 24);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 5, 1)), 25);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(SCAFFOLDING, center.clone().add(0, 5, 0)), 26);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 5, -1)), 27);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 5, 1)), 28);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 5, 0)), 29);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 5, -1)), 30);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 5, 1)), 31);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 5, 0)), 32);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 5, -1)), 33);
+
+        // 6th layer
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(2, 6, 2)), 34);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(2, 6, 1)), 35);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(2, 6, 0)), 36);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool,center.clone().add(2, 6, -1) ), 37);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(2, 6, -2)), 38);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 6, 2)), 39);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 6, 1)), 40);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 6, 0)), 41);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 6, -1)), 42);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(1, 6, -2)), 43);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 6, 2)), 44);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 6, 1)), 45);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(SCAFFOLDING, center.clone().add(0, 6, 0)), 46);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 6, -1)), 47);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 6, -2)), 48);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 6, 2)), 49);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 6, 1)), 50);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 6, 0)), 51);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 6, -1)), 52);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-1, 6, -2)), 53);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-2, 6, 2)), 54);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-2, 6, 1)), 55);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-2, 6, 0)), 56);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-2, 6, -1)), 57);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-2, 6, -2)), 58);
+
+        // Top row
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 7, 2)), 59);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(0, 7, -2)), 61);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(2, 7, 2)), 62);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(2, 7, 0)), 63);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(2, 7, -2)), 64);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-2, 7, 2)), 65);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-2, 7, 0)), 66);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> setBlock(wool, center.clone().add(-2, 7, -2)), 67);
+    }
+
+    // boolean vararg because lazy
+    private void setBlock(Material material, Location loc, boolean... breakable) {
+        Block b = loc.getBlock();
+        if(b.getType() == AIR) {
+            b.getWorld().playSound(loc, Sound.ENTITY_PLAYER_BURP, .5F, .3F);
+            b.setType(material, true);
+        }
+        if(breakable.length < 1) {
+            b.setMetadata("blockdata", new FixedMetadataValue(plugin, true));
+        }
     }
 }

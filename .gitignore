@@ -97,6 +97,7 @@ $RECYCLE.BIN/
 target/
 .gradle/
 build/
+.idea/
 
 pom.xml.tag
 pom.xml.releaseBackup

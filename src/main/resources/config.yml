@@ -8,11 +8,79 @@ MinPlayers: 8
 MaxPlayers: 16
 BridgeEggBlockDespawn: 3600
 BridgeEggBlockLimit: 32
-GeneratorsWaitTime:
-  iron: 30
-  gold: 70
-  diamond:
-  emerald:
+
+GeneratorsWaitTime: # in ticks
+  iron: 40 # 2 seconds
+  gold: 160 # 8 seconds
+  diamond: 600 # 30 seconds
+  emerald: 1800 # 90 seconds
+
+GeneratorsItemLimit:
+  iron: 48
+  gold: 16
+  diamond: 10
+  emerald: 8
+
+Generators:
+  Emerald:
+    0:
+      world: LushRush
+      x: 32.5
+      y: 85.0
+      z: -0.5
+      pitch: 0.0
+      yaw: 0.0
+    1:
+      world: LushRush
+      x: -0.5
+      y: 81.0
+      z: -22.5
+      pitch: 0.0
+      yaw: 0.0
+    2:
+      world: LushRush
+      x: 11.5
+      y: 88.0
+      z: 30.5
+      pitch: 0.0
+      yaw: 0.0
+    3:
+      world: LushRush
+      x: -20.5
+      y: 85.0
+      z: 13.5
+      pitch: 0.0
+      yaw: 0.0
+  Diamond:
+    0:
+      world: LushRush
+      x: 55.5
+      y: 61.0
+      z: 55.5
+      pitch: 0.0
+      yaw: 0.0
+    1:
+      world: LushRush
+      x: 55.5
+      y: 61.0
+      z: -39.5
+      pitch: 0.0
+      yaw: 0.0
+    2:
+      world: LushRush
+      x: -40.5
+      y: 62
+      z: -39.5
+      pitch: 0.0
+      yaw: 0.0
+    3:
+      world: LushRush
+      x: -40.5
+      y: 61
+      z: 55.5
+      pitch: 0.0
+      yaw: 0.0
+
 WorldSpawn:
   x: 3
   y: 125
@@ -43,10 +111,10 @@ Teams:
 
     GENERATOR_LOCATION:
       world: LushRush
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
+      x: -62.0
+      y: 51.0
+      z: 3.0
+      pitch: 0.0
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
@@ -90,9 +158,9 @@ Teams:
 
     GENERATOR_LOCATION:
       world: LushRush
-      x: 0.0
-      y: 0.0
-      z: 0.0
+      x: 13.0
+      y: 51.0
+      z: -61.0
       pitch: 0.0
       yaw: 0.0
 
@@ -137,9 +205,9 @@ Teams:
 
     GENERATOR_LOCATION:
       world: LushRush
-      x: 0.0
-      y: 0.0
-      z: 0.0
+      x: 2.0
+      y: 51.0
+      z: 77.0
       pitch: 90.0
       yaw: 0.0
 
@@ -184,10 +252,10 @@ Teams:
 
     GENERATOR_LOCATION:
       world: LushRush
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
+      x: 77.0
+      y: 51.0
+      z: 14.0
+      pitch: 0.0
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
