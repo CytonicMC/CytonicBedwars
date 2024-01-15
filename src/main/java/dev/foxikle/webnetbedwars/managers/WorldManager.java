@@ -13,6 +13,7 @@ import dev.foxikle.webnetbedwars.WebNetBedWars;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -432,6 +433,12 @@ public class WorldManager {
             world.getBlockAt(x, y + 3, z - 4).setType(AIR);
         });
     }
+
+    public void worldSetup() {
+        World test = Bukkit.getWorld(plugin.getConfig().getString("MapName"));
+        test.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        test.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+        test.setTime(6000);}
 
     public CompletableFuture<SlimeWorld> fetchWorld() {
         this.plugin.getLogger().info("Fetching World");

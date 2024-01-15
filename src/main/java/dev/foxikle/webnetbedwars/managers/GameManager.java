@@ -125,6 +125,7 @@ public class GameManager {
     }
 
     public void start() {
+        worldManager.worldSetup();
         worldManager.removeSpawnPlatform();
         STARTED = true;
         setGameState(GameState.PLAY);
