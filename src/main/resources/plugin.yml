@@ -16,3 +16,5 @@ commands:
     description: A command to give you items
     aliases:
       - i
+  openitemshop:
+    description: Opens the item shop

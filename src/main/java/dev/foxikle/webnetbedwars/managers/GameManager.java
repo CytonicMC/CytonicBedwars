@@ -141,6 +141,7 @@ public class GameManager {
     }
 
     public void start() {
+        worldManager.worldSetup();
         worldManager.removeSpawnPlatform();
         STARTED = true;
         timer.runTaskTimer(plugin, 0, 20);
@@ -183,7 +184,7 @@ public class GameManager {
             }
 
             NPC teamShop = new NPC(t.teamShopLocation().getWorld());
-            Settings teamSettings = new Settings(true, false, false, t.teamShopLocation().getYaw(), NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE, "Shop Keeper", "<aqua><bold>TEAM SHOP</bold></aqua>");
+            Settings teamSettings = new Settings(true, false, false, t.teamShopLocation().getYaw(), NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE, "Shop Keeper", "<red><bold>Coming Soon</bold></red>");
 
             teamShop.setPostion(t.teamShopLocation())
                     .setActions(
@@ -429,6 +430,7 @@ public class GameManager {
     }
 
     public void respawnPlayer(Player dead) {
+        dead.clearActivePotionEffects();
         dead.setGameMode(GameMode.SURVIVAL);
         dead.getInventory().addItem(Items.DEFAULT_SWORD);
         dead.setHealth(dead.getMaxHealth());

@@ -4,6 +4,7 @@ import com.infernalsuite.aswm.api.SlimePlugin;
 import dev.foxikle.customnpcs.api.NPCApi;
 import dev.foxikle.webnetbedwars.commands.DebugCommand;
 import dev.foxikle.webnetbedwars.commands.ItemCommand;
+import dev.foxikle.webnetbedwars.commands.ItemShopCommand;
 import dev.foxikle.webnetbedwars.listeners.*;
 import dev.foxikle.webnetbedwars.managers.GameManager;
 import me.flame.menus.menu.Menus;
@@ -122,6 +123,7 @@ public final class WebNetBedWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MobSpawnListener(this), this);
         getServer().getPluginManager().registerEvents(new ItemMergeListener(this), this);
         getServer().getPluginManager().registerEvents(new ItemPickupListener(this), this);
+        getServer().getPluginManager().registerEvents(new HungerDepleteListener(this), this);
     }
 
 
@@ -130,6 +132,7 @@ public final class WebNetBedWars extends JavaPlugin {
         getCommand("debug").setExecutor(new DebugCommand(this));
         getCommand("item").setExecutor(new ItemCommand());
         getCommand("item").setAliases(List.of("i"));
+        getCommand("openitemshop").setExecutor( new ItemShopCommand(this));
     }
 
     public GameManager getGameManager() {
