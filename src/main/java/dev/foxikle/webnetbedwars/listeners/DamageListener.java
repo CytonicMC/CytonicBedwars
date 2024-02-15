@@ -1,7 +1,7 @@
 package dev.foxikle.webnetbedwars.listeners;
 
 import dev.foxikle.webnetbedwars.WebNetBedWars;
-import dev.foxikle.webnetbedwars.managers.GameManager;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.potion.PotionEffectType;
 
 public class DamageListener implements Listener {
 
@@ -23,12 +24,20 @@ public class DamageListener implements Listener {
     public void onDamageByEntity(EntityDamageByEntityEvent event) {
         if(!plugin.getGameManager().STARTED) return;
         if(event.getEntity() instanceof Player player) {
-            if(plugin.getGameManager().spectators.contains(player.getUniqueId())) {
+            if(plugin.getGameManager().spectators.contains(player.getUniqueId()) || player.getGameMode() == GameMode.ADVENTURE) {
                 event.setCancelled(true);
                 return;
             }
 
+            if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+                player.removePotionEffect(PotionEffectType.INVISIBILITY);
+            }
+
             if(event.getDamager() instanceof Player damager) {
+                if(plugin.getGameManager().spectators.contains(damager.getUniqueId()) || damager.getGameMode() == GameMode.ADVENTURE) {
+                    event.setCancelled(true);
+                    return;
+                }
                 plugin.getGameManager().getStatsManager().addPlayerDamageDealt(damager.getUniqueId(), event.getFinalDamage());
             }
             plugin.getGameManager().getStatsManager().addPlayerDamageTaken(player.getUniqueId(), event.getFinalDamage());
@@ -57,6 +66,10 @@ public class DamageListener implements Listener {
                 return;
             }
 
+            if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+                player.removePotionEffect(PotionEffectType.INVISIBILITY);
+            }
+
             plugin.getGameManager().getStatsManager().addPlayerDamageTaken(player.getUniqueId(), event.getFinalDamage());
 
             if(player.getHealth() - event.getFinalDamage() <= 0) {
@@ -73,6 +86,10 @@ public class DamageListener implements Listener {
             if(plugin.getGameManager().spectators.contains(player.getUniqueId())) {
                 event.setCancelled(true);
                 return;
+            }
+
+            if(player.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
+                player.removePotionEffect(PotionEffectType.INVISIBILITY);
             }
 
             plugin.getGameManager().getStatsManager().addPlayerDamageTaken(player.getUniqueId(), event.getFinalDamage());

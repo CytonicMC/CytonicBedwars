@@ -45,6 +45,8 @@ hs_err_pid*
 .DS_Store
 .AppleDouble
 .LSOverride
+.idea
+gradlew
 
 # Icon must end with two \r
 Icon
@@ -96,6 +98,7 @@ $RECYCLE.BIN/
 target/
 .gradle/
 build/
+.idea/
 
 pom.xml.tag
 pom.xml.releaseBackup

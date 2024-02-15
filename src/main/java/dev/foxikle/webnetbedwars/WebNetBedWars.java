@@ -1,12 +1,17 @@
 package dev.foxikle.webnetbedwars;
 
+import com.infernalsuite.aswm.api.SlimePlugin;
 import dev.foxikle.customnpcs.api.NPCApi;
 import dev.foxikle.webnetbedwars.commands.DebugCommand;
 import dev.foxikle.webnetbedwars.commands.ItemCommand;
+import dev.foxikle.webnetbedwars.commands.ItemShopCommand;
+import dev.foxikle.webnetbedwars.commands.TeamShopCommand;
 import dev.foxikle.webnetbedwars.listeners.*;
 import dev.foxikle.webnetbedwars.managers.GameManager;
 import me.flame.menus.menu.Menus;
 import net.minecraft.world.level.block.Blocks;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -21,6 +26,10 @@ public final class WebNetBedWars extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        SlimePlugin plugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+        if(plugin == null) {
+            this.getServer().getPluginManager().disablePlugin(this);
+        }
         INSTANCE = this;
         File file = new File("plugins/WebNetBedWars/config.yml");
         if(!file.exists())
@@ -34,6 +43,8 @@ public final class WebNetBedWars extends JavaPlugin {
         changeBlastResistence();
         itemAbilityDispatcher = new ItemAbilityDispatcher(this);
         Menus.init(this);
+        removeAdvancements();
+        Bukkit.reloadData();
     }
 
     private void changeBlastResistence(){
@@ -105,6 +116,19 @@ public final class WebNetBedWars extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ArmorEquipListener(this), this);
         getServer().getPluginManager().registerEvents(new InventoryClickListener(this), this);
         getServer().getPluginManager().registerEvents(new DropItemListener(this), this);
+        getServer().getPluginManager().registerEvents(new ProjectileShootListener(this), this);
+        getServer().getPluginManager().registerEvents(new PotionDrinkListener(this), this);
+        getServer().getPluginManager().registerEvents(new SilverfishBurrowListener(this), this);
+        getServer().getPluginManager().registerEvents(new ProjectileLandListener(this), this);
+        getServer().getPluginManager().registerEvents(new BlockDestroyListener(this), this);
+        getServer().getPluginManager().registerEvents(new MobSpawnListener(this), this);
+        getServer().getPluginManager().registerEvents(new ItemMergeListener(this), this);
+        getServer().getPluginManager().registerEvents(new ItemPickupListener(this), this);
+        getServer().getPluginManager().registerEvents(new HungerDepleteListener(this), this);
+        getServer().getPluginManager().registerEvents(new QuitListener(this), this);
+        getServer().getPluginManager().registerEvents(new CraftingListener(this), this);
+        getServer().getPluginManager().registerEvents(new BucketEmptyListener(this), this);
+        getServer().getPluginManager().registerEvents(new SetSpawnPointListener(this), this);
     }
 
 
@@ -113,6 +137,8 @@ public final class WebNetBedWars extends JavaPlugin {
         getCommand("debug").setExecutor(new DebugCommand(this));
         getCommand("item").setExecutor(new ItemCommand());
         getCommand("item").setAliases(List.of("i"));
+        getCommand("openitemshop").setExecutor(new ItemShopCommand(this));
+        getCommand("openteamshop").setExecutor(new TeamShopCommand(this));
     }
 
     public GameManager getGameManager() {
@@ -121,5 +147,21 @@ public final class WebNetBedWars extends JavaPlugin {
 
     public ItemAbilityDispatcher getItemAbilityDispatcher() {
         return itemAbilityDispatcher;
+    }
+
+    public void removeAdvancements() {
+        Bukkit.spigot().getSpigotConfig().set("advancements.disabled", List.of("*"));
+    }
+
+    public Location getLocation(String path) {
+        return new Location(
+                Bukkit.getWorld(getConfig().getString("MapName")),
+                getConfig().getDouble(path + ".x"),
+                getConfig().getDouble(path + ".y"),
+                getConfig().getDouble(path + ".z"),
+                (float) getConfig().getDouble(path + ".yaw"),
+                (float) getConfig().getDouble(path + ".pitch")
+                );
+
     }
 }

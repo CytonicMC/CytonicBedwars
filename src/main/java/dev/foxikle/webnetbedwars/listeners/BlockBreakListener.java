@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -20,6 +21,7 @@ public class BlockBreakListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         if(e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        if(e.getBlock().getType() == Material.FIRE) return;
         if(plugin.getGameManager().spectators.contains(e.getPlayer().getUniqueId())){
             e.getPlayer().sendMessage(ChatColor.RED + "You cannot do this as a spectator!");
             e.setCancelled(true);
@@ -28,8 +30,15 @@ public class BlockBreakListener implements Listener {
         if(e.getBlock().getType().name().contains("BED")){
             e.setDropItems(false);
             plugin.getGameManager().getTeamlist().forEach(team -> {
-                if(e.getBlock().getType() == team.bedType()){
-                    plugin.getGameManager().breakBed(e.getPlayer(), team);
+                if(e.getBlock().getType() == team.bedType()) {
+                    if(plugin.getGameManager().getPlayerTeam(e.getPlayer().getUniqueId()) == team) {
+                        e.setCancelled(true);
+                        e.getPlayer().sendMessage(ChatColor.RED + "You cannot break your own bed!");
+                        return;
+                    }
+
+                    if(plugin.getGameManager().getBeds().get(team)) // prevent it from being annoying
+                        plugin.getGameManager().breakBed(e.getPlayer(), team);
                 }
             });
             return;

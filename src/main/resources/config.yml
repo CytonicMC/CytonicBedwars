@@ -1,12 +1,92 @@
 # Config :)
 Map: Testing World
-ServerIP: webnet.mcst.io
+DatabaseMapName: LushRush # The name of the map in the database and in the server
+MapName: LushRush
+ServerIP: alpha.foxikle.dev
 Mode: 4v4v4v4
 MinPlayers: 8
 MaxPlayers: 16
+BridgeEggBlockDespawn: 3600
+BridgeEggBlockLimit: 32
+
+GeneratorsWaitTime: # in ticks
+  iron: 40 # 2 seconds
+  gold: 160 # 8 seconds
+  diamond: 1200 # 60 seconds
+  emerald: 4000 # 200 seconds
+
+GeneratorsItemLimit:
+  iron: 48
+  gold: 16
+  diamond: 10
+  emerald: 8
+
+Generators:
+  Emerald:
+    0:
+      world: LushRush
+      x: 32.5
+      y: 85.0
+      z: -0.5
+      pitch: 0.0
+      yaw: 0.0
+    1:
+      world: LushRush
+      x: -0.5
+      y: 81.0
+      z: -22.5
+      pitch: 0.0
+      yaw: 0.0
+    2:
+      world: LushRush
+      x: 11.5
+      y: 88.0
+      z: 30.5
+      pitch: 0.0
+      yaw: 0.0
+    3:
+      world: LushRush
+      x: -20.5
+      y: 85.0
+      z: 13.5
+      pitch: 0.0
+      yaw: 0.0
+  Diamond:
+    0:
+      world: LushRush
+      x: 55.5
+      y: 61.0
+      z: 55.5
+      pitch: 0.0
+      yaw: 0.0
+    1:
+      world: LushRush
+      x: 55.5
+      y: 61.0
+      z: -39.5
+      pitch: 0.0
+      yaw: 0.0
+    2:
+      world: LushRush
+      x: -40.5
+      y: 62
+      z: -39.5
+      pitch: 0.0
+      yaw: 0.0
+    3:
+      world: LushRush
+      x: -40.5
+      y: 61
+      z: 55.5
+      pitch: 0.0
+      yaw: 0.0
+
+WorldSpawn:
+  x: 3
+  y: 125
+  z: 3
 SpawnPlatformCenter:
-  ==: org.bukkit.Location
-  world: world
+  world: LushRush
   x: 3
   y: 123
   z: 4
@@ -18,9 +98,11 @@ Teams:
     TAB_PREFIX: '&c[R] '
     TEAM_COLOR: RED
     BED_ITEM: RED_BED
+    GLASS_ITEM: RED_STAINED_GLASS
+    WOOL_ITEM: RED_WOOL
+    TERRACOTTA_ITEM: RED_TERRACOTTA
     SPAWN_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: -58.5
       y: 52.0
       z: 8.5
@@ -28,17 +110,15 @@ Teams:
       yaw: -90.0
 
     GENERATOR_LOCATION:
-      ==: org.bukkit.Location
-      world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
+      world: LushRush
+      x: -62.0
+      y: 51.0
+      z: 3.0
+      pitch: 0.0
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: -64.5
       y: 51
       z: 7.5
@@ -46,8 +126,7 @@ Teams:
       yaw: -90.0
 
     TEAM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: -64.5
       y: 51
       z: 9.5
@@ -55,8 +134,7 @@ Teams:
       yaw: -90.0
 
     TEAM_CHEST_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -67,9 +145,11 @@ Teams:
     TAB_PREFIX: '&e[Y] '
     TEAM_COLOR: YELLOW
     BED_ITEM: YELLOW_BED
+    GLASS_ITEM: YELLOW_STAINED_GLASS
+    WOOL_ITEM: YELLOW_WOOL
+    TERRACOTTA_ITEM: YELLOW_TERRACOTTA
     SPAWN_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 7.5
       y: 52.0
       z: -57.5
@@ -77,17 +157,15 @@ Teams:
       yaw: 0.0
 
     GENERATOR_LOCATION:
-      ==: org.bukkit.Location
-      world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
+      world: LushRush
+      x: 13.0
+      y: 51.0
+      z: -61.0
       pitch: 0.0
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 8.5
       y: 51.0
       z: -63.5
@@ -95,8 +173,7 @@ Teams:
       yaw: 0.0
 
     TEAM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 6.5
       y: 51.0
       z: -63.5
@@ -104,8 +181,7 @@ Teams:
       yaw: 0.0
 
     TEAM_CHEST_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -116,9 +192,11 @@ Teams:
     TAB_PREFIX: '&9[B] '
     TEAM_COLOR: BLUE
     BED_ITEM: BLUE_BED
+    GLASS_ITEM: BLUE_STAINED_GLASS
+    WOOL_ITEM: BLUE_WOOL
+    TERRACOTTA_ITEM: BLUE_TERRACOTTA
     SPAWN_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 7.5
       y: 52.5
       z: 73.5
@@ -126,17 +204,15 @@ Teams:
       yaw: 180.0
 
     GENERATOR_LOCATION:
-      ==: org.bukkit.Location
-      world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
+      world: LushRush
+      x: 2.0
+      y: 51.0
+      z: 77.0
       pitch: 90.0
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 6.5
       y: 51.0
       z: 79.5
@@ -144,8 +220,7 @@ Teams:
       yaw: 180.0
 
     TEAM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 8.5
       y: 51.0
       z: 79.5
@@ -153,8 +228,7 @@ Teams:
       yaw: 180.0
 
     TEAM_CHEST_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
@@ -165,9 +239,11 @@ Teams:
     TAB_PREFIX: '&a[G] '
     TEAM_COLOR: GREEN
     BED_ITEM: LIME_BED
+    GLASS_ITEM: LIME_STAINED_GLASS
+    WOOL_ITEM: LIME_WOOL
+    TERRACOTTA_ITEM: LIME_TERRACOTTA
     SPAWN_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 73.5
       y: 52.0
       z: 8.5
@@ -175,17 +251,15 @@ Teams:
       yaw: 90.0
 
     GENERATOR_LOCATION:
-      ==: org.bukkit.Location
-      world: world
-      x: 0.0
-      y: 0.0
-      z: 0.0
-      pitch: 90.0
+      world: LushRush
+      x: 77.0
+      y: 51.0
+      z: 14.0
+      pitch: 0.0
       yaw: 0.0
 
     ITEM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 79.5
       y: 51.0
       z: 9.5
@@ -193,8 +267,7 @@ Teams:
       yaw: 90.0
 
     TEAM_SHOP_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 79.5
       y: 51.0
       z: 7.5
@@ -202,8 +275,7 @@ Teams:
       yaw: 90.0
 
     TEAM_CHEST_LOCATION:
-      ==: org.bukkit.Location
-      world: world
+      world: LushRush
       x: 0.0
       y: 0.0
       z: 0.0
