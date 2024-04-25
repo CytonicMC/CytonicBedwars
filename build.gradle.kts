@@ -57,12 +57,9 @@ tasks {
         }
     }
 
-    reobfJar {
-        //outputJar.set(layout.buildDirectory.file(providers.gradleProperty("testServerdir").get() + "/WebNetBedwars-${project.version}.jar"))
-    }
-
     shadowJar {
         relocate("org.bstats", "dev.foxikle.dependencies.bstats")
         relocate("fr.mrmicky.fastboard", "dev.foxikle.fastboard")
+        archiveFileName = "CytonicBedwars-${project.version}.jar"
     }
 }
