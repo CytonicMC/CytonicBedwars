@@ -58,7 +58,7 @@ tasks {
     }
 
     reobfJar {
-        outputJar.set(layout.buildDirectory.file(providers.gradleProperty("testServerdir").get() + "/WebNetBedwars-${project.version}.jar"))
+        //outputJar.set(layout.buildDirectory.file(providers.gradleProperty("testServerdir").get() + "/WebNetBedwars-${project.version}.jar"))
     }
 
     shadowJar {
