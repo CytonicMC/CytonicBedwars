@@ -1,0 +1,52 @@
+package net.cytonic.cytonicbedwars.listeners;
+
+import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.utils.Items;
+import net.minestom.server.MinecraftServer;
+import net.minestom.server.entity.GameMode;
+import net.minestom.server.entity.Player;
+import net.minestom.server.event.player.PlayerGameModeChangeEvent;
+import net.minestom.server.potion.Potion;
+import net.minestom.server.potion.PotionEffect;
+import java.time.Duration;
+
+public class GamemodeChangeListener {
+
+    private final CytonicBedWars plugin;
+
+    public GamemodeChangeListener(CytonicBedWars plugin) {
+        this.plugin = plugin;
+    }
+
+    public void onGamemodeChange(PlayerGameModeChangeEvent event) {
+        Player player = event.getPlayer();
+        if (event.getNewGameMode() == GameMode.SPECTATOR) {
+            player.getInventory().clear();
+            player.getInventory().setBoots(Items.SPECTATOR_ARMOR);
+            player.getInventory().setLeggings(Items.SPECTATOR_ARMOR);
+            player.getInventory().setChestplate(Items.SPECTATOR_ARMOR);
+            player.setHealth(20);
+            event.setCancelled(true);
+            player.setGameMode(GameMode.ADVENTURE);
+            player.addEffect(new Potion(PotionEffect.INVISIBILITY, (byte) Integer.MAX_VALUE, 1));
+            player.setAllowFlying(true);
+            player.setFlying(true);
+            plugin.getGameManager().spectators.add(player.getUuid());
+            MinecraftServer.getSchedulerManager().buildTask(() -> {
+                player.getInventory().setItemStack(0, Items.SPECTATOR_TARGET_SELECTOR);
+                player.getInventory().setItemStack(4, Items.SPECTATOR_SPEED_SELECTOR);
+                player.getInventory().setItemStack(8, Items.SPECTATOR_LOBBY_REQEST);
+            }).delay(Duration.ofMillis(100));
+        } else {
+            // un-ivisafy if they are respawning, etc.
+            if (event.getPlayer().getGameMode() == GameMode.ADVENTURE)
+                player.getInventory().clear(); // only clear the inventory if they are coming from a spectator
+            plugin.getGameManager().spectators.remove(player.getUuid());
+            player.removeEffect(PotionEffect.INVISIBILITY);
+            if (event.getNewGameMode() != GameMode.CREATIVE) {
+                player.setAllowFlying(false);
+                player.setFlying(false);
+            }
+        }
+    }
+}
