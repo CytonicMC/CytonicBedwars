@@ -35,6 +35,6 @@ tasks {
         mergeServiceFiles()
         archiveFileName.set("CytonicBedwars-${project.version}.jar")
         archiveClassifier.set("")
-        destinationDirectory.set(file(providers.gradleProperty("minestom_plugin_dir").get()))
+        destinationDirectory.set(file(providers.gradleProperty("minestom_plugin_dir").orElse(destinationDirectory.get().toString())))
     }
 }
