@@ -3,7 +3,7 @@ package net.cytonic.cytonicbedwars.listeners;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
-import net.cytonic.cytosis.utils.MiniMessageTemplate;
+import net.cytonic.utils.MiniMessageTemplate;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.entity.GameMode;

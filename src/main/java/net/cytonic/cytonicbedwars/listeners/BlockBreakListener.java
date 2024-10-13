@@ -16,15 +16,15 @@ public class BlockBreakListener {
 
     public void onBlockBreak(PlayerBlockBreakEvent e) {
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
-        if (plugin.getGameManager().spectators.contains(e.getPlayer().getUuid())) {
+        if (CytonicBedWars.getGameManager().spectators.contains(e.getPlayer().getUuid())) {
             e.getPlayer().sendMessage(Component.text("You cannot do this as a spectator!", NamedTextColor.RED));
             e.setCancelled(true);
             return;
         }
         if (e.getBlock().name().contains("BED")) {
-            plugin.getGameManager().getTeamlist().forEach(team -> {
+            CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
                 if (e.getBlock() == team.bedType()) {
-                    plugin.getGameManager().breakBed(e.getPlayer(), team);
+                    CytonicBedWars.getGameManager().breakBed(e.getPlayer(), team);
                 }
             });
             return;

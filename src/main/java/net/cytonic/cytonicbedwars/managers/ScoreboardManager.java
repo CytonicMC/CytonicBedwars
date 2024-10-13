@@ -1,7 +1,9 @@
 package net.cytonic.cytonicbedwars.managers;
 
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.sideboard.Sideboard;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
@@ -13,17 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import static net.cytonic.cytosis.utils.MiniMessageTemplate.MM;
+import static net.cytonic.utils.MiniMessageTemplate.MM;
 
 public class ScoreboardManager {
-    private final GameManager gameManager;
-    private final CytonicBedWars plugin;
     public int taskID;
     private final HashMap<UUID, Sideboard> boards = new HashMap<>();
 
-    public ScoreboardManager(GameManager gameManager, CytonicBedWars plugin) {
-        this.gameManager = gameManager;
-        this.plugin = plugin;
+    public ScoreboardManager() {
     }
 
     public void init() {
@@ -49,6 +47,7 @@ public class ScoreboardManager {
     }
 
     public void updateBoards() {
+        Logger.debug("board update!");
         Cytosis.getOnlinePlayers().forEach(player -> {
             if (!boards.containsKey(player.getUuid())) {
                 Sideboard board = new Sideboard(player);
@@ -57,15 +56,15 @@ public class ScoreboardManager {
                 boards.put(player.getUuid(), board);
             }
         });
-        switch (gameManager.getGameState()) {
+        switch (CytonicBedWars.getGameManager().getGameState()) {
             case WAITING -> boards.forEach((_, board) -> board.updateLines(
                     MM."<gray>\{CytonicBedWars.version}",
                     MM."",
-                    MM."Map: <green>map",
-                    MM."Players: <green>(\{Cytosis.getOnlinePlayers().size()}/maxplayers)",
+                    MM."Map: <green>\{CytonicBedwarsSettings.mapName}",
+                    MM."Players: <green>(\{Cytosis.getOnlinePlayers().size()}/\{CytonicBedwarsSettings.maxPlayers})",
                     MM."",
                     MM."Waiting...",
-                    MM."Mode: <green> mode",
+                    MM."Mode: <green> \{CytonicBedwarsSettings.mode}",
                     MM."",
                     MM."<yellow>cytonic.net"
 
@@ -73,10 +72,10 @@ public class ScoreboardManager {
             case FROZEN -> boards.forEach((_, board) -> board.updateLines(
                     MM."<grey\{CytonicBedWars.version}>",
                     MM."",
-                    MM."Map: <green>map",
+                    MM."Map: <green>\{CytonicBedwarsSettings.mapName}",
                     MM."",
                     MM."<aqua><bold>FROZEN",
-                    MM."Mode: <green>mode",
+                    MM."Mode: <green>\{CytonicBedwarsSettings.mode}",
                     MM."",
                     MM."<yellow>cytonic.net"
 
@@ -86,15 +85,15 @@ public class ScoreboardManager {
                 scoreboardArgs.add(MM."<gray>\{CytonicBedWars.version}");
                 scoreboardArgs.add(MM."");
                 scoreboardArgs.add(MM."Time: %TIME%");
-                scoreboardArgs.add(MM."Map: <green>map");
+                scoreboardArgs.add(MM."Map: <green>\{CytonicBedwarsSettings.mapName}");
                 scoreboardArgs.add(MM."");
-                plugin.getGameManager().getTeamlist().forEach(team -> {
+                CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
                     // todo: check if team is eliminated, or has final kills
                     String s = "";
                     s += STR."\{team.prefix()}<reset>\{team.displayName()}";
-                    if (plugin.getGameManager().getBeds().get(team)) s += "<green>✔";
+                    if (CytonicBedWars.getGameManager().getBeds().get(team)) s += "<green>✔";
                     else s += "<red>✘";
-                    if (plugin.getGameManager().getPlayerTeam(uuid) == team) s += "<gray> YOU";
+                    if (CytonicBedWars.getGameManager().getPlayerTeam(uuid) == team) s += "<gray> YOU";
                     scoreboardArgs.add(MM."\{s}");
                 });
                 scoreboardArgs.add(MM."");

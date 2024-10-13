@@ -1,9 +1,8 @@
 package net.cytonic.cytonicbedwars.managers;
 
-import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
 import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
@@ -11,12 +10,10 @@ import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytonicbedwars.runnables.RespawnRunnable;
 import net.cytonic.cytonicbedwars.utils.Items;
-import net.cytonic.cytonicbedwars.utils.Utils;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.npcs.NPC;
-import net.cytonic.cytosis.utils.MiniMessageTemplate;
-import net.cytonic.cytosis.utils.PosSerializer;
+import net.cytonic.utils.MiniMessageTemplate;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
@@ -25,41 +22,27 @@ import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.entity.damage.DamageType;
-import net.minestom.server.instance.block.Block;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.registry.DynamicRegistry;
 import net.minestom.server.sound.SoundEvent;
 import org.jetbrains.annotations.NotNull;
+
 import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.*;
 
 public class GameManager {
 
-    private final CytonicBedWars plugin;
-    @Getter
-    private final List<Team> teamlist = new ArrayList<>();
-    @Getter
-    private Map<Team, List<UUID>> playerTeams = new HashMap<>();
-    @Getter
-    private List<UUID> alivePlayers = new ArrayList<>();
-    @Getter
-    private final Map<Team, Boolean> beds = new HashMap<>();
-    private final Map<Team, net.minestom.server.scoreboard.Team> mcTeams = new HashMap<>();
-    private final List<NPC> npcs = new ArrayList<>();
-    public List<UUID> spectators = new ArrayList<>();
-    public Map<UUID, ArmorLevel> armorLevels = new HashMap<>();
-    public Map<UUID, AxeLevel> axes = new HashMap<>();
-    public Map<UUID, PickaxeLevel> pickaxes = new HashMap<>();
-    public Map<UUID, Boolean> shears = new HashMap<>();
-    private GameState beforeFrozen;
-    @Getter
-    @Setter
-    private GameState gameState;
     private static final String NPC_SKIN_VALUE = "ewogICJ0aW1lc3RhbXAiIDogMTY2MjQ2NzA5Njc1NywKICAicHJvZmlsZUlkIiA6ICJmNTgyNGRmNGIwMTU0MDA4OGRhMzUyYTQxODU1MDQ0NCIsCiAgInByb2ZpbGVOYW1lIiA6ICJGb3hHYW1lcjUzOTIiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTI5YWI4YmRiMjI4ZTQ3MjZiNzQ1MzZhY2EwNTlhMTZjYWNjNzBjNThlNGEyZGFhMTQzZDIxOWYzNzRhOGI0YSIKICAgIH0KICB9Cn0=";
     private static final String NPC_SKIN_SIGNATURE = "yKToy4cFqIM5A3JWqXkeOaWjOd8MjAm+ECb1ga8tlBZzGvsLVHVaatVcvdYvLqxeUcWrrGLE8F4cqdVl+XyqUyILjmqw8elFwKCS28fIryuvAMaH28SRjDUsAVtTyt6xHSh2yx30IvuN+OmatcTTYQO0AmTzG6VlrOd4COzfrcOEteZb6yqh43hfxpawlavdQw7LQ3ecFXe5JPINNzXPEbbcAYeV9Gh9j6ej9n2P8KsMcTfEjb+UWh82fLegPt3pBQWdXUJVyh1SualBqVaX8hqk38KbfwtC7A9FWvycY7OacjXOyTeWEqZnGUNwc1YgXnS5EidzG/xXNJz2pgzOBlwtAv80jAXnVQcyJkuhSijSehKvMuEEd1gcY7O3itAdSb0636zjAhcKsqskzUhaRNK8QNpbIowBDA2t4EXaFkGSpBSRrOVthox6MhxDLC+ZKADNuiGEtVgpw6vY5gfulovaIX7wOWGLrxGrA6JsA9Fq7XuwHq8d8k8kI6XNRSxdKoKgHhdmlzjPax/GelXt6a9VkRoagtY8EmnliWyOorIMazjdDKq+QmddHH3sDAeahLtXoCf64Jus8bqqyNL4B0E3HwlKjQ2XZw1v/G9c70uJscaoUgpATwvHg2+dH0uxs2MSkN/GZM3GWbmyerFz+AapDjsZhBhylJ570jcbuS4=";
     private static final String QUESTIONMARK_NPC_SKIN_VALUE = "ewogICJ0aW1lc3RhbXAiIDogMTYyMjc1MDc3ODY4NywKICAicHJvZmlsZUlkIiA6ICJmOTJiZDcxNGE0NmE0MmQ0OTQ1ZjdiMGNmNzExMDllNiIsCiAgInByb2ZpbGVOYW1lIiA6ICJzaGlrb2xpbmsiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWNmYWU4NjM4ZmNkYzRlNDk2ODdmMjFmZGEwN2EzOThmYjc0Mjk4NjBhZDU5NzAwNjAxYTA0OGI5N2ExODFmNCIKICAgIH0KICB9Cn0=";
     private static final String QUESTIONMARK_NPC_SKIN_SIGNATURE = "nnMt+n50dRoN5svTwxTsyzl/alouayqbAeSXFoJ2XagYevGsh+iCmIDIysYgJ5OXSl5QpDBeF/KAinf54fgk0Eat2KAStMQwcPMkHnaQTmey6GMGOIc2ZtGLwlybaEMtX/4wbANFswqECA7+CjxWvgOTm9//wX2fyblV961oAkaCCpw+OrojlQ6/KfahG2XgyEhdmJhnSw44XLD/LCXyCd97HSpTfmLgZYqXZtBnafMSwSbFi1bcbdwqRBcIm6VnfW9lgD0KdgCN/G+26kMtS55J50BprO8vZpv0lYxmJ9UzVnkQKDCYKzWAiEBmTMon+Sxet4K4uOs8OxlkCwEMHWCzR5MjCWESKvDWlZHkBnejY8RsIYbDn1CxWQ6zjlgJ1DlPZtYHlodlTVoKMuaeit21f2bvEdN6GvemzDtPwZI25hLt6/X/3axY3tQUeKoqu5rsa0L2PsjjNswEUJcO4AQynQlwAw7BVv5GBgITrN/zW3S6UmA+btft7zTB6/y8JcEJhx0m96AR5bwo67liBw+7EvyxRvQFKocQIL83Pvo7fsB+tmIpjwFSaCQEiCh47AjAsvnjqbzwbfZ7ttSFJUk4piVgRXyyEORBAIjNjEH+2J0TILy97k12/HJKkG9C/KXdOYv88j6paQKSWE6OuCxolcTwJWpcTtzh7xD2Lxs=";
+    @Getter
+    private final List<Team> teamlist = new ArrayList<>();
+    @Getter
+    private final Map<Team, Boolean> beds = new HashMap<>();
+    private final Map<Team, net.minestom.server.scoreboard.Team> mcTeams = new HashMap<>();
+    private final List<NPC> npcs = new ArrayList<>();
     @Getter
     private final StatsManager statsManager;
     @Getter
@@ -69,48 +52,41 @@ public class GameManager {
     private final MenuManager menuManager;
     @Getter
     private final PlayerInventoryManager playerInventoryManager;
+    public List<UUID> spectators = new ArrayList<>();
+    public Map<UUID, ArmorLevel> armorLevels = new HashMap<>();
+    public Map<UUID, AxeLevel> axes = new HashMap<>();
+    public Map<UUID, PickaxeLevel> pickaxes = new HashMap<>();
+    public Map<UUID, Boolean> shears = new HashMap<>();
     public boolean STARTED = false;
+    @Getter
+    private Map<Team, List<UUID>> playerTeams = new HashMap<>();
+    @Getter
+    private List<UUID> alivePlayers = new ArrayList<>();
+    private GameState beforeFrozen;
+    @Getter
+    @Setter
+    private GameState gameState;
 
-    public GameManager(CytonicBedWars plugin) {
-        this.plugin = plugin;
+    public GameManager() {
         statsManager = new StatsManager();
-        scoreboardManager = new ScoreboardManager(this, plugin);
+        scoreboardManager = new ScoreboardManager();
         worldManager = new WorldManager();
-        menuManager = new MenuManager(plugin);
+        menuManager = new MenuManager();
         playerInventoryManager = new PlayerInventoryManager();
     }
 
     public void setup() {
         worldManager.loadWorld();
+        Logger.debug("after load world");
         worldManager.createSpawnPlatform();
         scoreboardManager.init();
         gameState = GameState.WAITING;
-        JsonObject obj = new JsonObject();
-        JsonObject section = obj.get("Teams").getAsJsonObject();
-        section.entrySet().forEach(entry -> {
-            JsonObject teamSection = entry.getValue().getAsJsonObject();
-            try {
-                MinecraftServer.getTeamManager().deleteTeam(entry.getKey());
-            } catch (Exception ignored) {
-            }
-            Team t = new Team(
-                    entry.getKey(),
-                    teamSection.get("TAB_PREFIX").getAsString(),
-                    Utils.getColor(teamSection.get("TEAM_COLOR").getAsString()),
-                    Block.fromNamespaceId(teamSection.get("BED_ITEM").getAsString()),
-                    PosSerializer.deserialize(teamSection.get("SPAWN_LOCATION").getAsString()),
-                    PosSerializer.deserialize(teamSection.get("GENERATOR_LOCATION").getAsString()),
-                    PosSerializer.deserialize(teamSection.get("ITEM_SHOP_LOCATION").getAsString()),
-                    PosSerializer.deserialize(teamSection.get("TEAM_SHOP_LOCATION").getAsString()),
-                    PosSerializer.deserialize(teamSection.get("TEAM_CHEST_LOCATION").getAsString()),
-                    Block.fromNamespaceId(teamSection.get("WOOL_ITEM").getAsString()),
-                    Block.fromNamespaceId(teamSection.get("GLASS_ITEM").getAsString()),
-                    Block.fromNamespaceId(teamSection.get("TERRACOTTA_ITEM").getAsString())
-            );
+        CytonicBedwarsSettings.teams.forEach((_, t) -> {
+            Logger.debug(t.displayName());
             teamlist.add(t);
             beds.put(t, true);
         });
-
+        Logger.debug("setup doner");
     }
 
     public void freeze() {
@@ -273,7 +249,7 @@ public class GameManager {
         dead.getInventory().clear();
         dead.setHealth(20);
         dead.setFireTicks(0); // reset fire
-        new RespawnRunnable(plugin, 6, dead);
+        new RespawnRunnable(6, dead);
     }
 
     public void respawnPlayer(Player dead) {

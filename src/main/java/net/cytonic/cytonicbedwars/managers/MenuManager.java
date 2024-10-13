@@ -15,21 +15,19 @@ import net.minestom.server.item.component.HeadProfile;
 import net.minestom.server.utils.Unit;
 import java.util.List;
 import java.util.Objects;
-import static net.cytonic.cytosis.utils.MiniMessageTemplate.MM;
+import static net.cytonic.utils.MiniMessageTemplate.MM;
 
 public class MenuManager {
 
-    private final CytonicBedWars plugin;
     private static String UUID_KEY;
 
-    public MenuManager(CytonicBedWars plugin) {
-        this.plugin = plugin;
+    public MenuManager() {
         UUID_KEY = "UUID";
     }
 
     public Inventory getSpectatorSelectorMenu() {
         Inventory inv = new Inventory(InventoryType.CHEST_3_ROW, "Spectate a Player");
-        plugin.getGameManager().getAlivePlayers().forEach(uuid -> {
+        CytonicBedWars.getGameManager().getAlivePlayers().forEach(uuid -> {
             CompoundBinaryTag.Builder builder = CompoundBinaryTag.builder();
             builder.putString(UUID_KEY, uuid.toString());
             ItemStack head = ItemStack.builder(Material.PLAYER_HEAD)
@@ -162,7 +160,7 @@ public class MenuManager {
     }
 
     public Inventory getToolShop(Player player) {
-        if (!plugin.getGameManager().STARTED)
+        if (!CytonicBedWars.getGameManager().STARTED)
             throw new IllegalStateException("The game must be started to generate a tool shop!");
 
         Inventory tools = new Inventory(InventoryType.CHEST_5_ROW, "Item Shop ➜ Tools");
@@ -176,7 +174,7 @@ public class MenuManager {
         tools.setItemStack(7, Items.MENU_CUSTOM_ITEMS);
         tools.setItemStack(13, Items.MENU_SELECTED_PAGE);
 
-        switch (plugin.getGameManager().axes.get(player.getUuid())) {
+        switch (CytonicBedWars.getGameManager().axes.get(player.getUuid())) {
             case NONE -> tools.setItemStack(30, Items.MENU_WOODEN_AXE);
             case WOODEN -> tools.setItemStack(30, Items.MENU_STONE_AXE);
             case STONE -> tools.setItemStack(30, Items.MENU_IRON_AXE);
@@ -185,7 +183,7 @@ public class MenuManager {
             default -> tools.setItemStack(30, Items.SPECTATOR_ARMOR);
         }
 
-        switch (plugin.getGameManager().pickaxes.get(player.getUuid())) {
+        switch (CytonicBedWars.getGameManager().pickaxes.get(player.getUuid())) {
             case NONE -> tools.setItemStack(31, Items.MENU_WOODEN_PICKAXE);
             case WOODEN -> tools.setItemStack(31, Items.MENU_STONE_PICKAXE);
             case STONE -> tools.setItemStack(31, Items.MENU_IRON_PICKAXE);
@@ -194,7 +192,7 @@ public class MenuManager {
             default -> tools.setItemStack(31, Items.SPECTATOR_ARMOR);
         }
 
-        if (plugin.getGameManager().shears.get(player.getUuid()))
+        if (CytonicBedWars.getGameManager().shears.get(player.getUuid()))
             tools.setItemStack(32, Items.MENU_SHEARS.withLore(MM."<green><bold>Already purchased!"));
         else tools.setItemStack(32, Items.MENU_SHEARS);
 

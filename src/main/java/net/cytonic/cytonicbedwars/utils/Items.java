@@ -2,7 +2,7 @@ package net.cytonic.cytonicbedwars.utils;
 
 import net.cytonic.cytonicbedwars.data.enums.MappableItem;
 import net.cytonic.cytonicbedwars.data.objects.Team;
-import net.cytonic.cytosis.utils.MiniMessageTemplate;
+import static net.cytonic.utils.MiniMessageTemplate.MM;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -10,6 +10,7 @@ import net.minestom.server.item.ItemComponent;
 import net.minestom.server.item.*;
 import net.minestom.server.item.component.*;
 import net.minestom.server.item.enchant.Enchantment;
+import net.minestom.server.particle.Particle;
 import net.minestom.server.potion.*;
 import net.minestom.server.registry.DynamicRegistry;
 import net.minestom.server.utils.Unit;
@@ -219,7 +220,7 @@ public class Items {
 
     private static ItemStack createItem(String displayname, String id, Material type, boolean noMove, boolean noDrop, List<Integer> allowedSlots, Map<DynamicRegistry.Key<Enchantment>, Integer> enchants, String... lore) {
         List<Component> list = new ArrayList<>();
-        for (String s : lore) list.add(MiniMessageTemplate.MM."\{s}");
+        for (String s : lore) list.add(MM."\{s}");
         EnchantmentList enchantmentList = new EnchantmentList(enchants);
         CompoundBinaryTag.Builder builder = CompoundBinaryTag.builder();
         if (noDrop) {
@@ -230,7 +231,7 @@ public class Items {
             builder.putIntArray(ALLOWED_SLOTS, allowedSlots.stream().mapToInt(Integer::intValue).toArray());
         }
         ItemStack item = ItemStack.builder(type)
-                .set(ItemComponent.ITEM_NAME, MiniMessageTemplate.MM."<RESET>\{displayname}")
+                .set(ItemComponent.ITEM_NAME, MM."<RESET>\{displayname}")
                 .set(ItemComponent.LORE, list)
                 .set(ItemComponent.UNBREAKABLE, Unbreakable.DEFAULT)
                 .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
@@ -250,7 +251,7 @@ public class Items {
         builder.putString(NAMESPACE, id);
 
         ItemStack item = ItemStack.builder(type)
-                .set(ItemComponent.ITEM_NAME, MiniMessageTemplate.MM."<RESET>\{name}")
+                .set(ItemComponent.ITEM_NAME, MM."<RESET>\{name}")
                 .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
                 .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
                 .set(ItemComponent.UNBREAKABLE, Unbreakable.DEFAULT)
@@ -263,12 +264,12 @@ public class Items {
 
     private static ItemStack createPotion(String name, String id, PotionEffect pot, int duration, int amplifier, String... lore) {
         List<Component> list = new ArrayList<>();
-        for (String s : lore) list.add(MiniMessageTemplate.MM."\{s}");
+        for (String s : lore) list.add(MM."\{s}");
         CustomPotionEffect effect = new CustomPotionEffect(pot, Byte.parseByte(String.valueOf(amplifier - 1)), duration, true, true, true);
         PotionContents contents = new PotionContents(effect);
         ItemStack item = ItemStack.builder(Material.POTION)
                 .set(ItemComponent.POTION_CONTENTS, contents)
-                .set(ItemComponent.ITEM_NAME, MiniMessageTemplate.MM."<RESET>\{name}")
+                .set(ItemComponent.ITEM_NAME, MM."<RESET>\{name}")
                 .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
                 .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
                 .set(ItemComponent.UNBREAKABLE, Unbreakable.DEFAULT)
@@ -280,7 +281,7 @@ public class Items {
     }
 
     public static ItemStack get(String id) {
-        if (id == null) return  ItemStack.builder(Material.AIR).build();
+        if (id == null) return  ItemStack.AIR;
         return itemRegistry.get(id);
     }
 
