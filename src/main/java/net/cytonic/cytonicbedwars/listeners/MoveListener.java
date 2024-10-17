@@ -1,5 +1,6 @@
 package net.cytonic.cytonicbedwars.listeners;
 
+import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -7,18 +8,13 @@ import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.event.player.PlayerMoveEvent;
 
+@NoArgsConstructor
 public class MoveListener {
 
-    private final CytonicBedWars plugin;
-
-    public MoveListener(CytonicBedWars plugin) {
-        this.plugin = plugin;
-    }
-
     public void onMove(PlayerMoveEvent event) {
-        if (!plugin.getGameManager().STARTED) return;
+        if (!CytonicBedWars.getGameManager().STARTED) return;
         if (event.getNewPosition().y() <= -40) {
-            plugin.getGameManager().kill(event.getPlayer(), null, DamageType.OUT_OF_WORLD);
+            CytonicBedWars.getGameManager().kill(event.getPlayer(), null, DamageType.OUT_OF_WORLD);
             event.setCancelled(true);
         }
         //todo get values from config

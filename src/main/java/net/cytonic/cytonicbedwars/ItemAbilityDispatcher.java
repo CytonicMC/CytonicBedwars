@@ -1,5 +1,6 @@
 package net.cytonic.cytonicbedwars;
 
+import lombok.NoArgsConstructor;
 import net.cytonic.cytosis.Cytosis;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
@@ -9,10 +10,8 @@ import net.minestom.server.event.player.PlayerBlockInteractEvent;
 import net.minestom.server.event.player.PlayerEntityInteractEvent;
 import net.minestom.server.item.ItemStack;
 
+@NoArgsConstructor
 public class ItemAbilityDispatcher {
-
-    public ItemAbilityDispatcher() {
-    }
 
     public void dispatch(String abilityKey, Player user, PlayerBlockInteractEvent event) {
         switch (abilityKey) {

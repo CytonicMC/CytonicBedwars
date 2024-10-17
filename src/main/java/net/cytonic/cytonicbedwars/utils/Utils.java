@@ -1,11 +1,13 @@
 package net.cytonic.cytonicbedwars.utils;
 
+import lombok.NoArgsConstructor;
 import net.kyori.adventure.text.format.NamedTextColor;
 
+@NoArgsConstructor
 public class Utils {
 
     public static NamedTextColor getColor(String color) {
-        return switch (color.toUpperCase()) {
+        return switch (color.replaceAll("<", "").replaceAll(">", "").toUpperCase()) {
             case "BLACK" -> NamedTextColor.BLACK;
             case "DARK_BLUE" -> NamedTextColor.DARK_BLUE;
             case "DARK_GREEN" -> NamedTextColor.DARK_GREEN;
@@ -22,7 +24,7 @@ public class Utils {
             case "LIGHT_PURPLE" -> NamedTextColor.LIGHT_PURPLE;
             case "YELLOW" -> NamedTextColor.YELLOW;
             case "WHITE" -> NamedTextColor.WHITE;
-            default -> null;
+            default -> throw new IllegalStateException(STR."Unexpected value: \{color.toUpperCase()}");
         };
     }
 }

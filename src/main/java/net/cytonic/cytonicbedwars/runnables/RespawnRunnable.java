@@ -20,7 +20,7 @@ public class RespawnRunnable {
     public RespawnRunnable(int timeLeft, Player player) {
         this.timeLeft = timeLeft;
         this.player = player;
-        task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofMillis(200)).schedule();
+        task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofSeconds(1)).schedule();
     }
 
 

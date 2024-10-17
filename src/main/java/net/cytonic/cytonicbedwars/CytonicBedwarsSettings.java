@@ -1,8 +1,8 @@
 package net.cytonic.cytonicbedwars;
 
 import com.google.gson.JsonObject;
+import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.data.objects.Team;
-import net.cytonic.cytonicbedwars.utils.Utils;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.utils.PosSerializer;
 import net.minestom.server.coordinate.Pos;
@@ -14,6 +14,7 @@ import java.util.Map;
 /**
  * This class is used to store all the cached configuration values.
  */
+@NoArgsConstructor
 public final class CytonicBedwarsSettings {
 
     public static String worldName = "";
@@ -25,12 +26,6 @@ public final class CytonicBedwarsSettings {
     public static int bridgeEggBlockLimit = 0;
     public static Pos spawnPlatformCenter = new Pos(0, 0, 0, 180, 0);
     public static Map<String, Team> teams = new HashMap<>();
-
-    /**
-     * Defualt constructor
-     */
-    private CytonicBedwarsSettings() {
-    }
 
     /**
      * Loads the config from a config map
@@ -59,7 +54,7 @@ public final class CytonicBedwarsSettings {
                             Team t = new Team(
                                     key1,
                                     obj1.get("tab_prefix").getAsString(),
-                                    Utils.getColor(obj1.get("team_color").getAsString()),
+                                    obj1.get("team_color").getAsString(),
                                     Block.fromNamespaceId(obj1.get("bed_item").getAsString()),
                                     PosSerializer.deserialize(obj1.get("spawn_location").getAsString()),
                                     PosSerializer.deserialize(obj1.get("generation_location").getAsString()),
