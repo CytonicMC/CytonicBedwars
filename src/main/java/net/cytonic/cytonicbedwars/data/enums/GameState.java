@@ -1,5 +1,8 @@
 package net.cytonic.cytonicbedwars.data.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum GameState {
     WAITING(-1), // not yet started
     PLAY(900), // 15 minutes
@@ -16,9 +19,5 @@ public enum GameState {
 
     GameState(int duration) {
         this.duration = duration;
-    }
-
-    public int getDuration() {
-        return duration;
     }
 }

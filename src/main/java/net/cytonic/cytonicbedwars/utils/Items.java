@@ -225,20 +225,6 @@ public class Items {
     public static ItemStack SPEED_POTION = createPotion("Speed (60s)", "SPEED_POT", PotionEffect.SPEED, 1200, 2);
     //todo: IDEA: Grappling hook that works kinda like skyblocks moody grappleshot -- could be a global cap, or someth
 
-    // Utilities:
-    // items: Golden apple, bed bug, Bed Protector, fire charge, tnt, ender pearl, water bucket, bridge egg, sponge, popup-tower
-
-    public static ItemStack GOLDEN_APPLE = createItem("Golden Apple", "GOLDEN_APPLE", Material.GOLDEN_APPLE);
-    public static ItemStack BED_BUG = createItem("Bed Bug", "BED_BUG", Material.SNOWBALL, ChatColor.GRAY + "The bug contained may", ChatColor.GRAY + "produce collateral damage!");
-    public static ItemStack BED_PROTECTOR = createItem("Bed Protector", "BED_PROTECTOR", Material.GHAST_SPAWN_EGG);
-    public static ItemStack FIREBALL = createItem("Fireball", "FIREBALL", Material.FIRE_CHARGE);
-    public static ItemStack TNT = createItem("TNT", "TNT", Material.TNT);
-    public static ItemStack ENDER_PEARL = createItem("Ender Pearl", "ENDER_PEARL", Material.ENDER_PEARL);
-    public static ItemStack WATER_BUCKET = createItem("Water Bucket", "WATER_BUCKET", Material.WATER_BUCKET);
-    public static ItemStack BRIDGE_EGG = createItem("Bridge Egg", "BRIDGE_EGG", Material.EGG);
-    public static ItemStack SPONGE = createItem("Sponge", "SPONGE", Material.SPONGE);
-    public static ItemStack POPUP_TOWER = createItem("Popup Tower", "POPUP_TOWER", Material.CHEST);
-
     private static ItemStack createItem(String displayName, String id, Material type, boolean noMove, boolean noDrop, List<Integer> allowedSlots, Map<DynamicRegistry.Key<Enchantment>, Integer> enchants, String... lore) {
         List<Component> list = new ArrayList<>();
         for (String s : lore) list.add(MM."\{s}");
