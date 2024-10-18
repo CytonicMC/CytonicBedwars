@@ -56,6 +56,8 @@ public class GameManager {
     private final MenuManager menuManager;
     @Getter
     private final PlayerInventoryManager playerInventoryManager;
+    @Getter
+    private final GeneratorManager generatorManager;
     public List<UUID> spectators = new ArrayList<>();
     public Map<UUID, ArmorLevel> armorLevels = new HashMap<>();
     public Map<UUID, AxeLevel> axes = new HashMap<>();
@@ -76,6 +78,7 @@ public class GameManager {
         worldManager = new WorldManager();
         menuManager = new MenuManager();
         playerInventoryManager = new PlayerInventoryManager();
+        generatorManager = new GeneratorManager();
     }
 
     public void setup() {
@@ -103,6 +106,9 @@ public class GameManager {
         worldManager.removeSpawnPlatform();
         STARTED = true;
         setGameState(GameState.PLAY);
+        generatorManager.registerTeamGenerators();
+        generatorManager.registerDiamondGenerators();
+        generatorManager.registerEmeraldGenerators();
         Cytosis.getOnlinePlayers().forEach(player -> statsManager.propagatePlayer(player.getUuid()));
         // split players into teams
         List<UUID> players = new ArrayList<>();
