@@ -1,27 +1,36 @@
 package net.cytonic.cytonicbedwars.utils;
 
+import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.data.enums.MappableItem;
 import net.cytonic.cytonicbedwars.data.objects.Team;
-import net.cytonic.cytosis.utils.MiniMessageTemplate;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.item.ItemComponent;
-import net.minestom.server.item.*;
+import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
 import net.minestom.server.item.component.*;
 import net.minestom.server.item.enchant.Enchantment;
-import net.minestom.server.potion.*;
+import net.minestom.server.potion.CustomPotionEffect;
+import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.registry.DynamicRegistry;
 import net.minestom.server.utils.Unit;
+
 import java.util.*;
 import java.util.stream.Stream;
 
+import static net.cytonic.utils.MiniMessageTemplate.MM;
+
+@NoArgsConstructor
 public class Items {
     private static final Map<String, ItemStack> itemRegistry = new HashMap<>();
     public static String NAMESPACE = "bwID";
     public static String MOVE_BLACKLIST = "move_blacklist";
     public static String ALLOWED_SLOTS = "allowed_slots";
     public static String NO_DROP = "no_drop";
+    public static String PRICE_AMOUNT = "price_amount";
+    public static String PRICE = "price";
+    public static String AMOUNT = "amount";
 
     // item constants
 
@@ -68,21 +77,21 @@ public class Items {
     public static ItemStack BLACK_WOOL = createItem("Wool", "BLACK_WOOL", Material.BLACK_WOOL, false, false, List.of(), new HashMap<>());
 
     // all 16 of the terracottas
-    public static ItemStack RED_TERRACOTTA = createItem("Terracota", "RED_TERRACOTTA", Material.RED_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack ORANGE_TERRACOTTA = createItem("Terracota", "ORANGE_TERRACOTTA", Material.ORANGE_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack YELLOW_TERRACOTTA = createItem("Terracota", "YELLOW_TERRACOTTA", Material.YELLOW_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack LIME_TERRACOTTA = createItem("Terracota", "LIME_TERRACOTTA", Material.LIME_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack GREEN_TERRACOTTA = createItem("Terracota", "GREEN_TERRACOTTA", Material.GREEN_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack LIGHT_BLUE_TERRACOTTA = createItem("Terracota", "LIGHT_BLUE_TERRACOTTA", Material.LIGHT_BLUE_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack BLUE_TERRACOTTA = createItem("Terracota", "BLUE_TERRACOTTA", Material.BLUE_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack CYAN_TERRACOTTA = createItem("Terracota", "CYAN_TERRACOTTA", Material.CYAN_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack MAGENTA_TERRACOTTA = createItem("Terracota", "MAGENTA_TERRACOTTA", Material.MAGENTA_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack PINK_TERRACOTTA = createItem("Terracota", "PINK_TERRACOTTA", Material.PINK_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack PURPLE_TERRACOTTA = createItem("Terracota", "PURPLE_TERRACOTTA", Material.PURPLE_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack WHITE_TERRACOTTA = createItem("Terracota", "WHITE_TERRACOTTA", Material.WHITE_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack GREY_TERRACOTTA = createItem("Terracota", "GREY_TERRACOTTA", Material.GRAY_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack LIGHT_GREY_TERRACOTTA = createItem("Terracota", "LIGHT_GREY_TERRACOTTA", Material.LIGHT_GRAY_TERRACOTTA, false, false, List.of(), new HashMap<>());
-    public static ItemStack BLACK_TERRACOTTA = createItem("Terracota", "BLACK_TERRACOTTA", Material.BLACK_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack RED_TERRACOTTA = createItem("Terracotta", "RED_TERRACOTTA", Material.RED_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack ORANGE_TERRACOTTA = createItem("Terracotta", "ORANGE_TERRACOTTA", Material.ORANGE_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack YELLOW_TERRACOTTA = createItem("Terracotta", "YELLOW_TERRACOTTA", Material.YELLOW_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack LIME_TERRACOTTA = createItem("Terracotta", "LIME_TERRACOTTA", Material.LIME_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack GREEN_TERRACOTTA = createItem("Terracotta", "GREEN_TERRACOTTA", Material.GREEN_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack LIGHT_BLUE_TERRACOTTA = createItem("Terracotta", "LIGHT_BLUE_TERRACOTTA", Material.LIGHT_BLUE_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack BLUE_TERRACOTTA = createItem("Terracotta", "BLUE_TERRACOTTA", Material.BLUE_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack CYAN_TERRACOTTA = createItem("Terracotta", "CYAN_TERRACOTTA", Material.CYAN_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack MAGENTA_TERRACOTTA = createItem("Terracotta", "MAGENTA_TERRACOTTA", Material.MAGENTA_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack PINK_TERRACOTTA = createItem("Terracotta", "PINK_TERRACOTTA", Material.PINK_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack PURPLE_TERRACOTTA = createItem("Terracotta", "PURPLE_TERRACOTTA", Material.PURPLE_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack WHITE_TERRACOTTA = createItem("Terracotta", "WHITE_TERRACOTTA", Material.WHITE_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack GREY_TERRACOTTA = createItem("Terracotta", "GREY_TERRACOTTA", Material.GRAY_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack LIGHT_GREY_TERRACOTTA = createItem("Terracotta", "LIGHT_GREY_TERRACOTTA", Material.LIGHT_GRAY_TERRACOTTA, false, false, List.of(), new HashMap<>());
+    public static ItemStack BLACK_TERRACOTTA = createItem("Terracotta", "BLACK_TERRACOTTA", Material.BLACK_TERRACOTTA, false, false, List.of(), new HashMap<>());
 
     public static ItemStack OBSIDIAN = createItem("<DARK_PURPLE>Obsidian", "OBSIDIAN", Material.OBSIDIAN, false, false, List.of(), new HashMap<>());
     public static ItemStack PLANKS = createItem("Planks", "PLANKS", Material.OAK_PLANKS, false, false, List.of(), new HashMap<>());
@@ -111,14 +120,14 @@ public class Items {
 
     // shop menu parts
     public static ItemStack MENU_SELECTED_PAGE = createItem(" ", "MENU_SELECTED_PAGE", Material.LIME_STAINED_GLASS_PANE, false, true, List.of(), Map.of(Enchantment.UNBREAKING, 1));
-    public static ItemStack MENU_FILLER = createItem(" ", "MENU_FILLER", Material.GRAY_STAINED_GLASS_PANE, false, false, List.of(), new HashMap<>());
+    public static ItemStack MENU_FILLER = createItem(" ", "MENU_FILLER", Material.GRAY_STAINED_GLASS_PANE, true, false, List.of(), new HashMap<>());
     public static ItemStack MENU_BLOCKS = createItem("<GREEN>Building Blocks", "MENU_BLOCKS", Material.BRICKS, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
     public static ItemStack MENU_COMBAT = createItem("<GREEN>Weapons", "MENU_COMBAT", Material.DIAMOND_SWORD, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
     public static ItemStack MENU_ARMOR = createItem("<GREEN>Armor", "MENU_ARMOR", Material.DIAMOND_CHESTPLATE, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_TOOLS = createItem("<GREEN>Tools", "MENU_ARMOR", Material.DIAMOND_PICKAXE, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_POTIONS = createItem("<GREEN>Potions", "MENU_BLOCKS", Material.BREWING_STAND, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_UTILS = createItem("<GREEN>Utilities", "MENU_BLOCKS", Material.FIRE_CHARGE, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_CUSTOM_ITEMS = createItem("<GREEN>Rotating Items", "MENU_BLOCKS", Material.ENDERMAN_SPAWN_EGG, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
+    public static ItemStack MENU_TOOLS = createItem("<GREEN>Tools", "MENU_TOOLS", Material.DIAMOND_PICKAXE, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
+    public static ItemStack MENU_POTIONS = createItem("<GREEN>Potions", "MENU_POTIONS", Material.BREWING_STAND, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
+    public static ItemStack MENU_UTILS = createItem("<GREEN>Utilities", "MENU_UTILS", Material.FIRE_CHARGE, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
+    public static ItemStack MENU_CUSTOM_ITEMS = createItem("<GREEN>Rotating Items", "MENU_CUSTOM", Material.ENDERMAN_SPAWN_EGG, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
     public static ItemStack MENU_WOOL = createItem("Wool", "MENU_WOOL", Material.WHITE_WOOL, false, true, List.of(), new HashMap<>(), "", "<GRAY>> 4 Iron");
     public static ItemStack MENU_PLANKS = createItem("Planks", "MENU_PLANKS", Material.OAK_PLANKS, false, true, List.of(), new HashMap<>(), "", "<GOLD>> 4 Gold");
     public static ItemStack MENU_TERRACOTTA = createItem("Terracotta", "MENU_TERRACOTTA", Material.TERRACOTTA, false, true, List.of(), new HashMap<>(), "", "<GRAY>> 10 Iron");
@@ -216,10 +225,9 @@ public class Items {
     public static ItemStack SPEED_POTION = createPotion("Speed (60s)", "SPEED_POT", PotionEffect.SPEED, 1200, 2);
     //todo: IDEA: Grappling hook that works kinda like skyblocks moody grappleshot -- could be a global cap, or someth
 
-
-    private static ItemStack createItem(String displayname, String id, Material type, boolean noMove, boolean noDrop, List<Integer> allowedSlots, Map<DynamicRegistry.Key<Enchantment>, Integer> enchants, String... lore) {
+    private static ItemStack createItem(String displayName, String id, Material type, boolean noMove, boolean noDrop, List<Integer> allowedSlots, Map<DynamicRegistry.Key<Enchantment>, Integer> enchants, String... lore) {
         List<Component> list = new ArrayList<>();
-        for (String s : lore) list.add(MiniMessageTemplate.MM."\{s}");
+        for (String s : lore) list.add(MM."\{s}");
         EnchantmentList enchantmentList = new EnchantmentList(enchants);
         CompoundBinaryTag.Builder builder = CompoundBinaryTag.builder();
         if (noDrop) {
@@ -229,11 +237,11 @@ public class Items {
             builder.putBoolean(MOVE_BLACKLIST, true);
             builder.putIntArray(ALLOWED_SLOTS, allowedSlots.stream().mapToInt(Integer::intValue).toArray());
         }
+        builder.putString(NAMESPACE, id);
         ItemStack item = ItemStack.builder(type)
-                .set(ItemComponent.ITEM_NAME, MiniMessageTemplate.MM."<RESET>\{displayname}")
+                .set(ItemComponent.ITEM_NAME, MM."\{displayName}")
                 .set(ItemComponent.LORE, list)
-                .set(ItemComponent.UNBREAKABLE, Unbreakable.DEFAULT)
-                .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
+                .set(ItemComponent.UNBREAKABLE, new Unbreakable(false))
                 .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
                 .set(ItemComponent.ENCHANTMENTS, enchantmentList)
                 .set(ItemComponent.CUSTOM_DATA, new CustomData(builder.build()))
@@ -250,10 +258,9 @@ public class Items {
         builder.putString(NAMESPACE, id);
 
         ItemStack item = ItemStack.builder(type)
-                .set(ItemComponent.ITEM_NAME, MiniMessageTemplate.MM."<RESET>\{name}")
-                .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
+                .set(ItemComponent.ITEM_NAME, MM."<RESET>\{name}")
                 .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                .set(ItemComponent.UNBREAKABLE, Unbreakable.DEFAULT)
+                .set(ItemComponent.UNBREAKABLE, new Unbreakable(false))
                 .set(ItemComponent.DYED_COLOR, new DyedItemColor(color))
                 .set(ItemComponent.CUSTOM_DATA, new CustomData(builder.build()))
                 .build();
@@ -263,15 +270,14 @@ public class Items {
 
     private static ItemStack createPotion(String name, String id, PotionEffect pot, int duration, int amplifier, String... lore) {
         List<Component> list = new ArrayList<>();
-        for (String s : lore) list.add(MiniMessageTemplate.MM."\{s}");
+        for (String s : lore) list.add(MM."\{s}");
         CustomPotionEffect effect = new CustomPotionEffect(pot, Byte.parseByte(String.valueOf(amplifier - 1)), duration, true, true, true);
         PotionContents contents = new PotionContents(effect);
         ItemStack item = ItemStack.builder(Material.POTION)
                 .set(ItemComponent.POTION_CONTENTS, contents)
-                .set(ItemComponent.ITEM_NAME, MiniMessageTemplate.MM."<RESET>\{name}")
-                .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
+                .set(ItemComponent.ITEM_NAME, MM."<RESET>\{name}")
                 .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                .set(ItemComponent.UNBREAKABLE, Unbreakable.DEFAULT)
+                .set(ItemComponent.UNBREAKABLE, new Unbreakable(false))
                 .set(ItemComponent.LORE, list)
                 .set(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString(NAMESPACE, id).build()))
                 .build();
@@ -280,7 +286,7 @@ public class Items {
     }
 
     public static ItemStack get(String id) {
-        if (id == null) return  ItemStack.builder(Material.AIR).build();
+        if (id == null) return ItemStack.AIR;
         return itemRegistry.get(id);
     }
 
@@ -291,7 +297,7 @@ public class Items {
     public static ItemStack getTeamMapped(MappableItem mappableItem, Team team) {
         switch (mappableItem) {
             case WOOL -> {
-                switch (team.color().toString().toUpperCase()) {
+                switch (team.color().toUpperCase().replaceAll("<", "").replaceAll(">", "")) {
                     case "RED" -> {
                         return Items.RED_WOOL;
                     }
@@ -338,12 +344,12 @@ public class Items {
                         return Items.MAGENTA_WOOL;
                     }
                     default -> {
-                        return null;
+                        return Items.SPECTATOR_ARMOR;
                     }
                 }
             }
             case GLASS -> {
-                switch (team.color().toString().toUpperCase()) {
+                switch (team.color().replaceAll("<", "").replaceAll(">", "").toUpperCase()) {
                     case "RED" -> {
                         return Items.RED_BLAST_PROOF_GLASS;
                     }
@@ -390,12 +396,12 @@ public class Items {
                         return Items.MAGENTA_BLAST_PROOF_GLASS;
                     }
                     default -> {
-                        return null;
+                        return Items.SPECTATOR_ARMOR;
                     }
                 }
             }
             case TERRACOTTA -> {
-                switch (team.color().toString().toUpperCase()) {
+                switch (team.color().replaceAll("<", "").replaceAll(">", "").toUpperCase()) {
                     case "RED" -> {
                         return Items.RED_TERRACOTTA;
                     }
@@ -442,11 +448,11 @@ public class Items {
                         return Items.MAGENTA_TERRACOTTA;
                     }
                     default -> {
-                        return null;
+                        return Items.SPECTATOR_ARMOR;
                     }
                 }
             }
         }
-        return null;
+        return Items.SPECTATOR_ARMOR;
     }
 }

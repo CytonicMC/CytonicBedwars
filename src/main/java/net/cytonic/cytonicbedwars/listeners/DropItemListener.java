@@ -1,22 +1,20 @@
 package net.cytonic.cytonicbedwars.listeners;
 
-import net.cytonic.cytonicbedwars.CytonicBedWars;
+import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.minestom.server.event.item.ItemDropEvent;
+import net.minestom.server.item.ItemComponent;
 import net.minestom.server.item.ItemStack;
 
+@NoArgsConstructor
 public class DropItemListener {
-
-    private final CytonicBedWars plugin;
-
-    public DropItemListener(CytonicBedWars plugin) {
-        this.plugin = plugin;
-    }
 
     public void onDrop(ItemDropEvent event) {
         ItemStack item = event.getItemStack();
-        if (item.toItemNBT().getBoolean(Items.NO_DROP)) {
-            event.setCancelled(true);
+        if (item.has(ItemComponent.CUSTOM_DATA)) {
+            if (item.get(ItemComponent.CUSTOM_DATA).nbt().getBoolean(Items.NO_DROP)) {
+                event.setCancelled(true);
+            }
         }
     }
 

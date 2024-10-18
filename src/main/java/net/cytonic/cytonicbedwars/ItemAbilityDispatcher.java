@@ -1,5 +1,6 @@
 package net.cytonic.cytonicbedwars;
 
+import lombok.NoArgsConstructor;
 import net.cytonic.cytosis.Cytosis;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
@@ -9,13 +10,8 @@ import net.minestom.server.event.player.PlayerBlockInteractEvent;
 import net.minestom.server.event.player.PlayerEntityInteractEvent;
 import net.minestom.server.item.ItemStack;
 
+@NoArgsConstructor
 public class ItemAbilityDispatcher {
-
-    private final CytonicBedWars plugin;
-
-    public ItemAbilityDispatcher(CytonicBedWars plugin) {
-        this.plugin = plugin;
-    }
 
     public void dispatch(String abilityKey, Player user, PlayerBlockInteractEvent event) {
         switch (abilityKey) {
@@ -35,9 +31,9 @@ public class ItemAbilityDispatcher {
                 Entity entity = new Entity(EntityType.TNT);
                 entity.setInstance(Cytosis.getDefaultInstance(), event.getCursorPosition());
             }
-            case "SPECTATOR_COMPASS" -> user.openInventory(plugin.getGameManager().getMenuManager().getSpectatorSelectorMenu());
+            case "SPECTATOR_COMPASS" -> user.openInventory(CytonicBedWars.getGameManager().getMenuManager().getSpectatorSelectorMenu());
             case "LOBBY_REQUEST" -> user.sendMessage("No leaving >:)");
-            case "SPECTATOR_SPEED_SELECTOR" -> user.openInventory(plugin.getGameManager().getMenuManager().getSpectatorSpeedMenu());
+            case "SPECTATOR_SPEED_SELECTOR" -> user.openInventory(CytonicBedWars.getGameManager().getMenuManager().getSpectatorSpeedMenu());
             default -> { // not an ability
                 return;
             }
@@ -61,9 +57,9 @@ public class ItemAbilityDispatcher {
                 Entity entity = new Entity(EntityType.TNT);
                 entity.setInstance(Cytosis.getDefaultInstance(), event.getInteractPosition());
             }
-            case "SPECTATOR_COMPASS" -> user.openInventory(plugin.getGameManager().getMenuManager().getSpectatorSelectorMenu());
+            case "SPECTATOR_COMPASS" -> user.openInventory(CytonicBedWars.getGameManager().getMenuManager().getSpectatorSelectorMenu());
             case "LOBBY_REQUEST" -> user.sendMessage("No leaving >:)");
-            case "SPECTATOR_SPEED_SELECTOR" -> user.openInventory(plugin.getGameManager().getMenuManager().getSpectatorSpeedMenu());
+            case "SPECTATOR_SPEED_SELECTOR" -> user.openInventory(CytonicBedWars.getGameManager().getMenuManager().getSpectatorSpeedMenu());
             default -> { // not an ability
             }
         }
