@@ -2,6 +2,8 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerDisconnectEvent;
 
@@ -15,6 +17,15 @@ public class LeaveListener {
                 Player player = event.getPlayer();
                 player.clearEffects();
                 CytonicBedWars.getGameManager().spectators.remove(player.getUuid());
+            }
+        } else {
+            if (Cytosis.getOnlinePlayers().size() < 2) {
+                if (CytonicBedWars.getGameManager().getWaitingRunnable() != null) {
+                    CytonicBedWars.getGameManager().getWaitingRunnable().stop();
+                    Cytosis.getOnlinePlayers().forEach(player -> {
+                        player.sendMessage(Msg.mm("not enough players"));
+                    });
+                }
             }
         }
     }

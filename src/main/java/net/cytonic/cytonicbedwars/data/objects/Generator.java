@@ -6,6 +6,7 @@ import net.cytonic.cytonicbedwars.data.types.GeneratorItems;
 import net.cytonic.cytonicbedwars.runnables.GeneratorVisualRunnable;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
@@ -18,8 +19,6 @@ import net.minestom.server.timer.Task;
 import java.time.Duration;
 import java.util.*;
 
-import static net.cytonic.utils.MiniMessageTemplate.MM;
-
 public class Generator {
 
     public static String SPLIT_KEY = "split_key";
@@ -30,13 +29,15 @@ public class Generator {
     private final boolean hasVisual;
     private final boolean splitable;
     private final Map<String, List<ItemEntity>> spawnedItems = new HashMap<>();
-    private final Map<String, Task.Builder> runnables = new HashMap<>();
+    private final Map<String, Task> runnables = new HashMap<>();
     private final int countDownDuration; // in seconds
     @Setter
     private Entity visual;
     private GeneratorVisualRunnable visualRunnable;
     private Entity countDown;
-    private Task.Builder coundownRunnable;
+    @Setter
+    private Entity name;
+    private Task coundownRunnable;
     private String countDownFormat;
     private int toNext = 0; // in seconds
 
@@ -67,7 +68,7 @@ public class Generator {
                 if (splitable)
                     i.tagHandler().setTag(Tag.Boolean(SPLIT_KEY), true);
                 spawnedItems.get(s).add(i);
-            }));
+            }).repeat(Duration.ofSeconds(items.getFirstValue(s))).schedule());
         });
     }
 
@@ -77,18 +78,15 @@ public class Generator {
                 toNext++;
                 float toNextF = ((countDownDuration - toNext) / 20.0F);
                 String text = String.format(countDownFormat, toNextF);
-                countDown.editEntityMeta(TextDisplayMeta.class, meta -> meta.setText(MM."\{text}"));
+                countDown.editEntityMeta(TextDisplayMeta.class, meta -> meta.setText(Msg.mm(text)));
                 if (toNext == countDownDuration)
                     toNext = 0;
-            });
-            coundownRunnable.repeat(Duration.ofMillis(15)).schedule();
+            }).repeat(Duration.ofMillis(15)).schedule();
         }
         if (hasVisual) {
             if (visual == null) throw new NullPointerException("The visual cannot be null!");
             visualRunnable = new GeneratorVisualRunnable(visual);
         }
-
-        runnables.forEach((s, bukkitRunnable) -> bukkitRunnable.repeat(Duration.ofSeconds(items.getFirstValue(s))).schedule());
     }
 
     public void stop() {
@@ -96,7 +94,14 @@ public class Generator {
             visualRunnable.getTask().cancel();
             visual.remove();
         }
-        runnables.values().forEach(runnable -> runnable.schedule().cancel());
+        if (countDown != null) {
+            countDown.remove();
+            coundownRunnable.cancel();
+        }
+        if (name != null) {
+            name.remove();
+        }
+        runnables.values().forEach(Task::cancel);
     }
 
     public void setCountDown(Entity display, String format) {

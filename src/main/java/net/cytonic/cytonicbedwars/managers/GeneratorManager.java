@@ -11,6 +11,7 @@ import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytonicbedwars.data.types.GeneratorItems;
 import net.cytonic.cytonicbedwars.data.types.Pair;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
@@ -22,11 +23,11 @@ import net.minestom.server.instance.block.Block;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.cytonic.utils.MiniMessageTemplate.MM;
-
 @Getter
 @NoArgsConstructor
 public class GeneratorManager {
+    private final List<Generator> ironGenerators = new ArrayList<>();
+    private final List<Generator> goldGenerators = new ArrayList<>();
     private final List<Generator> diamondGenerators = new ArrayList<>();
     private final List<Generator> emeraldGenerators = new ArrayList<>();
 
@@ -40,7 +41,8 @@ public class GeneratorManager {
                     false,
                     true,
                     CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.IRON));
-
+            ironGenerator.start();
+            ironGenerators.add(ironGenerator);
             Generator goldGenerator = new Generator(
                     GeneratorType.GOLD,
                     new GeneratorItems<>("GOLD", new Pair<>(CytonicBedwarsSettings.generatorsWaitTime.get(GeneratorType.GOLD), CytonicBedwarsSettings.generatorsItemLimit.get(GeneratorType.GOLD))),
@@ -48,9 +50,8 @@ public class GeneratorManager {
                     false,
                     true,
                     CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.GOLD));
-
-            ironGenerator.start();
             goldGenerator.start();
+            goldGenerators.add(goldGenerator);
         }
     }
 
@@ -76,15 +77,18 @@ public class GeneratorManager {
             Entity name = new Entity(EntityType.TEXT_DISPLAY);
             name.setInstance(Cytosis.getDefaultInstance(), diamondGeneratorsPosition.add(0, 2.5, 0));
             name.editEntityMeta(TextDisplayMeta.class, meta -> {
-                meta.setText(MM."<aqua><bold>Diamond Generator");
+                meta.setText(Msg.mm("<aqua><bold>Diamond Generator"));
                 meta.setBillboardRenderConstraints(AbstractDisplayMeta.BillboardConstraints.CENTER);
                 meta.setHasNoGravity(true);
             });
+            generator.setName(name);
             String nextSpawnStr = "<yellow>Spawns in <red>%.2f<yellow> seconds";
             Entity nextSpawn = new Entity(EntityType.TEXT_DISPLAY);
             nextSpawn.setInstance(Cytosis.getDefaultInstance(), diamondGeneratorsPosition.add(0, 2.2, 0));
             nextSpawn.editEntityMeta(TextDisplayMeta.class, meta -> {
-                meta.setText(MM."\{nextSpawnStr}");
+                int countDownDuration = CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.DIAMOND);
+                float toNextF = ((countDownDuration) / 20.0F);
+                meta.setText(Msg.mm(nextSpawnStr, toNextF));
                 meta.setBillboardRenderConstraints(AbstractDisplayMeta.BillboardConstraints.CENTER);
                 meta.setHasNoGravity(true);
             });
@@ -117,16 +121,18 @@ public class GeneratorManager {
             Entity name = new Entity(EntityType.TEXT_DISPLAY);
             name.setInstance(Cytosis.getDefaultInstance(), pos.add(0, 2.5, 0));
             name.editEntityMeta(TextDisplayMeta.class, meta -> {
-                meta.setText(MM."<green><bold>Emerald Generator");
+                meta.setText(Msg.mm("<green><bold>Emerald Generator"));
                 meta.setBillboardRenderConstraints(AbstractDisplayMeta.BillboardConstraints.CENTER);
                 meta.setHasNoGravity(true);
             });
-
+            generator.setName(name);
             String nextSpawnStr = "<yellow>Spawns in <red>%.2f <yellow>seconds";
             Entity nextSpawn = new Entity(EntityType.TEXT_DISPLAY);
             nextSpawn.setInstance(Cytosis.getDefaultInstance(), pos.add(0, 2.2, 0));
             nextSpawn.editEntityMeta(TextDisplayMeta.class, meta -> {
-                meta.setText(MM."\{nextSpawnStr}");
+                int countDownDuration = CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.EMERALD);
+                float toNextF = ((countDownDuration) / 20.0F);
+                meta.setText(Msg.mm(nextSpawnStr, toNextF));
                 meta.setBillboardRenderConstraints(AbstractDisplayMeta.BillboardConstraints.CENTER);
                 meta.setHasNoGravity(true);
             });
@@ -136,5 +142,23 @@ public class GeneratorManager {
         }
     }
 
+    public void removeGenerators() {
+        for (Generator ironGenerator : ironGenerators) {
+            ironGenerator.stop();
+        }
+        for (Generator goldGenerator : goldGenerators) {
+            goldGenerator.stop();
+        }
+        for (Generator diamondGenerator : diamondGenerators) {
+            diamondGenerator.stop();
+        }
+        for (Generator emeraldGenerator : emeraldGenerators) {
+            emeraldGenerator.stop();
+        }
+        ironGenerators.clear();
+        goldGenerators.clear();
+        diamondGenerators.clear();
+        emeraldGenerators.clear();
+    }
 }
 

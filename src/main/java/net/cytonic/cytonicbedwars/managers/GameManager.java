@@ -3,23 +3,30 @@ package net.cytonic.cytonicbedwars.managers;
 import lombok.Getter;
 import lombok.Setter;
 import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytonicbedwars.ItemAbilityDispatcher;
 import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.data.objects.Scoreboard;
 import net.cytonic.cytonicbedwars.data.objects.Team;
+import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;
 import net.cytonic.cytonicbedwars.runnables.RespawnRunnable;
+import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytonicbedwars.utils.Utils;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.npcs.NPC;
+import net.cytonic.cytosis.player.CytosisPlayer;
+import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
+import net.minestom.server.entity.Entity;
+import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.entity.damage.DamageType;
@@ -31,8 +38,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.*;
-
-import static net.cytonic.utils.MiniMessageTemplate.MM;
 
 public class GameManager {
 
@@ -53,8 +58,6 @@ public class GameManager {
     @Getter
     private final WorldManager worldManager;
     @Getter
-    private final MenuManager menuManager;
-    @Getter
     private final PlayerInventoryManager playerInventoryManager;
     @Getter
     private final GeneratorManager generatorManager;
@@ -72,21 +75,26 @@ public class GameManager {
     @Getter
     @Setter
     private GameState gameState;
+    @Getter
+    @Setter
+    private WaitingRunnable waitingRunnable;
+    @Getter
+    private final ItemAbilityDispatcher itemAbilityDispatcher;
 
     public GameManager() {
         statsManager = new StatsManager();
         worldManager = new WorldManager();
-        menuManager = new MenuManager();
         playerInventoryManager = new PlayerInventoryManager();
         generatorManager = new GeneratorManager();
+        itemAbilityDispatcher = new ItemAbilityDispatcher();
     }
 
     public void setup() {
         worldManager.loadWorld();
-        worldManager.createSpawnPlatform();
         Cytosis.getSideboardManager().setSideboardCreator(new Scoreboard());
+        //Cytosis.getPlayerListManager().setCreator(new PlayerList());
         gameState = GameState.WAITING;
-        CytonicBedwarsSettings.teams.forEach((_, t) -> {
+        CytonicBedwarsSettings.teams.forEach((s, t) -> {
             teamlist.add(t);
             beds.put(t, true);
         });
@@ -123,7 +131,12 @@ public class GameManager {
                 mcTeams.get(team).addMember(p.getUsername());
                 p.teleport(team.spawnLocation());
                 p.setGameMode(GameMode.SURVIVAL);
+                p.setCustomNameVisible(true);
+                p.setCustomName(Msg.mm(team.prefix() + p.getUsername()));
                 setArmor(uuid, ArmorLevel.NONE);
+                p.getInventory().setItemStack(0, Items.DEFAULT_SWORD);
+                setEquipment(p);
+
                 setAxe(uuid, AxeLevel.NONE);
                 setPickaxe(uuid, PickaxeLevel.NONE);
                 shears.put(uuid, false);
@@ -131,19 +144,25 @@ public class GameManager {
         });
         for (Team t : teamlist) {
             NPC teamShop = NPC.ofHumanoid(t.teamShopLocation(), Cytosis.getDefaultInstance())
-                    .interactTrigger((_, _, player) -> player.sendMessage(MM."<RED>Coming soon"))
+                    .interactTrigger((npc, npcInteractType, player) -> player.sendMessage(Msg.mm("<RED>Coming soon")))
                     .skin(QUESTIONMARK_NPC_SKIN_VALUE, QUESTIONMARK_NPC_SKIN_SIGNATURE)
-                    .lines(MM."<RED>Coming soon")
+                    .lines(Msg.mm("<RED>Coming soon"))
                     .build();
             npcs.add(teamShop);
 
             NPC itemShop = NPC.ofHumanoid(t.itemShopLocation(), Cytosis.getDefaultInstance())
-                    .interactTrigger((_, _, player) -> player.openInventory(menuManager.getBlocksShop()))
+                    .interactTrigger((npc, npcInteractType, player) -> new BlocksShopMenu().open(player))
                     .skin(NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE)
-                    .lines(MM."<GOLD><bold>ITEM SHOP")
+                    .lines(Msg.mm("<GOLD><bold>ITEM SHOP"))
                     .build();
             npcs.add(itemShop);
         }
+    }
+
+    private void setEquipment(Player player) {
+        player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.get(String.format(armorLevels.get(player.getUuid()).getBootsID(), getPlayerTeam(player.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase())));
+        player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), (Items.get(String.format(armorLevels.get(player.getUuid()).getLegsID(), getPlayerTeam(player.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase()))));
+        player.getInventory().setEquipment(EquipmentSlot.CHESTPLATE, player.getHeldSlot(), (Items.get(String.format("%s_CHEST", getPlayerTeam(player.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase()))));
     }
 
     private Map<Team, List<UUID>> splitPlayersIntoTeams(List<UUID> players) {
@@ -159,7 +178,7 @@ public class GameManager {
             t.setSeeInvisiblePlayers(true);
             t.setAllowFriendlyFire(false);
             t.setTeamColor(Utils.getColor(team.color()));
-            t.setPrefix(MM."\{team.prefix()}");
+            t.setPrefix(Msg.mm(team.prefix()));
             mcTeams.put(team, t);
             List<UUID> teamPlayers = new ArrayList<>();
             int currentTeamSize = teamSize + (remainingPlayers > 0 ? 1 : 0);
@@ -178,10 +197,38 @@ public class GameManager {
         return result;
     }
 
+    public void end() {
+        STARTED = false;
+        setGameState(GameState.ENDED);
+        npcs.forEach((npc -> npc.getActions().clear()));
+        generatorManager.removeGenerators();
+        MinecraftServer.getSchedulerManager().buildTask(() -> {
+            for (CytosisPlayer player : Cytosis.getOnlinePlayers()) {
+                sendPlayerToLobby(player);
+            }
+            cleanup();
+        }).delay(Duration.ofSeconds(10)).schedule();
+    }
+
+
     public void cleanup() {
         STARTED = false;
         setGameState(GameState.CLEANUP);
+        worldManager.redoWorld();
         npcs.forEach((npc -> Cytosis.getNpcManager().removeNPC(npc)));
+        for (Entity entity : Cytosis.getDefaultInstance().getEntities()) {
+            if (entity instanceof CytosisPlayer) continue;
+            entity.remove();
+        }
+        axes.clear();
+        pickaxes.clear();
+        teamlist.clear();
+        beds.clear();
+        mcTeams.clear();
+        alivePlayers.clear();
+        shears.clear();
+        spectators.clear();
+        setup();
     }
 
     public Optional<Team> getPlayerTeam(UUID uuid) {
@@ -194,53 +241,62 @@ public class GameManager {
 
     public void breakBed(Player player, Team t) {
         player.playSound(Sound.sound(SoundEvent.ENTITY_GENERIC_EXPLODE, Sound.Source.PLAYER, 1f, 100f));
-        Cytosis.getOnlinePlayers().forEach(p -> p.sendMessage(MM."\{getPlayerTeam(player.getUuid()).orElseThrow().color()} \{player.getUsername()} <red>destroyed \{t.color()}\{t.displayName()}<white>'s bed!"));
+        Cytosis.getOnlinePlayers().forEach(p -> p.sendMessage(Msg.mm(getPlayerTeam(player.getUuid()).orElseThrow().color() + " " + player.getUsername() + " <dark_red>destroyed " + t.color() + t.displayName() + "'s <white>bed!")));
         // todo: display animations, messages, etc.
         beds.put(t, false);
     }
 
-    public void kill(Player dead, @Nullable Player killer, DynamicRegistry.Key<DamageType> cause) {
+    public void kill(@NotNull CytosisPlayer dead, @Nullable CytosisPlayer killer, @NotNull DynamicRegistry.Key<DamageType> damageType) {
         alivePlayers.remove(dead.getUuid());
         statsManager.addPlayerDeath(dead.getUuid());
 
         //degrade tools
-        setAxe(dead.getUuid(), AxeLevel.getOrdered(getAxe(dead.getUuid()), -1));
-        Logger.debug(STR."pickaxe level maybe? = \{getPickaxe(dead.getUuid())}");
-        Logger.debug(STR." pickaxe level = \{PickaxeLevel.getOrdered(getPickaxe(dead.getUuid()), -1)}");
-        setPickaxe(dead.getUuid(), PickaxeLevel.getOrdered(getPickaxe(dead.getUuid()), -1));
+        if (!(AxeLevel.getOrdered(getAxe(dead.getUuid()), -1) == null)) {
+            setAxe(dead.getUuid(), AxeLevel.getOrdered(getAxe(dead.getUuid()), -1));
+        }
+
+        if (PickaxeLevel.getOrdered(getPickaxe(dead.getUuid()), -1) != null) {
+            setPickaxe(dead.getUuid(), PickaxeLevel.getOrdered(getPickaxe(dead.getUuid()), -1));
+            Logger.debug(PickaxeLevel.getOrdered(getPickaxe(dead.getUuid()), -1).getItemID());
+        }
 
         boolean finalkill = false;
-        Component message = MM."\{getPlayerTeam(dead.getUuid()).orElseThrow().prefix()} \{dead.getUsername()}<RESET>";
+        Component message = Msg.mm(getPlayerTeam(dead.getUuid()).orElseThrow().prefix() + " " + dead.getUsername() + "<RESET>");
         if (!beds.get(getPlayerTeam(dead.getUuid()).orElseThrow())) {
             finalkill = true;
         }
-        switch (cause.toString().toUpperCase()) {
-            case "KILL" -> {
-                if (killer == null) {
-                    kill(dead, null, DamageType.OUT_OF_WORLD);
-                } else {
-                    statsManager.addPlayerKill(killer.getUuid());
-                    message = message.append(MM."<GRAY> was slain by \{getPlayerTeam(killer.getUuid()).orElseThrow().prefix()}\{killer.getUsername()}");
-                }
+        if (damageType.equals(DamageType.PLAYER_ATTACK)) {
+            if (killer == null) {
+                kill(dead, null, DamageType.OUT_OF_WORLD);
+            } else {
+                statsManager.addPlayerKill(killer.getUuid());
+                message = message.append(Msg.mm("<GRAY> was slain by " + getPlayerTeam(killer.getUuid()).orElseThrow().prefix() + killer.getUsername()));
             }
-            case "FALL" -> message = message.append(MM."<GRAY> has fallen to their death");
-            case "FIRE", "FIRE_TICK" -> message = message.append(MM."<GRAY> was roasted like a turkey");
-            case "LAVA" -> message = message.append(MM."<GRAY> discovered lava is hot");
-            case "VOID" -> message = message.append(MM."<GRAY> fell into the abyss");
-            case "FREEZE" -> message = message.append(MM."<GRAY> turned into an ice cube");
-            case "DROWNING" -> message = message.append(MM."<GRAY> forgot how to swim");
-            case "ENTITY_EXPLOSION", "BLOCK_EXPLOSION" -> message = message.append(MM."<GRAY> went <RED><BOLD>BOOM!");
-            case "PROJECTILE" -> message = message.append(MM."<GRAY> was remotely terminated");
-            default -> {
-                Logger.info(String.valueOf(cause));
-                message = message.append(MM."<GRAY> died under mysterious circumstances");
-            }
+        } else if (damageType.equals(DamageType.FALL)) {
+            message = message.append(Msg.mm("<GRAY> has fallen to their death"));
+        } else if (damageType.equals(DamageType.ON_FIRE)) {
+            message = message.append(Msg.mm("<GRAY> was roasted like a turkey"));
+        } else if (damageType.equals(DamageType.LAVA)) {
+            message = message.append(Msg.mm("<GRAY> discovered lava is hot"));
+        } else if (damageType.equals(DamageType.OUT_OF_WORLD)) {
+            message = message.append(Msg.mm("<GRAY> fell into the abyss"));
+        } else if (damageType.equals(DamageType.FREEZE)) {
+            message = message.append(Msg.mm("<GRAY> turned into an ice cube"));
+        } else if (damageType.equals(DamageType.DROWN)) {
+            message = message.append(Msg.mm("<GRAY> forgot how to swim"));
+        } else if (damageType.equals(DamageType.EXPLOSION)) {
+            message = message.append(Msg.mm("<GRAY> went <RED><BOLD>BOOM!"));
+        } else if (damageType.equals(DamageType.ARROW) || damageType.equals(DamageType.TRIDENT)) {
+            message = message.append(Msg.mm("<GRAY> was remotely terminated"));
+        } else {
+            Logger.error("unknown damage type: " + damageType.namespace());
+            message = message.append(Msg.mm("<GRAY> died under mysterious circumstances"));
         }
 
         dead.teleport(new Pos(0, 100, 0));
         if (finalkill) {
-            dead.showTitle(Title.title(MM."<BOLD><RED>YOU DIED!", MM."<YELLOW>You won't respawn", Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
-            message = message.append(MM."<BOLD><RED> FINAL KILL!");
+            dead.showTitle(Title.title(Msg.mm("<BOLD><RED>YOU DIED!"), Msg.mm("<YELLOW>You won't respawn"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
+            message = message.append(Msg.mm("<BOLD><RED> FINAL KILL!"));
             Component finalMessage = message;
             dead.setGameMode(GameMode.SPECTATOR);
             Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
@@ -249,7 +305,7 @@ public class GameManager {
         Component finalMessage = message;
         // respawn logic...
         Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
-        dead.showTitle(Title.title(MM."<BOLD><RED>You DIED!", MM."<YELLOW>You will respawn soon", Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(750), Duration.ofMillis(100))));
+        dead.showTitle(Title.title(Msg.mm("<BOLD><RED>You DIED!"), Msg.mm("<YELLOW>You will respawn soon"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
         dead.setGameMode(GameMode.SPECTATOR);
         dead.getInventory().clear();
         dead.setHealth(20);
@@ -263,22 +319,24 @@ public class GameManager {
         MinecraftServer.getSchedulerManager().buildTask(() -> dead.setInvulnerable(false)).delay(Duration.ofSeconds(5)).schedule();
         dead.teleport(getPlayerTeam(dead.getUuid()).orElseThrow().spawnLocation());
 
+        dead.getInventory().setItemStack(0, Items.DEFAULT_SWORD);
+
         // set armor
-        Logger.debug(String.format(armorLevels.get(dead.getUuid()).getLegsID(), getPlayerTeam(dead.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase()));
-        dead.getInventory().setLeggings(Items.get(String.format(armorLevels.get(dead.getUuid()).getLegsID(), getPlayerTeam(dead.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase())));
-        dead.getInventory().setBoots(Items.get(String.format(armorLevels.get(dead.getUuid()).getBootsID(), getPlayerTeam(dead.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase())));
-        dead.getInventory().setChestplate(Items.get(String.format("%s_CHEST", getPlayerTeam(dead.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase())));
+        setEquipment(dead);
 
         // set tools
         //todo: check for enchants / team upgrades
-        Logger.debug(getPickaxe(dead.getUuid()).getItemID());
         dead.getInventory().addItemStack(Items.get(getPickaxe(dead.getUuid()).getItemID()));
         dead.getInventory().addItemStack(Items.get(getAxe(dead.getUuid()).getItemID()));
-        if (shears.containsKey(dead.getUuid())) {
+        if (shears.get(dead.getUuid())) {
             dead.getInventory().addItemStack(Items.SHEARS);
         }
 
         alivePlayers.add(dead.getUuid());
+    }
+
+    public void sendPlayerToLobby(CytosisPlayer player) {
+        player.sendMessage("You got sent to the lobby!");
     }
 
     public void setArmor(UUID uuid, @NotNull ArmorLevel level) {

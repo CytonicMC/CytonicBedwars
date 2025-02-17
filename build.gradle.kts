@@ -10,6 +10,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven("https://repo.foxikle.dev/cytonic")
 }
 
@@ -17,11 +18,6 @@ dependencies {
     compileOnly("net.cytonic:Cytosis:1.0-SNAPSHOT")
     compileOnly("org.projectlombok:lombok:1.18.36") // lombok
     annotationProcessor("org.projectlombok:lombok:1.18.36") // lombok
-}
-
-tasks.withType<JavaCompile> {
-    // use String templates
-    options.compilerArgs.add("--enable-preview")
 }
 
 tasks {
@@ -35,6 +31,8 @@ tasks {
         mergeServiceFiles()
         archiveFileName.set("CytonicBedwars-${project.version}.jar")
         archiveClassifier.set("")
-        //destinationDirectory.set(File(providers.gradleProperty("server_dir").get() + "/plugins"))
+        if (providers.gradleProperty("server_dir").isPresent) {
+            destinationDirectory.set(file(providers.gradleProperty("server_dir").get() + "/plugins"))
+        }
     }
 }

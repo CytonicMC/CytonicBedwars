@@ -101,7 +101,7 @@ public final class CytonicBedwarsSettings {
                     default -> { /*Do nothing*/ }
                 }
             } catch (ClassCastException e) {
-                Logger.error(STR."Could not import config key: \{key}", e);
+                Logger.error("Could not import config key: " + key, e);
             }
         });
         Logger.info("Bedwars config imported!");

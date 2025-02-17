@@ -1,10 +1,13 @@
 package net.cytonic.cytonicbedwars;
 
 import lombok.NoArgsConstructor;
+import net.cytonic.cytonicbedwars.menu.spectators.SpectatorSelectMenu;
+import net.cytonic.cytonicbedwars.menu.spectators.SpectatorSpeedMenu;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.logging.Logger;
+import net.cytonic.cytosis.player.CytosisPlayer;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
-import net.minestom.server.entity.Player;
 import net.minestom.server.entity.metadata.item.FireballMeta;
 import net.minestom.server.event.player.PlayerBlockInteractEvent;
 import net.minestom.server.event.player.PlayerEntityInteractEvent;
@@ -13,7 +16,8 @@ import net.minestom.server.item.ItemStack;
 @NoArgsConstructor
 public class ItemAbilityDispatcher {
 
-    public void dispatch(String abilityKey, Player user, PlayerBlockInteractEvent event) {
+    public void dispatch(String abilityKey, CytosisPlayer user, PlayerBlockInteractEvent event) {
+        Logger.debug("test key = " + abilityKey);
         switch (abilityKey) {
             case "FIREBALL" -> {
                 ItemStack item = user.getItemInHand(event.getHand());
@@ -31,9 +35,9 @@ public class ItemAbilityDispatcher {
                 Entity entity = new Entity(EntityType.TNT);
                 entity.setInstance(Cytosis.getDefaultInstance(), event.getCursorPosition());
             }
-            case "SPECTATOR_COMPASS" -> user.openInventory(CytonicBedWars.getGameManager().getMenuManager().getSpectatorSelectorMenu());
-            case "LOBBY_REQUEST" -> user.sendMessage("No leaving >:)");
-            case "SPECTATOR_SPEED_SELECTOR" -> user.openInventory(CytonicBedWars.getGameManager().getMenuManager().getSpectatorSpeedMenu());
+            case "SPECTATOR_COMPASS" -> new SpectatorSelectMenu().open(user);
+            case "SPECTATOR_SPEED_SELECTOR" -> new SpectatorSpeedMenu().open(user);
+            case "LOBBY_REQUEST" -> CytonicBedWars.getGameManager().sendPlayerToLobby(user);
             default -> { // not an ability
                 return;
             }
@@ -41,7 +45,8 @@ public class ItemAbilityDispatcher {
         event.setCancelled(true);
     }
 
-    public void dispatch(String abilityKey, Player user, PlayerEntityInteractEvent event) {
+    public void dispatch(String abilityKey, CytosisPlayer user, PlayerEntityInteractEvent event) {
+        Logger.debug("test key = " + abilityKey);
         switch (abilityKey) {
             case "FIREBALL" -> {
                 ItemStack item = user.getItemInHand(event.getHand());
@@ -57,9 +62,9 @@ public class ItemAbilityDispatcher {
                 Entity entity = new Entity(EntityType.TNT);
                 entity.setInstance(Cytosis.getDefaultInstance(), event.getInteractPosition());
             }
-            case "SPECTATOR_COMPASS" -> user.openInventory(CytonicBedWars.getGameManager().getMenuManager().getSpectatorSelectorMenu());
-            case "LOBBY_REQUEST" -> user.sendMessage("No leaving >:)");
-            case "SPECTATOR_SPEED_SELECTOR" -> user.openInventory(CytonicBedWars.getGameManager().getMenuManager().getSpectatorSpeedMenu());
+            case "SPECTATOR_COMPASS" -> new SpectatorSelectMenu().open(user);
+            case "SPECTATOR_SPEED_SELECTOR" -> new SpectatorSpeedMenu().open(user);
+            case "LOBBY_REQUEST" -> CytonicBedWars.getGameManager().sendPlayerToLobby(user);
             default -> { // not an ability
             }
         }

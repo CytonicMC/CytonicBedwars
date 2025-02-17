@@ -24,7 +24,7 @@ public class Utils {
             case "LIGHT_PURPLE" -> NamedTextColor.LIGHT_PURPLE;
             case "YELLOW" -> NamedTextColor.YELLOW;
             case "WHITE" -> NamedTextColor.WHITE;
-            default -> throw new IllegalStateException(STR."Unexpected value: \{color.toUpperCase()}");
+            default -> throw new IllegalStateException("Unexpected value: " + color.toUpperCase());
         };
     }
 }

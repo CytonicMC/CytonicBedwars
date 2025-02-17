@@ -2,6 +2,7 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.utils.Items;
+import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.entity.GameMode;
@@ -10,12 +11,12 @@ import net.minestom.server.item.ItemComponent;
 import net.minestom.server.item.ItemStack;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 @NoArgsConstructor
 public class InventoryClickListener {
 
     public void onInventoryClick(InventoryPreClickEvent event) {
-
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         ItemStack item = event.getClickedItem();
         if (item.has(ItemComponent.CUSTOM_DATA)) {
@@ -26,7 +27,7 @@ public class InventoryClickListener {
                     if (Arrays.stream(slots).allMatch(value -> value != event.getSlot())) {
                         event.setClickedItem(ItemStack.AIR);
                         event.setCursorItem(ItemStack.AIR);
-                        event.getPlayer().sendMessage(Component.text(STR."Hey! We noticed a blacklisted item in your inventory, so we took it. Sorry! (slot \{event.getSlot()})", NamedTextColor.RED));
+                        event.getPlayer().sendMessage(Msg.whoops("<red>Hey! We noticed a blacklisted item in your inventory, so we took it. Sorry! (slot " + event.getSlot() + ")"));
                     }
                 }
             }

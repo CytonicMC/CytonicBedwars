@@ -2,34 +2,66 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.cytonic.cytonicbedwars.utils.Items;
+import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.player.CytosisPlayer;
+import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.entity.GameMode;
+import net.minestom.server.entity.ItemEntity;
 import net.minestom.server.event.player.PlayerBlockBreakEvent;
+import net.minestom.server.instance.block.Block;
+import net.minestom.server.instance.block.BlockFace;
+import net.minestom.server.item.ItemStack;
+
+import java.util.Objects;
 
 @NoArgsConstructor
 public class BlockBreakListener {
 
     public void onBlockBreak(PlayerBlockBreakEvent e) {
-        if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
-        if (CytonicBedWars.getGameManager().spectators.contains(e.getPlayer().getUuid())) {
-            e.getPlayer().sendMessage(Component.text("You cannot do this as a spectator!", NamedTextColor.RED));
+        CytosisPlayer player = (CytosisPlayer) e.getPlayer();
+        if (player.getGameMode() == GameMode.CREATIVE) return;
+        if (CytonicBedWars.getGameManager().spectators.contains(player.getUuid())) {
+            player.sendMessage(Msg.whoops("<red>You cannot do this as a spectator!"));
             e.setCancelled(true);
             return;
         }
         if (e.getBlock().name().contains("bed")) {
+            if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).isPresent()) {
+                if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).get().bedType().namespace().equals(e.getBlock().namespace())) {
+                    e.setCancelled(true);
+                    player.sendMessage(Msg.whoops("<red>You cannot break your own bed!"));
+                    return;
+                }
+            }
             CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
                 if (e.getBlock().name().equals(team.bedType().name())) {
-                    CytonicBedWars.getGameManager().breakBed(e.getPlayer(), team);
+                    CytonicBedWars.getGameManager().breakBed(player, team);
+                    Block block = e.getBlock();
+                    BlockFace facing = BlockFace.valueOf(block.getProperty("facing").toUpperCase());
+                    if (block.getProperty("part").equals("head")) {
+                        facing = facing.getOppositeFace();
+                    }
+                    e.getInstance().setBlock(e.getBlockPosition().relative(facing), Block.AIR);
                 }
             });
             return;
         }
-        if (!e.getBlock().hasNbt()) {
-            e.getPlayer().sendMessage(Component.text("You can only break blocks placed by players!", NamedTextColor.RED));
-        } else if (e.getBlock().nbt() != null && !e.getBlock().nbt().getBoolean("placedByPlayer")) {
+
+        if (e.getBlock().hasNbt()) {
+            if (!Objects.requireNonNull(e.getBlock().nbt()).getBoolean("placedByPlayer")) {
+                player.sendMessage(Msg.whoops("<red>You can only break blocks placed by players!"));
+                e.setCancelled(true);
+                return;
+            }
+        } else {
+            player.sendMessage(Msg.whoops("<red>You can only break blocks placed by players!"));
             e.setCancelled(true);
-            e.setResultBlock(e.getBlock());
+            return;
         }
+        ItemStack stack = Items.get(e.getBlock().nbt().getString("bwID"));
+        ItemEntity item = new ItemEntity(stack);
+        item.setInstance(Cytosis.getDefaultInstance(), e.getBlockPosition());
+        item.spawn();
     }
 }

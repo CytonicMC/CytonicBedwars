@@ -19,6 +19,7 @@ public class StatsManager {
 
     /**
      * Adds the player's uuid to the maps with empty values (0)
+     *
      * @param uuid The player to propagate values for
      */
     public void propagatePlayer(UUID uuid) {
@@ -33,6 +34,7 @@ public class StatsManager {
 
     /**
      * Gets the amount of vanilla minecraft damage a player has dealt.
+     *
      * @param uuid the player whose damage should be gotten
      * @return the damage the player has dealt
      */
@@ -42,6 +44,7 @@ public class StatsManager {
 
     /**
      * Gets the amount of vanilla minecraft damage a player has taken.
+     *
      * @param uuid the player whose damage should be gotten
      * @return the damage the player has taken
      */
@@ -51,55 +54,55 @@ public class StatsManager {
 
     /**
      * Adds to the total player damage
-     * @param uuid The player to add damage to
+     *
+     * @param uuid    The player to add damage to
      * @param ammount The amount of damage to add to the player
-     * @return the new total damage
      */
-    public double addPlayerDamageDealt(UUID uuid, double ammount) {
-        return playerDamangeDealt.put(uuid, playerDamangeDealt.get(uuid) + ammount);
+    public void addPlayerDamageDealt(UUID uuid, double ammount) {
+        playerDamangeDealt.put(uuid, playerDamangeDealt.get(uuid) + ammount);
     }
 
     /**
      * Adds to the total player damage
-     * @param uuid The player to add damage to
+     *
+     * @param uuid    The player to add damage to
      * @param ammount The amount of damage to add to the player
-     * @return the new total damage
      */
-    public double addPlayerDamageTaken(UUID uuid, double ammount) {
-        return playerDamangeTaken.put(uuid, playerDamangeTaken.get(uuid) + ammount);
+    public void addPlayerDamageTaken(UUID uuid, double ammount) {
+        playerDamangeTaken.put(uuid, playerDamangeTaken.get(uuid) + ammount);
     }
 
-    public int addPlayerKill(UUID uuid) {
-        return playerKills.put(uuid, playerKills.get(uuid) + 1);
+    public void addPlayerKill(UUID uuid) {
+        playerKills.put(uuid, playerKills.get(uuid) + 1);
     }
 
-    public int addPlayerFinalKill(UUID uuid) {
-        return playerFinalKills.put(uuid, playerFinalKills.get(uuid) + 1);
+    public void addPlayerFinalKill(UUID uuid) {
+        playerFinalKills.put(uuid, playerFinalKills.get(uuid) + 1);
     }
 
-    public int addPlayerDeath(UUID uuid) {
-        return playerDeaths.put(uuid, playerDeaths.get(uuid) + 1);
+    public void addPlayerDeath(UUID uuid) {
+        playerDeaths.put(uuid, playerDeaths.get(uuid) + 1);
     }
 
-    public int addPlayerBedBroken(UUID uuid) {
-        return playerBedsBroken.put(uuid, playerBedsBroken.get(uuid) + 1);
+    public void addPlayerBedBroken(UUID uuid) {
+        playerBedsBroken.put(uuid, playerBedsBroken.get(uuid) + 1);
     }
 
 
     public int getPlayerKills(UUID uuid) {
-        return playerKills.put(uuid, playerKills.get(uuid) + 1);
+        return playerKills.get(uuid);
     }
 
     public int getPlayerFinalKills(UUID uuid) {
-        return playerFinalKills.put(uuid, playerFinalKills.get(uuid) + 1);
+        return playerFinalKills.get(uuid);
     }
 
     public int getPlayerDeaths(UUID uuid) {
-        return playerDeaths.put(uuid, playerDeaths.get(uuid) + 1);
+        return playerDeaths.get(uuid);
     }
 
     public int getPlayerBedsBroken(UUID uuid) {
-        return playerBedsBroken.put(uuid, playerBedsBroken.get(uuid) + 1);
+        return playerBedsBroken.get(uuid);
     }
 
 }

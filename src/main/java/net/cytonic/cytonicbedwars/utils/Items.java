@@ -3,6 +3,7 @@ package net.cytonic.cytonicbedwars.utils;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.data.enums.MappableItem;
 import net.cytonic.cytonicbedwars.data.objects.Team;
+import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,8 +20,6 @@ import net.minestom.server.utils.Unit;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static net.cytonic.utils.MiniMessageTemplate.MM;
-
 @NoArgsConstructor
 public class Items {
     private static final Map<String, ItemStack> itemRegistry = new HashMap<>();
@@ -35,9 +34,9 @@ public class Items {
     // item constants
 
     // spectator items
-    public static ItemStack SPECTATOR_TARGET_SELECTOR = createItem("<GREEN>Target Selector", "SPECTATOR_COMPASS", Material.COMPASS, true, true, List.of(0), new HashMap<>(), "<GRAY>Right click to teleport to a player!");
-    public static ItemStack SPECTATOR_SPEED_SELECTOR = createItem("<AQUA>Speed Selector", "SPECTATOR_SPEED_SELECTOR", Material.HEART_OF_THE_SEA, true, true, List.of(4), new HashMap<>(), "<GRAY>Right click to change flight speed.");
-    public static ItemStack SPECTATOR_LOBBY_REQEST = createItem("<RED>Go to Lobby", "LOBBY_REQUEST", Material.RED_BED, true, true, List.of(8), new HashMap<>(), "<GOLD>To the lobby!");
+    public static ItemStack SPECTATOR_TARGET_SELECTOR = createItem("<GREEN>Target Selector", "SPECTATOR_COMPASS", Material.COMPASS, true, true, List.of(0), new HashMap<>(), "<gray>Right click to teleport to a player!");
+    public static ItemStack SPECTATOR_SPEED_SELECTOR = createItem("<AQUA>Speed Selector", "SPECTATOR_SPEED_SELECTOR", Material.HEART_OF_THE_SEA, true, true, List.of(4), new HashMap<>(), "<gray>Right click to change flight speed.");
+    public static ItemStack SPECTATOR_LOBBY_REQUEST = createItem("<RED>Go to Lobby", "LOBBY_REQUEST", Material.RED_BED, true, true, List.of(8), new HashMap<>(), "<gold>To the lobby!");
     public static ItemStack SPECTATOR_ARMOR = createItem(" ", "SPECTATOR_ARMOR", Material.BARRIER, true, true, List.of(36, 37, 38, 39), new HashMap<>());
 
     // shop items
@@ -76,7 +75,6 @@ public class Items {
     public static ItemStack LIGHT_GREY_WOOL = createItem("Wool", "LIGHT_GREY_WOOL", Material.LIGHT_GRAY_WOOL, false, false, List.of(), new HashMap<>());
     public static ItemStack BLACK_WOOL = createItem("Wool", "BLACK_WOOL", Material.BLACK_WOOL, false, false, List.of(), new HashMap<>());
 
-    // all 16 of the terracottas
     public static ItemStack RED_TERRACOTTA = createItem("Terracotta", "RED_TERRACOTTA", Material.RED_TERRACOTTA, false, false, List.of(), new HashMap<>());
     public static ItemStack ORANGE_TERRACOTTA = createItem("Terracotta", "ORANGE_TERRACOTTA", Material.ORANGE_TERRACOTTA, false, false, List.of(), new HashMap<>());
     public static ItemStack YELLOW_TERRACOTTA = createItem("Terracotta", "YELLOW_TERRACOTTA", Material.YELLOW_TERRACOTTA, false, false, List.of(), new HashMap<>());
@@ -108,65 +106,66 @@ public class Items {
     public static ItemStack DIAMOND_SWORD = createItem("Diamond Sword", "DIAMOND_SWORD", Material.DIAMOND_SWORD, false, false, List.of(), new HashMap<>());
     public static ItemStack SHIELD = createItem("Shield", "SHIELD", Material.SHIELD, false, false, List.of(), new HashMap<>());
     public static ItemStack BOW_1 = createItem("Bow", "BOW_1", Material.BOW, false, false, List.of(), new HashMap<>());
-    public static ItemStack BOW_2 = createItem("Bow", "BOW_2", Material.BOW, false, false, List.of(), Map.of(Enchantment.PUNCH, 1), "<GRAY>Power 1");
-    public static ItemStack BOW_3 = createItem("Bow", "BOW_3", Material.BOW, false, false, List.of(), Map.of(Enchantment.PUNCH, 3, Enchantment.POWER, 2), "<GRAY>Power 3", "<GRAY>Punch 2");
+    public static ItemStack BOW_2 = createItem("Bow", "BOW_2", Material.BOW, false, false, List.of(), Map.of(Enchantment.POWER, 1));
+    public static ItemStack BOW_3 = createItem("Bow", "BOW_3", Material.BOW, false, false, List.of(), Map.of(Enchantment.PUNCH, 1, Enchantment.POWER, 2));
     public static ItemStack CROSSBOW_1 = createItem("Crossbow", "CROSSBOW_1", Material.CROSSBOW, false, false, List.of(), new HashMap<>());
-    public static ItemStack CROSSBOW_2 = createItem("Crossbow", "CROSSBOW_2", Material.CROSSBOW, false, false, List.of(), Map.of(Enchantment.QUICK_CHARGE, 1), "<GRAY>Quick Charge 1");
-    public static ItemStack CROSSBOW_3 = createItem("Crossbow", "CROSSBOW_3", Material.CROSSBOW, false, false, List.of(), Map.of(Enchantment.QUICK_CHARGE, 2, Enchantment.MULTISHOT, 1), "<GRAY>Quick Charge 2", "<GRAY>Multishot");
-    public static ItemStack TRIDENT_1 = createItem("Trident", "TRIDENT_1", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.LOYALTY, 1), "<GRAY>Loyalty 1");
-    public static ItemStack TRIDENT_2 = createItem("Trident", "TRIDENT_2", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.RIPTIDE, 2), "<GRAY>Riptide 2");
-    public static ItemStack TRIDENT_3 = createItem("Trident", "TRIDENT_3", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.LOYALTY, 2, Enchantment.CHANNELING, 1), "<GRAY>Loyalty 2", "<GRAY>Channeling");
+    public static ItemStack CROSSBOW_2 = createItem("Crossbow", "CROSSBOW_2", Material.CROSSBOW, false, false, List.of(), Map.of(Enchantment.QUICK_CHARGE, 1));
+    public static ItemStack CROSSBOW_3 = createItem("Crossbow", "CROSSBOW_3", Material.CROSSBOW, false, false, List.of(), Map.of(Enchantment.QUICK_CHARGE, 2, Enchantment.MULTISHOT, 1));
+    public static ItemStack TRIDENT_1 = createItem("Trident", "TRIDENT_1", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.LOYALTY, 1));
+    public static ItemStack TRIDENT_2 = createItem("Trident", "TRIDENT_2", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.RIPTIDE, 1));
+    public static ItemStack TRIDENT_3 = createItem("Trident", "TRIDENT_3", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.LOYALTY, 2, Enchantment.CHANNELING, 1));
     public static ItemStack ARROW = createItem("Arrow", "ARROW", Material.ARROW, false, false, List.of(), new HashMap<>());
 
     // shop menu parts
     public static ItemStack MENU_SELECTED_PAGE = createItem(" ", "MENU_SELECTED_PAGE", Material.LIME_STAINED_GLASS_PANE, false, true, List.of(), Map.of(Enchantment.UNBREAKING, 1));
     public static ItemStack MENU_FILLER = createItem(" ", "MENU_FILLER", Material.GRAY_STAINED_GLASS_PANE, true, false, List.of(), new HashMap<>());
-    public static ItemStack MENU_BLOCKS = createItem("<GREEN>Building Blocks", "MENU_BLOCKS", Material.BRICKS, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_COMBAT = createItem("<GREEN>Weapons", "MENU_COMBAT", Material.DIAMOND_SWORD, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_ARMOR = createItem("<GREEN>Armor", "MENU_ARMOR", Material.DIAMOND_CHESTPLATE, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_TOOLS = createItem("<GREEN>Tools", "MENU_TOOLS", Material.DIAMOND_PICKAXE, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_POTIONS = createItem("<GREEN>Potions", "MENU_POTIONS", Material.BREWING_STAND, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_UTILS = createItem("<GREEN>Utilities", "MENU_UTILS", Material.FIRE_CHARGE, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_CUSTOM_ITEMS = createItem("<GREEN>Rotating Items", "MENU_CUSTOM", Material.ENDERMAN_SPAWN_EGG, false, true, List.of(), new HashMap<>(), "<GRAY>Click to browse!");
-    public static ItemStack MENU_WOOL = createItem("Wool", "MENU_WOOL", Material.WHITE_WOOL, false, true, List.of(), new HashMap<>(), "", "<GRAY>> 4 Iron");
-    public static ItemStack MENU_PLANKS = createItem("Planks", "MENU_PLANKS", Material.OAK_PLANKS, false, true, List.of(), new HashMap<>(), "", "<GOLD>> 4 Gold");
-    public static ItemStack MENU_TERRACOTTA = createItem("Terracotta", "MENU_TERRACOTTA", Material.TERRACOTTA, false, true, List.of(), new HashMap<>(), "", "<GRAY>> 10 Iron");
-    public static ItemStack MENU_END_STONE = createItem("End Stone", "MENU_END_STONE", Material.END_STONE, false, true, List.of(), new HashMap<>(), "", "<GRAY>> 24 Iron");
-    public static ItemStack MENU_BLAST_GLASS = createItem("Blast-Proof Glass", "MENU_BLAST_GLASS", Material.GLASS, false, true, List.of(), new HashMap<>(), "", "<GRAY>> 12 Iron");
-    public static ItemStack MENU_OBSIDIAN = createItem("Obsidian", "MENU_OBSIDIAN", Material.OBSIDIAN, false, true, List.of(), new HashMap<>(), "", "<DARK_GREEN>> 6 Emeralds");
-    public static ItemStack MENU_STONE_SWORD = createItem("Stone Sword", "MENU_STONE_SWORD", Material.STONE_SWORD, false, false, List.of(), new HashMap<>(), "", "<GRAY>> 10 Iron");
-    public static ItemStack MENU_IRON_SWORD = createItem("Iron Sword", "MENU_IRON_SWORD", Material.IRON_SWORD, false, false, List.of(), new HashMap<>(), "", "<GOLD>> 7 Gold");
-    public static ItemStack MENU_DIAMOND_SWORD = createItem("Diamond Sword", "MENU_DIAMOND_SWORD", Material.DIAMOND_SWORD, false, false, List.of(), new HashMap<>(), "", "<DARK_GREEN>> 7 Emeralds");
-    public static ItemStack MENU_SHIELD = createItem("Shield", "MENU_SHIELD", Material.SHIELD, false, false, List.of(), new HashMap<>(), "", "<GOLD>> 3 Gold");
-    public static ItemStack MENU_BOW_1 = createItem("Bow", "MENU_BOW_1", Material.BOW, false, false, List.of(), new HashMap<>(), "", "<GOLD>> 10 Gold");
-    public static ItemStack MENU_BOW_2 = createItem("Bow", "MENU_BOW_2", Material.BOW, false, false, List.of(), Map.of(Enchantment.PUNCH, 1), "<GRAY>Power 1", "", "<GOLD>> 18 Gold");
-    public static ItemStack MENU_BOW_3 = createItem("Bow", "MENU_BOW_3", Material.BOW, false, false, List.of(), Map.of(Enchantment.PUNCH, 1), "<GRAY>Power 3", "<GRAY>Punch 2", "", "<DARK_GREEN>> 5 Emeralds");
-    public static ItemStack MENU_CROSSBOW_1 = createItem("Crossbow", "MENU_CROSSBOW_1", Material.CROSSBOW, false, false, List.of(), new HashMap<>(), "", "<GOLD>> 12 Gold");
-    public static ItemStack MENU_CROSSBOW_2 = createItem("Crossbow", "MENU_CROSSBOW_2", Material.CROSSBOW, false, false, List.of(), Map.of(Enchantment.QUICK_CHARGE, 1), "<GRAY>Quick Charge 1", "", "<GOLD>> 20 Gold");
-    public static ItemStack MENU_CROSSBOW_3 = createItem("Crossbow", "MENU_CROSSBOW_3", Material.CROSSBOW, false, false, List.of(), Map.of(Enchantment.QUICK_CHARGE, 1), "<GRAY>Quick Charge 2", "<GRAY>Multishot", "", "<DARK_GREEN>> 8 Emeralds");
-    public static ItemStack MENU_TRIDENT_1 = createItem("Trident", "MENU_TRIDENT_1", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.PUNCH, 1), "<GRAY>Loyalty 1", "", "<GOLD>> 12 Gold");
-    public static ItemStack MENU_TRIDENT_2 = createItem("Trident", "MENU_TRIDENT_2", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.PUNCH, 1), "<GRAY>Riptide 2", "", "<DARK_GREEN>> 5 Emerald");
-    public static ItemStack MENU_TRIDENT_3 = createItem("Trident", "MENU_TRIDENT_3", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.PUNCH, 1), "<GRAY>Loyalty 2", "<GRAY>Channeling", "", "<DARK_GREEN>> 5 Emerald");
-    public static ItemStack MENU_ARROW = createItem("Arrow", "MENU_ARROW", Material.ARROW, false, false, List.of(), new HashMap<>(), "", "<GOLD>> 2 Gold");
-    public static ItemStack MENU_NETHERITE_BOOTS = createItem("Permanent Netherite Armor", "NETHERITE_BOOTS", Material.NETHERITE_BOOTS, false, false, List.of(), Map.of(), "<DARK_GREEN>> 16 Emeralds");
-    public static ItemStack MENU_DIAMOND_BOOTS = createItem("Permanent Diamond Armor", "DIAMOND_BOOTS", Material.DIAMOND_BOOTS, false, false, List.of(), Map.of(), "<DARK_GREEN>> 6 Emeralds");
-    public static ItemStack MENU_IRON_BOOTS = createItem("Permanent Iron Armor", "IRON_BOOTS", Material.IRON_BOOTS, false, false, List.of(), Map.of(), "<GOLD>> 12 Gold");
-    public static ItemStack MENU_CHAINMAIL_BOOTS = createItem("Permanent Chainmail Armor", "CHAINMAIL_BOOTS", Material.CHAINMAIL_BOOTS, false, false, List.of(), Map.of(), "<GRAY>> 40 Iron");
-    public static ItemStack MENU_SHEARS = createItem("Shears", "SHEARS", Material.SHEARS, false, true, List.of(), Map.of(), "", "<GRAY>> 24 Iron");
-    public static ItemStack MENU_WOODEN_AXE = createItem("Wooden Axe", "WOODEN_AXE", Material.WOODEN_AXE, false, true, List.of(), Map.of(), "", "<GRAY>> 10 Iron");
-    public static ItemStack MENU_STONE_AXE = createItem("Stone Axe", "STONE_AXE", Material.STONE_AXE, false, true, List.of(), Map.of(), "", "<GRAY>> 20 Iron");
-    public static ItemStack MENU_IRON_AXE = createItem("Iron Axe", "IRON_AXE", Material.IRON_AXE, false, true, List.of(), Map.of(), "", "<GOLD>> 6 Gold");
-    public static ItemStack MENU_DIAMOND_AXE = createItem("Diamond Axe", "DIAMOND_AXE", Material.DIAMOND_AXE, false, true, List.of(), Map.of(), "", "<DARK_GREEN>> 3 Emeralds");
-    public static ItemStack MENU_WOODEN_PICKAXE = createItem("Wooden Pickaxe", "WOODEN_PICKAXE", Material.WOODEN_PICKAXE, false, true, List.of(), Map.of(), "", "<GRAY>> 10 Iron");
-    public static ItemStack MENU_STONE_PICKAXE = createItem("Stone Pickaxe", "STONE_PICKAXE", Material.STONE_PICKAXE, false, true, List.of(), Map.of(), "", "<GRAY>> 20 Iron");
-    public static ItemStack MENU_IRON_PICKAXE = createItem("Iron Pickaxe", "IRON_PICKAXE", Material.IRON_PICKAXE, false, true, List.of(), Map.of(), "", "<GOLD>> 6 Gold");
-    public static ItemStack MENU_DIAMOND_PICKAXE = createItem("Diamond Pickaxe", "DIAMOND_PICKAXE", Material.DIAMOND_PICKAXE, false, true, List.of(), Map.of(), "", "<DARK_GREEN>> 3 Emeralds");
-    public static ItemStack MENU_FIRE_RESISTENCE_POTION = createPotion("Fire Resistence (60s)", "FIRE_RES_POT", PotionEffect.FIRE_RESISTANCE, 1200, 1, "", "<GOLD>> 6 Gold");
-    public static ItemStack MENU_INVISIBILITY_POTION = createPotion("Invisibility (30s)", "INVIS_POT", PotionEffect.INVISIBILITY, 600, 1, "", "<DARK_GREEN>> 2 Emeralds");
-    public static ItemStack MENU_JUMP_BOOST_POTION = createPotion("Jump Boost (60s)", "JUMP_BOOST_POT", PotionEffect.JUMP_BOOST, 1200, 5, "", "<DARK_GREEN>> 1 Emerald");
-    public static ItemStack MENU_SPEED_POTION = createPotion("Speed (60s)", "SPEED_POT", PotionEffect.SPEED, 1200, 2, "", "<DARK_GREEN>> 1 Emerald");
+    public static ItemStack MENU_BLOCKS = createItem("<GREEN>Building Blocks", "MENU_BLOCKS", Material.BRICKS, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
+    public static ItemStack MENU_COMBAT = createItem("<GREEN>Weapons", "MENU_COMBAT", Material.DIAMOND_SWORD, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
+    public static ItemStack MENU_ARMOR = createItem("<GREEN>Armor", "MENU_ARMOR", Material.DIAMOND_CHESTPLATE, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
+    public static ItemStack MENU_TOOLS = createItem("<GREEN>Tools", "MENU_TOOLS", Material.DIAMOND_PICKAXE, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
+    public static ItemStack MENU_POTIONS = createItem("<GREEN>Potions", "MENU_POTIONS", Material.BREWING_STAND, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
+    public static ItemStack MENU_UTILS = createItem("<GREEN>Utilities", "MENU_UTILS", Material.FIRE_CHARGE, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
+    public static ItemStack MENU_CUSTOM_ITEMS = createItem("<GREEN>Rotating Items", "MENU_CUSTOM", Material.ENDERMAN_SPAWN_EGG, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
+    public static ItemStack MENU_WOOL = createItem("Wool", "MENU_WOOL", Material.WHITE_WOOL, false, true, List.of(), new HashMap<>(), "", "<gray>> 4 Iron");
+    public static ItemStack MENU_PLANKS = createItem("Planks", "MENU_PLANKS", Material.OAK_PLANKS, false, true, List.of(), new HashMap<>(), "", "<gold>> 4 Gold");
+    public static ItemStack MENU_TERRACOTTA = createItem("Terracotta", "MENU_TERRACOTTA", Material.TERRACOTTA, false, true, List.of(), new HashMap<>(), "", "<gray>> 10 Iron");
+    public static ItemStack MENU_END_STONE = createItem("End Stone", "MENU_END_STONE", Material.END_STONE, false, true, List.of(), new HashMap<>(), "", "<gray>> 24 Iron");
+    public static ItemStack MENU_BLAST_GLASS = createItem("Blast-Proof Glass", "MENU_BLAST_GLASS", Material.GLASS, false, true, List.of(), new HashMap<>(), "", "<gray>> 12 Iron");
+    public static ItemStack MENU_OBSIDIAN = createItem("Obsidian", "MENU_OBSIDIAN", Material.OBSIDIAN, false, true, List.of(), new HashMap<>(), "", "<dark_green>> 6 Emeralds");
+    public static ItemStack MENU_STONE_SWORD = createItem("Stone Sword", "MENU_STONE_SWORD", Material.STONE_SWORD, false, false, List.of(), new HashMap<>(), "", "<gray>> 10 Iron");
+    public static ItemStack MENU_IRON_SWORD = createItem("Iron Sword", "MENU_IRON_SWORD", Material.IRON_SWORD, false, false, List.of(), new HashMap<>(), "", "<gold>> 7 Gold");
+    public static ItemStack MENU_DIAMOND_SWORD = createItem("Diamond Sword", "MENU_DIAMOND_SWORD", Material.DIAMOND_SWORD, false, false, List.of(), new HashMap<>(), "", "<dark_green>> 7 Emeralds");
+    public static ItemStack MENU_SHIELD = createItem("Shield", "MENU_SHIELD", Material.SHIELD, false, false, List.of(), new HashMap<>(), "", "<gold>> 3 Gold");
+    public static ItemStack MENU_BOW_1 = createItem("Bow", "MENU_BOW_1", Material.BOW, false, false, List.of(), new HashMap<>(), "", "<gold>> 10 Gold");
+    public static ItemStack MENU_BOW_2 = createItem("Bow", "MENU_BOW_2", Material.BOW, false, false, List.of(), Map.of(Enchantment.POWER, 1), "", "<gold>> 18 Gold");
+    public static ItemStack MENU_BOW_3 = createItem("Bow", "MENU_BOW_3", Material.BOW, false, false, List.of(), Map.of(Enchantment.PUNCH, 1, Enchantment.POWER, 2), "", "<dark_green>> 5 Emeralds");
+    public static ItemStack MENU_CROSSBOW_1 = createItem("Crossbow", "MENU_CROSSBOW_1", Material.CROSSBOW, false, false, List.of(), new HashMap<>(), "", "<gold>> 12 Gold");
+    public static ItemStack MENU_CROSSBOW_2 = createItem("Crossbow", "MENU_CROSSBOW_2", Material.CROSSBOW, false, false, List.of(), Map.of(Enchantment.QUICK_CHARGE, 1), "", "<gold>> 20 Gold");
+    public static ItemStack MENU_CROSSBOW_3 = createItem("Crossbow", "MENU_CROSSBOW_3", Material.CROSSBOW, false, false, List.of(), Map.of(Enchantment.QUICK_CHARGE, 2, Enchantment.MULTISHOT, 1), "", "<dark_green>> 8 Emeralds");
+    public static ItemStack MENU_TRIDENT_1 = createItem("Trident", "MENU_TRIDENT_1", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.LOYALTY, 1), "", "<gold>> 12 Gold");
+    public static ItemStack MENU_TRIDENT_2 = createItem("Trident", "MENU_TRIDENT_2", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.RIPTIDE, 1), "", "<dark_green>> 5 Emerald");
+    public static ItemStack MENU_TRIDENT_3 = createItem("Trident", "MENU_TRIDENT_3", Material.TRIDENT, false, false, List.of(), Map.of(Enchantment.LOYALTY, 2, Enchantment.CHANNELING, 1), "", "<dark_green>> 5 Emerald");
+    public static ItemStack MENU_ARROW = createItem("Arrow x8   ", "MENU_ARROW", Material.ARROW, false, false, List.of(), new HashMap<>(), "", "<gold>> 2 Gold");
+    public static ItemStack MENU_NETHERITE_BOOTS = createItem("Permanent Netherite Armor", "NETHERITE_BOOTS", Material.NETHERITE_BOOTS, false, false, List.of(), Map.of(), "<dark_green>> 16 Emeralds");
+    public static ItemStack MENU_DIAMOND_BOOTS = createItem("Permanent Diamond Armor", "DIAMOND_BOOTS", Material.DIAMOND_BOOTS, false, false, List.of(), Map.of(), "<dark_green>> 6 Emeralds");
+    public static ItemStack
+            MENU_IRON_BOOTS = createItem("Permanent Iron Armor", "IRON_BOOTS", Material.IRON_BOOTS, false, false, List.of(), Map.of(), "<gold>> 12 Gold");
+    public static ItemStack MENU_CHAINMAIL_BOOTS = createItem("Permanent Chainmail Armor", "CHAINMAIL_BOOTS", Material.CHAINMAIL_BOOTS, false, false, List.of(), Map.of(), "<gray>> 40 Iron");
+    public static ItemStack MENU_SHEARS = createItem("Shears", "SHEARS", Material.SHEARS, false, true, List.of(), Map.of(), "", "<gray>> 24 Iron");
+    public static ItemStack MENU_WOODEN_AXE = createItem("Wooden Axe", "WOODEN_AXE", Material.WOODEN_AXE, false, true, List.of(), Map.of(), "", "<gray>> 10 Iron");
+    public static ItemStack MENU_STONE_AXE = createItem("Stone Axe", "STONE_AXE", Material.STONE_AXE, false, true, List.of(), Map.of(), "", "<gray>> 20 Iron");
+    public static ItemStack MENU_IRON_AXE = createItem("Iron Axe", "IRON_AXE", Material.IRON_AXE, false, true, List.of(), Map.of(), "", "<gold>> 6 Gold");
+    public static ItemStack MENU_DIAMOND_AXE = createItem("Diamond Axe", "DIAMOND_AXE", Material.DIAMOND_AXE, false, true, List.of(), Map.of(), "", "<dark_green>> 3 Emeralds");
+    public static ItemStack MENU_WOODEN_PICKAXE = createItem("Wooden Pickaxe", "WOODEN_PICKAXE", Material.WOODEN_PICKAXE, false, true, List.of(), Map.of(), "", "<gray>> 10 Iron");
+    public static ItemStack MENU_STONE_PICKAXE = createItem("Stone Pickaxe", "STONE_PICKAXE", Material.STONE_PICKAXE, false, true, List.of(), Map.of(), "", "<gray>> 20 Iron");
+    public static ItemStack MENU_IRON_PICKAXE = createItem("Iron Pickaxe", "IRON_PICKAXE", Material.IRON_PICKAXE, false, true, List.of(), Map.of(), "", "<gold>> 6 Gold");
+    public static ItemStack MENU_DIAMOND_PICKAXE = createItem("Diamond Pickaxe", "DIAMOND_PICKAXE", Material.DIAMOND_PICKAXE, false, true, List.of(), Map.of(), "", "<dark_green>> 3 Emeralds");
+    public static ItemStack MENU_FIRE_RESISTANCE_POTION = createPotion("Fire Resistance (60s)", "FIRE_RES_POT", PotionEffect.FIRE_RESISTANCE, 1200, 1, "", "<gold>> 6 Gold");
+    public static ItemStack MENU_INVISIBILITY_POTION = createPotion("Invisibility (30s)", "INVIS_POT", PotionEffect.INVISIBILITY, 600, 1, "", "<dark_green>> 2 Emeralds");
+    public static ItemStack MENU_JUMP_BOOST_POTION = createPotion("Jump Boost (60s)", "JUMP_BOOST_POT", PotionEffect.JUMP_BOOST, 1200, 5, "", "<dark_green>> 1 Emerald");
+    public static ItemStack MENU_SPEED_POTION = createPotion("Speed (60s)", "SPEED_POT", PotionEffect.SPEED, 1200, 2, "", "<dark_green>> 1 Emerald");
 
-    // curency items
+    // currency items
     public static ItemStack IRON = createItem("Iron", "IRON", Material.IRON_NUGGET, false, false, List.of(), new HashMap<>());
     public static ItemStack GOLD = createItem("Gold", "GOLD", Material.GOLD_NUGGET, false, false, List.of(), new HashMap<>());
     public static ItemStack DIAMOND = createItem("Diamond", "DIAMOND", Material.DIAMOND, false, false, List.of(), new HashMap<>());
@@ -219,15 +218,14 @@ public class Items {
     // potion types:
     // Fire res, Invis, jump, speed
 
-    public static ItemStack FIRE_RESISTENCE_POTION = createPotion("Fire Resistence (60s)", "FIRE_RES_POT", PotionEffect.FIRE_RESISTANCE, 1200, 1);
+    public static ItemStack FIRE_RESISTANCE_POTION = createPotion("Fire Resistance (60s)", "FIRE_RES_POT", PotionEffect.FIRE_RESISTANCE, 1200, 1);
     public static ItemStack INVISIBILITY_POTION = createPotion("Invisibility (30s)", "INVIS_POT", PotionEffect.INVISIBILITY, 600, 1);
     public static ItemStack JUMP_BOOST_POTION = createPotion("Jump Boost (60s)", "JUMP_BOOST_POT", PotionEffect.JUMP_BOOST, 1200, 5);
     public static ItemStack SPEED_POTION = createPotion("Speed (60s)", "SPEED_POT", PotionEffect.SPEED, 1200, 2);
-    //todo: IDEA: Grappling hook that works kinda like skyblocks moody grappleshot -- could be a global cap, or someth
 
     private static ItemStack createItem(String displayName, String id, Material type, boolean noMove, boolean noDrop, List<Integer> allowedSlots, Map<DynamicRegistry.Key<Enchantment>, Integer> enchants, String... lore) {
         List<Component> list = new ArrayList<>();
-        for (String s : lore) list.add(MM."\{s}");
+        for (String s : lore) list.add(Msg.mm(s));
         EnchantmentList enchantmentList = new EnchantmentList(enchants);
         CompoundBinaryTag.Builder builder = CompoundBinaryTag.builder();
         if (noDrop) {
@@ -239,7 +237,7 @@ public class Items {
         }
         builder.putString(NAMESPACE, id);
         ItemStack item = ItemStack.builder(type)
-                .set(ItemComponent.ITEM_NAME, MM."\{displayName}")
+                .set(ItemComponent.ITEM_NAME, Msg.mm(displayName))
                 .set(ItemComponent.LORE, list)
                 .set(ItemComponent.UNBREAKABLE, new Unbreakable(false))
                 .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
@@ -258,7 +256,7 @@ public class Items {
         builder.putString(NAMESPACE, id);
 
         ItemStack item = ItemStack.builder(type)
-                .set(ItemComponent.ITEM_NAME, MM."<RESET>\{name}")
+                .set(ItemComponent.ITEM_NAME, Msg.mm(name))
                 .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
                 .set(ItemComponent.UNBREAKABLE, new Unbreakable(false))
                 .set(ItemComponent.DYED_COLOR, new DyedItemColor(color))
@@ -270,12 +268,12 @@ public class Items {
 
     private static ItemStack createPotion(String name, String id, PotionEffect pot, int duration, int amplifier, String... lore) {
         List<Component> list = new ArrayList<>();
-        for (String s : lore) list.add(MM."\{s}");
+        for (String s : lore) list.add(Msg.mm(s));
         CustomPotionEffect effect = new CustomPotionEffect(pot, Byte.parseByte(String.valueOf(amplifier - 1)), duration, true, true, true);
         PotionContents contents = new PotionContents(effect);
         ItemStack item = ItemStack.builder(Material.POTION)
                 .set(ItemComponent.POTION_CONTENTS, contents)
-                .set(ItemComponent.ITEM_NAME, MM."<RESET>\{name}")
+                .set(ItemComponent.CUSTOM_NAME, Msg.mm(name))
                 .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
                 .set(ItemComponent.UNBREAKABLE, new Unbreakable(false))
                 .set(ItemComponent.LORE, list)
@@ -295,9 +293,10 @@ public class Items {
     }
 
     public static ItemStack getTeamMapped(MappableItem mappableItem, Team team) {
+        final String string = team.color().replaceAll("<", "").replaceAll(">", "");
         switch (mappableItem) {
             case WOOL -> {
-                switch (team.color().toUpperCase().replaceAll("<", "").replaceAll(">", "")) {
+                switch (string.toUpperCase()) {
                     case "RED" -> {
                         return Items.RED_WOOL;
                     }
@@ -349,7 +348,7 @@ public class Items {
                 }
             }
             case GLASS -> {
-                switch (team.color().replaceAll("<", "").replaceAll(">", "").toUpperCase()) {
+                switch (string.toUpperCase()) {
                     case "RED" -> {
                         return Items.RED_BLAST_PROOF_GLASS;
                     }
@@ -401,7 +400,7 @@ public class Items {
                 }
             }
             case TERRACOTTA -> {
-                switch (team.color().replaceAll("<", "").replaceAll(">", "").toUpperCase()) {
+                switch (string.toUpperCase()) {
                     case "RED" -> {
                         return Items.RED_TERRACOTTA;
                     }
