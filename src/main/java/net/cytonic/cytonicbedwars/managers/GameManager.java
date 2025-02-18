@@ -14,7 +14,6 @@ import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;
 import net.cytonic.cytonicbedwars.runnables.RespawnRunnable;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytonicbedwars.utils.Items;
-import net.cytonic.cytonicbedwars.utils.Utils;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.npcs.NPC;
@@ -160,9 +159,9 @@ public class GameManager {
     }
 
     private void setEquipment(Player player) {
-        player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.get(String.format(armorLevels.get(player.getUuid()).getBootsID(), getPlayerTeam(player.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase())));
-        player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), (Items.get(String.format(armorLevels.get(player.getUuid()).getLegsID(), getPlayerTeam(player.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase()))));
-        player.getInventory().setEquipment(EquipmentSlot.CHESTPLATE, player.getHeldSlot(), (Items.get(String.format("%s_CHEST", getPlayerTeam(player.getUuid()).orElseThrow().color().replaceAll("<", "").replaceAll(">", "").toUpperCase()))));
+        player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.get(String.format(armorLevels.get(player.getUuid()).getBootsID(), getPlayerTeam(player.getUuid()).orElseThrow().color().toString().toUpperCase())));
+        player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), (Items.get(String.format(armorLevels.get(player.getUuid()).getLegsID(), getPlayerTeam(player.getUuid()).orElseThrow().color().toString().toUpperCase()))));
+        player.getInventory().setEquipment(EquipmentSlot.CHESTPLATE, player.getHeldSlot(), (Items.get(String.format("%s_CHEST", getPlayerTeam(player.getUuid()).orElseThrow().color().toString().toUpperCase()))));
     }
 
     private Map<Team, List<UUID>> splitPlayersIntoTeams(List<UUID> players) {
@@ -177,7 +176,7 @@ public class GameManager {
             t.setCollisionRule(TeamsPacket.CollisionRule.PUSH_OTHER_TEAMS);
             t.setSeeInvisiblePlayers(true);
             t.setAllowFriendlyFire(false);
-            t.setTeamColor(Utils.getColor(team.color()));
+            t.setTeamColor(team.color());
             t.setPrefix(Msg.mm(team.prefix()));
             mcTeams.put(team, t);
             List<UUID> teamPlayers = new ArrayList<>();

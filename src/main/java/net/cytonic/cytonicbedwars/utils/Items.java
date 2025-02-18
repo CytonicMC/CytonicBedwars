@@ -293,7 +293,7 @@ public class Items {
     }
 
     public static ItemStack getTeamMapped(MappableItem mappableItem, Team team) {
-        final String string = team.color().replaceAll("<", "").replaceAll(">", "");
+        final String string = team.color().toString().toUpperCase();
         switch (mappableItem) {
             case WOOL -> {
                 switch (string.toUpperCase()) {

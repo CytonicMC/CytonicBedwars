@@ -6,6 +6,7 @@ import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.utils.PosSerializer;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.block.Block;
 
@@ -40,6 +41,7 @@ public final class CytonicBedwarsSettings {
      * @param jsonObject The config json object
      */
     public static void importConfig(JsonObject jsonObject) {
+        long time = System.currentTimeMillis();
         Logger.info("Importing bedwars config!");
         jsonObject.asMap().forEach((key, value) -> {
             try {
@@ -60,7 +62,7 @@ public final class CytonicBedwarsSettings {
                             Team t = new Team(
                                     key1,
                                     obj1.get("tab_prefix").getAsString(),
-                                    obj1.get("team_color").getAsString(),
+                                    NamedTextColor.NAMES.value(obj1.get("team_color").getAsString()),
                                     Block.fromNamespaceId(obj1.get("bed_item").getAsString()),
                                     PosSerializer.deserialize(obj1.get("spawn_location").getAsString()),
                                     PosSerializer.deserialize(obj1.get("generation_location").getAsString()),
@@ -76,15 +78,11 @@ public final class CytonicBedwarsSettings {
                     }
                     case "generators_wait_time" -> {
                         JsonObject generatorsWaitTime = value.getAsJsonObject();
-                        generatorsWaitTime.asMap().forEach((key1, value1) -> {
-                            CytonicBedwarsSettings.generatorsWaitTime.put(GeneratorType.valueOf(key1.toUpperCase()), value1.getAsInt());
-                        });
+                        generatorsWaitTime.asMap().forEach((key1, value1) -> CytonicBedwarsSettings.generatorsWaitTime.put(GeneratorType.valueOf(key1.toUpperCase()), value1.getAsInt()));
                     }
                     case "generators_wait_time_ticks" -> {
                         JsonObject generatorsWaitTime = value.getAsJsonObject();
-                        generatorsWaitTime.asMap().forEach((key1, value1) -> {
-                            CytonicBedwarsSettings.generatorsWaitTimeTicks.put(GeneratorType.valueOf(key1.toUpperCase()), value1.getAsInt());
-                        });
+                        generatorsWaitTime.asMap().forEach((key1, value1) -> CytonicBedwarsSettings.generatorsWaitTimeTicks.put(GeneratorType.valueOf(key1.toUpperCase()), value1.getAsInt()));
                     }
                     case "generators_item_limit" -> {
                         JsonObject generatorsWaitTime = value.getAsJsonObject();
@@ -104,6 +102,6 @@ public final class CytonicBedwarsSettings {
                 Logger.error("Could not import config key: " + key, e);
             }
         });
-        Logger.info("Bedwars config imported!");
+        Logger.info("Bedwars config imported in " + (System.currentTimeMillis() - time) + "ms!");
     }
 }
