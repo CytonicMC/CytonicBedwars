@@ -7,7 +7,6 @@ import net.cytonic.cytonicbedwars.utils.Items;
 import net.minestom.server.entity.Player;
 import net.minestom.server.item.ItemComponent;
 import net.minestom.server.item.ItemStack;
-import net.minestom.server.item.Material;
 
 import java.util.Objects;
 
@@ -56,21 +55,18 @@ public class PlayerInventoryManager {
     }
 
     public boolean hasSpace(Player player) {
-        int i = 0;
         for (ItemStack stack : player.getInventory().getItemStacks()) {
-            if (i >= 36) return false;
-            if (stack.material() == Material.AIR) {
+            if (stack.isAir()) {
                 return true;
             }
-            i++;
         }
         return false;
     }
 
-    public boolean setAxe(AxeLevel level, Player player) {
+    public void setAxe(AxeLevel level, Player player) {
         if (level == AxeLevel.WOODEN) { // doesn't have an axe to remove
             player.getInventory().addItemStack(Items.WOODEN_AXE);
-            return true;
+            return;
         }
         ItemStack[] items = player.getInventory().getItemStacks();
         for (int i = 0; i < player.getInventory().getItemStacks().length; i++) {
@@ -79,17 +75,16 @@ public class PlayerInventoryManager {
                 String id = Objects.requireNonNull(items[i].get(ItemComponent.CUSTOM_DATA)).nbt().getString(Items.NAMESPACE);
                 if (id.equals(oldID)) {
                     player.getInventory().setItemStack(i, Items.get(level.getItemID()));
-                    return true;
+                    return;
                 }
             }
         }
-        return false;
     }
 
-    public boolean setPickaxe(PickaxeLevel level, Player player) {
+    public void setPickaxe(PickaxeLevel level, Player player) {
         if (level == PickaxeLevel.WOODEN) { // doesn't have an axe to remove
             player.getInventory().addItemStack(Items.WOODEN_PICKAXE);
-            return true;
+            return;
         }
         ItemStack[] items = player.getInventory().getItemStacks();
         for (int i = 0; i < player.getInventory().getItemStacks().length; i++) {
@@ -98,10 +93,9 @@ public class PlayerInventoryManager {
                 String id = Objects.requireNonNull(items[i].get(ItemComponent.CUSTOM_DATA)).nbt().getString(Items.NAMESPACE);
                 if (id.equals(oldID)) {
                     player.getInventory().setItemStack(i, Items.get(level.getItemID()));
-                    return true;
+                    return;
                 }
             }
         }
-        return false;
     }
 }
