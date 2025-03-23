@@ -4,10 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
 import net.cytonic.cytonicbedwars.ItemAbilityDispatcher;
-import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
-import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
-import net.cytonic.cytonicbedwars.data.enums.GameState;
-import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
+import net.cytonic.cytonicbedwars.data.enums.*;
+import net.cytonic.cytonicbedwars.data.objects.PlayerList;
 import net.cytonic.cytonicbedwars.data.objects.Scoreboard;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;
@@ -80,18 +78,18 @@ public class GameManager {
     @Getter
     private final ItemAbilityDispatcher itemAbilityDispatcher;
 
-    public GameManager() {
+    public GameManager() {eas
         statsManager = new StatsManager();
         worldManager = new WorldManager();
         playerInventoryManager = new PlayerInventoryManager();
         generatorManager = new GeneratorManager();
         itemAbilityDispatcher = new ItemAbilityDispatcher();
+        Cytosis.getSideboardManager().setSideboardCreator(new Scoreboard());
+        Cytosis.getPlayerListManager().setCreator(new PlayerList());
     }
 
     public void setup() {
         worldManager.loadWorld();
-        Cytosis.getSideboardManager().setSideboardCreator(new Scoreboard());
-        //Cytosis.getPlayerListManager().setCreator(new PlayerList());
         gameState = GameState.WAITING;
         CytonicBedwarsSettings.teams.forEach((s, t) -> {
             teamlist.add(t);
