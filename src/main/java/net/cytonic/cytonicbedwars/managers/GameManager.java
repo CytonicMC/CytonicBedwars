@@ -78,7 +78,7 @@ public class GameManager {
     @Getter
     private final ItemAbilityDispatcher itemAbilityDispatcher;
 
-    public GameManager() {eas
+    public GameManager() {
         statsManager = new StatsManager();
         worldManager = new WorldManager();
         playerInventoryManager = new PlayerInventoryManager();
