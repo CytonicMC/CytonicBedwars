@@ -144,6 +144,7 @@ public class GameManager {
                     .interactTrigger((npc, npcInteractType, player) -> player.sendMessage(Msg.mm("<RED>Coming soon")))
                     .skin(QUESTIONMARK_NPC_SKIN_VALUE, QUESTIONMARK_NPC_SKIN_SIGNATURE)
                     .lines(Msg.mm("<RED>Coming soon"))
+                    .invulnerable()
                     .build();
             npcs.add(teamShop);
 
@@ -151,6 +152,7 @@ public class GameManager {
                     .interactTrigger((npc, npcInteractType, player) -> new BlocksShopMenu().open(player))
                     .skin(NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE)
                     .lines(Msg.mm("<GOLD><bold>ITEM SHOP"))
+                    .invulnerable()
                     .build();
             npcs.add(itemShop);
         }
