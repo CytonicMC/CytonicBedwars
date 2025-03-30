@@ -3,8 +3,6 @@ package net.cytonic.cytonicbedwars.listeners;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.utils.Msg;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.event.inventory.InventoryPreClickEvent;
 import net.minestom.server.item.ItemComponent;
