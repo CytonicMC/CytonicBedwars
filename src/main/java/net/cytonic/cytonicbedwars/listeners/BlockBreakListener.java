@@ -22,7 +22,7 @@ public class BlockBreakListener {
         CytosisPlayer player = (CytosisPlayer) e.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE) return;
         if (CytonicBedWars.getGameManager().spectators.contains(player.getUuid())) {
-            player.sendMessage(Msg.whoops("<red>You cannot do this as a spectator!"));
+            player.sendMessage(Msg.whoops("You cannot do this as a spectator!"));
             e.setCancelled(true);
             return;
         }
@@ -30,7 +30,7 @@ public class BlockBreakListener {
             if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).isPresent()) {
                 if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).get().bedType().key().equals(e.getBlock().key())) {
                     e.setCancelled(true);
-                    player.sendMessage(Msg.whoops("<red>You cannot break your own bed!"));
+                    player.sendMessage(Msg.whoops("You cannot break your own bed!"));
                     return;
                 }
             }
@@ -50,12 +50,12 @@ public class BlockBreakListener {
 
         if (e.getBlock().hasNbt()) {
             if (!Objects.requireNonNull(e.getBlock().nbt()).getBoolean("placedByPlayer")) {
-                player.sendMessage(Msg.whoops("<red>You can only break blocks placed by players!"));
+                player.sendMessage(Msg.whoops("You can only break blocks placed by players!"));
                 e.setCancelled(true);
                 return;
             }
         } else {
-            player.sendMessage(Msg.whoops("<red>You can only break blocks placed by players!"));
+            player.sendMessage(Msg.whoops("You can only break blocks placed by players!"));
             e.setCancelled(true);
             return;
         }

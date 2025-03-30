@@ -42,7 +42,7 @@ public class SpectatorSelectMenu extends ViewProvider {
             PrebuiltItem item = PrebuiltItem.of(stack, action -> {
                 action.getEvent().setCancelled(true);
                 if (Cytosis.getPlayer(UUID.fromString(Objects.requireNonNull(action.getEvent().getClickedItem().get(ItemComponent.CUSTOM_DATA)).nbt().getString("uuid"))).isEmpty()) {
-                    player.sendMessage(Msg.whoops("<red>That player is not online."));
+                    player.sendMessage(Msg.whoops("That player is not online."));
                     open(player);
                 } else {
                     Player target = Cytosis.getPlayer(Objects.requireNonNull(action.getEvent().getClickedItem().get(ItemComponent.CUSTOM_DATA)).nbt().getString("uuid")).orElseThrow();
