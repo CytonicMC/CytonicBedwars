@@ -23,55 +23,55 @@ public class SpectatorSpeedMenu extends ViewProvider {
             ItemStack.builder(Material.LEATHER_BOOTS)
                     .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
                     .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.mm("<green>0.1x flight speed"))
+                    .set(ItemComponent.ITEM_NAME, Msg.mm("0.1x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.01f);
-                action.getPlayer().sendMessage(Msg.success("<green>Your flight speed is now <gold>0.1x"));
+                action.getPlayer().sendMessage(Msg.success("Your flight speed is now <gold>0.1x"));
             });
 
     private static final PrebuiltItem halfSpeed = PrebuiltItem.of(
             ItemStack.builder(Material.CHAINMAIL_BOOTS)
                     .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
                     .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.mm("<green>0.5x flight speed"))
+                    .set(ItemComponent.ITEM_NAME, Msg.mm("0.5x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.05f);
-                action.getPlayer().sendMessage(Msg.success("<green>Your flight speed is now <gold>0.5x"));
+                action.getPlayer().sendMessage(Msg.success("Your flight speed is now <gold>0.5x"));
             });
 
     private static final PrebuiltItem normalSpeed = PrebuiltItem.of(
             ItemStack.builder(Material.IRON_BOOTS)
                     .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
                     .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.mm("<green>1x flight speed"))
+                    .set(ItemComponent.ITEM_NAME, Msg.mm("1x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.1f);
-                action.getPlayer().sendMessage(Msg.success("<green>Your flight speed is now <gold>1x"));
+                action.getPlayer().sendMessage(Msg.success("Your flight speed is now <gold>1x"));
             });
 
     private static final PrebuiltItem x2Speed = PrebuiltItem.of(
             ItemStack.builder(Material.GOLDEN_BOOTS)
                     .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
                     .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.mm("<green>2x flight speed"))
+                    .set(ItemComponent.ITEM_NAME, Msg.mm("2x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.2f);
-                action.getPlayer().sendMessage(Msg.success("<green>Your flight speed is now <gold>2x"));
+                action.getPlayer().sendMessage(Msg.success("Your flight speed is now <gold>2x"));
             });
 
     private static final PrebuiltItem x5Speed = PrebuiltItem.of(
             ItemStack.builder(Material.DIAMOND_BOOTS)
                     .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
                     .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.mm("<green>5x flight speed"))
+                    .set(ItemComponent.ITEM_NAME, Msg.mm("5x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.5f);
-                action.getPlayer().sendMessage(Msg.success("<green>Your flight speed is now <gold>5x"));
+                action.getPlayer().sendMessage(Msg.success("Your flight speed is now <gold>5x"));
             });
 
     public SpectatorSpeedMenu() {

@@ -46,7 +46,7 @@ public class SpectatorSelectMenu extends ViewProvider {
                     open(player);
                 } else {
                     Player target = Cytosis.getPlayer(Objects.requireNonNull(action.getEvent().getClickedItem().get(ItemComponent.CUSTOM_DATA)).nbt().getString("uuid")).orElseThrow();
-                    player.sendMessage(Msg.success("<green>Teleported you to " + target.getUsername() + "!"));
+                    player.sendMessage(Msg.success("Teleported you to " + target.getUsername() + "!"));
                     player.teleport(target.getPosition());
                 }
             });
