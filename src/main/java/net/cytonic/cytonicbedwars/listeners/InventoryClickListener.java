@@ -25,7 +25,7 @@ public class InventoryClickListener {
                     if (Arrays.stream(slots).allMatch(value -> value != event.getSlot())) {
                         event.setClickedItem(ItemStack.AIR);
                         event.setCursorItem(ItemStack.AIR);
-                        event.getPlayer().sendMessage(Msg.whoops("Hey! We noticed a blacklisted item in your inventory, so we took it. Sorry! (slot " + event.getSlot() + ")"));
+                        event.getPlayer().sendMessage(Msg.redSplash("HEY!", "We noticed a blacklisted item in your inventory, so we took it. Sorry! (slot %d)", event.getSlot()));
                     }
                 }
             }
