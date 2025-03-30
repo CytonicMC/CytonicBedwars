@@ -35,7 +35,7 @@ public final class CytonicBedWars implements CytosisPlugin {
             System.exit(0);
             return;
         }
-        //Cytosis.setServerGroup(new ServerGroup("bedwars", gameType, false));
+        Cytosis.setServerGroup(new ServerGroup("bedwars", gameType, false));
         Cytosis.getInstanceManager().getExtraData(worldName, worldType).whenComplete((extraData, throwable) -> {
             if (throwable != null) {
                 Logger.error("error", throwable);
