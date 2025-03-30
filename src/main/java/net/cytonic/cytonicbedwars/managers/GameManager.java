@@ -286,7 +286,7 @@ public class GameManager {
         } else if (damageType.equals(DamageType.ARROW) || damageType.equals(DamageType.TRIDENT)) {
             message = message.append(Msg.mm("<GRAY> was remotely terminated"));
         } else {
-            Logger.error("unknown damage type: " + damageType.namespace());
+            Logger.error("unknown damage type: " + damageType.key());
             message = message.append(Msg.mm("<GRAY> died under mysterious circumstances"));
         }
 

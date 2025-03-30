@@ -28,7 +28,7 @@ public class BlockBreakListener {
         }
         if (e.getBlock().name().contains("bed")) {
             if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).isPresent()) {
-                if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).get().bedType().namespace().equals(e.getBlock().namespace())) {
+                if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).get().bedType().key().equals(e.getBlock().key())) {
                     e.setCancelled(true);
                     player.sendMessage(Msg.whoops("<red>You cannot break your own bed!"));
                     return;

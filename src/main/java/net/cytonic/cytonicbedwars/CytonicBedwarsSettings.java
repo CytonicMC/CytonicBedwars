@@ -63,15 +63,15 @@ public final class CytonicBedwarsSettings {
                                     key1,
                                     obj1.get("tab_prefix").getAsString(),
                                     NamedTextColor.NAMES.value(obj1.get("team_color").getAsString()),
-                                    Block.fromNamespaceId(obj1.get("bed_item").getAsString()),
+                                    Block.fromKey(obj1.get("bed_item").getAsString()),
                                     PosSerializer.deserialize(obj1.get("spawn_location").getAsString()),
                                     PosSerializer.deserialize(obj1.get("generation_location").getAsString()),
                                     PosSerializer.deserialize(obj1.get("item_shop_location").getAsString()),
                                     PosSerializer.deserialize(obj1.get("team_shop_location").getAsString()),
                                     PosSerializer.deserialize(obj1.get("team_chest_location").getAsString()),
-                                    Block.fromNamespaceId(obj1.get("wool_item").getAsString()),
-                                    Block.fromNamespaceId(obj1.get("glass_item").getAsString()),
-                                    Block.fromNamespaceId(obj1.get("terracotta_item").getAsString())
+                                    Block.fromKey(obj1.get("wool_item").getAsString()),
+                                    Block.fromKey(obj1.get("glass_item").getAsString()),
+                                    Block.fromKey(obj1.get("terracotta_item").getAsString())
                             );
                             CytonicBedwarsSettings.teams.put(key1, t);
                         });
