@@ -4,7 +4,8 @@
   "version": "1.0-SNAPSHOT",
   "description": "The plugin for bedwars",
   "authors": [
-    "CytonicMC"
+    "Webhead1104",
+    "Foxikle"
   ],
   "dependencies": [],
   "main": "net.cytonic.cytonicbedwars.CytonicBedWars"
