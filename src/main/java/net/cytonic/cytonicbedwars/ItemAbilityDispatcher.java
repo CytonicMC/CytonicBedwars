@@ -37,7 +37,7 @@ public class ItemAbilityDispatcher {
             }
             case "SPECTATOR_COMPASS" -> new SpectatorSelectMenu().open(user);
             case "SPECTATOR_SPEED_SELECTOR" -> new SpectatorSpeedMenu().open(user);
-            case "LOBBY_REQUEST" -> CytonicBedWars.getGameManager().sendPlayerToLobby(user);
+            case "LOBBY_REQUEST" -> CytonicBedWars.getGameManager().sendToLobby(user);
             default -> { // not an ability
                 return;
             }
@@ -64,7 +64,7 @@ public class ItemAbilityDispatcher {
             }
             case "SPECTATOR_COMPASS" -> new SpectatorSelectMenu().open(user);
             case "SPECTATOR_SPEED_SELECTOR" -> new SpectatorSpeedMenu().open(user);
-            case "LOBBY_REQUEST" -> CytonicBedWars.getGameManager().sendPlayerToLobby(user);
+            case "LOBBY_REQUEST" -> CytonicBedWars.getGameManager().sendToLobby(user);
             default -> { // not an ability
             }
         }

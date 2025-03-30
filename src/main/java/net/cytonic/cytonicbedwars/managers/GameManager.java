@@ -203,7 +203,7 @@ public class GameManager {
         generatorManager.removeGenerators();
         MinecraftServer.getSchedulerManager().buildTask(() -> {
             for (CytosisPlayer player : Cytosis.getOnlinePlayers()) {
-                sendPlayerToLobby(player);
+                sendToLobby(player);
             }
             cleanup();
         }).delay(Duration.ofSeconds(10)).schedule();
@@ -334,8 +334,8 @@ public class GameManager {
         alivePlayers.add(dead.getUuid());
     }
 
-    public void sendPlayerToLobby(CytosisPlayer player) {
-        player.sendMessage("You got sent to the lobby!");
+    public void sendToLobby(CytosisPlayer player) {
+        Cytosis.getNatsManager().sendPlayerToServer(player.getUuid(), "cytonic", "lobby", "The Lobby");
     }
 
     public void setArmor(UUID uuid, @NotNull ArmorLevel level) {
