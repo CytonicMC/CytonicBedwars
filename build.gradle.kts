@@ -10,7 +10,6 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    mavenLocal()
     maven("https://repo.foxikle.dev/cytonic")
 }
 
