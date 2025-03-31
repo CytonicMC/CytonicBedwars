@@ -15,8 +15,8 @@ repositories {
 
 dependencies {
     compileOnly("net.cytonic:Cytosis:1.0-SNAPSHOT")
-    compileOnly("org.projectlombok:lombok:1.18.36") // lombok
-    annotationProcessor("org.projectlombok:lombok:1.18.36") // lombok
+    compileOnly("org.projectlombok:lombok:1.18.38") // lombok
+    annotationProcessor("org.projectlombok:lombok:1.18.38") // lombok
 }
 
 tasks.withType<JavaCompile> {
