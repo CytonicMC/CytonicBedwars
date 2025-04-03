@@ -80,15 +80,19 @@ public class Scoreboard implements SideboardCreator {
                         String s = "";
                         s += team.prefix() + "<reset>" + team.displayName();
                         if (CytonicBedWars.getGameManager().getBeds().get(team)) {
-                            s += "<green>✔";
+                            s += " <green>✔";
                         } else {
                             if (CytonicBedWars.getGameManager().getPlayerTeams().get(team).isEmpty()) {
-
+                                s += " <red>✘";
+                            } else {
+                                if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow() != team) {
+                                    s += " <grey>" + CytonicBedWars.getGameManager().getPlayerTeams().get(team).size();
+                                }
                             }
-                                s += "<red>✘";
                         }
-                        if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow() == team)
-                            s += "<gray> YOU";
+                        if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow() == team) {
+                            s += " <gray>YOU";
+                        }
                         scoreboardArgs.add(Msg.mm(s));
                     });
                     scoreboardArgs.add(Msg.mm(""));
