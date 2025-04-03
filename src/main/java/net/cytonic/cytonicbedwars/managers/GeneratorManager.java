@@ -21,13 +21,15 @@ import net.minestom.server.entity.metadata.display.TextDisplayMeta;
 import net.minestom.server.instance.block.Block;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @NoArgsConstructor
 public class GeneratorManager {
-    private final List<Generator> ironGenerators = new ArrayList<>();
-    private final List<Generator> goldGenerators = new ArrayList<>();
+    private final Map<Team, Generator> ironGenerators = new HashMap<>();
+    private final Map<Team, Generator> goldGenerators = new HashMap<>();
     private final List<Generator> diamondGenerators = new ArrayList<>();
     private final List<Generator> emeraldGenerators = new ArrayList<>();
 
@@ -42,7 +44,7 @@ public class GeneratorManager {
                     true,
                     CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.IRON));
             ironGenerator.start();
-            ironGenerators.add(ironGenerator);
+            ironGenerators.put(t, ironGenerator);
             Generator goldGenerator = new Generator(
                     GeneratorType.GOLD,
                     new GeneratorItems<>("GOLD", new Pair<>(CytonicBedwarsSettings.generatorsWaitTime.get(GeneratorType.GOLD), CytonicBedwarsSettings.generatorsItemLimit.get(GeneratorType.GOLD))),
@@ -51,7 +53,7 @@ public class GeneratorManager {
                     true,
                     CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.GOLD));
             goldGenerator.start();
-            goldGenerators.add(goldGenerator);
+            goldGenerators.put(t, goldGenerator);
         }
     }
 
@@ -143,10 +145,10 @@ public class GeneratorManager {
     }
 
     public void removeGenerators() {
-        for (Generator ironGenerator : ironGenerators) {
+        for (Generator ironGenerator : ironGenerators.values()) {
             ironGenerator.stop();
         }
-        for (Generator goldGenerator : goldGenerators) {
+        for (Generator goldGenerator : goldGenerators.values()) {
             goldGenerator.stop();
         }
         for (Generator diamondGenerator : diamondGenerators) {
