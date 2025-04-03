@@ -2,7 +2,9 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
 import net.cytonic.cytosis.player.CytosisPlayer;
+import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.coordinate.Pos;
@@ -18,11 +20,10 @@ public class MoveListener {
             CytonicBedWars.getGameManager().kill((CytosisPlayer) event.getPlayer(), null, DamageType.OUT_OF_WORLD);
             event.setCancelled(true);
         }
-        //todo get values from config
-        Pos spawn = new Pos(0, 100, 0);
+        Pos spawn = CytonicBedwarsSettings.spawnPlatformCenter;
         if (distance(event.getNewPosition().x(), spawn.x(), event.getNewPosition().z(), spawn.z()) > 105.0) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(Component.text("You cannot travel too far from the map!", NamedTextColor.RED));
+            event.getPlayer().sendMessage(Msg.whoops("You cannot travel too far from the map!"));
         }
     }
 
