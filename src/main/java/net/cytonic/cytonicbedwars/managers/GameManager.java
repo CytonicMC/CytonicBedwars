@@ -35,7 +35,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.*;
-
+@Getter
+@Setter
 public class GameManager {
 
     //todo: Move these to an enum or something
@@ -44,19 +45,13 @@ public class GameManager {
     private static final String QUESTIONMARK_NPC_SKIN_VALUE = "ewogICJ0aW1lc3RhbXAiIDogMTYyMjc1MDc3ODY4NywKICAicHJvZmlsZUlkIiA6ICJmOTJiZDcxNGE0NmE0MmQ0OTQ1ZjdiMGNmNzExMDllNiIsCiAgInByb2ZpbGVOYW1lIiA6ICJzaGlrb2xpbmsiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWNmYWU4NjM4ZmNkYzRlNDk2ODdmMjFmZGEwN2EzOThmYjc0Mjk4NjBhZDU5NzAwNjAxYTA0OGI5N2ExODFmNCIKICAgIH0KICB9Cn0=";
     private static final String QUESTIONMARK_NPC_SKIN_SIGNATURE = "nnMt+n50dRoN5svTwxTsyzl/alouayqbAeSXFoJ2XagYevGsh+iCmIDIysYgJ5OXSl5QpDBeF/KAinf54fgk0Eat2KAStMQwcPMkHnaQTmey6GMGOIc2ZtGLwlybaEMtX/4wbANFswqECA7+CjxWvgOTm9//wX2fyblV961oAkaCCpw+OrojlQ6/KfahG2XgyEhdmJhnSw44XLD/LCXyCd97HSpTfmLgZYqXZtBnafMSwSbFi1bcbdwqRBcIm6VnfW9lgD0KdgCN/G+26kMtS55J50BprO8vZpv0lYxmJ9UzVnkQKDCYKzWAiEBmTMon+Sxet4K4uOs8OxlkCwEMHWCzR5MjCWESKvDWlZHkBnejY8RsIYbDn1CxWQ6zjlgJ1DlPZtYHlodlTVoKMuaeit21f2bvEdN6GvemzDtPwZI25hLt6/X/3axY3tQUeKoqu5rsa0L2PsjjNswEUJcO4AQynQlwAw7BVv5GBgITrN/zW3S6UmA+btft7zTB6/y8JcEJhx0m96AR5bwo67liBw+7EvyxRvQFKocQIL83Pvo7fsB+tmIpjwFSaCQEiCh47AjAsvnjqbzwbfZ7ttSFJUk4piVgRXyyEORBAIjNjEH+2J0TILy97k12/HJKkG9C/KXdOYv88j6paQKSWE6OuCxolcTwJWpcTtzh7xD2Lxs=";
 
-    @Getter
     private final List<Team> teamlist = new ArrayList<>();
-    @Getter
     private final Map<Team, Boolean> beds = new HashMap<>();
     private final Map<Team, net.minestom.server.scoreboard.Team> mcTeams = new HashMap<>();
     private final List<NPC> npcs = new ArrayList<>();
-    @Getter
     private final StatsManager statsManager;
-    @Getter
     private final WorldManager worldManager;
-    @Getter
     private final PlayerInventoryManager playerInventoryManager;
-    @Getter
     private final GeneratorManager generatorManager;
     public List<UUID> spectators = new ArrayList<>();
     public Map<UUID, ArmorLevel> armorLevels = new HashMap<>();
@@ -64,18 +59,11 @@ public class GameManager {
     public Map<UUID, PickaxeLevel> pickaxes = new HashMap<>();
     public Map<UUID, Boolean> shears = new HashMap<>();
     public boolean STARTED = false;
-    @Getter
     private Map<Team, List<UUID>> playerTeams = new HashMap<>();
-    @Getter
     private List<UUID> alivePlayers = new ArrayList<>();
     private GameState beforeFrozen;
-    @Getter
-    @Setter
     private GameState gameState;
-    @Getter
-    @Setter
     private WaitingRunnable waitingRunnable;
-    @Getter
     private final ItemAbilityDispatcher itemAbilityDispatcher;
 
     public GameManager() {
