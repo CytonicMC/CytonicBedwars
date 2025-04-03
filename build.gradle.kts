@@ -28,7 +28,7 @@ tasks {
             attributes["Main-Class"] = "net.cytonic.cytosis.Cytosis"
         }
         mergeServiceFiles()
-        archiveFileName.set("CytonicBedwars-${project.version}.jar")
+        archiveFileName.set("CytonicBedwars.jar")
         archiveClassifier.set("")
         if (providers.gradleProperty("server_dir").isPresent) {
             destinationDirectory.set(file(providers.gradleProperty("server_dir").get() + "/plugins"))
