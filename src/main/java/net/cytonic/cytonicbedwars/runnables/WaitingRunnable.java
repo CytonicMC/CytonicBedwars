@@ -32,6 +32,7 @@ public class WaitingRunnable {
 
         switch (timeLeft) {
             case 1, 2, 3, 4, 5 -> {
+                Cytosis.getSideboardManager().updatePlayersNow();
                 Cytosis.getOnlinePlayers().forEach(player -> {
                     player.sendMessage(Msg.mm("<yellow>The game starts in <red>" + timeLeft + " <yellow>seconds!"));
                     player.showTitle(Title.title(Msg.mm("<red>" + timeLeft), Msg.mm(""), Title.Times.times(Duration.ofMillis(0), Duration.ofSeconds(1), Duration.ofMillis(0))));
