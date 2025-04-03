@@ -25,7 +25,7 @@ public class JoinListener {
 
     public void onJoin(PlayerSpawnEvent event) {
         if (!CytonicBedWars.getGameManager().STARTED) {
-            if (Cytosis.getOnlinePlayers().size() >= 2) {
+            if (Cytosis.getOnlinePlayers().size() >= CytonicBedwarsSettings.minPlayers) {
                 CytonicBedWars.getGameManager().setGameState(GameState.STARTING);
                 CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable());
             }
