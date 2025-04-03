@@ -27,8 +27,7 @@ public class JoinListener {
         if (!CytonicBedWars.getGameManager().STARTED) {
             if (Cytosis.getOnlinePlayers().size() >= 2) {
                 CytonicBedWars.getGameManager().setGameState(GameState.STARTING);
-                CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable(7));
-                CytonicBedWars.getGameManager().getWaitingRunnable().run();
+                CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable());
             }
         }
         if (CytonicBedWars.getGameManager().STARTED) {

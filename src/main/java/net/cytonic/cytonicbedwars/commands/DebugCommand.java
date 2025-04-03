@@ -64,8 +64,7 @@ public class DebugCommand extends Command {
                             player.sendMessage(Msg.mm("The game has already been started! Use '/debug stop' to end it!", NamedTextColor.RED));
                         }
                         CytonicBedWars.getGameManager().setGameState(GameState.STARTING);
-                        CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable(7));
-                        CytonicBedWars.getGameManager().getWaitingRunnable().run();
+                        CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable());
                     }
                     case "forcestart" -> {
                         if (CytonicBedWars.getGameManager().STARTED) {
