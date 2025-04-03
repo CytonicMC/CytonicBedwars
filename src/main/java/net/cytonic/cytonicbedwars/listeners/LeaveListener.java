@@ -3,6 +3,7 @@ package net.cytonic.cytonicbedwars.listeners;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.entity.Player;
@@ -23,6 +24,8 @@ public class LeaveListener {
             if (Cytosis.getOnlinePlayers().size() < CytonicBedwarsSettings.minPlayers) {
                 if (CytonicBedWars.getGameManager().getWaitingRunnable() != null) {
                     CytonicBedWars.getGameManager().getWaitingRunnable().stop();
+                    CytonicBedWars.getGameManager().setWaitingRunnable(null);
+                    CytonicBedWars.getGameManager().setGameState(GameState.WAITING);
                     Cytosis.getOnlinePlayers().forEach(player -> player.sendMessage(Msg.redSplash("START CANCELLED!", "There are not enough players to start the game!")));
                 }
             }
