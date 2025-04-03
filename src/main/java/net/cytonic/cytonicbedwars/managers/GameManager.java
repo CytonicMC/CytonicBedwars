@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.*;
+
 @Getter
 @Setter
 public class GameManager {
@@ -110,6 +111,10 @@ public class GameManager {
         playerTeams = splitPlayersIntoTeams(players);
 
         playerTeams.keySet().forEach(team -> {
+            if (playerTeams.get(team) != null && playerTeams.get(team).isEmpty()) {
+                beds.put(team, false);
+                return;
+            }
             List<UUID> uuids = playerTeams.get(team);
             uuids.forEach(uuid -> {
                 Player p = Cytosis.getPlayer(uuid).orElseThrow();
@@ -287,6 +292,7 @@ public class GameManager {
             Component finalMessage = message;
             dead.setGameMode(GameMode.SPECTATOR);
             Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
+            getPlayerTeams().get(getPlayerTeam(dead.getUuid()).orElseThrow()).remove(dead.getUuid());
             return;
         }
         Component finalMessage = message;

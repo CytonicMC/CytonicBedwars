@@ -90,7 +90,7 @@ public class Scoreboard implements SideboardCreator {
                                 }
                             }
                         }
-                        if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow() == team) {
+                        if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow() == team) {
                             s += " <gray>YOU";
                         }
                         scoreboardArgs.add(Msg.mm(s));
