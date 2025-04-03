@@ -21,6 +21,7 @@ import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EquipmentSlot;
@@ -113,6 +114,7 @@ public class GameManager {
         playerTeams.keySet().forEach(team -> {
             if (playerTeams.get(team) != null && playerTeams.get(team).isEmpty()) {
                 beds.put(team, false);
+                worldManager.breakBed(Cytosis.getDefaultInstance().getBlock(team.bedLocation()), new BlockVec(team.bedLocation()));
                 return;
             }
             List<UUID> uuids = playerTeams.get(team);

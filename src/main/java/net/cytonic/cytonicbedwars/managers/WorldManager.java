@@ -1,18 +1,34 @@
 package net.cytonic.cytonicbedwars.managers;
 
 import lombok.NoArgsConstructor;
+import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.hollowcube.polar.PolarLoader;
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.block.Block;
+import net.minestom.server.instance.block.BlockFace;
 import net.minestom.server.world.DimensionType;
 
 @NoArgsConstructor
 public class WorldManager {
+
+    public void breakBed(Block block, BlockVec blockPos) {
+        CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
+            if (block.name().equals(team.bedType().name())) {
+                Cytosis.getDefaultInstance().setBlock(blockPos, Block.AIR);
+                BlockFace facing = BlockFace.valueOf(block.getProperty("facing").toUpperCase());
+                if (block.getProperty("part").equals("head")) {
+                    facing = facing.getOppositeFace();
+                }
+                Cytosis.getDefaultInstance().setBlock(blockPos.relative(facing), Block.AIR);
+            }
+        });
+    }
 
     public void loadWorld() {
         try {

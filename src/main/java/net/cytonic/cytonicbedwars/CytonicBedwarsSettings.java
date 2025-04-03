@@ -69,6 +69,7 @@ public final class CytonicBedwarsSettings {
                                     PosSerializer.deserialize(obj1.get("item_shop_location").getAsString()),
                                     PosSerializer.deserialize(obj1.get("team_shop_location").getAsString()),
                                     PosSerializer.deserialize(obj1.get("team_chest_location").getAsString()),
+                                    PosSerializer.deserialize(obj1.get("bed_location").getAsString()),
                                     Block.fromKey(obj1.get("wool_item").getAsString()),
                                     Block.fromKey(obj1.get("glass_item").getAsString()),
                                     Block.fromKey(obj1.get("terracotta_item").getAsString())
