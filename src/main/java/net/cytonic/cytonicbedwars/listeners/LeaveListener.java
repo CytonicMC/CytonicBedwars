@@ -23,9 +23,7 @@ public class LeaveListener {
             if (Cytosis.getOnlinePlayers().size() < CytonicBedwarsSettings.minPlayers) {
                 if (CytonicBedWars.getGameManager().getWaitingRunnable() != null) {
                     CytonicBedWars.getGameManager().getWaitingRunnable().stop();
-                    Cytosis.getOnlinePlayers().forEach(player -> {
-                        player.sendMessage(Msg.mm("not enough players"));
-                    });
+                    Cytosis.getOnlinePlayers().forEach(player -> player.sendMessage(Msg.redSplash("START CANCELLED!", "There are not enough players to start the game!")));
                 }
             }
         }
