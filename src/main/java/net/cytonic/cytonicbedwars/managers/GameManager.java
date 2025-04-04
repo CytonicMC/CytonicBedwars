@@ -20,6 +20,7 @@ import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
+import net.kyori.adventure.util.Ticks;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
@@ -235,8 +236,17 @@ public class GameManager {
     }
 
     public void breakBed(Player player, Team t) {
-        player.playSound(Sound.sound(SoundEvent.ENTITY_GENERIC_EXPLODE, Sound.Source.PLAYER, 1f, 100f));
-        Cytosis.getOnlinePlayers().forEach(p -> p.sendMessage(Msg.mm(getPlayerTeam(player.getUuid()).orElseThrow().color() + " " + player.getUsername() + " <dark_red>destroyed " + t.color() + t.displayName() + "'s <white>bed!")));
+        Component message = Msg.mm("<newline><white><b>BED DESTRUCTION ></b></white> <%s>%s Bed<reset><gray> was destroyed by <%s>%s<reset><gray>!<newline>", t.color().toString(), t.displayName().split(" ")[0], getPlayerTeam(player.getUuid()).orElseThrow().color(), player.getUsername());
+        Cytosis.getOnlinePlayers().forEach(p -> {
+            player.playSound(Sound.sound(SoundEvent.ENTITY_GENERIC_EXPLODE, Sound.Source.PLAYER, 1f, 100f));
+            p.sendMessage(message);
+        });
+        for (UUID uuid : playerTeams.get(t)) {
+            CytosisPlayer p = Cytosis.getPlayer(uuid).orElseThrow();
+            Title title = Title.title(Msg.mm("<b><red>BED DESTROYED!"), Msg.mm("<white>You will no longer respawn!"),
+                    Title.Times.times(Ticks.duration(10L), Ticks.duration(100L), Ticks.duration(20L)));
+            p.showTitle(title);
+        }
         // todo: display animations, messages, etc.
         beds.put(t, false);
     }
