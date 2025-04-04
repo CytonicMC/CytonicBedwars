@@ -21,7 +21,7 @@ public class MoveListener {
         }
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         Pos spawn = CytonicBedwarsSettings.spawnPlatformCenter;
-        if (distance(event.getNewPosition().x(), spawn.x(), event.getNewPosition().z(), spawn.z()) > 105.0) {
+        if (distance(event.getNewPosition().x(), spawn.x(), event.getNewPosition().z(), spawn.z()) > 105.0 || event.getNewPosition().y() >= 50) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Msg.whoops("You cannot travel too far from the map!"));
         }

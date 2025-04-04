@@ -28,7 +28,7 @@ public class BlockPlaceListener {
         }
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         Pos spawn = CytonicBedwarsSettings.spawnPlatformCenter;
-        if (distance(e.getBlockPosition().x(), spawn.x(), e.getBlockPosition().z(), spawn.z()) > 105.0) {
+        if (distance(e.getBlockPosition().x(), spawn.x(), e.getBlockPosition().z(), spawn.z()) > 105.0 || e.getBlockPosition().y() >= 50) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(Msg.whoops("You cannot place blocks that far from the map!"));
         }
