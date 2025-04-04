@@ -63,7 +63,7 @@ public final class CytonicBedWars implements CytosisPlugin {
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:ArmorEquipEvent", false, 2, InventoryItemChangeEvent.class, (event -> new ArmorEquipListener().onArmorEquip(event))));
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:BlockPlaceEvent", false, 2, PlayerBlockPlaceEvent.class, (event -> new BlockPlaceListener().onBlockPlace(event))));
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:FinalDamageEvent", false, 2, FinalDamageEvent.class, (event -> new DamageListener().onDamage(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:DropItemEvent", false, 2, ItemDropEvent.class, (event -> new DropItemListener().onDrop(event))));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:DropItemEvent", false, -1, ItemDropEvent.class, (event -> new DropItemListener().onDrop(event))));
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:GamemodeChangeEvent", false, 2, PlayerGameModeChangeEvent.class, (event -> new GamemodeChangeListener().onGamemodeChange(event))));
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerBlockInteractEvent", false, 2, PlayerBlockInteractEvent.class, (event -> new InteractListener().onInteract(event))));
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerEntityInteractEvent", false, 2, PlayerEntityInteractEvent.class, (event -> new InteractListener().onInteract(event))));
