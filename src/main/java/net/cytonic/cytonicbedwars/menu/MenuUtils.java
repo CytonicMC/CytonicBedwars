@@ -7,6 +7,10 @@ import eu.koboo.minestom.invue.api.slots.ViewPattern;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.menu.itemShop.*;
 import net.cytonic.cytonicbedwars.utils.Items;
+import net.cytonic.cytosis.utils.Msg;
+import net.minestom.server.item.ItemComponent;
+
+import java.util.List;
 
 @NoArgsConstructor
 public class MenuUtils {
@@ -42,9 +46,10 @@ public class MenuUtils {
         new UtilsShopMenu().open(action.getPlayer());
     });
 
-    public static final PrebuiltItem rotatingMenu = PrebuiltItem.of(Items.MENU_CUSTOM_ITEMS, action -> {
-        action.getEvent().setCancelled(true);
-        new RotatingShopMenu().open(action.getPlayer());
+    public static final PrebuiltItem rotatingMenu = PrebuiltItem.of(Items.MENU_ROTATING_ITEMS.with(ItemComponent.ITEM_NAME, Msg.red("<b>Coming Soon")).with(ItemComponent.LORE, List.of()), action -> {
+        //todo remove when rotating shop is done
+        //        action.getEvent().setCancelled(true);
+        //        new RotatingShopMenu().open(action.getPlayer());
     });
 
     public static final PrebuiltItem selectedPage = PrebuiltItem.of(Items.MENU_SELECTED_PAGE).cancelClicking();

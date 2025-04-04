@@ -125,7 +125,7 @@ public class Items {
     public static ItemStack MENU_TOOLS = createItem("<GREEN>Tools", "MENU_TOOLS", Material.DIAMOND_PICKAXE, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
     public static ItemStack MENU_POTIONS = createItem("<GREEN>Potions", "MENU_POTIONS", Material.BREWING_STAND, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
     public static ItemStack MENU_UTILS = createItem("<GREEN>Utilities", "MENU_UTILS", Material.FIRE_CHARGE, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
-    public static ItemStack MENU_CUSTOM_ITEMS = createItem("<GREEN>Rotating Items", "MENU_CUSTOM", Material.ENDERMAN_SPAWN_EGG, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
+    public static ItemStack MENU_ROTATING_ITEMS = createItem("<GREEN>Rotating Items", "MENU_ROTATING", Material.ENDERMAN_SPAWN_EGG, false, true, List.of(), new HashMap<>(), "<gray>Click to browse!");
     public static ItemStack MENU_WOOL = createItem("Wool", "MENU_WOOL", Material.WHITE_WOOL, false, true, List.of(), new HashMap<>(), "", "<gray>> 4 Iron");
     public static ItemStack MENU_PLANKS = createItem("Planks", "MENU_PLANKS", Material.OAK_PLANKS, false, true, List.of(), new HashMap<>(), "", "<gold>> 4 Gold");
     public static ItemStack MENU_TERRACOTTA = createItem("Terracotta", "MENU_TERRACOTTA", Material.TERRACOTTA, false, true, List.of(), new HashMap<>(), "", "<gray>> 10 Iron");
