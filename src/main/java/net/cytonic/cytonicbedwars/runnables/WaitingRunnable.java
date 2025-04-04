@@ -15,7 +15,7 @@ import java.time.Duration;
 
 public class WaitingRunnable {
     private final Task task;
-    public static int timeLeft = 5;
+    public static int timeLeft = 6;
 
     public WaitingRunnable() {
         task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofSeconds(1)).schedule();
