@@ -12,6 +12,7 @@ import net.cytonic.cytosis.data.objects.ServerGroup;
 import net.cytonic.cytosis.events.EventListener;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.plugins.CytosisPlugin;
+import net.minestom.server.MinecraftServer;
 import net.minestom.server.event.inventory.InventoryItemChangeEvent;
 import net.minestom.server.event.inventory.InventoryPreClickEvent;
 import net.minestom.server.event.item.ItemDropEvent;
@@ -33,7 +34,7 @@ public final class CytonicBedWars implements CytosisPlugin {
         String gameType = System.getenv("GAME_TYPE");
         if (worldName == null || worldType == null || gameType == null) {
             Logger.error("World name or type or game type is not set!");
-            System.exit(0);
+            MinecraftServer.stopCleanly();
             return;
         }
         Cytosis.setServerGroup(new ServerGroup("bedwars", gameType, false));
