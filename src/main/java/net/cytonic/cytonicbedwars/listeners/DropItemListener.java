@@ -11,7 +11,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class DropItemListener {
 
-    public void onDrop(ItemDropEvent event) {
+    public static void onDrop(ItemDropEvent event) {
         ItemStack item = event.getItemStack();
         if (item.has(ItemComponent.CUSTOM_DATA)) {
             if (Objects.requireNonNull(item.get(ItemComponent.CUSTOM_DATA)).nbt().getBoolean(Items.NO_DROP)) {

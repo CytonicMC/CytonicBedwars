@@ -12,7 +12,7 @@ import net.minestom.server.event.player.PlayerDisconnectEvent;
 @NoArgsConstructor
 public class LeaveListener {
 
-    public void onLeave(PlayerDisconnectEvent event) {
+    public static void onLeave(PlayerDisconnectEvent event) {
         if (CytonicBedWars.getGameManager().STARTED) {
             if (CytonicBedWars.getGameManager().getPlayerTeam(event.getPlayer().getUuid()).isEmpty()) {
                 // they are a spectator

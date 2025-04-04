@@ -11,7 +11,7 @@ import net.minestom.server.item.ItemComponent;
 @NoArgsConstructor
 public class InteractListener {
 
-    public void onInteract(PlayerBlockInteractEvent event) {
+    public static void onInteract(PlayerBlockInteractEvent event) {
         if (event.getPlayer().getItemInHand(event.getHand()).has(ItemComponent.CUSTOM_DATA)) {
             if (event.getPlayer().getItemInHand(event.getHand()).get(ItemComponent.CUSTOM_DATA).nbt().getString(Items.NAMESPACE).equals(Items.NAMESPACE)) {
                 String key = event.getPlayer().getItemInHand(event.getHand()).get(ItemComponent.CUSTOM_DATA).nbt().getString(Items.NAMESPACE);
@@ -20,7 +20,7 @@ public class InteractListener {
         }
     }
 
-    public void onInteract(PlayerEntityInteractEvent event) {
+    public static void onInteract(PlayerEntityInteractEvent event) {
         if (event.getPlayer().getItemInHand(event.getHand()).has(ItemComponent.CUSTOM_DATA)) {
             if (event.getPlayer().getItemInHand(event.getHand()).get(ItemComponent.CUSTOM_DATA).nbt().getString(Items.NAMESPACE).equals(Items.NAMESPACE)) {
                 String key = event.getPlayer().getItemInHand(event.getHand()).get(ItemComponent.CUSTOM_DATA).nbt().getString(Items.NAMESPACE);

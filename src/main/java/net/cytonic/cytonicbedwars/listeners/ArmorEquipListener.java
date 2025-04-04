@@ -15,7 +15,7 @@ import java.time.Duration;
 @NoArgsConstructor
 public class ArmorEquipListener {
 
-    public void onArmorEquip(InventoryItemChangeEvent event) {
+    public static void onArmorEquip(InventoryItemChangeEvent event) {
         if (!(event.getInventory() instanceof PlayerInventory playerInventory)) return;
         for (Player player : playerInventory.getViewers()) {
             if (event.getPreviousItem().material() == Material.BARRIER && player.getGameMode() == GameMode.ADVENTURE) {

@@ -59,21 +59,21 @@ public final class CytonicBedWars implements CytosisPlugin {
     }
 
     private void registerListeners() {
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:BlockBreakEvent", false, 2, PlayerBlockBreakEvent.class, event -> new BlockBreakListener().onBlockBreak(event)));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerEatEvent", false, 2, PlayerPreEatEvent.class, (event -> new PotionDrinkListener().onEat(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:ArmorEquipEvent", false, 2, InventoryItemChangeEvent.class, (event -> new ArmorEquipListener().onArmorEquip(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:BlockPlaceEvent", false, 2, PlayerBlockPlaceEvent.class, (event -> new BlockPlaceListener().onBlockPlace(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:FinalDamageEvent", false, 2, FinalDamageEvent.class, (event -> new DamageListener().onDamage(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:DropItemEvent", false, -1, ItemDropEvent.class, (event -> new DropItemListener().onDrop(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:GamemodeChangeEvent", false, 2, PlayerGameModeChangeEvent.class, (event -> new GamemodeChangeListener().onGamemodeChange(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerBlockInteractEvent", false, 2, PlayerBlockInteractEvent.class, (event -> new InteractListener().onInteract(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerEntityInteractEvent", false, 2, PlayerEntityInteractEvent.class, (event -> new InteractListener().onInteract(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:InventoryPreClickEvent", false, 2, InventoryPreClickEvent.class, (event -> new InventoryClickListener().onInventoryClick(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:AsyncPlayerConfigurationEvent", true, 2, AsyncPlayerConfigurationEvent.class, (event -> new JoinListener().onJoin(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerSpawnEvent", false, 2, PlayerSpawnEvent.class, (event -> new JoinListener().onJoin(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerDisconnectEvent", false, 2, PlayerDisconnectEvent.class, (event -> new LeaveListener().onLeave(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerMoveEvent", false, 2, PlayerMoveEvent.class, (event -> new MoveListener().onMove(event))));
-        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:EntityPreDeathEvent", false, 2, EntityPreDeathEvent.class, (event -> new DeathListener().onDeath(event))));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:BlockBreakEvent", false, 2, PlayerBlockBreakEvent.class, BlockBreakListener::onBlockBreak));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerEatEvent", false, 2, PlayerPreEatEvent.class, (PotionDrinkListener::onEat)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:ArmorEquipEvent", false, 2, InventoryItemChangeEvent.class, (ArmorEquipListener::onArmorEquip)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:BlockPlaceEvent", false, 2, PlayerBlockPlaceEvent.class, (BlockPlaceListener::onBlockPlace)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:FinalDamageEvent", false, 2, FinalDamageEvent.class, (DamageListener::onDamage)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:DropItemEvent", false, -1, ItemDropEvent.class, (DropItemListener::onDrop)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:GamemodeChangeEvent", false, 2, PlayerGameModeChangeEvent.class, (GamemodeChangeListener::onGamemodeChange)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerBlockInteractEvent", false, 2, PlayerBlockInteractEvent.class, (InteractListener::onInteract)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerEntityInteractEvent", false, 2, PlayerEntityInteractEvent.class, (InteractListener::onInteract)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:InventoryPreClickEvent", false, 2, InventoryPreClickEvent.class, (InventoryClickListener::onInventoryClick)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:AsyncPlayerConfigurationEvent", true, 2, AsyncPlayerConfigurationEvent.class, (JoinListener::onJoin)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerSpawnEvent", false, 2, PlayerSpawnEvent.class, (JoinListener::onJoin)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerDisconnectEvent", false, 2, PlayerDisconnectEvent.class, (LeaveListener::onLeave)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerMoveEvent", false, 2, PlayerMoveEvent.class, (MoveListener::onMove)));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:EntityPreDeathEvent", false, 2, EntityPreDeathEvent.class, (DeathListener::onDeath)));
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PickupItemEvent", false, 2, PickupItemEvent.class, (PickupItemListener::onPickup)));
     }
 

@@ -18,7 +18,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class BlockBreakListener {
 
-    public void onBlockBreak(PlayerBlockBreakEvent e) {
+    public static void onBlockBreak(PlayerBlockBreakEvent e) {
         CytosisPlayer player = (CytosisPlayer) e.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE) return;
         if (CytonicBedWars.getGameManager().spectators.contains(player.getUuid())) {

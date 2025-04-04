@@ -8,7 +8,7 @@ import net.cytonic.cytosis.player.CytosisPlayer;
 @NoArgsConstructor
 public class DamageListener {
 
-    public void onDamage(FinalDamageEvent event) {
+    public static void onDamage(FinalDamageEvent event) {
         if (event.getEntity() instanceof CytosisPlayer player) {
             if (CytonicBedWars.getGameManager().spectators.contains(player.getUuid())) {
                 event.setCancelled(true);

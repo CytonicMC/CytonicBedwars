@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class InventoryClickListener {
 
-    public void onInventoryClick(InventoryPreClickEvent event) {
+    public static void onInventoryClick(InventoryPreClickEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         ItemStack item = event.getClickedItem();
         if (item.has(ItemComponent.CUSTOM_DATA)) {

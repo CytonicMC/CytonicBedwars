@@ -8,7 +8,7 @@ import net.cytonic.cytosis.player.CytosisPlayer;
 @NoArgsConstructor
 public class DeathListener {
 
-    public void onDeath(EntityPreDeathEvent event) {
+    public static void onDeath(EntityPreDeathEvent event) {
         event.setCancelDeath(true);
         if (event.getEntity() instanceof CytosisPlayer player) {
             if (event.getDamage().getAttacker() != null && event.getDamage().getAttacker() instanceof CytosisPlayer attacker) {

@@ -15,7 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class BlockPlaceListener {
 
-    public void onBlockPlace(PlayerBlockPlaceEvent e) {
+    public static void onBlockPlace(PlayerBlockPlaceEvent e) {
         if (e.getPlayer().getItemInHand(e.getHand()).has(ItemComponent.CUSTOM_DATA)) {
             String id = Objects.requireNonNull(e.getPlayer().getItemInHand(e.getHand()).get(ItemComponent.CUSTOM_DATA)).nbt().getString("bwID");
             if (e.getBlock().hasNbt()) {
@@ -34,7 +34,7 @@ public class BlockPlaceListener {
         }
     }
 
-    private double distance(double x1, double x2, double z1, double z2) {
+    private static double distance(double x1, double x2, double z1, double z2) {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
     }
 }

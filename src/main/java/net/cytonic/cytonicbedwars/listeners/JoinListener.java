@@ -15,7 +15,7 @@ import net.minestom.server.event.player.PlayerSpawnEvent;
 @NoArgsConstructor
 public class JoinListener {
 
-    public void onJoin(AsyncPlayerConfigurationEvent event) {
+    public static void onJoin(AsyncPlayerConfigurationEvent event) {
         CytosisPlayer player = (CytosisPlayer) event.getPlayer();
         event.setSpawningInstance(Cytosis.getDefaultInstance());
         Pos pos = CytonicBedwarsSettings.spawnPlatformCenter;
@@ -23,7 +23,7 @@ public class JoinListener {
         player.setRespawnPoint(pos);
     }
 
-    public void onJoin(PlayerSpawnEvent event) {
+    public static void onJoin(PlayerSpawnEvent event) {
         if (!CytonicBedWars.getGameManager().STARTED) {
             if (Cytosis.getOnlinePlayers().size() >= CytonicBedwarsSettings.minPlayers) {
                 CytonicBedWars.getGameManager().setGameState(GameState.STARTING);

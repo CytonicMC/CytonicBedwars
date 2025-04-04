@@ -13,7 +13,7 @@ import net.minestom.server.event.player.PlayerMoveEvent;
 @NoArgsConstructor
 public class MoveListener {
 
-    public void onMove(PlayerMoveEvent event) {
+    public static void onMove(PlayerMoveEvent event) {
         if (!CytonicBedWars.getGameManager().STARTED) return;
         if (event.getNewPosition().y() <= -40) {
             CytonicBedWars.getGameManager().kill((CytosisPlayer) event.getPlayer(), null, DamageType.OUT_OF_WORLD);
@@ -27,7 +27,7 @@ public class MoveListener {
         }
     }
 
-    private double distance(double x1, double x2, double z1, double z2) {
+    private static double distance(double x1, double x2, double z1, double z2) {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
     }
 }

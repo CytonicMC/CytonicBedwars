@@ -13,7 +13,7 @@ import net.minestom.server.potion.PotionEffect;
 @NoArgsConstructor
 public class GamemodeChangeListener {
 
-    public void onGamemodeChange(PlayerGameModeChangeEvent event) {
+    public static void onGamemodeChange(PlayerGameModeChangeEvent event) {
         Player player = event.getPlayer();
         if (event.getNewGameMode() == GameMode.SPECTATOR) {
             player.getInventory().clear();
