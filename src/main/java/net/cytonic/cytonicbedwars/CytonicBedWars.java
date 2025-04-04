@@ -15,6 +15,7 @@ import net.cytonic.cytosis.plugins.CytosisPlugin;
 import net.minestom.server.event.inventory.InventoryItemChangeEvent;
 import net.minestom.server.event.inventory.InventoryPreClickEvent;
 import net.minestom.server.event.item.ItemDropEvent;
+import net.minestom.server.event.item.PickupItemEvent;
 import net.minestom.server.event.player.*;
 
 @Getter
@@ -73,6 +74,7 @@ public final class CytonicBedWars implements CytosisPlugin {
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerDisconnectEvent", false, 2, PlayerDisconnectEvent.class, (event -> new LeaveListener().onLeave(event))));
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PlayerMoveEvent", false, 2, PlayerMoveEvent.class, (event -> new MoveListener().onMove(event))));
         Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:EntityPreDeathEvent", false, 2, EntityPreDeathEvent.class, (event -> new DeathListener().onDeath(event))));
+        Cytosis.getEventHandler().registerListener(new EventListener<>("bedwars:PickupItemEvent", false, 2, PickupItemEvent.class, (PickupItemListener::onPickup)));
     }
 
     private void registerCommands() {
