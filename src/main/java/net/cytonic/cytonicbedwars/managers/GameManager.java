@@ -125,7 +125,6 @@ public class GameManager {
                 mcTeams.get(team).addMember(p.getUsername());
                 p.teleport(team.spawnLocation());
                 p.setGameMode(GameMode.SURVIVAL);
-                p.setCustomNameVisible(true);
                 setArmor(uuid, ArmorLevel.NONE);
                 p.getInventory().setItemStack(0, Items.DEFAULT_SWORD);
                 setEquipment(p);
