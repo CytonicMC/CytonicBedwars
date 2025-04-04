@@ -19,6 +19,7 @@ import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.BlockVec;
@@ -30,6 +31,7 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.registry.DynamicRegistry;
+import net.minestom.server.scoreboard.TeamBuilder;
 import net.minestom.server.sound.SoundEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -124,7 +126,6 @@ public class GameManager {
                 p.teleport(team.spawnLocation());
                 p.setGameMode(GameMode.SURVIVAL);
                 p.setCustomNameVisible(true);
-                p.setCustomName(Msg.mm(team.prefix() + p.getUsername()));
                 setArmor(uuid, ArmorLevel.NONE);
                 p.getInventory().setItemStack(0, Items.DEFAULT_SWORD);
                 setEquipment(p);
@@ -167,12 +168,13 @@ public class GameManager {
 
         int playerIndex = 0;
         for (Team team : teamlist) {
-            net.minestom.server.scoreboard.Team t = MinecraftServer.getTeamManager().createTeam(team.displayName());
-            t.setCollisionRule(TeamsPacket.CollisionRule.PUSH_OTHER_TEAMS);
+            net.minestom.server.scoreboard.Team t = new TeamBuilder(team.displayName(), MinecraftServer.getTeamManager())
+                    .collisionRule(TeamsPacket.CollisionRule.PUSH_OTHER_TEAMS)
+                    .teamColor(team.color())
+                    .prefix(Msg.mm(team.prefix()))
+                    .build();
             t.setSeeInvisiblePlayers(true);
             t.setAllowFriendlyFire(false);
-            t.setTeamColor(team.color());
-            t.setPrefix(Msg.mm(team.prefix()));
             mcTeams.put(team, t);
             List<UUID> teamPlayers = new ArrayList<>();
             int currentTeamSize = teamSize + (remainingPlayers > 0 ? 1 : 0);
