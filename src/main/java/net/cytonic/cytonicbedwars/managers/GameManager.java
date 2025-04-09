@@ -341,7 +341,7 @@ public class GameManager {
     }
 
     public void sendToLobby(CytosisPlayer player) {
-        Cytosis.getNatsManager().sendPlayerToServer(player.getUuid(), "cytonic", "lobby", "The Lobby");
+        Cytosis.getNatsManager().sendPlayerToGenericServer(player.getUuid(), "cytonic", "lobby", "The Lobby");
     }
 
     public void setArmor(UUID uuid, @NotNull ArmorLevel level) {
