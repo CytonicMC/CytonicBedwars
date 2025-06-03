@@ -90,13 +90,9 @@ public final class CytonicBedwarsSettings {
             }
         });
         ConfigurationNode generatorsWaitTime = node.node("generators_wait_time_ticks");
-        generatorsWaitTime.childrenMap().forEach((key, value) -> {
-            CytonicBedwarsSettings.generatorsWaitTimeTicks.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getInt());
-        });
+        generatorsWaitTime.childrenMap().forEach((key, value) -> CytonicBedwarsSettings.generatorsWaitTimeTicks.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getInt()));
         ConfigurationNode generatorsItemLimit = node.node("generators_item_limit");
-        generatorsItemLimit.childrenMap().forEach((key, value) -> {
-            CytonicBedwarsSettings.generatorsItemLimit.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getInt());
-        });
+        generatorsItemLimit.childrenMap().forEach((key, value) -> CytonicBedwarsSettings.generatorsItemLimit.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getInt()));
         ConfigurationNode generators = node.node("generators");
         generators.childrenMap().forEach((key, value) -> {
             try {
@@ -105,5 +101,6 @@ public final class CytonicBedwarsSettings {
                 Logger.error("Could not import generators!", e);
             }
         });
+        Logger.info("Finished importing bedwars config in %sms!", (System.currentTimeMillis() - time));
     }
 }
