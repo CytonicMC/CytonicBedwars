@@ -7,15 +7,17 @@ import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.minestom.server.item.ItemComponent;
+import net.minestom.server.component.DataComponents;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import net.minestom.server.item.component.*;
+import net.minestom.server.item.component.CustomData;
+import net.minestom.server.item.component.EnchantmentList;
+import net.minestom.server.item.component.PotionContents;
+import net.minestom.server.item.component.TooltipDisplay;
 import net.minestom.server.item.enchant.Enchantment;
 import net.minestom.server.potion.CustomPotionEffect;
 import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.registry.DynamicRegistry;
-import net.minestom.server.utils.Unit;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -237,12 +239,12 @@ public class Items {
         }
         builder.putString(NAMESPACE, id);
         ItemStack item = ItemStack.builder(type)
-                .set(ItemComponent.ITEM_NAME, Msg.mm(displayName))
-                .set(ItemComponent.LORE, list)
-                .set(ItemComponent.UNBREAKABLE, new Unbreakable(false))
-                .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                .set(ItemComponent.ENCHANTMENTS, enchantmentList)
-                .set(ItemComponent.CUSTOM_DATA, new CustomData(builder.build()))
+                .set(DataComponents.ITEM_NAME, Msg.mm(displayName))
+                .set(DataComponents.LORE, list)
+                .set(DataComponents.UNBREAKABLE)
+                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                .set(DataComponents.ENCHANTMENTS, enchantmentList)
+                .set(DataComponents.CUSTOM_DATA, new CustomData(builder.build()))
                 .build();
         itemRegistry.put(id, item);
         return item;
@@ -256,11 +258,11 @@ public class Items {
         builder.putString(NAMESPACE, id);
 
         ItemStack item = ItemStack.builder(type)
-                .set(ItemComponent.ITEM_NAME, Msg.mm(name))
-                .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                .set(ItemComponent.UNBREAKABLE, new Unbreakable(false))
-                .set(ItemComponent.DYED_COLOR, new DyedItemColor(color))
-                .set(ItemComponent.CUSTOM_DATA, new CustomData(builder.build()))
+                .set(DataComponents.ITEM_NAME, Msg.mm(name))
+                .set(DataComponents.UNBREAKABLE)
+                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                .set(DataComponents.DYED_COLOR, color)
+                .set(DataComponents.CUSTOM_DATA, new CustomData(builder.build()))
                 .build();
         itemRegistry.put(id, item);
         return item;
@@ -272,12 +274,12 @@ public class Items {
         CustomPotionEffect effect = new CustomPotionEffect(pot, Byte.parseByte(String.valueOf(amplifier - 1)), duration, true, true, true);
         PotionContents contents = new PotionContents(effect);
         ItemStack item = ItemStack.builder(Material.POTION)
-                .set(ItemComponent.POTION_CONTENTS, contents)
-                .set(ItemComponent.CUSTOM_NAME, Msg.mm(name))
-                .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                .set(ItemComponent.UNBREAKABLE, new Unbreakable(false))
-                .set(ItemComponent.LORE, list)
-                .set(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString(NAMESPACE, id).build()))
+                .set(DataComponents.POTION_CONTENTS, contents)
+                .set(DataComponents.CUSTOM_NAME, Msg.mm(name))
+                .set(DataComponents.UNBREAKABLE)
+                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                .set(DataComponents.LORE, list)
+                .set(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString(NAMESPACE, id).build()))
                 .build();
         itemRegistry.put(id, item);
         return item;

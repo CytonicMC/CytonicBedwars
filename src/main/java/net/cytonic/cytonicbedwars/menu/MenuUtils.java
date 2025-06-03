@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.menu.itemShop.*;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.utils.Msg;
-import net.minestom.server.item.ItemComponent;
+import net.minestom.server.component.DataComponents;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public class MenuUtils {
         new UtilsShopMenu().open(action.getPlayer());
     });
 
-    public static final PrebuiltItem rotatingMenu = PrebuiltItem.of(Items.MENU_ROTATING_ITEMS.with(ItemComponent.ITEM_NAME, Msg.red("<b>Coming Soon")).with(ItemComponent.LORE, List.of()), action -> {
+    public static final PrebuiltItem rotatingMenu = PrebuiltItem.of(Items.MENU_ROTATING_ITEMS.with(DataComponents.ITEM_NAME, Msg.red("<b>Coming Soon")).with(DataComponents.LORE, List.of()), action -> {
         //todo remove when rotating shop is done
         //        action.getEvent().setCancelled(true);
         //        new RotatingShopMenu().open(action.getPlayer());

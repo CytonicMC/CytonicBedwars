@@ -8,7 +8,7 @@ import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.event.player.PlayerBlockPlaceEvent;
 import net.minestom.server.instance.block.Block;
-import net.minestom.server.item.ItemComponent;
+import net.minestom.server.component.DataComponents;
 
 import java.util.Objects;
 
@@ -16,8 +16,8 @@ import java.util.Objects;
 public class BlockPlaceListener {
 
     public static void onBlockPlace(PlayerBlockPlaceEvent e) {
-        if (e.getPlayer().getItemInHand(e.getHand()).has(ItemComponent.CUSTOM_DATA)) {
-            String id = Objects.requireNonNull(e.getPlayer().getItemInHand(e.getHand()).get(ItemComponent.CUSTOM_DATA)).nbt().getString("bwID");
+        if (e.getPlayer().getItemInHand(e.getHand()).has(DataComponents.CUSTOM_DATA)) {
+            String id = Objects.requireNonNull(e.getPlayer().getItemInHand(e.getHand()).get(DataComponents.CUSTOM_DATA)).nbt().getString("bwID");
             if (e.getBlock().hasNbt()) {
                 Block block = e.getBlock().withNbt(Objects.requireNonNull(e.getBlock().nbt()).putBoolean("placedByPlayer", true).putString("bwID", id));
                 e.setBlock(block);

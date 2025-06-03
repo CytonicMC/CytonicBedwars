@@ -1,7 +1,7 @@
 package net.cytonic.cytonicbedwars.commands;
 
 import net.cytonic.cytonicbedwars.utils.Items;
-import net.cytonic.cytosis.commands.CommandUtils;
+import net.cytonic.cytosis.commands.utils.CommandUtils;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.command.builder.Command;
 import net.minestom.server.command.builder.arguments.ArgumentType;

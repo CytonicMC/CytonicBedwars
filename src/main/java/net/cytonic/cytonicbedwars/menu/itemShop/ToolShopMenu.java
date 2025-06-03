@@ -16,8 +16,8 @@ import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.sound.Sound;
+import net.minestom.server.component.DataComponents;
 import net.minestom.server.entity.Player;
-import net.minestom.server.item.ItemComponent;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.component.CustomData;
 import net.minestom.server.sound.SoundEvent;
@@ -26,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class ToolShopMenu extends ViewProvider {
-
 
     public ToolShopMenu() {
         super(Cytosis.VIEW_REGISTRY, ViewBuilder.of(ViewType.SIZE_5_X_9).title(Msg.mm("Item Shop ➜ Tools")));
@@ -46,19 +45,19 @@ public class ToolShopMenu extends ViewProvider {
         MenuUtils.setItemShopItems(view, pattern);
         ItemStack axeItemStack = switch (CytonicBedWars.getGameManager().getAxe(player.getUuid())) {
             case NONE ->
-                    Items.MENU_WOODEN_AXE.with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "WOODEN").build()));
+                    Items.MENU_WOODEN_AXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "WOODEN").build()));
             case WOODEN ->
-                    Items.MENU_STONE_AXE.with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "STONE").build()));
+                    Items.MENU_STONE_AXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "STONE").build()));
             case STONE ->
-                    Items.MENU_IRON_AXE.with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "IRON").build()));
+                    Items.MENU_IRON_AXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "IRON").build()));
             case IRON ->
-                    Items.MENU_DIAMOND_AXE.with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
+                    Items.MENU_DIAMOND_AXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
             case DIAMOND ->
-                    Items.MENU_DIAMOND_AXE.withLore(Msg.mm("<green><bold>Already purchased!")).with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
+                    Items.MENU_DIAMOND_AXE.withLore(Msg.mm("<green><bold>Already purchased!")).with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
         };
         PrebuiltItem axe = PrebuiltItem.of(axeItemStack, action -> {
             action.getEvent().setCancelled(true);
-            switch (AxeLevel.valueOf(Objects.requireNonNull(action.getEvent().getClickedItem().get(ItemComponent.CUSTOM_DATA)).nbt().getString("type"))) {
+            switch (AxeLevel.valueOf(Objects.requireNonNull(action.getEvent().getClickedItem().get(DataComponents.CUSTOM_DATA)).nbt().getString("type"))) {
                 case WOODEN -> {
                     if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
                         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, player)) {
@@ -127,19 +126,19 @@ public class ToolShopMenu extends ViewProvider {
 
         ItemStack pickaxeItemStack = switch (CytonicBedWars.getGameManager().getPickaxe(player.getUuid())) {
             case NONE ->
-                    Items.MENU_WOODEN_PICKAXE.with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "WOODEN").build()));
+                    Items.MENU_WOODEN_PICKAXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "WOODEN").build()));
             case WOODEN ->
-                    Items.MENU_STONE_PICKAXE.with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "STONE").build()));
+                    Items.MENU_STONE_PICKAXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "STONE").build()));
             case STONE ->
-                    Items.MENU_IRON_PICKAXE.with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "IRON").build()));
+                    Items.MENU_IRON_PICKAXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "IRON").build()));
             case IRON ->
-                    Items.MENU_DIAMOND_PICKAXE.with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
+                    Items.MENU_DIAMOND_PICKAXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
             case DIAMOND ->
-                    Items.MENU_DIAMOND_PICKAXE.withLore(Msg.mm("<green><bold>Already purchased!")).with(ItemComponent.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
+                    Items.MENU_DIAMOND_PICKAXE.withLore(Msg.mm("<green><bold>Already purchased!")).with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
         };
         PrebuiltItem pickaxe = PrebuiltItem.of(pickaxeItemStack, action -> {
             action.getEvent().setCancelled(true);
-            switch (PickaxeLevel.valueOf(Objects.requireNonNull(action.getEvent().getClickedItem().get(ItemComponent.CUSTOM_DATA)).nbt().getString("type"))) {
+            switch (PickaxeLevel.valueOf(Objects.requireNonNull(action.getEvent().getClickedItem().get(DataComponents.CUSTOM_DATA)).nbt().getString("type"))) {
                 case WOODEN -> {
                     if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
                         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, player)) {

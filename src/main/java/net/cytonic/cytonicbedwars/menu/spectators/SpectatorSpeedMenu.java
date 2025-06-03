@@ -10,20 +10,21 @@ import eu.koboo.minestom.invue.api.slots.ViewPattern;
 import net.cytonic.cytonicbedwars.menu.MenuUtils;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
+import net.minestom.server.component.DataComponents;
 import net.minestom.server.entity.Player;
-import net.minestom.server.item.ItemComponent;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import net.minestom.server.utils.Unit;
+import net.minestom.server.item.component.TooltipDisplay;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Set;
 
 public class SpectatorSpeedMenu extends ViewProvider {
 
     private static final PrebuiltItem tenthSpeed = PrebuiltItem.of(
             ItemStack.builder(Material.LEATHER_BOOTS)
-                    .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.green("0.1x flight speed"))
+                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                    .set(DataComponents.ITEM_NAME, Msg.green("0.1x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.01f);
@@ -32,9 +33,8 @@ public class SpectatorSpeedMenu extends ViewProvider {
 
     private static final PrebuiltItem halfSpeed = PrebuiltItem.of(
             ItemStack.builder(Material.CHAINMAIL_BOOTS)
-                    .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.green("0.5x flight speed"))
+                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                    .set(DataComponents.ITEM_NAME, Msg.green("0.5x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.05f);
@@ -43,9 +43,8 @@ public class SpectatorSpeedMenu extends ViewProvider {
 
     private static final PrebuiltItem normalSpeed = PrebuiltItem.of(
             ItemStack.builder(Material.IRON_BOOTS)
-                    .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.green("1x flight speed"))
+                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                    .set(DataComponents.ITEM_NAME, Msg.green("1x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.1f);
@@ -54,9 +53,8 @@ public class SpectatorSpeedMenu extends ViewProvider {
 
     private static final PrebuiltItem x2Speed = PrebuiltItem.of(
             ItemStack.builder(Material.GOLDEN_BOOTS)
-                    .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.green("2x flight speed"))
+                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                    .set(DataComponents.ITEM_NAME, Msg.green("2x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.2f);
@@ -65,9 +63,8 @@ public class SpectatorSpeedMenu extends ViewProvider {
 
     private static final PrebuiltItem x5Speed = PrebuiltItem.of(
             ItemStack.builder(Material.DIAMOND_BOOTS)
-                    .set(ItemComponent.HIDE_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-                    .set(ItemComponent.ITEM_NAME, Msg.green("5x flight speed"))
+                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                    .set(DataComponents.ITEM_NAME, Msg.green("5x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
                 action.getPlayer().setFlyingSpeed(0.5f);
