@@ -37,7 +37,7 @@ public class Generator {
     private Entity countDown;
     @Setter
     private Entity name;
-    private Task coundownRunnable;
+    private Task countdownRunnable;
     private String countDownFormat;
     private int toNext = 0; // in seconds
 
