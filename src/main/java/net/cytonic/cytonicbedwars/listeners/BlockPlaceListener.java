@@ -2,6 +2,7 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.minestom.server.coordinate.Pos;
@@ -13,18 +14,20 @@ import net.minestom.server.component.DataComponents;
 import java.util.Objects;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class BlockPlaceListener {
 
-    public static void onBlockPlace(PlayerBlockPlaceEvent e) {
+    @Listener
+    public void onBlockPlace(PlayerBlockPlaceEvent e) {
         if (e.getPlayer().getItemInHand(e.getHand()).has(DataComponents.CUSTOM_DATA)) {
             String id = Objects.requireNonNull(e.getPlayer().getItemInHand(e.getHand()).get(DataComponents.CUSTOM_DATA)).nbt().getString("bwID");
+            Block block;
             if (e.getBlock().hasNbt()) {
-                Block block = e.getBlock().withNbt(Objects.requireNonNull(e.getBlock().nbt()).putBoolean("placedByPlayer", true).putString("bwID", id));
-                e.setBlock(block);
+                block = e.getBlock().withNbt(Objects.requireNonNull(e.getBlock().nbt()).putBoolean("placedByPlayer", true).putString("bwID", id));
             } else {
-                Block block = e.getBlock().withNbt(CompoundBinaryTag.builder().putBoolean("placedByPlayer", true).putString("bwID", id).build());
-                e.setBlock(block);
+                block = e.getBlock().withNbt(CompoundBinaryTag.builder().putBoolean("placedByPlayer", true).putString("bwID", id).build());
             }
+            e.setBlock(block);
         }
         if (e.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         Pos spawn = CytonicBedwarsSettings.spawnPlatformCenter;

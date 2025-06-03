@@ -3,6 +3,7 @@ package net.cytonic.cytonicbedwars.listeners;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.coordinate.Pos;
@@ -11,8 +12,10 @@ import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.event.player.PlayerMoveEvent;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class MoveListener {
 
+    @Listener
     public static void onMove(PlayerMoveEvent event) {
         if (!CytonicBedWars.getGameManager().STARTED) return;
         if (event.getNewPosition().y() <= -40) {

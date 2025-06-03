@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.entity.GameMode;
@@ -16,9 +17,11 @@ import net.minestom.server.item.ItemStack;
 import java.util.Objects;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class BlockBreakListener {
 
-    public static void onBlockBreak(PlayerBlockBreakEvent e) {
+    @Listener
+    public void onBlockBreak(PlayerBlockBreakEvent e) {
         CytosisPlayer player = (CytosisPlayer) e.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE) return;
         if (CytonicBedWars.getGameManager().spectators.contains(player.getUuid())) {

@@ -3,12 +3,15 @@ package net.cytonic.cytonicbedwars.listeners;
 import io.github.togar2.pvp.events.FinalDamageEvent;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.player.CytosisPlayer;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class DamageListener {
 
-    public static void onDamage(FinalDamageEvent event) {
+    @Listener
+    public void onDamage(FinalDamageEvent event) {
         if (event.getEntity() instanceof CytosisPlayer player) {
             if (CytonicBedWars.getGameManager().spectators.contains(player.getUuid())) {
                 event.setCancelled(true);

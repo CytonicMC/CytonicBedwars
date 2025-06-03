@@ -3,6 +3,7 @@ package net.cytonic.cytonicbedwars.listeners;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.utils.Items;
+import net.cytonic.cytosis.events.api.Listener;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
@@ -11,9 +12,11 @@ import net.minestom.server.potion.Potion;
 import net.minestom.server.potion.PotionEffect;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class GamemodeChangeListener {
 
-    public static void onGamemodeChange(PlayerGameModeChangeEvent event) {
+    @Listener
+    public void onGamemodeChange(PlayerGameModeChangeEvent event) {
         Player player = event.getPlayer();
         if (event.getNewGameMode() == GameMode.SPECTATOR) {
             player.getInventory().clear();

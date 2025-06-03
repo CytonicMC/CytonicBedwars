@@ -2,16 +2,21 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.utils.Items;
-import net.minestom.server.event.item.ItemDropEvent;
+import net.cytonic.cytosis.events.api.Listener;
+import net.cytonic.cytosis.events.api.Priority;
 import net.minestom.server.component.DataComponents;
+import net.minestom.server.event.item.ItemDropEvent;
 import net.minestom.server.item.ItemStack;
 
 import java.util.Objects;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class DropItemListener {
 
-    public static void onDrop(ItemDropEvent event) {
+    @Listener
+    @Priority(-1)
+    public void onDrop(ItemDropEvent event) {
         ItemStack item = event.getItemStack();
         if (item.has(DataComponents.CUSTOM_DATA)) {
             if (Objects.requireNonNull(item.get(DataComponents.CUSTOM_DATA)).nbt().getBoolean(Items.NO_DROP)) {

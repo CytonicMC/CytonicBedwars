@@ -2,6 +2,7 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.utils.Items;
+import net.cytonic.cytosis.events.api.Listener;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
@@ -13,9 +14,11 @@ import net.minestom.server.item.Material;
 import java.time.Duration;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class ArmorEquipListener {
 
-    public static void onArmorEquip(InventoryItemChangeEvent event) {
+    @Listener
+    public void onArmorEquip(InventoryItemChangeEvent event) {
         if (!(event.getInventory() instanceof PlayerInventory playerInventory)) return;
         for (Player player : playerInventory.getViewers()) {
             if (event.getPreviousItem().material() == Material.BARRIER && player.getGameMode() == GameMode.ADVENTURE) {

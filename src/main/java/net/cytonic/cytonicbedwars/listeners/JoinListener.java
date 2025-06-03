@@ -6,6 +6,7 @@ import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
@@ -13,9 +14,11 @@ import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class JoinListener {
 
-    public static void onJoin(AsyncPlayerConfigurationEvent event) {
+    @Listener
+    public void onJoin(AsyncPlayerConfigurationEvent event) {
         CytosisPlayer player = (CytosisPlayer) event.getPlayer();
         event.setSpawningInstance(Cytosis.getDefaultInstance());
         Pos pos = CytonicBedwarsSettings.spawnPlatformCenter;
@@ -23,7 +26,8 @@ public class JoinListener {
         player.setRespawnPoint(pos);
     }
 
-    public static void onJoin(PlayerSpawnEvent event) {
+    @Listener
+    public void onJoin(PlayerSpawnEvent event) {
         if (!CytonicBedWars.getGameManager().STARTED) {
             if (Cytosis.getOnlinePlayers().size() >= CytonicBedwarsSettings.minPlayers) {
                 CytonicBedWars.getGameManager().setGameState(GameState.STARTING);

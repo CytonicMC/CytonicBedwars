@@ -2,6 +2,7 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.utils.Items;
+import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.component.DataComponents;
 import net.minestom.server.entity.GameMode;
@@ -12,9 +13,11 @@ import java.util.Arrays;
 import java.util.Objects;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class InventoryClickListener {
 
-    public static void onInventoryClick(InventoryPreClickEvent event) {
+    @Listener
+    public void onInventoryClick(InventoryPreClickEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         ItemStack item = event.getClickedItem();
         if (item.has(DataComponents.CUSTOM_DATA)) {
