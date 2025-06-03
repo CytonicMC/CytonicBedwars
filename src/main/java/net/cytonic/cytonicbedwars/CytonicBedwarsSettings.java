@@ -1,19 +1,21 @@
 package net.cytonic.cytonicbedwars;
 
-import com.google.gson.JsonObject;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.data.objects.Team;
+import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
-import net.cytonic.cytosis.utils.PosSerializer;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.block.Block;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.serialize.SerializationException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class is used to store all the cached configuration values.
@@ -30,79 +32,78 @@ public final class CytonicBedwarsSettings {
     public static int bridgeEggBlockLimit = 0;
     public static Pos spawnPlatformCenter = new Pos(0, 0, 0, 180, 0);
     public static Map<String, Team> teams = new HashMap<>();
-    public static Map<GeneratorType, Integer> generatorsWaitTime = new HashMap<>();
     public static Map<GeneratorType, Integer> generatorsWaitTimeTicks = new HashMap<>();
     public static Map<GeneratorType, Integer> generatorsItemLimit = new HashMap<>();
     public static Map<GeneratorType, List<Pos>> generators = new HashMap<>();
 
     /**
-     * Loads the config from a config map
+     * Loads the config from a string
      *
-     * @param jsonObject The config json object
+     * @param data the data
      */
-    public static void importConfig(JsonObject jsonObject) {
+    public static void importConfig(String data) {
         long time = System.currentTimeMillis();
         Logger.info("Importing bedwars config!");
-        jsonObject.asMap().forEach((key, value) -> {
+        ConfigurationNode node = null;
+        try {
+            node = Cytosis.GSON_CONFIGURATION_LOADER.buildAndLoadString(data);
+        } catch (ConfigurateException e) {
+            Logger.error("Could not import config!", e);
+        }
+        if (node == null) {
+            Logger.error("Configuration node is null!");
+            return;
+        }
+        worldName = node.node("world_name").getString();
+        mapName = node.node("map_name").getString();
+        mode = node.node("mode").getString();
+        minPlayers = node.node("min_players").getInt();
+        maxPlayers = node.node("max_players").getInt();
+        bridgeEggBlockDespawn = node.node("bridge_egg_block_despawn").getInt();
+        bridgeEggBlockLimit = node.node("bridge_egg_block_limit").getInt();
+        try {
+            spawnPlatformCenter = node.node("spawn_platform_center").get(Pos.class);
+        } catch (SerializationException e) {
+            Logger.error("Could not import spawn platform center!", e);
+        }
+        ConfigurationNode teams = node.node("teams");
+        teams.childrenMap().forEach((key, teamNode) -> {
             try {
-                switch (key) {
-                    case "world_name" -> worldName = value.getAsString();
-                    case "map_name" -> mapName = value.getAsString();
-                    case "mode" -> mode = value.getAsString();
-                    case "min_players" -> minPlayers = value.getAsInt();
-                    case "max_players" -> maxPlayers = value.getAsInt();
-                    case "bridge_egg_block_despawn" -> bridgeEggBlockDespawn = value.getAsInt();
-                    case "bridge_egg_block_limit" -> bridgeEggBlockLimit = value.getAsInt();
-                    case "spawn_platform_center" ->
-                            spawnPlatformCenter = PosSerializer.deserialize(value.getAsString());
-                    case "teams" -> {
-                        JsonObject teams = value.getAsJsonObject();
-                        teams.asMap().forEach((key1, value1) -> {
-                            JsonObject obj1 = value1.getAsJsonObject();
-                            Team t = new Team(
-                                    key1,
-                                    obj1.get("tab_prefix").getAsString(),
-                                    NamedTextColor.NAMES.value(obj1.get("team_color").getAsString()),
-                                    Block.fromKey(obj1.get("bed_item").getAsString()),
-                                    PosSerializer.deserialize(obj1.get("spawn_location").getAsString()),
-                                    PosSerializer.deserialize(obj1.get("generation_location").getAsString()),
-                                    PosSerializer.deserialize(obj1.get("item_shop_location").getAsString()),
-                                    PosSerializer.deserialize(obj1.get("team_shop_location").getAsString()),
-                                    PosSerializer.deserialize(obj1.get("team_chest_location").getAsString()),
-                                    PosSerializer.deserialize(obj1.get("bed_location").getAsString()),
-                                    Block.fromKey(obj1.get("wool_item").getAsString()),
-                                    Block.fromKey(obj1.get("glass_item").getAsString()),
-                                    Block.fromKey(obj1.get("terracotta_item").getAsString())
-                            );
-                            CytonicBedwarsSettings.teams.put(key1, t);
-                        });
-                    }
-                    case "generators_wait_time" -> {
-                        JsonObject generatorsWaitTime = value.getAsJsonObject();
-                        generatorsWaitTime.asMap().forEach((key1, value1) -> CytonicBedwarsSettings.generatorsWaitTime.put(GeneratorType.valueOf(key1.toUpperCase()), value1.getAsInt()));
-                    }
-                    case "generators_wait_time_ticks" -> {
-                        JsonObject generatorsWaitTime = value.getAsJsonObject();
-                        generatorsWaitTime.asMap().forEach((key1, value1) -> CytonicBedwarsSettings.generatorsWaitTimeTicks.put(GeneratorType.valueOf(key1.toUpperCase()), value1.getAsInt()));
-                    }
-                    case "generators_item_limit" -> {
-                        JsonObject generatorsWaitTime = value.getAsJsonObject();
-                        generatorsWaitTime.asMap().forEach((key1, value1) -> CytonicBedwarsSettings.generatorsItemLimit.put(GeneratorType.valueOf(key1.toUpperCase()), value1.getAsInt()));
-                    }
-                    case "generators" -> {
-                        JsonObject generators = value.getAsJsonObject();
-                        generators.asMap().forEach((key1, value1) -> {
-                            List<Pos> posList = new ArrayList<>();
-                            value1.getAsJsonArray().forEach(jsonElement -> posList.add(PosSerializer.deserialize(jsonElement.getAsString())));
-                            CytonicBedwarsSettings.generators.put(GeneratorType.valueOf(key1.toUpperCase()), posList);
-                        });
-                    }
-                    default -> { /*Do nothing*/ }
-                }
-            } catch (ClassCastException e) {
-                Logger.error("Could not import config key: " + key, e);
+                Team team = new Team(
+                        Objects.requireNonNull(teamNode.parent()).getString(),
+                        teamNode.node("tab_prefix").getString(),
+                        NamedTextColor.NAMES.value(Objects.requireNonNull(teamNode.node("team_color").getString())),
+                        Block.fromKey(Objects.requireNonNull(teamNode.node("bed_item").getString())),
+                        Objects.requireNonNull(teamNode.node("spawn_location").get(Pos.class)),
+                        teamNode.node("generation_location").get(Pos.class),
+                        teamNode.node("item_shop_location").get(Pos.class),
+                        teamNode.node("team_shop_location").get(Pos.class),
+                        teamNode.node("team_chest_location").get(Pos.class),
+                        teamNode.node("bed_location").get(Pos.class),
+                        Block.fromKey(Objects.requireNonNull(teamNode.node("wool_item").getString())),
+                        Block.fromKey(Objects.requireNonNull(teamNode.node("glass_item").getString())),
+                        Block.fromKey(Objects.requireNonNull(teamNode.node("terracotta_item").getString()))
+                );
+                CytonicBedwarsSettings.teams.put(Objects.requireNonNull(teamNode.parent()).getString(), team);
+            } catch (SerializationException e) {
+                Logger.error("Could not import team!", e);
             }
         });
-        Logger.info("Bedwars config imported in " + (System.currentTimeMillis() - time) + "ms!");
+        ConfigurationNode generatorsWaitTime = node.node("generators_wait_time_ticks");
+        generatorsWaitTime.childrenMap().forEach((key, value) -> {
+            CytonicBedwarsSettings.generatorsWaitTimeTicks.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getInt());
+        });
+        ConfigurationNode generatorsItemLimit = node.node("generators_item_limit");
+        generatorsItemLimit.childrenMap().forEach((key, value) -> {
+            CytonicBedwarsSettings.generatorsItemLimit.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getInt());
+        });
+        ConfigurationNode generators = node.node("generators");
+        generators.childrenMap().forEach((key, value) -> {
+            try {
+                CytonicBedwarsSettings.generators.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getList(Pos.class));
+            } catch (SerializationException e) {
+                Logger.error("Could not import generators!", e);
+            }
+        });
     }
 }
