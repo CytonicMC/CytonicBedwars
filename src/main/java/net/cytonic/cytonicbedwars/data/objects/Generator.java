@@ -74,7 +74,7 @@ public class Generator {
 
     public void start() {
         if (countDown != null) {
-            coundownRunnable = MinecraftServer.getSchedulerManager().buildTask(() -> {
+            countdownRunnable = MinecraftServer.getSchedulerManager().buildTask(() -> {
                 toNext++;
                 float toNextF = ((countDownDuration - toNext) / 20.0F);
                 String text = String.format(countDownFormat, toNextF);
@@ -96,7 +96,7 @@ public class Generator {
         }
         if (countDown != null) {
             countDown.remove();
-            coundownRunnable.cancel();
+            countdownRunnable.cancel();
         }
         if (name != null) {
             name.remove();
