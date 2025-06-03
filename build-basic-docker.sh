@@ -1,6 +1,5 @@
-docker build -t cytonic_bedwars --build-arg OTEL_PORT="$OTEL_PORT" --build-arg OTEL_HOST="$OTEL_HOST" --no-cache --progress plain -f docker/Dockerfile .
+docker buildx build -t cytonic_bedwars --platform linux/amd64 --load --progress plain -f docker/Dockerfile .
 docker tag cytonic_bedwars ghcr.io/cytonicmc/cytonic_bedwars:latest
-docker push ghcr.io/cytonicmc/cytonic_bedwars:latest
 
 docker stop cytonic_bedwars || true
 docker rm cytonic_bedwars || true
