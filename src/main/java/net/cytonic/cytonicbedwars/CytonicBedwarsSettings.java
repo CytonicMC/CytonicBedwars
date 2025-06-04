@@ -66,11 +66,10 @@ public final class CytonicBedwarsSettings {
         } catch (SerializationException e) {
             Logger.error("Could not import spawn platform center!", e);
         }
-        ConfigurationNode teams = node.node("teams");
-        teams.childrenMap().forEach((key, teamNode) -> {
+        node.node("teams").childrenMap().forEach((key, teamNode) -> {
             try {
                 Team team = new Team(
-                        Objects.requireNonNull(teamNode.parent()).getString(),
+                        String.valueOf(key),
                         teamNode.node("tab_prefix").getString(),
                         NamedTextColor.NAMES.value(Objects.requireNonNull(teamNode.node("team_color").getString())),
                         Block.fromKey(Objects.requireNonNull(teamNode.node("bed_item").getString())),
@@ -84,19 +83,16 @@ public final class CytonicBedwarsSettings {
                         Block.fromKey(Objects.requireNonNull(teamNode.node("glass_item").getString())),
                         Block.fromKey(Objects.requireNonNull(teamNode.node("terracotta_item").getString()))
                 );
-                CytonicBedwarsSettings.teams.put(Objects.requireNonNull(teamNode.parent()).getString(), team);
+                CytonicBedwarsSettings.teams.put(String.valueOf(key), team);
             } catch (SerializationException e) {
                 Logger.error("Could not import team!", e);
             }
         });
-        ConfigurationNode generatorsWaitTime = node.node("generators_wait_time_ticks");
-        generatorsWaitTime.childrenMap().forEach((key, value) -> CytonicBedwarsSettings.generatorsWaitTimeTicks.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getInt()));
-        ConfigurationNode generatorsItemLimit = node.node("generators_item_limit");
-        generatorsItemLimit.childrenMap().forEach((key, value) -> CytonicBedwarsSettings.generatorsItemLimit.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getInt()));
-        ConfigurationNode generators = node.node("generators");
-        generators.childrenMap().forEach((key, value) -> {
+        node.node("generators_wait_time_ticks").childrenMap().forEach((key, value) -> CytonicBedwarsSettings.generatorsWaitTimeTicks.put(GeneratorType.valueOf(String.valueOf(key).toUpperCase()), value.getInt()));
+        node.node("generators_item_limit").childrenMap().forEach((key, value) -> CytonicBedwarsSettings.generatorsItemLimit.put(GeneratorType.valueOf(String.valueOf(key).toUpperCase()), value.getInt()));
+        node.node("generators").childrenMap().forEach((key, value) -> {
             try {
-                CytonicBedwarsSettings.generators.put(GeneratorType.valueOf(Objects.requireNonNull(value.parent()).getString()), value.getList(Pos.class));
+                CytonicBedwarsSettings.generators.put(GeneratorType.valueOf(String.valueOf(key).toUpperCase()), value.getList(Pos.class));
             } catch (SerializationException e) {
                 Logger.error("Could not import generators!", e);
             }
