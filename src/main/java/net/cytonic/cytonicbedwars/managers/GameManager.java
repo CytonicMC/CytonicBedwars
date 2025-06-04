@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
 import net.cytonic.cytonicbedwars.ItemAbilityDispatcher;
-import net.cytonic.cytonicbedwars.data.enums.*;
+import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
+import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
+import net.cytonic.cytonicbedwars.data.enums.GameState;
+import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.data.objects.PlayerList;
 import net.cytonic.cytonicbedwars.data.objects.Scoreboard;
 import net.cytonic.cytonicbedwars.data.objects.Team;
@@ -33,6 +36,7 @@ import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.registry.DynamicRegistry;
 import net.minestom.server.scoreboard.TeamBuilder;
 import net.minestom.server.sound.SoundEvent;
+import net.minestom.server.timer.TaskSchedule;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -77,6 +81,8 @@ public class GameManager {
         generatorManager = new GeneratorManager();
         itemAbilityDispatcher = new ItemAbilityDispatcher();
         Cytosis.getSideboardManager().setSideboardCreator(new Scoreboard());
+        Cytosis.getSideboardManager().cancelUpdates();
+        Cytosis.getSideboardManager().autoUpdateBoards(TaskSchedule.tick(1));
         Cytosis.getPlayerListManager().setCreator(new PlayerList());
     }
 

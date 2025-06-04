@@ -9,7 +9,6 @@ import net.kyori.adventure.title.Title;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.timer.Task;
-import net.minestom.server.timer.TaskSchedule;
 
 import java.time.Duration;
 
@@ -19,8 +18,6 @@ public class WaitingRunnable {
 
     public WaitingRunnable() {
         task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofSeconds(1)).schedule();
-        Cytosis.getSideboardManager().cancelUpdates();
-        Cytosis.getSideboardManager().autoUpdateBoards(TaskSchedule.tick(1));
     }
 
     public void run() {
@@ -45,7 +42,5 @@ public class WaitingRunnable {
 
     public void stop() {
         task.cancel();
-        //todo remove when default update schedule is 1 tick
-        Cytosis.getSideboardManager().autoUpdateBoards(TaskSchedule.seconds(1L));
     }
 }
