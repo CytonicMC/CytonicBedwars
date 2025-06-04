@@ -23,10 +23,10 @@ import java.util.Objects;
 @NoArgsConstructor
 public final class CytonicBedwarsSettings {
 
-    public static String worldName = "";
-    public static String mapName = "";
-    public static String mode = "";
-    public static int minPlayers;
+    public static String worldName = "NULL";
+    public static String mapName = "NULL";
+    public static String mode = "NULL";
+    public static int minPlayers = 0;
     public static int maxPlayers = 0;
     public static int bridgeEggBlockDespawn = 0;
     public static int bridgeEggBlockLimit = 0;
