@@ -70,8 +70,7 @@ public class Generator {
             countdownRunnable = MinecraftServer.getSchedulerManager().buildTask(() -> {
                 toNext++;
                 float toNextF = ((waitTime - toNext) / 20.0F);
-                String text = String.format("<yellow>Spawns in <red>%.1f<yellow> seconds", toNextF);
-                countDown.editEntityMeta(TextDisplayMeta.class, meta -> meta.setText(Msg.mm(text)));
+                countDown.editEntityMeta(TextDisplayMeta.class, meta -> meta.setText(Msg.mm("<yellow>Spawns in <red>%.1f<yellow> seconds", toNextF)));
                 if (toNext == waitTime) {
                     toNext = 0;
                 }
