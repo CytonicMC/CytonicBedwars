@@ -12,7 +12,7 @@ import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.ItemEntity;
 import net.minestom.server.entity.metadata.display.AbstractDisplayMeta;
-import net.minestom.server.entity.metadata.display.BlockDisplayMeta;
+import net.minestom.server.entity.metadata.display.ItemDisplayMeta;
 import net.minestom.server.entity.metadata.display.TextDisplayMeta;
 import net.minestom.server.tag.Tag;
 import net.minestom.server.timer.Task;
@@ -44,10 +44,10 @@ public class Generator {
         this.hasVisual = hasVisual;
 
         if (hasVisual) {
-            visual = new Entity(EntityType.BLOCK_DISPLAY);
-            visual.setInstance(Cytosis.getDefaultInstance(), spawnLoc.add(0, 4, 0).sub(.5, 0, .5));
-            visual.editEntityMeta(BlockDisplayMeta.class, meta -> {
-                meta.setBlockState(generatorType.getVisualBlock());
+            visual = new Entity(EntityType.ITEM_DISPLAY);
+            visual.setInstance(Cytosis.getDefaultInstance(), spawnLoc.add(0, 4, 0));
+            visual.editEntityMeta(ItemDisplayMeta.class, meta -> {
+                meta.setItemStack(generatorType.getVisualItem());
                 meta.setHasNoGravity(true);
             });
             visualRunnable = new GeneratorVisualRunnable(visual);

@@ -1,7 +1,6 @@
 package net.cytonic.cytonicbedwars.runnables;
 
 import lombok.Getter;
-import net.cytonic.cytosis.Cytosis;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Entity;
@@ -18,14 +17,13 @@ public class GeneratorVisualRunnable {
 
     public GeneratorVisualRunnable(Entity as) {
         this.as = as;
-        task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofMillis(15)).schedule();
+        task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofMillis(40)).schedule();
     }
 
     private void run() {
-        //todo figure out this mess
-//        rots += (Math.PI / 12);
-//        Pos loc = as.getPosition().sub(0, Math.sin(rots) / 24, 0);
-//        loc = loc.withYaw(as.getPosition().yaw() + 10.5F);
-//        as.teleport(loc);
+        rots += (Math.PI / 12);
+        Pos loc = as.getPosition().sub(0, Math.sin(rots) / 24, 0);
+        loc = loc.withYaw(as.getPosition().yaw() + 10.5F);
+        as.teleport(loc);
     }
 }
