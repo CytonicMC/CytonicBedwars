@@ -303,7 +303,7 @@ public class GameManager {
             message = message.append(Msg.mm("<GRAY> died under mysterious circumstances"));
         }
 
-        dead.teleport(new Pos(0, 100, 0));
+        dead.teleport(new Pos(0, 30, 0));
         if (finalkill) {
             dead.showTitle(Title.title(Msg.mm("<BOLD><RED>YOU DIED!"), Msg.mm("<YELLOW>You won't respawn"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
             message = message.append(Msg.mm("<BOLD><RED> FINAL KILL!"));
