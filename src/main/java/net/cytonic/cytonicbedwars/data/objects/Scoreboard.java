@@ -13,7 +13,9 @@ import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.text.Component;
 import org.jooq.tools.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @NoArgsConstructor
@@ -33,47 +35,49 @@ public class Scoreboard implements SideboardCreator {
         try {
             switch (CytonicBedWars.getGameManager().getGameState()) {
                 case WAITING -> list = List.of(
-                        Msg.mm("<dark_grey><i>" + CytonicBedWars.version),
+                        topLine(),
                         Msg.mm(""),
                         Msg.mm("Map: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mapName)),
-                        Msg.mm("Players: <green>(" + Cytosis.getOnlinePlayers().size() + "/" + CytonicBedwarsSettings.maxPlayers + ")"),
+                        Msg.mm("Players: <green>" + Cytosis.getOnlinePlayers().size() + "/" + CytonicBedwarsSettings.maxPlayers),
                         Msg.mm(""),
                         Msg.mm("Waiting..."),
-                        Msg.mm("Mode: <green> " + StringUtils.toUC(CytonicBedwarsSettings.mode)),
                         Msg.mm(""),
-                        Msg.mm("      <yellow>Cytonic.net")
+                        Msg.mm("Mode: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mode)),
+                        Msg.mm("Version: <gray>" + CytonicBedWars.version),
+                        Msg.mm(""),
+                        Msg.yellow("www.cytonic.net")
                 );
 
                 case STARTING -> list = List.of(
-                        Msg.mm("<dark_grey>" + CytonicBedWars.version),
+                        topLine(),
                         Msg.mm(""),
                         Msg.mm("Map: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mapName)),
-                        Msg.mm("Players: <green>(" + Cytosis.getOnlinePlayers().size() + "/" + CytonicBedwarsSettings.maxPlayers + ")"),
+                        Msg.mm("Players: <green>" + Cytosis.getOnlinePlayers().size() + "/" + CytonicBedwarsSettings.maxPlayers),
                         Msg.mm(""),
-                        Msg.mm("Starting in <red>" + WaitingRunnable.timeLeft),
-                        Msg.mm("Mode: <green> " + StringUtils.toUC(CytonicBedwarsSettings.mode)),
+                        Msg.mm("Starting in <green>%ds", WaitingRunnable.getTimeLeft()),
                         Msg.mm(""),
-                        Msg.mm("      <yellow>Cytonic.net")
+                        Msg.mm("Mode: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mode)),
+                        Msg.mm("Version: <gray>" + CytonicBedWars.version),
+                        Msg.mm(""),
+                        Msg.yellow("www.cytonic.net")
                 );
 
                 case FROZEN -> list = List.of(
-                        Msg.mm("<dark_grey><i>" + CytonicBedWars.version),
+                        topLine(),
                         Msg.mm(""),
                         Msg.mm("Map: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mapName)),
                         Msg.mm(""),
-                        Msg.mm("<aqua><bold>FROZEN"),
+                        Msg.aqua("<bold>FROZEN"),
                         Msg.mm("Mode: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mode)),
+                        Msg.mm("Version: <gray>" + CytonicBedWars.version),
                         Msg.mm(""),
-                        Msg.mm("      <yellow>Cytonic.net")
+                        Msg.yellow("www.cytonic.net")
                 );
                 case PLAY -> {
                     List<Component> scoreboardArgs = new ArrayList<>();
-                    scoreboardArgs.add(Msg.mm("<dark_grey><i>" + CytonicBedWars.version));
+                    scoreboardArgs.add(topLine());
                     scoreboardArgs.add(Msg.mm(""));
-                    scoreboardArgs.add(Msg.mm("Time: idk"));
-                    scoreboardArgs.add(Msg.mm("Map: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mapName)));
-                    scoreboardArgs.add(Msg.mm(""));
-                    scoreboardArgs.add(Msg.mm("Mode: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mode)));
+                    scoreboardArgs.add(Msg.mm("Time: coming soon:tm:"));
                     scoreboardArgs.add(Msg.mm(""));
                     CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
                         // todo: check if team is eliminated, or has final kills
@@ -96,21 +100,21 @@ public class Scoreboard implements SideboardCreator {
                         scoreboardArgs.add(Msg.mm(s));
                     });
                     scoreboardArgs.add(Msg.mm(""));
-                    scoreboardArgs.add(Msg.mm("      <yellow>Cytonic.net"));
+                    scoreboardArgs.add(Msg.yellow("www.cytonic.net"));
                     list = scoreboardArgs;
                 }
-                case ENDED -> {
-                    List<Component> scoreboardArgs = new ArrayList<>();
-                    scoreboardArgs.add(Msg.mm("<dark_grey><i>" + CytonicBedWars.version));
-                    scoreboardArgs.add(Msg.mm(""));
-                    scoreboardArgs.add(Msg.mm("<red>The game has ended."));
-                    scoreboardArgs.add(Msg.mm("Map: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mapName)));
-                    scoreboardArgs.add(Msg.mm(""));
-                    scoreboardArgs.add(Msg.mm("Mode: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mode)));
-                    scoreboardArgs.add(Msg.mm(""));
-                    scoreboardArgs.add(Msg.mm("      <yellow>Cytonic.net"));
-                    list = scoreboardArgs;
-                }
+                case ENDED -> list = List.of(
+                        topLine(),
+                        Msg.mm(""),
+                        Msg.mm("Map: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mapName)),
+                        Msg.mm(""),
+                        Msg.mm("The game has ended!"),
+                        Msg.mm(""),
+                        Msg.mm("Mode: <green>" + StringUtils.toUC(CytonicBedwarsSettings.mode)),
+                        Msg.mm("Version: <gray>" + CytonicBedWars.version),
+                        Msg.mm(""),
+                        Msg.yellow("www.cytonic.net")
+                );
             }
         } catch (Exception e) {
             Logger.error("error", e);
@@ -120,6 +124,10 @@ public class Scoreboard implements SideboardCreator {
 
     @Override
     public Component title(CytosisPlayer player) {
-        return Msg.mm("<yellow><bold>Cytonic Bedwars");
+        return Msg.mm("<yellow><bold>Bedwars");
+    }
+
+    private Component topLine() {
+        return Msg.grey("%s <dark_gray>%s", new SimpleDateFormat("M/d/y").format(Calendar.getInstance().getTime()), Cytosis.getRawID());
     }
 }
