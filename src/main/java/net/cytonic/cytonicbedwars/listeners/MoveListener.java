@@ -18,9 +18,14 @@ public class MoveListener {
     @Listener
     public static void onMove(PlayerMoveEvent event) {
         if (!CytonicBedWars.getGameManager().STARTED) return;
-        if (event.getNewPosition().y() <= -40) {
-            CytonicBedWars.getGameManager().kill((CytosisPlayer) event.getPlayer(), null, DamageType.OUT_OF_WORLD);
+        if (CytonicBedWars.getGameManager().spectators.contains(event.getPlayer().getUuid())) {
+            event.getPlayer().teleport(CytonicBedwarsSettings.spawnPlatformCenter);
             event.setCancelled(true);
+        } else {
+            if (event.getNewPosition().y() <= -40) {
+                CytonicBedWars.getGameManager().kill((CytosisPlayer) event.getPlayer(), null, DamageType.OUT_OF_WORLD);
+                event.setCancelled(true);
+            }
         }
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         Pos spawn = CytonicBedwarsSettings.spawnPlatformCenter;
