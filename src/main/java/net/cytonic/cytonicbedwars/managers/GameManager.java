@@ -271,7 +271,7 @@ public class GameManager {
         }
 
         boolean finalkill = false;
-        Component message = Msg.mm(getPlayerTeam(dead.getUuid()).orElseThrow().prefix() + " " + dead.getUsername() + "<RESET>");
+        Component message = Msg.mm(getPlayerTeam(dead.getUuid()).orElseThrow().prefix() + dead.getUsername() + "<RESET>");
         if (!beds.get(getPlayerTeam(dead.getUuid()).orElseThrow())) {
             finalkill = true;
         }
