@@ -4,7 +4,6 @@ import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.menu.spectators.SpectatorSelectMenu;
 import net.cytonic.cytonicbedwars.menu.spectators.SpectatorSpeedMenu;
 import net.cytonic.cytosis.Cytosis;
-import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
@@ -16,7 +15,6 @@ import net.minestom.server.item.ItemStack;
 public class ItemAbilityDispatcher {
 
     public void dispatch(String abilityKey, CytosisPlayer user, PlayerUseItemEvent event) {
-        Logger.debug("test key = " + abilityKey);
         switch (abilityKey) {
             case "FIREBALL" -> {
                 ItemStack item = user.getItemInHand(event.getHand());
