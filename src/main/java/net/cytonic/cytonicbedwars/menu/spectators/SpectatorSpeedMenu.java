@@ -33,7 +33,7 @@ public class SpectatorSpeedMenu extends ViewProvider {
 
     private static final PrebuiltItem halfSpeed = PrebuiltItem.of(
             ItemStack.builder(Material.CHAINMAIL_BOOTS)
-                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
                     .set(DataComponents.ITEM_NAME, Msg.green("0.5x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
@@ -43,7 +43,7 @@ public class SpectatorSpeedMenu extends ViewProvider {
 
     private static final PrebuiltItem normalSpeed = PrebuiltItem.of(
             ItemStack.builder(Material.IRON_BOOTS)
-                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
                     .set(DataComponents.ITEM_NAME, Msg.green("1x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
@@ -53,7 +53,7 @@ public class SpectatorSpeedMenu extends ViewProvider {
 
     private static final PrebuiltItem x2Speed = PrebuiltItem.of(
             ItemStack.builder(Material.GOLDEN_BOOTS)
-                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
                     .set(DataComponents.ITEM_NAME, Msg.green("2x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);
@@ -63,7 +63,7 @@ public class SpectatorSpeedMenu extends ViewProvider {
 
     private static final PrebuiltItem x5Speed = PrebuiltItem.of(
             ItemStack.builder(Material.DIAMOND_BOOTS)
-                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                    .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
                     .set(DataComponents.ITEM_NAME, Msg.green("5x flight speed"))
                     .build(), action -> {
                 action.getEvent().setCancelled(true);

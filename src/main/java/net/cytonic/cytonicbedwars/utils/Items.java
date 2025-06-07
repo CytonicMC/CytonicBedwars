@@ -242,7 +242,7 @@ public class Items {
                 .set(DataComponents.ITEM_NAME, Msg.mm(displayName))
                 .set(DataComponents.LORE, list)
                 .set(DataComponents.UNBREAKABLE)
-                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
                 .set(DataComponents.ENCHANTMENTS, enchantmentList)
                 .set(DataComponents.CUSTOM_DATA, new CustomData(builder.build()))
                 .build();
@@ -260,7 +260,7 @@ public class Items {
         ItemStack item = ItemStack.builder(type)
                 .set(DataComponents.ITEM_NAME, Msg.mm(name))
                 .set(DataComponents.UNBREAKABLE)
-                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
                 .set(DataComponents.DYED_COLOR, color)
                 .set(DataComponents.CUSTOM_DATA, new CustomData(builder.build()))
                 .build();
@@ -277,7 +277,7 @@ public class Items {
                 .set(DataComponents.POTION_CONTENTS, contents)
                 .set(DataComponents.CUSTOM_NAME, Msg.mm(name))
                 .set(DataComponents.UNBREAKABLE)
-                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE)))
+                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
                 .set(DataComponents.LORE, list)
                 .set(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString(NAMESPACE, id).build()))
                 .build();
