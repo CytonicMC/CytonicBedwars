@@ -275,7 +275,7 @@ public class GameManager {
         }
 
         boolean finalkill = false;
-        Component message = Msg.mm(getPlayerTeam(dead.getUuid()).orElseThrow().prefix() + dead.getUsername() + "<reset>");
+        Component message = Msg.mm(getPlayerTeam(dead.getUuid()).orElseThrow().prefix() + dead.getUsername() + " <reset>");
         if (!beds.get(getPlayerTeam(dead.getUuid()).orElseThrow())) {
             finalkill = true;
         }
@@ -284,7 +284,7 @@ public class GameManager {
                 kill(dead, null, DamageType.OUT_OF_WORLD);
             } else {
                 statsManager.addPlayerKill(killer.getUuid());
-                message = message.append(Msg.grey(" was slain by " + getPlayerTeam(killer.getUuid()).orElseThrow().prefix() + killer.getUsername()));
+                message = message.append(Msg.grey("was slain by %s%s", getPlayerTeam(killer.getUuid()).orElseThrow().prefix(), killer.getUsername()));
             }
         } else if (damageType.equals(DamageType.FALL)) {
             message = message.append(Msg.grey("has fallen to their death"));
