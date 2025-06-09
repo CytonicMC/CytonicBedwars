@@ -67,6 +67,7 @@ public class GameManager {
     private final WorldManager worldManager;
     private final PlayerInventoryManager playerInventoryManager;
     private final GeneratorManager generatorManager;
+    private final DatabaseManager databaseManager;
     public List<UUID> spectators = new ArrayList<>();
     public Map<UUID, ArmorLevel> armorLevels = new HashMap<>();
     public Map<UUID, AxeLevel> axes = new HashMap<>();
@@ -85,6 +86,8 @@ public class GameManager {
         worldManager = new WorldManager();
         playerInventoryManager = new PlayerInventoryManager();
         generatorManager = new GeneratorManager();
+        databaseManager = new DatabaseManager();
+        databaseManager.createTables();
         itemAbilityDispatcher = new ItemAbilityDispatcher();
         Cytosis.getSideboardManager().setSideboardCreator(new Scoreboard());
         Cytosis.getSideboardManager().cancelUpdates();
@@ -115,7 +118,7 @@ public class GameManager {
         worldManager.removeSpawnPlatform();
         STARTED = true;
         setGameState(GameState.PLAY);
-        Cytosis.getOnlinePlayers().forEach(player -> statsManager.propagatePlayer(player.getUuid()));
+        Cytosis.getOnlinePlayers().forEach(player -> statsManager.addPlayer(player.getUuid()));
         // split players into teams
         List<UUID> players = new ArrayList<>();
         alivePlayers = players;
@@ -237,6 +240,8 @@ public class GameManager {
         alivePlayers.clear();
         shears.clear();
         spectators.clear();
+        databaseManager.saveStats();
+        statsManager.getStats().clear();
         setup();
     }
 
@@ -261,12 +266,13 @@ public class GameManager {
             p.showTitle(title);
         }
         // todo: display animations, messages, etc.
+        statsManager.getStats(player.getUuid()).addBedBreak();
         beds.put(t, false);
     }
 
     public void kill(@NotNull CytosisPlayer dead, @Nullable CytosisPlayer killer, @NotNull DynamicRegistry.Key<DamageType> damageType) {
         alivePlayers.remove(dead.getUuid());
-        statsManager.addPlayerDeath(dead.getUuid());
+        statsManager.getStats(dead.getUuid()).addDeath();
 
         //degrade tools
         if (!(AxeLevel.getOrdered(getAxe(dead.getUuid()), -1) == null)) {
@@ -287,7 +293,7 @@ public class GameManager {
             if (killer == null) {
                 kill(dead, null, DamageType.OUT_OF_WORLD);
             } else {
-                statsManager.addPlayerKill(killer.getUuid());
+                statsManager.getStats(killer.getUuid()).addKill();
                 message = message.append(Msg.grey("was slain by %s%s", getPlayerTeam(killer.getUuid()).orElseThrow().prefix(), killer.getUsername()));
                 killer.getInventory().addItemStack(Items.get("IRON").withAmount(playerInventoryManager.itemCount(dead, "IRON")));
                 killer.getInventory().addItemStack(Items.get("GOLD").withAmount(playerInventoryManager.itemCount(dead, "GOLD")));
@@ -323,6 +329,9 @@ public class GameManager {
             dead.setGameMode(GameMode.SPECTATOR);
             Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
             getPlayerTeams().get(getPlayerTeam(dead.getUuid()).orElseThrow()).remove(dead.getUuid());
+            if (killer != null) {
+                statsManager.getStats(killer.getUuid()).addFinalKill();
+            }
             return;
         }
         Component finalMessage = message;

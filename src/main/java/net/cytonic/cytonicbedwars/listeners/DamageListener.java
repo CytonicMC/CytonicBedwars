@@ -23,9 +23,9 @@ public class DamageListener {
             }
 
             if (event.getDamage().getAttacker() instanceof CytosisPlayer damager) {
-                CytonicBedWars.getGameManager().getStatsManager().addPlayerDamageDealt(damager.getUuid(), event.getDamage().getAmount());
+                CytonicBedWars.getGameManager().getStatsManager().getStats(damager.getUuid()).addDamageDealt(event.getDamage().getAmount());
             }
-            CytonicBedWars.getGameManager().getStatsManager().addPlayerDamageTaken(player.getUuid(), event.getDamage().getAmount());
+            CytonicBedWars.getGameManager().getStatsManager().getStats(player.getUuid()).addDamageTaken(event.getDamage().getAmount());
         }
     }
 }
