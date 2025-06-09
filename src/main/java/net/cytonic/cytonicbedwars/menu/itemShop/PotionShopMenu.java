@@ -1,12 +1,12 @@
 package net.cytonic.cytonicbedwars.menu.itemShop;
 
-import eu.koboo.minestom.invue.api.PlayerView;
-import eu.koboo.minestom.invue.api.ViewBuilder;
-import eu.koboo.minestom.invue.api.ViewType;
-import eu.koboo.minestom.invue.api.component.ViewProvider;
-import eu.koboo.minestom.invue.api.item.PrebuiltItem;
-import eu.koboo.minestom.invue.api.item.ViewItem;
-import eu.koboo.minestom.invue.api.slots.ViewPattern;
+import eu.koboo.minestom.stomui.api.PlayerView;
+import eu.koboo.minestom.stomui.api.ViewBuilder;
+import eu.koboo.minestom.stomui.api.ViewType;
+import eu.koboo.minestom.stomui.api.component.ViewProvider;
+import eu.koboo.minestom.stomui.api.item.PrebuiltItem;
+import eu.koboo.minestom.stomui.api.item.ViewItem;
+import eu.koboo.minestom.stomui.api.slots.ViewPattern;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.menu.MenuUtils;
 import net.cytonic.cytonicbedwars.utils.Items;
