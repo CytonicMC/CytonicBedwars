@@ -28,6 +28,7 @@ import net.kyori.adventure.util.Ticks;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
+import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
@@ -335,6 +336,7 @@ public class GameManager {
         dead.setGameMode(GameMode.SURVIVAL);
         dead.setInvulnerable(true);// make them invincible for 5 sec
         MinecraftServer.getSchedulerManager().buildTask(() -> dead.setInvulnerable(false)).delay(Duration.ofSeconds(5)).schedule();
+        dead.setVelocity(Vec.ZERO);
         dead.teleport(getPlayerTeam(dead.getUuid()).orElseThrow().spawnLocation());
 
         dead.getInventory().setItemStack(0, Items.DEFAULT_SWORD);
