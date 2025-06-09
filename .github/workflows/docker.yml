@@ -34,7 +34,7 @@ jobs:
       - name: Build and push Docker Image for multiple platforms
         run: |
           docker buildx create --use
-          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/cytonicmc/cytonic_bedwars:latest -f docker/basic/Dockerfile . --push
+          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/cytonicmc/cytonic_bedwars:latest -f docker/Dockerfile . --push
 
     
 
