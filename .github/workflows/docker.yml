@@ -26,7 +26,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Assemble
-        run: ./gradlew assemble
+        run: gradle --no-daemon assemble
 
       - name: Login to GHCR
         run: echo $GHCR_TOKEN | docker login ghcr.io -u CytonicMC --password-stdin
