@@ -17,4 +17,4 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Assemble
-        run: ./gradlew assemble
+        run: gradle --no-daemon assemble
