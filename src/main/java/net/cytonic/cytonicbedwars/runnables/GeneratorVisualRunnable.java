@@ -17,7 +17,7 @@ public class GeneratorVisualRunnable {
 
     public GeneratorVisualRunnable(Entity as) {
         this.as = as;
-        task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofMillis(40)).schedule();
+        task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofMillis(20)).schedule();
     }
 
     private void run() {
