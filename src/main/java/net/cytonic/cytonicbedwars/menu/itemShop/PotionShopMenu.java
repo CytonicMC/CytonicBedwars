@@ -26,15 +26,15 @@ public class PotionShopMenu extends ViewProvider {
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, player)) {
                 player.getInventory().addItemStack(Items.MENU_FIRE_RESISTANCE_POTION);
-                player.sendMessage(Msg.mm("<green>You bought a Fire Resistance potion!"));
+                player.sendMessage(Msg.green("You bought a Fire Resistance potion!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1), player.getPosition());
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 6 Gold to buy this!"));
+                player.sendMessage(Msg.red("You need at least 6 Gold to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1), player.getPosition());
             }
         } else {
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1), player.getPosition());
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 
@@ -44,15 +44,15 @@ public class PotionShopMenu extends ViewProvider {
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, player)) {
                 player.getInventory().addItemStack(Items.INVISIBILITY_POTION);
-                player.sendMessage(Msg.mm("<green>You bought an Invisibility potion!"));
+                player.sendMessage(Msg.green("You bought an Invisibility potion!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1), player.getPosition());
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 1 Emerald to buy this!"));
+                player.sendMessage(Msg.red("You need at least 1 Emerald to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1), player.getPosition());
             }
         } else {
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1), player.getPosition());
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 
@@ -62,15 +62,15 @@ public class PotionShopMenu extends ViewProvider {
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, player)) {
                 player.getInventory().addItemStack(Items.JUMP_BOOST_POTION);
-                player.sendMessage(Msg.mm("<green>You bought a Jump Boost potion!"));
+                player.sendMessage(Msg.green("You bought a Jump Boost potion!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1), player.getPosition());
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 1 Emerald to buy this!"));
+                player.sendMessage(Msg.red("You need at least 1 Emerald to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1), player.getPosition());
             }
         } else {
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1), player.getPosition());
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 
@@ -80,15 +80,15 @@ public class PotionShopMenu extends ViewProvider {
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, player)) {
                 player.getInventory().addItemStack(Items.SPEED_POTION);
-                player.sendMessage(Msg.mm("<green>You bought a Speed potion!"));
+                player.sendMessage(Msg.green("You bought a Speed potion!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1), player.getPosition());
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 1 Emerald to buy this!"));
+                player.sendMessage(Msg.red("You need at least 1 Emerald to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1), player.getPosition());
             }
         } else {
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1), player.getPosition());
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 

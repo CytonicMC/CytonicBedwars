@@ -38,8 +38,8 @@ public class SpectatorSelectMenu extends ViewProvider {
             ItemStack stack = ItemStack.builder(Material.PLAYER_HEAD)
                     .set(DataComponents.PROFILE, new HeadProfile(Objects.requireNonNull(Cytosis.getPlayer(uuid).orElseThrow().getSkin())))
                     .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
-                    .set(DataComponents.ITEM_NAME, Msg.mm("<green>" + Cytosis.getPlayer(uuid).orElseThrow().getUsername()))
-                    .set(DataComponents.LORE, List.of((Msg.mm("<gray>Click to teleport to " + Cytosis.getPlayer(uuid).orElseThrow().getUsername()))))
+                    .set(DataComponents.ITEM_NAME, Msg.green(Cytosis.getPlayer(uuid).orElseThrow().getUsername()))
+                    .set(DataComponents.LORE, List.of((Msg.grey("Click to teleport to " + Cytosis.getPlayer(uuid).orElseThrow().getUsername()))))
                     .set(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("uuid", uuid.toString()).build()))
                     .build();
             PrebuiltItem item = PrebuiltItem.of(stack, action -> {

@@ -142,9 +142,9 @@ public class GameManager {
         });
         for (Team t : teamlist) {
             NPC teamShop = NPC.ofHumanoid(t.teamShopLocation(), Cytosis.getDefaultInstance())
-                    .interactTrigger((npc, npcInteractType, player) -> player.sendMessage(Msg.mm("<RED>Coming soon")))
+                    .interactTrigger((npc, npcInteractType, player) -> player.sendMessage(Msg.red("Coming soon")))
                     .skin(QUESTIONMARK_NPC_SKIN_VALUE, QUESTIONMARK_NPC_SKIN_SIGNATURE)
-                    .lines(Msg.mm("<RED>Coming soon"))
+                    .lines(Msg.red("Coming soon"))
                     .invulnerable()
                     .build();
             npcs.add(teamShop);
@@ -152,7 +152,7 @@ public class GameManager {
             NPC itemShop = NPC.ofHumanoid(t.itemShopLocation(), Cytosis.getDefaultInstance())
                     .interactTrigger((npc, npcInteractType, player) -> new BlocksShopMenu().open(player))
                     .skin(NPC_SKIN_VALUE, NPC_SKIN_SIGNATURE)
-                    .lines(Msg.mm("<GOLD><bold>ITEM SHOP"))
+                    .lines(Msg.gold("<b>ITEM SHOP"))
                     .invulnerable()
                     .build();
             npcs.add(itemShop);
@@ -241,14 +241,14 @@ public class GameManager {
     }
 
     public void breakBed(Player player, Team t) {
-        Component message = Msg.mm("<newline><white><b>BED DESTRUCTION ></b></white> <%s>%s Bed<reset><gray> was destroyed by <%s>%s<reset><gray>!<newline>", t.color().toString(), t.displayName().split(" ")[0], getPlayerTeam(player.getUuid()).orElseThrow().color(), player.getUsername());
+        Component message = Msg.white("<newline><b>BED DESTRUCTION ></b></white> <%s>%s Bed<reset><gray> was destroyed by <%s>%s<reset><gray>!<newline>", t.color().toString(), t.displayName().split(" ")[0], getPlayerTeam(player.getUuid()).orElseThrow().color(), player.getUsername());
         Cytosis.getOnlinePlayers().forEach(p -> {
             player.playSound(Sound.sound(SoundEvent.ENTITY_GENERIC_EXPLODE, Sound.Source.PLAYER, 1f, 100f));
             p.sendMessage(message);
         });
         for (UUID uuid : playerTeams.get(t)) {
             CytosisPlayer p = Cytosis.getPlayer(uuid).orElseThrow();
-            Title title = Title.title(Msg.mm("<b><red>BED DESTROYED!"), Msg.mm("<white>You will no longer respawn!"),
+            Title title = Title.title(Msg.red("<b>BED DESTROYED!"), Msg.white("You will no longer respawn!"),
                     Title.Times.times(Ticks.duration(10L), Ticks.duration(100L), Ticks.duration(20L)));
             p.showTitle(title);
         }
@@ -271,7 +271,7 @@ public class GameManager {
         }
 
         boolean finalkill = false;
-        Component message = Msg.mm(getPlayerTeam(dead.getUuid()).orElseThrow().prefix() + dead.getUsername() + "<RESET>");
+        Component message = Msg.mm(getPlayerTeam(dead.getUuid()).orElseThrow().prefix() + dead.getUsername() + "<reset>");
         if (!beds.get(getPlayerTeam(dead.getUuid()).orElseThrow())) {
             finalkill = true;
         }
@@ -280,33 +280,33 @@ public class GameManager {
                 kill(dead, null, DamageType.OUT_OF_WORLD);
             } else {
                 statsManager.addPlayerKill(killer.getUuid());
-                message = message.append(Msg.mm("<GRAY> was slain by " + getPlayerTeam(killer.getUuid()).orElseThrow().prefix() + killer.getUsername()));
+                message = message.append(Msg.grey(" was slain by " + getPlayerTeam(killer.getUuid()).orElseThrow().prefix() + killer.getUsername()));
             }
         } else if (damageType.equals(DamageType.FALL)) {
-            message = message.append(Msg.mm("<GRAY> has fallen to their death"));
+            message = message.append(Msg.grey("has fallen to their death"));
         } else if (damageType.equals(DamageType.ON_FIRE)) {
-            message = message.append(Msg.mm("<GRAY> was roasted like a turkey"));
+            message = message.append(Msg.grey("was roasted like a turkey"));
         } else if (damageType.equals(DamageType.LAVA)) {
-            message = message.append(Msg.mm("<GRAY> discovered lava is hot"));
+            message = message.append(Msg.grey("discovered lava is hot"));
         } else if (damageType.equals(DamageType.OUT_OF_WORLD)) {
-            message = message.append(Msg.mm("<GRAY> fell into the abyss"));
+            message = message.append(Msg.grey("fell into the abyss"));
         } else if (damageType.equals(DamageType.FREEZE)) {
-            message = message.append(Msg.mm("<GRAY> turned into an ice cube"));
+            message = message.append(Msg.grey("turned into an ice cube"));
         } else if (damageType.equals(DamageType.DROWN)) {
-            message = message.append(Msg.mm("<GRAY> forgot how to swim"));
+            message = message.append(Msg.grey("forgot how to swim"));
         } else if (damageType.equals(DamageType.EXPLOSION)) {
-            message = message.append(Msg.mm("<GRAY> went <RED><BOLD>BOOM!"));
+            message = message.append(Msg.grey("went <red><b>BOOM!"));
         } else if (damageType.equals(DamageType.ARROW) || damageType.equals(DamageType.TRIDENT)) {
-            message = message.append(Msg.mm("<GRAY> was remotely terminated"));
+            message = message.append(Msg.grey("was remotely terminated"));
         } else {
             Logger.error("unknown damage type: " + damageType.key());
-            message = message.append(Msg.mm("<GRAY> died under mysterious circumstances"));
+            message = message.append(Msg.grey("died under mysterious circumstances"));
         }
 
         dead.teleport(new Pos(0, 30, 0));
         if (finalkill) {
-            dead.showTitle(Title.title(Msg.mm("<BOLD><RED>YOU DIED!"), Msg.mm("<YELLOW>You won't respawn"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
-            message = message.append(Msg.mm("<BOLD><RED> FINAL KILL!"));
+            dead.showTitle(Title.title(Msg.red("<b>YOU DIED!"), Msg.yellow("You won't respawn"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
+            message = message.append(Msg.red("<b> FINAL KILL!"));
             Component finalMessage = message;
             dead.setGameMode(GameMode.SPECTATOR);
             Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
@@ -316,7 +316,7 @@ public class GameManager {
         Component finalMessage = message;
         // respawn logic...
         Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
-        dead.showTitle(Title.title(Msg.mm("<BOLD><RED>You DIED!"), Msg.mm("<YELLOW>You will respawn soon"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
+        dead.showTitle(Title.title(Msg.red("<b>You DIED!"), Msg.yellow("You will respawn soon"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
         dead.setGameMode(GameMode.SPECTATOR);
         dead.getInventory().clear();
         dead.setHealth(20);

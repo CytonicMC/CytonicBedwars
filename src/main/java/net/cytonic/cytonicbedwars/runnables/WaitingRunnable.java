@@ -34,8 +34,8 @@ public class WaitingRunnable {
             case 1, 2, 3, 4, 5 -> {
                 Cytosis.getSideboardManager().updatePlayersNow();
                 Cytosis.getOnlinePlayers().forEach(player -> {
-                    player.sendMessage(Msg.mm("<yellow>The game starts in <red>" + timeLeft + " <yellow>seconds!"));
-                    player.showTitle(Title.title(Msg.mm("<red>" + timeLeft), Msg.mm(""), Title.Times.times(Duration.ofMillis(0), Duration.ofSeconds(1), Duration.ofMillis(0))));
+                    player.sendMessage(Msg.yellow("The game starts in <red>%s <yellow>seconds!", timeLeft));
+                    player.showTitle(Title.title(Msg.red(String.valueOf(timeLeft)), Msg.mm(""), Title.Times.times(Duration.ofMillis(0), Duration.ofSeconds(1), Duration.ofMillis(0))));
                     player.playSound(Sound.sound(SoundEvent.UI_BUTTON_CLICK, Sound.Source.AMBIENT, .8f, 1f));
                 });
             }

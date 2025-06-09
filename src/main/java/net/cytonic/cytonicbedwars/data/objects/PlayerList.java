@@ -61,7 +61,7 @@ public class PlayerList implements PlayerlistCreator {
                     new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getSkin()).textures(), p.getSkin().signature())));
         }
 
-        Column playerCol = new Column(Msg.mm("<dark_purple><b>        Players    "), PlayerListFavicon.PURPLE);
+        Column playerCol = new Column(Msg.purple("<b>        Players    "), PlayerListFavicon.PURPLE);
         playerCol.setEntries(new ArrayList<>(players));
         return List.of(playerCol);
     }
@@ -104,7 +104,7 @@ public class PlayerList implements PlayerlistCreator {
      */
     @Override
     public Component header(CytosisPlayer player) {
-        return Msg.mm("<aqua><b>Cytonic Bedwars");
+        return Msg.aqua("<b>Cytonic Bedwars");
     }
 
     /**
@@ -115,7 +115,7 @@ public class PlayerList implements PlayerlistCreator {
      */
     @Override
     public Component footer(CytosisPlayer player) {
-        return Msg.mm("<yellow><b>Playing on <red>MC.CYTONIC.NET");
+        return Msg.yellow("<b>Playing on <red>MC.CYTONIC.NET");
     }
 
     /**

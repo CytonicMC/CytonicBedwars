@@ -30,16 +30,16 @@ public class BlocksShopMenu extends ViewProvider {
                 ItemStack itemStack = Items.getTeamMapped(MappableItem.WOOL, CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow());
                 itemStack = itemStack.withAmount(16);
                 player.getInventory().addItemStack(itemStack);
-                player.sendMessage(Msg.mm("<green>You bought 16 wool!"));
+                player.sendMessage(Msg.green("You bought 16 wool!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 4 iron to buy this!"));
+                player.sendMessage(Msg.red("You need at least 4 iron to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
             }
         } else {
             Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1);
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 
@@ -51,15 +51,15 @@ public class BlocksShopMenu extends ViewProvider {
                 ItemStack item = Items.getTeamMapped(MappableItem.GLASS, CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow());
                 item = item.withAmount(4);
                 player.getInventory().addItemStack(item);
-                player.sendMessage(Msg.mm("<green>You bought 4 Blast-Proof Glass!"));
+                player.sendMessage(Msg.green("You bought 4 Blast-Proof Glass!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 12 iron to buy this!"));
+                player.sendMessage(Msg.red("You need at least 12 iron to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
             }
         } else {
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 
@@ -71,15 +71,15 @@ public class BlocksShopMenu extends ViewProvider {
                 ItemStack item = Items.END_STONE;
                 item = item.withAmount(12);
                 player.getInventory().addItemStack(item);
-                player.sendMessage(Msg.mm("<green>You bought 12 end stone!"));
+                player.sendMessage(Msg.green("You bought 12 end stone!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 24 iron to buy this!"));
+                player.sendMessage(Msg.red("You need at least 24 iron to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
             }
         } else {
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 
@@ -91,15 +91,15 @@ public class BlocksShopMenu extends ViewProvider {
                 ItemStack item = Items.getTeamMapped(MappableItem.TERRACOTTA, CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow());
                 item = item.withAmount(12);
                 player.getInventory().addItemStack(item);
-                player.sendMessage(Msg.mm("<green>You bought 12 terracotta!"));
+                player.sendMessage(Msg.green("You bought 12 terracotta!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 10 iron to buy this!"));
+                player.sendMessage(Msg.red("You need at least 10 iron to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
             }
         } else {
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 
@@ -111,15 +111,15 @@ public class BlocksShopMenu extends ViewProvider {
                 ItemStack item = Items.OBSIDIAN;
                 item = item.withAmount(6);
                 player.getInventory().addItemStack(item);
-                player.sendMessage(Msg.mm("<green>You bought 6 obsidian!"));
+                player.sendMessage(Msg.green("You bought 6 obsidian!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 6 emeralds to buy this!"));
+                player.sendMessage(Msg.red("You need at least 6 emeralds to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
             }
         } else {
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 
@@ -131,15 +131,15 @@ public class BlocksShopMenu extends ViewProvider {
                 ItemStack item = Items.PLANKS;
                 item = item.withAmount(8);
                 player.getInventory().addItemStack(item);
-                player.sendMessage(Msg.mm("<green>You bought 8 planks!"));
+                player.sendMessage(Msg.green("You bought 8 planks!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
-                player.sendMessage(Msg.mm("<red>You need at least 4 gold to buy this!"));
+                player.sendMessage(Msg.red("You need at least 4 gold to buy this!"));
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
             }
         } else {
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-            player.sendMessage(Msg.mm("<red>You don't have space in your inventory!"));
+            player.sendMessage(Msg.red("You don't have space in your inventory!"));
         }
     });
 

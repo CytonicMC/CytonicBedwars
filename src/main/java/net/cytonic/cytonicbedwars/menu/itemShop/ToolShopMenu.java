@@ -53,7 +53,7 @@ public class ToolShopMenu extends ViewProvider {
             case IRON ->
                     Items.MENU_DIAMOND_AXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
             case DIAMOND ->
-                    Items.MENU_DIAMOND_AXE.withLore(Msg.mm("<green><bold>Already purchased!")).with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
+                    Items.MENU_DIAMOND_AXE.withLore(Msg.green("<bold>Already purchased!")).with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
         };
         PrebuiltItem axe = PrebuiltItem.of(axeItemStack, action -> {
             action.getEvent().setCancelled(true);
@@ -63,12 +63,12 @@ public class ToolShopMenu extends ViewProvider {
                         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, player)) {
                             CytonicBedWars.getGameManager().setAxe(player.getUuid(), AxeLevel.WOODEN);
                             CytonicBedWars.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.WOODEN, player);
-                            player.sendMessage(Msg.mm("<green>You purchased a wooden axe!"));
+                            player.sendMessage(Msg.green("You purchased a wooden axe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
                         } else {
                             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                            player.sendMessage(Msg.mm("<red>You must have at least 10 Iron to buy this!"));
+                            player.sendMessage(Msg.red("You must have at least 10 Iron to buy this!"));
                         }
                     }
                 }
@@ -77,12 +77,12 @@ public class ToolShopMenu extends ViewProvider {
                         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, player)) {
                             CytonicBedWars.getGameManager().setAxe(player.getUuid(), AxeLevel.STONE);
                             CytonicBedWars.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.STONE, player);
-                            player.sendMessage(Msg.mm("<green>You purchased a stone axe!"));
+                            player.sendMessage(Msg.green("You purchased a stone axe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
                         } else {
                             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                            player.sendMessage(Msg.mm("<red>You must have at least 20 Iron to buy this!"));
+                            player.sendMessage(Msg.red("You must have at least 20 Iron to buy this!"));
                         }
                     }
                 }
@@ -91,12 +91,12 @@ public class ToolShopMenu extends ViewProvider {
                         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, player)) {
                             CytonicBedWars.getGameManager().setAxe(player.getUuid(), AxeLevel.IRON);
                             CytonicBedWars.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.IRON, player);
-                            player.sendMessage(Msg.mm("<green>You purchased an iron axe!"));
+                            player.sendMessage(Msg.green("You purchased an iron axe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
                         } else {
                             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                            player.sendMessage(Msg.mm("<red>You must have at least 6 Gold to buy this!"));
+                            player.sendMessage(Msg.red("You must have at least 6 Gold to buy this!"));
                         }
                     }
                 }
@@ -106,17 +106,17 @@ public class ToolShopMenu extends ViewProvider {
                             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 3, player)) {
                                 CytonicBedWars.getGameManager().setAxe(player.getUuid(), AxeLevel.DIAMOND);
                                 CytonicBedWars.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.DIAMOND, player);
-                                player.sendMessage(Msg.mm("<green>You purchased a diamond axe!"));
+                                player.sendMessage(Msg.green("You purchased a diamond axe!"));
                                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                                 open(player);
                             } else {
                                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                                player.sendMessage(Msg.mm("<red>You must have at least 3 Emeralds to buy this!"));
+                                player.sendMessage(Msg.red("You must have at least 3 Emeralds to buy this!"));
                             }
                         }
                     } else if (CytonicBedWars.getGameManager().getAxe(player.getUuid()).equals(AxeLevel.DIAMOND)) {
                         player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                        player.sendMessage(Msg.mm("<red>You already purchased a diamond axe!"));
+                        player.sendMessage(Msg.red("You already purchased a diamond axe!"));
                     }
                 }
             }
@@ -134,7 +134,7 @@ public class ToolShopMenu extends ViewProvider {
             case IRON ->
                     Items.MENU_DIAMOND_PICKAXE.with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
             case DIAMOND ->
-                    Items.MENU_DIAMOND_PICKAXE.withLore(Msg.mm("<green><bold>Already purchased!")).with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
+                    Items.MENU_DIAMOND_PICKAXE.withLore(Msg.green("<bold>Already purchased!")).with(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("type", "DIAMOND").build()));
         };
         PrebuiltItem pickaxe = PrebuiltItem.of(pickaxeItemStack, action -> {
             action.getEvent().setCancelled(true);
@@ -144,12 +144,12 @@ public class ToolShopMenu extends ViewProvider {
                         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, player)) {
                             CytonicBedWars.getGameManager().setPickaxe(player.getUuid(), PickaxeLevel.WOODEN);
                             CytonicBedWars.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.WOODEN, player);
-                            player.sendMessage(Msg.mm("<green>You purchased a wooden pickaxe!"));
+                            player.sendMessage(Msg.green("You purchased a wooden pickaxe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
                         } else {
                             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                            player.sendMessage(Msg.mm("<red>You must have at least 10 Iron to buy this!"));
+                            player.sendMessage(Msg.red("You must have at least 10 Iron to buy this!"));
                         }
                     }
                 }
@@ -158,12 +158,12 @@ public class ToolShopMenu extends ViewProvider {
                         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, player)) {
                             CytonicBedWars.getGameManager().setPickaxe(player.getUuid(), PickaxeLevel.STONE);
                             CytonicBedWars.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.STONE, player);
-                            player.sendMessage(Msg.mm("<green>You purchased a stone pickaxe!"));
+                            player.sendMessage(Msg.green("You purchased a stone pickaxe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
                         } else {
                             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                            player.sendMessage(Msg.mm("<red>You must have at least 20 Iron to buy this!"));
+                            player.sendMessage(Msg.red("You must have at least 20 Iron to buy this!"));
                         }
                     }
                 }
@@ -172,12 +172,12 @@ public class ToolShopMenu extends ViewProvider {
                         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, player)) {
                             CytonicBedWars.getGameManager().setPickaxe(player.getUuid(), PickaxeLevel.IRON);
                             CytonicBedWars.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.IRON, player);
-                            player.sendMessage(Msg.mm("<green>You purchased an iron pickaxe!"));
+                            player.sendMessage(Msg.green("You purchased an iron pickaxe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
                         } else {
                             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                            player.sendMessage(Msg.mm("<red>You must have at least 6 Gold to buy this!"));
+                            player.sendMessage(Msg.red("You must have at least 6 Gold to buy this!"));
                         }
                     }
                 }
@@ -187,17 +187,17 @@ public class ToolShopMenu extends ViewProvider {
                             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 3, player)) {
                                 CytonicBedWars.getGameManager().setPickaxe(player.getUuid(), PickaxeLevel.DIAMOND);
                                 CytonicBedWars.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.DIAMOND, player);
-                                player.sendMessage(Msg.mm("<green>You purchased a diamond pickaxe!"));
+                                player.sendMessage(Msg.green("You purchased a diamond pickaxe!"));
                                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                                 open(player);
                             } else {
                                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                                player.sendMessage(Msg.mm("<red>You must have at least 3 Emeralds to buy this!"));
+                                player.sendMessage(Msg.red("You must have at least 3 Emeralds to buy this!"));
                             }
                         }
                     } else if (CytonicBedWars.getGameManager().getPickaxe(player.getUuid()).equals(PickaxeLevel.DIAMOND)) {
                         player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                        player.sendMessage(Msg.mm("<red>You already purchased a diamond pickaxe!"));
+                        player.sendMessage(Msg.red("You already purchased a diamond pickaxe!"));
                     }
                 }
             }
@@ -206,7 +206,7 @@ public class ToolShopMenu extends ViewProvider {
 
         ItemStack shearsItemStack;
         if (CytonicBedWars.getGameManager().shears.get(player.getUuid())) {
-            shearsItemStack = Items.MENU_SHEARS.withLore(Msg.mm("<green><bold>Already purchased!"));
+            shearsItemStack = Items.MENU_SHEARS.withLore(Msg.green("<bold>Already purchased!"));
         } else {
             shearsItemStack = Items.MENU_SHEARS;
         }
@@ -214,19 +214,19 @@ public class ToolShopMenu extends ViewProvider {
             action.getEvent().setCancelled(true);
             if (CytonicBedWars.getGameManager().shears.get(player.getUuid())) {
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                player.sendMessage(Msg.mm("<red>You already purchased a pair of shears!"));
+                player.sendMessage(Msg.red("You already purchased a pair of shears!"));
             } else {
                 if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
                     if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 24, player)) {
                         CytonicBedWars.getGameManager().shears.put(player.getUuid(), true);
                         player.getInventory().addItemStack(Items.SHEARS);
-                        player.sendMessage(Msg.mm("<green>You purchased a pair of shears!"));
+                        player.sendMessage(Msg.green("You purchased a pair of shears!"));
                         player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
 
                         open(player);
                     } else {
                         player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
-                        player.sendMessage(Msg.mm("<red>You must have at least 20 Iron to buy this!"));
+                        player.sendMessage(Msg.red("You must have at least 20 Iron to buy this!"));
                     }
                 }
             }

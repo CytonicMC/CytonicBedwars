@@ -29,10 +29,10 @@ public class ArmorShopMenu extends ViewProvider {
             player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), Items.CHAINMAIL_LEGS);
             player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.CHAINMAIL_BOOTS);
             CytonicBedWars.getGameManager().setArmor(player.getUuid(), ArmorLevel.CHAINMAIL);
-            player.sendMessage(Msg.mm("<green>You bought permanent chain armor!"));
+            player.sendMessage(Msg.green("You bought permanent chain armor!"));
             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
         } else {
-            player.sendMessage(Msg.mm("<red>You need at least 40 iron to buy this!"));
+            player.sendMessage(Msg.red("You need at least 40 iron to buy this!"));
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
         }
     });
@@ -44,10 +44,10 @@ public class ArmorShopMenu extends ViewProvider {
             player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), Items.IRON_LEGS);
             player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.IRON_BOOTS);
             CytonicBedWars.getGameManager().setArmor(player.getUuid(), ArmorLevel.IRON);
-            player.sendMessage(Msg.mm("<green>You bought permanent iron armor!"));
+            player.sendMessage(Msg.green("You bought permanent iron armor!"));
             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
         } else {
-            player.sendMessage(Msg.mm("<red>You need at least 12 Gold to buy this!"));
+            player.sendMessage(Msg.red("You need at least 12 Gold to buy this!"));
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
         }
     });
@@ -59,10 +59,10 @@ public class ArmorShopMenu extends ViewProvider {
             player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), Items.DIAMOND_LEGS);
             player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.DIAMOND_BOOTS);
             CytonicBedWars.getGameManager().setArmor(player.getUuid(), ArmorLevel.DIAMOND);
-            player.sendMessage(Msg.mm("<green>You bought permanent diamond armor!"));
+            player.sendMessage(Msg.green("You bought permanent diamond armor!"));
             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
         } else {
-            player.sendMessage(Msg.mm("<red>You need at least 6 Emeralds to buy this!"));
+            player.sendMessage(Msg.red("You need at least 6 Emeralds to buy this!"));
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
         }
     });
@@ -74,10 +74,10 @@ public class ArmorShopMenu extends ViewProvider {
             player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), Items.NETHERITE_LEGS);
             player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.NETHERITE_BOOTS);
             CytonicBedWars.getGameManager().setArmor(player.getUuid(), ArmorLevel.NETHERITE);
-            player.sendMessage(Msg.mm("<green>You bought permanent netherite armor!"));
+            player.sendMessage(Msg.green("You bought permanent netherite armor!"));
             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
         } else {
-            player.sendMessage(Msg.mm("<red>You need at least 16 Emeralds to buy this!"));
+            player.sendMessage(Msg.red("You need at least 16 Emeralds to buy this!"));
             player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
         }
     });
