@@ -34,7 +34,7 @@ public final class CytonicBedWars implements CytosisPlugin {
                 Logger.error("error", throwable);
                 return;
             }
-            CytonicBedwarsSettings.importConfig(extraData);
+            Config.importConfig(extraData);
             Logger.info("Loading game manager");
             gameManager = new GameManager();
             gameManager.setup();

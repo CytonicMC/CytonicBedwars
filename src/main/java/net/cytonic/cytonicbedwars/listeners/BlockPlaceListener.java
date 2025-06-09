@@ -1,7 +1,7 @@
 package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.utils.Msg;
@@ -43,7 +43,7 @@ public class BlockPlaceListener {
             e.setBlock(block);
         }
         if (player.getGameMode() == GameMode.CREATIVE) return;
-        Pos spawn = CytonicBedwarsSettings.spawnPlatformCenter;
+        Pos spawn = Config.spawnPlatformCenter;
         if (distance(e.getBlockPosition().x(), spawn.x(), e.getBlockPosition().z(), spawn.z()) > 105.0 || e.getBlockPosition().y() >= 50) {
             e.setCancelled(true);
             player.sendMessage(Msg.whoops("You cannot place blocks that far from the map!"));

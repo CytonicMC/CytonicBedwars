@@ -4,7 +4,7 @@ package net.cytonic.cytonicbedwars.managers;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
-import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.data.objects.Generator;
 import net.cytonic.cytonicbedwars.data.objects.Team;
@@ -28,7 +28,7 @@ public class GeneratorManager {
             Pos loc = t.generatorLocation();
             Generator ironGenerator = new Generator(
                     GeneratorType.IRON,
-                    CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.IRON), CytonicBedwarsSettings.generatorsItemLimit.get(GeneratorType.IRON),
+                    Config.generatorsWaitTimeTicks.get(GeneratorType.IRON), Config.generatorsItemLimit.get(GeneratorType.IRON),
                     loc,
                     false,
                     true
@@ -36,7 +36,7 @@ public class GeneratorManager {
             ironGenerators.put(t, ironGenerator);
             Generator goldGenerator = new Generator(
                     GeneratorType.GOLD,
-                    CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.GOLD), CytonicBedwarsSettings.generatorsItemLimit.get(GeneratorType.GOLD),
+                    Config.generatorsWaitTimeTicks.get(GeneratorType.GOLD), Config.generatorsItemLimit.get(GeneratorType.GOLD),
                     loc,
                     false,
                     true
@@ -46,11 +46,11 @@ public class GeneratorManager {
     }
 
     public void registerDiamondGenerators() {
-        List<Pos> diamondGeneratorsPositions = CytonicBedwarsSettings.generators.get(GeneratorType.DIAMOND);
+        List<Pos> diamondGeneratorsPositions = Config.generators.get(GeneratorType.DIAMOND);
         for (Pos diamondGeneratorsPosition : diamondGeneratorsPositions) {
             Generator generator = new Generator(
                     GeneratorType.DIAMOND,
-                    CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.DIAMOND), CytonicBedwarsSettings.generatorsItemLimit.get(GeneratorType.DIAMOND),
+                    Config.generatorsWaitTimeTicks.get(GeneratorType.DIAMOND), Config.generatorsItemLimit.get(GeneratorType.DIAMOND),
                     diamondGeneratorsPosition,
                     true,
                     false
@@ -60,11 +60,11 @@ public class GeneratorManager {
     }
 
     public void registerEmeraldGenerators() {
-        List<Pos> posList = CytonicBedwarsSettings.generators.get(GeneratorType.EMERALD);
+        List<Pos> posList = Config.generators.get(GeneratorType.EMERALD);
         for (Pos pos : posList) {
             Generator generator = new Generator(
                     GeneratorType.EMERALD,
-                    CytonicBedwarsSettings.generatorsWaitTimeTicks.get(GeneratorType.EMERALD), CytonicBedwarsSettings.generatorsItemLimit.get(GeneratorType.EMERALD),
+                    Config.generatorsWaitTimeTicks.get(GeneratorType.EMERALD), Config.generatorsItemLimit.get(GeneratorType.EMERALD),
                     pos,
                     true,
                     false

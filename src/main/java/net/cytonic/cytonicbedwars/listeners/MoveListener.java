@@ -2,7 +2,7 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
-import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
@@ -20,7 +20,7 @@ public class MoveListener {
         if (!CytonicBedWars.getGameManager().STARTED) return;
         if (event.getNewPosition().y() <= -40) {
             if (CytonicBedWars.getGameManager().spectators.contains(event.getPlayer().getUuid())) {
-                event.getPlayer().teleport(CytonicBedwarsSettings.spawnPlatformCenter);
+                event.getPlayer().teleport(Config.spawnPlatformCenter);
                 event.setCancelled(true);
             } else {
                 CytonicBedWars.getGameManager().kill((CytosisPlayer) event.getPlayer(), null, DamageType.OUT_OF_WORLD);
@@ -28,7 +28,7 @@ public class MoveListener {
             }
         }
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
-        Pos spawn = CytonicBedwarsSettings.spawnPlatformCenter;
+        Pos spawn = Config.spawnPlatformCenter;
         if (distance(event.getNewPosition().x(), spawn.x(), event.getNewPosition().z(), spawn.z()) > 105.0 || event.getNewPosition().y() >= 50) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Msg.whoops("You cannot travel too far from the map!"));

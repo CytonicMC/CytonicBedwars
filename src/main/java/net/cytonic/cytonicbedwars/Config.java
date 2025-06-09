@@ -21,7 +21,7 @@ import java.util.Objects;
  * This class is used to store all the cached configuration values.
  */
 @NoArgsConstructor
-public final class CytonicBedwarsSettings {
+public final class Config {
 
     public static String worldName = "NULL";
     public static String mapName = "NULL";
@@ -83,16 +83,16 @@ public final class CytonicBedwarsSettings {
                         Block.fromKey(Objects.requireNonNull(teamNode.node("glass_item").getString())),
                         Block.fromKey(Objects.requireNonNull(teamNode.node("terracotta_item").getString()))
                 );
-                CytonicBedwarsSettings.teams.put(String.valueOf(key), team);
+                teams.put(String.valueOf(key), team);
             } catch (SerializationException e) {
                 Logger.error("Could not import team!", e);
             }
         });
-        node.node("generators_wait_time_ticks").childrenMap().forEach((key, value) -> CytonicBedwarsSettings.generatorsWaitTimeTicks.put(GeneratorType.valueOf(String.valueOf(key).toUpperCase()), value.getInt()));
-        node.node("generators_item_limit").childrenMap().forEach((key, value) -> CytonicBedwarsSettings.generatorsItemLimit.put(GeneratorType.valueOf(String.valueOf(key).toUpperCase()), value.getInt()));
+        node.node("generators_wait_time_ticks").childrenMap().forEach((key, value) -> generatorsWaitTimeTicks.put(GeneratorType.valueOf(String.valueOf(key).toUpperCase()), value.getInt()));
+        node.node("generators_item_limit").childrenMap().forEach((key, value) -> generatorsItemLimit.put(GeneratorType.valueOf(String.valueOf(key).toUpperCase()), value.getInt()));
         node.node("generators").childrenMap().forEach((key, value) -> {
             try {
-                CytonicBedwarsSettings.generators.put(GeneratorType.valueOf(String.valueOf(key).toUpperCase()), value.getList(Pos.class));
+                generators.put(GeneratorType.valueOf(String.valueOf(key).toUpperCase()), value.getList(Pos.class));
             } catch (SerializationException e) {
                 Logger.error("Could not import generators!", e);
             }

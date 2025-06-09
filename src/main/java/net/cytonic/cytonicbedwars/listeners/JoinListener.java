@@ -1,14 +1,13 @@
 package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
+import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
-import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.player.CytosisPlayer;
-import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
@@ -21,15 +20,13 @@ public class JoinListener {
     public void onJoin(AsyncPlayerConfigurationEvent event) {
         CytosisPlayer player = (CytosisPlayer) event.getPlayer();
         event.setSpawningInstance(Cytosis.getDefaultInstance());
-        Pos pos = CytonicBedwarsSettings.spawnPlatformCenter;
-        pos = pos.withY(pos.y() + 1);
-        player.setRespawnPoint(pos);
+        player.setRespawnPoint(Config.spawnPlatformCenter.add(0, 1, 0));
     }
 
     @Listener
     public void onJoin(PlayerSpawnEvent event) {
         if (!CytonicBedWars.getGameManager().STARTED) {
-            if (Cytosis.getOnlinePlayers().size() >= CytonicBedwarsSettings.minPlayers) {
+            if (Cytosis.getOnlinePlayers().size() >= Config.minPlayers) {
                 CytonicBedWars.getGameManager().setGameState(GameState.STARTING);
                 CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable());
             }

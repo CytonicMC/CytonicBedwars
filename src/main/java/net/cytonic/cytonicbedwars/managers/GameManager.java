@@ -2,7 +2,7 @@ package net.cytonic.cytonicbedwars.managers;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.ItemAbilityDispatcher;
 import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
@@ -89,7 +89,7 @@ public class GameManager {
     public void setup() {
         worldManager.loadWorld();
         gameState = GameState.WAITING;
-        CytonicBedwarsSettings.teams.forEach((s, t) -> {
+        Config.teams.forEach((s, t) -> {
             teamlist.add(t);
             beds.put(t, true);
         });

@@ -2,7 +2,7 @@ package net.cytonic.cytonicbedwars.managers;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
-import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.player.CytosisPlayer;
@@ -32,9 +32,9 @@ public class WorldManager {
 
     public void loadWorld() {
         try {
-            var dimKey = MinecraftServer.getDimensionTypeRegistry().register("bedwars:" + CytonicBedwarsSettings.worldName, DimensionType.builder().ambientLight(100).build());
+            var dimKey = MinecraftServer.getDimensionTypeRegistry().register("bedwars:" + Config.worldName, DimensionType.builder().ambientLight(100).build());
             Cytosis.setDefaultInstance(Cytosis.getMinestomInstanceManager().createInstanceContainer(dimKey));
-            Cytosis.getDatabaseManager().getMysqlDatabase().getWorld(CytonicBedwarsSettings.worldName, "bedwars_map_" + CytonicBedwarsSettings.mode)
+            Cytosis.getDatabaseManager().getMysqlDatabase().getWorld(Config.worldName, "bedwars_map_" + Config.mode)
                     .whenComplete((world, throwable) -> {
                         if (throwable != null) {
                             Logger.error("error", throwable);
@@ -57,12 +57,12 @@ public class WorldManager {
         loadWorld();
         createSpawnPlatform();
         for (CytosisPlayer player : Cytosis.getOnlinePlayers()) {
-            player.teleport(CytonicBedwarsSettings.spawnPlatformCenter);
+            player.teleport(Config.spawnPlatformCenter);
         }
     }
 
     public void createSpawnPlatform() {
-        Pos loc = CytonicBedwarsSettings.spawnPlatformCenter;
+        Pos loc = Config.spawnPlatformCenter;
         int x = (int) loc.x();
         int y = (int) loc.y();
         int z = (int) loc.z();
@@ -259,7 +259,7 @@ public class WorldManager {
 
     //fixme use a for loop or recursion to simplify
     public void removeSpawnPlatform() {
-        Pos loc = CytonicBedwarsSettings.spawnPlatformCenter;
+        Pos loc = Config.spawnPlatformCenter;
         int x = (int) loc.x();
         int y = (int) loc.y();
         int z = (int) loc.z();
