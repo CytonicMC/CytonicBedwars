@@ -35,7 +35,12 @@ public class BlockBreakListener {
                     return;
                 }
             }
-            CytonicBedWars.getGameManager().getWorldManager().breakBed(e.getBlock(), e.getBlockPosition());
+            CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
+                if (e.getBlock().name().equals(team.bedType().name())) {
+                    CytonicBedWars.getGameManager().breakBed(player, team);
+                    CytonicBedWars.getGameManager().getWorldManager().breakBed(e.getBlock(), e.getBlockPosition());
+                }
+            });
             return;
         }
 
