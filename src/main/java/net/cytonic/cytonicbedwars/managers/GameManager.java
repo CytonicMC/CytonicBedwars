@@ -3,6 +3,7 @@ package net.cytonic.cytonicbedwars.managers;
 import lombok.Getter;
 import lombok.Setter;
 import net.cytonic.cytonicbedwars.Config;
+import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.ItemAbilityDispatcher;
 import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
@@ -113,9 +114,6 @@ public class GameManager {
         worldManager.removeSpawnPlatform();
         STARTED = true;
         setGameState(GameState.PLAY);
-        generatorManager.registerTeamGenerators();
-        generatorManager.registerDiamondGenerators();
-        generatorManager.registerEmeraldGenerators();
         Cytosis.getOnlinePlayers().forEach(player -> statsManager.propagatePlayer(player.getUuid()));
         // split players into teams
         List<UUID> players = new ArrayList<>();
@@ -144,7 +142,12 @@ public class GameManager {
                 shears.put(uuid, false);
             });
         });
+        generatorManager.registerTeamGenerators();
+        generatorManager.registerDiamondGenerators();
+        generatorManager.registerEmeraldGenerators();
+
         for (Team t : teamlist) {
+            if (!CytonicBedWars.getGameManager().getBeds().get(t)) continue;
             NPC teamShop = NPC.ofHumanoid(t.teamShopLocation(), Cytosis.getDefaultInstance())
                     .interactTrigger((npc, npcInteractType, player) -> player.sendMessage(Msg.red("Coming soon")))
                     .skin(QUESTIONMARK_NPC_SKIN_VALUE, QUESTIONMARK_NPC_SKIN_SIGNATURE)
