@@ -50,7 +50,7 @@ public class PlayerList implements PlayerlistCreator {
                 }
 
                 if (player.isStaff()) {
-                    players.add(new PlayerListEntry(Msg.mm("%s<color:#BEFEFE><st><i>%s", team.prefix(), p.getUsername()),
+                    players.add(new PlayerListEntry(Msg.mm("%s %s \uD83C\uDFAD", team.prefix(), p.getUsername()),
                             p.getRank().ordinal(),
                             new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getTrueSkin()).textures(), p.getTrueSkin().signature())));
                     continue;
