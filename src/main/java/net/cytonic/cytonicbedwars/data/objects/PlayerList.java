@@ -66,36 +66,6 @@ public class PlayerList implements PlayerlistCreator {
         return List.of(playerCol);
     }
 
-
-    //List<Column> columns = new ArrayList<>();
-    //
-    //        List<PlayerListEntry> players = new ArrayList<>();
-    //
-    //        for (CytosisPlayer p : Cytosis.getOnlinePlayers()) {
-    //            Team team = !CytonicBedWars.getGameManager().getPlayerTeams().isEmpty() ? CytonicBedWars.getGameManager().getPlayerTeam(p.getUuid()).orElse(null) : null;
-    //            if (p.getPreference(CytosisPreferences.VANISHED)) {
-    //                if (!player.isStaff()) continue;
-    //                players.add(new PlayerListEntry(p.getRank().getPrefix().color(NamedTextColor.GRAY)
-    //                        .decorate(TextDecoration.STRIKETHROUGH, TextDecoration.ITALIC).append(p.getName()), p.getRank().ordinal(),
-    //                        new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getSkin()).textures(), p.getSkin().signature())));
-    //                continue;
-    //            }
-    //            PlayerRank rank = Cytosis.getRankManager().getPlayerRank(p.getUuid()).orElse(PlayerRank.DEFAULT);
-    //            players.add(new PlayerListEntry(team == null ? rank.getPrefix().append(p.getName()) : Msg.mm("%s<reset>%s", team.prefix(), p.getUsername()),
-    //                    rank.ordinal(),
-    //                    new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getSkin()).textures(), p.getSkin().signature())))
-    //            ;
-    //        }
-    //
-    //        Column playerCol = new Column(Msg.mm("<white><b>        Players    "), PlayerListFavicon.WHITE);
-    //        if (players.size() >= 19) {
-    //            int extra = players.size() - 19;
-    //            players = new ArrayList<>(players.subList(0, 18));
-    //            players.add(new PlayerListEntry(Msg.mm("<italic> + " + extra + " more"), 100));
-    //        } else {
-    //            playerCol.setEntries(new ArrayList<>(players));
-    //            players.clear();
-
     /**
      * Creates the header for the player
      *
