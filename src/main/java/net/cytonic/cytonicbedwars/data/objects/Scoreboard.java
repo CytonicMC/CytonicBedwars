@@ -124,7 +124,7 @@ public class Scoreboard implements SideboardCreator {
 
     @Override
     public Component title(CytosisPlayer player) {
-        return Msg.mm("<yellow><bold>Bedwars");
+        return Msg.yellow("<bold>Bedwars");
     }
 
     private Component topLine() {
