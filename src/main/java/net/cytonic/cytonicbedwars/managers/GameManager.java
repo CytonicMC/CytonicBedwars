@@ -289,6 +289,10 @@ public class GameManager {
             } else {
                 statsManager.addPlayerKill(killer.getUuid());
                 message = message.append(Msg.grey("was slain by %s%s", getPlayerTeam(killer.getUuid()).orElseThrow().prefix(), killer.getUsername()));
+                killer.getInventory().addItemStack(Items.get("IRON").withAmount(playerInventoryManager.itemCount(dead, "IRON")));
+                killer.getInventory().addItemStack(Items.get("GOLD").withAmount(playerInventoryManager.itemCount(dead, "GOLD")));
+                killer.getInventory().addItemStack(Items.get("DIAMOND").withAmount(playerInventoryManager.itemCount(dead, "DIAMOND")));
+                killer.getInventory().addItemStack(Items.get("EMERALD").withAmount(playerInventoryManager.itemCount(dead, "EMERALD")));
             }
         } else if (damageType.equals(DamageType.FALL)) {
             message = message.append(Msg.grey("has fallen to their death"));
