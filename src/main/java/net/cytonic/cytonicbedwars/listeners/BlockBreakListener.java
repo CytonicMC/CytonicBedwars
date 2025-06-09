@@ -10,8 +10,6 @@ import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.ItemEntity;
 import net.minestom.server.event.player.PlayerBlockBreakEvent;
-import net.minestom.server.instance.block.Block;
-import net.minestom.server.instance.block.BlockFace;
 import net.minestom.server.item.ItemStack;
 
 import java.util.Objects;
@@ -37,17 +35,7 @@ public class BlockBreakListener {
                     return;
                 }
             }
-            CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
-                if (e.getBlock().name().equals(team.bedType().name())) {
-                    CytonicBedWars.getGameManager().breakBed(player, team);
-                    Block block = e.getBlock();
-                    BlockFace facing = BlockFace.valueOf(block.getProperty("facing").toUpperCase());
-                    if (block.getProperty("part").equals("head")) {
-                        facing = facing.getOppositeFace();
-                    }
-                    e.getInstance().setBlock(e.getBlockPosition().relative(facing), Block.AIR);
-                }
-            });
+            CytonicBedWars.getGameManager().getWorldManager().breakBed(e.getBlock(), e.getBlockPosition());
             return;
         }
 
