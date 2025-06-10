@@ -1,8 +1,8 @@
 package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.Config;
+import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
@@ -29,13 +29,16 @@ public class MoveListener {
         }
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         Pos spawn = Config.spawnPlatformCenter;
-        if (distance(event.getNewPosition().x(), spawn.x(), event.getNewPosition().z(), spawn.z()) > 105.0 || event.getNewPosition().y() >= 50) {
+        if (distance(event.getNewPosition().x(), spawn.x(), event.getNewPosition().z(), spawn.z()) > 11025 || event.getNewPosition().y() >= 50) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(Msg.whoops("You cannot travel too far from the map!"));
         }
     }
 
     private static double distance(double x1, double x2, double z1, double z2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+        long start = System.currentTimeMillis();
+        double dx = x1 - x2;
+        double dz = z1 - z2;
+        return dx * dx + dz * dz;
     }
 }
