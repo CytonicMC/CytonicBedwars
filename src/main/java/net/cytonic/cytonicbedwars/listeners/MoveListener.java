@@ -36,9 +36,6 @@ public class MoveListener {
     }
 
     private static double distance(double x1, double x2, double z1, double z2) {
-        long start = System.currentTimeMillis();
-        double dx = x1 - x2;
-        double dz = z1 - z2;
-        return dx * dx + dz * dz;
+        return Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2);
     }
 }
