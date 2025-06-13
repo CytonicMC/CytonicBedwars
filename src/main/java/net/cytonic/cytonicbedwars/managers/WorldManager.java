@@ -1,31 +1,68 @@
 package net.cytonic.cytonicbedwars.managers;
 
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.logging.Logger;
+import net.cytonic.cytosis.player.CytosisPlayer;
 import net.hollowcube.polar.PolarLoader;
-import net.hollowcube.polar.PolarWorld;
+import net.minestom.server.MinecraftServer;
+import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
-import net.minestom.server.instance.LightingChunk;
 import net.minestom.server.instance.block.Block;
-
-import java.util.concurrent.ExecutionException;
+import net.minestom.server.instance.block.BlockFace;
+import net.minestom.server.world.DimensionType;
 
 @NoArgsConstructor
 public class WorldManager {
 
+    public void breakBed(Block block, BlockVec blockPos) {
+        CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
+            if (block.name().equals(team.bedType().name())) {
+                Cytosis.getDefaultInstance().setBlock(blockPos, Block.AIR);
+                BlockFace facing = BlockFace.valueOf(block.getProperty("facing").toUpperCase());
+                if (block.getProperty("part").equals("head")) {
+                    facing = facing.getOppositeFace();
+                }
+                Cytosis.getDefaultInstance().setBlock(blockPos.relative(facing), Block.AIR);
+            }
+        });
+    }
+
     public void loadWorld() {
         try {
-            PolarWorld world = Cytosis.getDatabaseManager().getMysqlDatabase().getWorld(CytonicBedwarsSettings.worldName, STR."bedwars_map_\{CytonicBedwarsSettings.mode}").get();
-            Cytosis.getDefaultInstance().setChunkLoader(new PolarLoader(world));
-            Cytosis.getDefaultInstance().setChunkSupplier(LightingChunk::new);
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            var dimKey = MinecraftServer.getDimensionTypeRegistry().register("bedwars:" + Config.worldName, DimensionType.builder().ambientLight(100).build());
+            Cytosis.setDefaultInstance(Cytosis.getMinestomInstanceManager().createInstanceContainer(dimKey));
+            Cytosis.getDatabaseManager().getMysqlDatabase().getWorld(Config.worldName, "bedwars_map_" + Config.mode)
+                    .whenComplete((world, throwable) -> {
+                        if (throwable != null) {
+                            Logger.error("error", throwable);
+                        } else {
+                            Cytosis.setDefaultInstance(Cytosis.getMinestomInstanceManager().createInstanceContainer());
+                            Cytosis.getDefaultInstance().setChunkLoader(new PolarLoader(world));
+                            Cytosis.getDefaultInstance().setTimeRate(0);
+                            Cytosis.getDefaultInstance().setTime(6000);
+                            Logger.info("loading spawn platform");
+                            createSpawnPlatform();
+                        }
+                    });
+
+        } catch (Exception e) {
+            Logger.error("error", e);
+        }
+    }
+
+    public void redoWorld() {
+        loadWorld();
+        createSpawnPlatform();
+        for (CytosisPlayer player : Cytosis.getOnlinePlayers()) {
+            player.teleport(Config.spawnPlatformCenter);
         }
     }
 
     public void createSpawnPlatform() {
-        Pos loc = CytonicBedwarsSettings.spawnPlatformCenter;
+        Pos loc = Config.spawnPlatformCenter;
         int x = (int) loc.x();
         int y = (int) loc.y();
         int z = (int) loc.z();
@@ -220,9 +257,9 @@ public class WorldManager {
         Cytosis.getDefaultInstance().setBlock(x, y + 3, z - 4, Block.DARK_PRISMARINE_SLAB);
     }
 
-    //fixme use a for loop or recusion to simplify
+    //fixme use a for loop or recursion to simplify
     public void removeSpawnPlatform() {
-        Pos loc = CytonicBedwarsSettings.spawnPlatformCenter;
+        Pos loc = Config.spawnPlatformCenter;
         int x = (int) loc.x();
         int y = (int) loc.y();
         int z = (int) loc.z();

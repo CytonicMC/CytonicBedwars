@@ -1,34 +1,38 @@
 package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
+import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
-import net.cytonic.cytonicbedwars.CytonicBedwarsSettings;
+import net.cytonic.cytonicbedwars.data.enums.GameState;
+import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
-import net.minestom.server.coordinate.Pos;
+import net.cytonic.cytosis.events.api.Listener;
+import net.cytonic.cytosis.player.CytosisPlayer;
 import net.minestom.server.entity.GameMode;
-import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class JoinListener {
 
+    @Listener
     public void onJoin(AsyncPlayerConfigurationEvent event) {
-        Player player = event.getPlayer();
+        CytosisPlayer player = (CytosisPlayer) event.getPlayer();
         event.setSpawningInstance(Cytosis.getDefaultInstance());
-        Pos pos = CytonicBedwarsSettings.spawnPlatformCenter;
-        pos = pos.withY(pos.y() + 1);
-        player.setRespawnPoint(pos);
-        if (CytonicBedWars.getGameManager().STARTED) {
-            if (CytonicBedWars.getGameManager().getPlayerTeam(event.getPlayer().getUuid()) == null) {
-                event.getPlayer().setGameMode(GameMode.SPECTATOR);
-            }
-        }
+        player.setRespawnPoint(Config.spawnPlatformCenter.add(0, 1, 0));
     }
 
+    @Listener
     public void onJoin(PlayerSpawnEvent event) {
+        if (!CytonicBedWars.getGameManager().STARTED) {
+            if (Cytosis.getOnlinePlayers().size() >= Config.minPlayers) {
+                CytonicBedWars.getGameManager().setGameState(GameState.STARTING);
+                CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable());
+            }
+        }
         if (CytonicBedWars.getGameManager().STARTED) {
-            if (CytonicBedWars.getGameManager().getPlayerTeam(event.getPlayer().getUuid()) == null) {
+            if (CytonicBedWars.getGameManager().getPlayerTeam(event.getPlayer().getUuid()).isEmpty()) {
                 event.getPlayer().setGameMode(GameMode.SPECTATOR);
             }
         }

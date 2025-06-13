@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum GameState {
     WAITING(-1), // not yet started
+    STARTING(-1),
     PLAY(900), // 15 minutes
     DEATHMATCH(300), // 5 minutes
     SUDDEN_DEATH(180), // withers - 3 minutes

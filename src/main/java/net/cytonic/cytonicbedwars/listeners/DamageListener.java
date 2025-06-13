@@ -1,38 +1,31 @@
 package net.cytonic.cytonicbedwars.listeners;
 
+import io.github.togar2.pvp.events.FinalDamageEvent;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
-import net.minestom.server.entity.Player;
-import net.minestom.server.entity.damage.DamageType;
-import net.minestom.server.event.entity.EntityDamageEvent;
+import net.cytonic.cytosis.events.api.Listener;
+import net.cytonic.cytosis.player.CytosisPlayer;
 
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class DamageListener {
 
-    public void onDamage(EntityDamageEvent event) {
-        if (!CytonicBedWars.getGameManager().STARTED) return;
-        if (event.getEntity() instanceof Player player) {
+    @Listener
+    public void onDamage(FinalDamageEvent event) {
+        if (event.getEntity() instanceof CytosisPlayer player) {
             if (CytonicBedWars.getGameManager().spectators.contains(player.getUuid())) {
                 event.setCancelled(true);
                 return;
             }
-
-            if (event.getDamage().getAttacker() instanceof Player damager) {
-                CytonicBedWars.getGameManager().getStatsManager().addPlayerDamageDealt(damager.getUuid(), event.getDamage().getAmount());
-            }
-            CytonicBedWars.getGameManager().getStatsManager().addPlayerDamageTaken(player.getUuid(), event.getDamage().getAmount());
-
-            if (player.getHealth() - event.getDamage().getAmount() <= 0) {
+            if (!CytonicBedWars.getGameManager().STARTED) {
                 event.setCancelled(true);
-                if (event.getDamage().getAttacker() instanceof Player damager) {
-                    CytonicBedWars.getGameManager().kill(player, damager, DamageType.GENERIC_KILL);
-                    return;
-                }
-                if (event.getDamage().getAttacker() != null && event.getDamage().getType() == DamageType.FIREBALL) {
-                    return;
-                }
-                CytonicBedWars.getGameManager().kill(player, null, event.getDamage().getType());
+                return;
             }
+
+            if (event.getDamage().getAttacker() instanceof CytosisPlayer damager) {
+                CytonicBedWars.getGameManager().getStatsManager().getStats(damager.getUuid()).addDamageDealt(event.getDamage().getAmount());
+            }
+            CytonicBedWars.getGameManager().getStatsManager().getStats(player.getUuid()).addDamageTaken(event.getDamage().getAmount());
         }
     }
 }
