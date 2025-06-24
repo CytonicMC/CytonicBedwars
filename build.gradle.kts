@@ -25,6 +25,9 @@ tasks {
     assemble {
         dependsOn(shadowJar)
     }
+    jar {
+        archiveFileName.set("CytonicBedwars.jar")
+    }
     shadowJar {
         archiveFileName.set("CytonicBedwars.jar")
         archiveClassifier.set("")
