@@ -27,7 +27,6 @@ import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.BlockVec;
-import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EquipmentSlot;
@@ -321,7 +320,7 @@ public class GameManager {
             message = message.append(Msg.grey("died under mysterious circumstances"));
         }
 
-        dead.teleport(new Pos(0, 30, 0));
+        dead.teleport(Config.spawnPlatformCenter);
         if (finalkill) {
             dead.showTitle(Title.title(Msg.red("<b>YOU DIED!"), Msg.yellow("You won't respawn"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
             message = message.append(Msg.red("<b> FINAL KILL!"));
