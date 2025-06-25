@@ -14,7 +14,7 @@ public class PickupItemListener {
     public static void onPickup(PickupItemEvent event) {
         final Entity entity = event.getLivingEntity();
         if (entity instanceof Player player) {
-            if (CytonicBedWars.getGameManager().spectators.contains(player.getUuid())) {
+            if (CytonicBedWars.getGameManager().getSpectators().contains(player.getUuid())) {
                 event.setCancelled(true);
                 return;
             }

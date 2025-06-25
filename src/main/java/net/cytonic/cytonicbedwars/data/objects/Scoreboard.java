@@ -1,8 +1,9 @@
 package net.cytonic.cytonicbedwars.data.objects;
 
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.Config;
+import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
@@ -30,7 +31,8 @@ public class Scoreboard implements SideboardCreator {
     }
 
     @Override
-    public List<Component> lines(CytosisPlayer player) {
+    public List<Component> lines(CytosisPlayer p) {
+        BedwarsPlayer player = (BedwarsPlayer) p;
         List<Component> list = new ArrayList<>();
         try {
             switch (CytonicBedWars.getGameManager().getGameState()) {
@@ -79,23 +81,23 @@ public class Scoreboard implements SideboardCreator {
                     scoreboardArgs.add(Msg.mm(""));
                     scoreboardArgs.add(Msg.mm("Time: coming soon:tm:"));
                     scoreboardArgs.add(Msg.mm(""));
-                    CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
-                        // todo: check if team is eliminated, or has final kills
+                    Config.teams.values().forEach(team -> {
                         String s = "";
-                        s += team.prefix() + "<reset>" + team.displayName();
-                        if (CytonicBedWars.getGameManager().getBeds().get(team)) {
-                            s += " <green>✔";
+                        s += team.getPrefix() + "<reset>" + team.getDisplayName();
+                        if (CytonicBedWars.getGameManager().getPlayerTeam(player).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player).orElseThrow() == team) {
+                            s += " <gray>YOU";
                         } else {
-                            if (CytonicBedWars.getGameManager().getPlayerTeams().get(team).isEmpty()) {
-                                s += " <red>✘";
+                            if (team.isBed()) {
+                                s += " <green>✔";
                             } else {
-                                if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow() != team) {
-                                    s += " <grey>" + CytonicBedWars.getGameManager().getPlayerTeams().get(team).size();
+                                if (!CytonicBedWars.getGameManager().getTeams().contains(team)) {
+                                    s += " <red>✘";
+                                } else {
+                                    if (CytonicBedWars.getGameManager().getPlayerTeam(player).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player).orElseThrow() != team) {
+                                        s += " <grey>" + team.getPlayers().size();
+                                    }
                                 }
                             }
-                        }
-                        if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow() == team) {
-                            s += " <gray>YOU";
                         }
                         scoreboardArgs.add(Msg.mm(s));
                     });
@@ -128,6 +130,6 @@ public class Scoreboard implements SideboardCreator {
     }
 
     private Component topLine() {
-        return Msg.grey("%s <dark_gray>%s", new SimpleDateFormat("M/d/y").format(Calendar.getInstance().getTime()), Cytosis.getRawID());
+        return Msg.grey("%s <dark_gray>%s", new SimpleDateFormat("M/d/yy").format(Calendar.getInstance().getTime()), Cytosis.getRawID());
     }
 }

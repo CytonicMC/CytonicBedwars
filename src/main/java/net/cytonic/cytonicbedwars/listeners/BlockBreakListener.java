@@ -2,10 +2,10 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.events.api.Listener;
-import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.ItemEntity;
@@ -20,25 +20,25 @@ public class BlockBreakListener {
 
     @Listener
     public void onBlockBreak(PlayerBlockBreakEvent e) {
-        CytosisPlayer player = (CytosisPlayer) e.getPlayer();
+        BedwarsPlayer player = (BedwarsPlayer) e.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE) return;
-        if (CytonicBedWars.getGameManager().spectators.contains(player.getUuid())) {
+        if (CytonicBedWars.getGameManager().getSpectators().contains(player.getUuid())) {
             player.sendMessage(Msg.whoops("You cannot do this as a spectator!"));
             e.setCancelled(true);
             return;
         }
         if (e.getBlock().name().contains("bed")) {
-            if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).isPresent()) {
-                if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).get().bedType().key().equals(e.getBlock().key())) {
+            if (CytonicBedWars.getGameManager().getPlayerTeam(player).isPresent()) {
+                if (CytonicBedWars.getGameManager().getPlayerTeam(player).get().getBedType().key().equals(e.getBlock().key())) {
                     e.setCancelled(true);
                     player.sendMessage(Msg.whoops("You cannot break your own bed!"));
                     return;
                 }
             }
-            CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
-                if (e.getBlock().name().equals(team.bedType().name())) {
+            CytonicBedWars.getGameManager().getTeams().forEach(team -> {
+                if (e.getBlock().name().equals(team.getBedType().name())) {
                     CytonicBedWars.getGameManager().breakBed(player, team);
-                    CytonicBedWars.getGameManager().getWorldManager().breakBed(e.getBlock(), e.getBlockPosition());
+                    CytonicBedWars.getGameManager().getWorldManager().breakBed(team);
                 }
             });
             return;

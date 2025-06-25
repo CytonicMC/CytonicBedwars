@@ -4,10 +4,10 @@ import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.events.api.Listener;
-import net.cytonic.cytosis.player.CytosisPlayer;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
@@ -18,7 +18,7 @@ public class JoinListener {
 
     @Listener
     public void onJoin(AsyncPlayerConfigurationEvent event) {
-        CytosisPlayer player = (CytosisPlayer) event.getPlayer();
+        BedwarsPlayer player = (BedwarsPlayer) event.getPlayer();
         event.setSpawningInstance(Cytosis.getDefaultInstance());
         player.setRespawnPoint(Config.spawnPlatformCenter.add(0, 1, 0));
     }

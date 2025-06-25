@@ -24,9 +24,8 @@ public class GeneratorManager {
     private final List<Generator> emeraldGenerators = new ArrayList<>();
 
     public void registerTeamGenerators() {
-        for (Team t : CytonicBedWars.getGameManager().getTeamlist()) {
-            if (!CytonicBedWars.getGameManager().getBeds().get(t)) continue;
-            Pos loc = t.generatorLocation();
+        for (Team t : CytonicBedWars.getGameManager().getTeams()) {
+            Pos loc = t.getGeneratorLocation();
             Generator ironGenerator = new Generator(
                     GeneratorType.IRON,
                     Config.generatorsWaitTimeTicks.get(GeneratorType.IRON), Config.generatorsItemLimit.get(GeneratorType.IRON),

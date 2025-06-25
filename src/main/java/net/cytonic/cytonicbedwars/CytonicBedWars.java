@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.cytonic.cytonicbedwars.commands.DebugCommand;
 import net.cytonic.cytonicbedwars.commands.ItemCommand;
 import net.cytonic.cytonicbedwars.managers.GameManager;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.data.objects.ServerGroup;
 import net.cytonic.cytosis.logging.Logger;
@@ -29,6 +30,7 @@ public final class CytonicBedWars implements CytosisPlugin {
             return;
         }
         Cytosis.setServerGroup(new ServerGroup("bedwars", gameType, false));
+        MinecraftServer.getConnectionManager().setPlayerProvider(BedwarsPlayer::new);
         Cytosis.getInstanceManager().getExtraData(worldName, worldType).whenComplete((extraData, throwable) -> {
             if (throwable != null) {
                 Logger.error("error", throwable);
