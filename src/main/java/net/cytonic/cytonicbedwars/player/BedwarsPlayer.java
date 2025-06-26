@@ -35,16 +35,14 @@ public class BedwarsPlayer extends CytosisPlayer {
     }
 
     public void load() {
-        BedwarsPlayer player = CytonicBedWars.getGameManager().getPlayer(getUuid()).orElse(null);
-        if (player == null) {
-            return;
-        }
-        this.armorLevel = player.getArmorLevel();
-        this.axeLevel = player.getAxeLevel();
-        this.pickaxeLevel = player.getPickaxeLevel();
-        this.shears = player.isShears();
-        this.alive = player.isAlive();
-        this.respawning = player.isRespawning();
+        CytonicBedWars.getGameManager().getPlayer(getUuid()).ifPresent(player -> {
+            this.armorLevel = player.getArmorLevel();
+            this.axeLevel = player.getAxeLevel();
+            this.pickaxeLevel = player.getPickaxeLevel();
+            this.shears = player.isShears();
+            this.alive = player.isAlive();
+            this.respawning = player.isRespawning();
+        });
     }
 
     public void sendToLobby() {
