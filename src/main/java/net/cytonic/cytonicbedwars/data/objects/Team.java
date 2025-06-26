@@ -19,6 +19,7 @@ public class Team {
     private List<BedwarsPlayer> players;
     private boolean alive = true;
     private final String displayName;
+    private final String name;
     private final String prefix;
     private final NamedTextColor color;
     private final Pos spawnLocation;
@@ -35,6 +36,7 @@ public class Team {
     public Team(String displayName, String prefix, NamedTextColor color, Pos spawnLocation, Pos generatorLocation,
                 Pos itemShopLocation, Pos teamShopLocation, Pos chestLocation, Pos bedLocation, Block bedType, Block woolType, Block glassType, Block terracottaType) {
         this.displayName = displayName;
+        this.name = displayName.split(" ")[0];
         this.prefix = prefix;
         this.color = color;
         this.spawnLocation = spawnLocation;
