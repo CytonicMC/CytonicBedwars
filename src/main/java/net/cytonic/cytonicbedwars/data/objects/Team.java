@@ -16,22 +16,23 @@ public class Team {
     private net.minestom.server.scoreboard.Team mcTeam;
     private List<BedwarsPlayer> players;
     private boolean alive = true;
-    private String displayName;
-    private String prefix;
-    private NamedTextColor color;
-    private Pos spawnLocation;
-    private Pos generatorLocation;
-    private Pos itemShopLocation;
-    private Pos teamShopLocation;
-    private Pos chestLocation;
-    private Pos bedLocation;
-    private Block bedType;
-    private Block woolType;
-    private Block glassType;
-    private Block terracottaType;
+    private final String displayName;
+    private final String prefix;
+    private final NamedTextColor color;
+    private final Pos spawnLocation;
+    private final Pos generatorLocation;
+    private final Pos itemShopLocation;
+    private final Pos teamShopLocation;
+    private final Pos chestLocation;
+    private final Pos bedLocation;
+    private final Block bedType;
+    private final Block woolType;
+    private final Block glassType;
+    private final Block terracottaType;
 
 
-    public Team(String displayName, String prefix, NamedTextColor color, Pos spawnLocation, Pos generatorLocation, Pos itemShopLocation, Pos teamShopLocation, Pos chestLocation, Pos bedLocation, Block bedType, Block woolType, Block glassType, Block terracottaType) {
+    public Team(String displayName, String prefix, NamedTextColor color, Pos spawnLocation, Pos generatorLocation,
+                Pos itemShopLocation, Pos teamShopLocation, Pos chestLocation, Pos bedLocation, Block bedType, Block woolType, Block glassType, Block terracottaType) {
         this.displayName = displayName;
         this.prefix = prefix;
         this.color = color;
