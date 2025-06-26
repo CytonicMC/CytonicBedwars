@@ -50,6 +50,10 @@ public class DebugCommand extends CytosisCommand {
                         if (CytonicBedWars.getGameManager().STARTED) {
                             player.sendMessage(Msg.red("The game has already been started! Use '/debug stop' to end it!"));
                         }
+                        if (CytonicBedWars.getGameManager().getWaitingRunnable() != null) {
+                            CytonicBedWars.getGameManager().getWaitingRunnable().stop();
+                            CytonicBedWars.getGameManager().setWaitingRunnable(null);
+                        }
                         CytonicBedWars.getGameManager().start();
                     }
                     case "end" -> {
