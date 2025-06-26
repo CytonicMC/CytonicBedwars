@@ -87,7 +87,7 @@ public class Scoreboard implements SideboardCreator {
                         if (CytonicBedWars.getGameManager().getPlayerTeam(player).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player).orElseThrow() == team) {
                             s += " <gray>YOU";
                         } else {
-                            if (team.isBed()) {
+                            if (team.hasBed()) {
                                 s += " <green>✔";
                             } else {
                                 if (!CytonicBedWars.getGameManager().getTeams().contains(team)) {

@@ -1,5 +1,6 @@
 package net.cytonic.cytonicbedwars.data.objects;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Team {
+    @Getter(AccessLevel.NONE)
     private boolean bed = false;
     private net.minestom.server.scoreboard.Team mcTeam;
     private List<BedwarsPlayer> players;
@@ -30,7 +32,6 @@ public class Team {
     private final Block glassType;
     private final Block terracottaType;
 
-
     public Team(String displayName, String prefix, NamedTextColor color, Pos spawnLocation, Pos generatorLocation,
                 Pos itemShopLocation, Pos teamShopLocation, Pos chestLocation, Pos bedLocation, Block bedType, Block woolType, Block glassType, Block terracottaType) {
         this.displayName = displayName;
@@ -46,5 +47,9 @@ public class Team {
         this.woolType = woolType;
         this.glassType = glassType;
         this.terracottaType = terracottaType;
+    }
+
+    public boolean hasBed() {
+        return bed;
     }
 }

@@ -262,7 +262,7 @@ public class GameManager {
 
         boolean finalkill = false;
         Component message = Msg.mm("%s%s<reset> ", getPlayerTeam(dead).orElseThrow().getPrefix(), dead.getUsername());
-        if (!getPlayerTeam(dead).orElseThrow().isBed()) {
+        if (!getPlayerTeam(dead).orElseThrow().hasBed()) {
             finalkill = true;
         }
         if (damageType.equals(DamageType.PLAYER_ATTACK)) {
