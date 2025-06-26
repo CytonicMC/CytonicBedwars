@@ -207,10 +207,16 @@ public class GameManager {
         setup();
     }
 
+    /**
+     * Gets the players team if they are on one
+     */
     public Optional<Team> getPlayerTeam(BedwarsPlayer player) {
         return getPlayerTeam(player.getUuid());
     }
 
+    /**
+     * Gets the players team if they are on one
+     */
     public Optional<Team> getPlayerTeam(UUID player) {
         for (Team team : teams) {
             for (BedwarsPlayer teamPlayer : team.getPlayers()) {
@@ -221,6 +227,9 @@ public class GameManager {
         return Optional.empty();
     }
 
+    /**
+     * Gets the {@link BedwarsPlayer} if they are on a team
+     */
     public Optional<BedwarsPlayer> getPlayer(UUID uuid) {
         for (Team team : teams) {
             for (BedwarsPlayer teamPlayer : team.getPlayers()) {
