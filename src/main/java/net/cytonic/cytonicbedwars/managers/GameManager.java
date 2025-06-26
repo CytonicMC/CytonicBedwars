@@ -248,6 +248,7 @@ public class GameManager {
     }
 
     public void kill(@NotNull BedwarsPlayer dead, @Nullable BedwarsPlayer killer, @NotNull RegistryKey<DamageType> damageType) {
+        Team deadTeam = getPlayerTeam(dead).orElseThrow();
         dead.setAlive(false);
         statsManager.getStats(dead.getUuid()).addDeath();
 
@@ -261,8 +262,8 @@ public class GameManager {
         }
 
         boolean finalkill = false;
-        Component message = Msg.mm("%s%s<reset> ", getPlayerTeam(dead).orElseThrow().getPrefix(), dead.getUsername());
-        if (!getPlayerTeam(dead).orElseThrow().hasBed()) {
+        Component message = Msg.mm("%s%s<reset> ", deadTeam.getPrefix(), dead.getUsername());
+        if (!deadTeam.hasBed()) {
             finalkill = true;
         }
         if (damageType.equals(DamageType.PLAYER_ATTACK)) {
@@ -304,7 +305,10 @@ public class GameManager {
             Component finalMessage = message;
             dead.setGameMode(GameMode.SPECTATOR);
             Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
-            getPlayerTeam(dead).orElseThrow().getPlayers().remove(dead);
+            deadTeam.getPlayers().remove(dead);
+            if (deadTeam.getPlayers().isEmpty()) {
+                teams.remove(deadTeam);
+            }
             if (killer != null) {
                 statsManager.getStats(killer.getUuid()).addFinalKill();
             }

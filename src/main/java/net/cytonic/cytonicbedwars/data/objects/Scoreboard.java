@@ -3,6 +3,7 @@ package net.cytonic.cytonicbedwars.data.objects;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor
 public class Scoreboard implements SideboardCreator {
@@ -81,23 +83,22 @@ public class Scoreboard implements SideboardCreator {
                     scoreboardArgs.add(Msg.mm(""));
                     scoreboardArgs.add(Msg.mm("Time: coming soon:tm:"));
                     scoreboardArgs.add(Msg.mm(""));
+                    GameManager gameManager = CytonicBedWars.getGameManager();
+                    Optional<Team> playerTeam = gameManager.getPlayerTeam(player);
                     Config.teams.values().forEach(team -> {
                         String s = "";
                         s += team.getPrefix() + "<reset>" + team.getDisplayName();
-                        if (CytonicBedWars.getGameManager().getPlayerTeam(player).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player).orElseThrow() == team) {
-                            s += " <gray>YOU";
-                        } else {
+                        if (gameManager.getTeams().stream().map(Team::getColor).toList().contains(team.getColor())) {
+                            if (playerTeam.isPresent() && playerTeam.get().equals(team)) {
+                                s += " <gray>YOU";
+                            }
                             if (team.hasBed()) {
                                 s += " <green>✔";
                             } else {
-                                if (!CytonicBedWars.getGameManager().getTeams().contains(team)) {
-                                    s += " <red>✘";
-                                } else {
-                                    if (CytonicBedWars.getGameManager().getPlayerTeam(player).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player).orElseThrow() != team) {
-                                        s += " <grey>" + team.getPlayers().size();
-                                    }
-                                }
+                                s += " <grey>" + team.getPlayers().size();
                             }
+                        } else {
+                            s += " <red>✘";
                         }
                         scoreboardArgs.add(Msg.mm(s));
                     });
