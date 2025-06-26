@@ -36,8 +36,8 @@ import net.minestom.server.scoreboard.TeamBuilder;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.timer.TaskSchedule;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ import java.util.UUID;
 public class GameManager {
     private final List<Team> teams = new ArrayList<>();
     private final List<UUID> spectators = new ArrayList<>();
-    private final List<NPC> npcs = new ArrayList<>();
+    private final List<NPC> npcList = new ArrayList<>();
     private final StatsManager statsManager;
     private final WorldManager worldManager;
     private final PlayerInventoryManager playerInventoryManager;
@@ -116,7 +116,7 @@ public class GameManager {
                     .lines(Msg.gold("<b>ITEM SHOP"))
                     .invulnerable()
                     .build();
-            npcs.add(itemShop);
+            npcList.add(itemShop);
 
             NPC teamShop = NPC.ofHumanoid(team.getTeamShopLocation(), Cytosis.getDefaultInstance())
                     .interactTrigger((npc, npcInteractType, player) -> player.sendMessage(Msg.red("Coming soon")))
@@ -124,7 +124,7 @@ public class GameManager {
                     .lines(Msg.red("Coming soon"))
                     .invulnerable()
                     .build();
-            npcs.add(teamShop);
+            npcList.add(teamShop);
 
         }
     }
@@ -178,7 +178,7 @@ public class GameManager {
     public void end() {
         STARTED = false;
         setGameState(GameState.ENDED);
-        npcs.forEach((npc -> npc.getActions().clear()));
+        npcList.forEach((npc -> npc.getActions().clear()));
         generatorManager.removeGenerators();
         MinecraftServer.getSchedulerManager().buildTask(() -> {
             Cytosis.getOnlinePlayers().forEach(p -> {
@@ -194,7 +194,7 @@ public class GameManager {
         STARTED = false;
         setGameState(GameState.CLEANUP);
         worldManager.redoWorld();
-        npcs.forEach((npc -> Cytosis.getNpcManager().removeNPC(npc)));
+        npcList.forEach((npc -> Cytosis.getNpcManager().removeNPC(npc)));
         for (Entity entity : Cytosis.getDefaultInstance().getEntities()) {
             if (entity instanceof BedwarsPlayer) continue;
             entity.remove();
@@ -268,10 +268,10 @@ public class GameManager {
             dead.setPickaxeLevel(PickaxeLevel.getOrdered(dead.getPickaxeLevel(), -1));
         }
 
-        boolean finalkill = false;
+        boolean finalKill = false;
         Component message = Msg.mm("%s%s<reset> ", deadTeam.getPrefix(), dead.getUsername());
         if (!deadTeam.hasBed()) {
-            finalkill = true;
+            finalKill = true;
         }
         if (damageType.equals(DamageType.PLAYER_ATTACK)) {
             if (killer == null) {
@@ -306,7 +306,7 @@ public class GameManager {
         }
 
         dead.teleport(Config.spawnPlatformCenter);
-        if (finalkill) {
+        if (finalKill) {
             dead.showTitle(Title.title(Msg.red("<b>YOU DIED!"), Msg.yellow("You won't respawn"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
             message = message.append(Msg.red("<b> FINAL KILL!"));
             Component finalMessage = message;
