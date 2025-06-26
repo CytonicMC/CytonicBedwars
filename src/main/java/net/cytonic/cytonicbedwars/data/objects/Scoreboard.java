@@ -86,21 +86,20 @@ public class Scoreboard implements SideboardCreator {
                     GameManager gameManager = CytonicBedWars.getGameManager();
                     Optional<Team> playerTeam = gameManager.getPlayerTeam(player);
                     Config.teams.values().forEach(team -> {
-                        String s = "";
-                        s += team.getPrefix() + "<reset>" + team.getDisplayName();
+                        String s = team.getPrefix() + "<reset>" + team.getDisplayName();
                         if (gameManager.getTeams().stream().map(Team::getColor).toList().contains(team.getColor())) {
                             if (playerTeam.isPresent() && playerTeam.get().equals(team)) {
-                                s += " <gray>YOU";
+                                scoreboardArgs.add(Msg.mm(s + " <gray>YOU"));
+                                return;
                             }
                             if (team.hasBed()) {
-                                s += " <green>✔";
+                                scoreboardArgs.add(Msg.mm(s + " <green>✔"));
                             } else {
-                                s += " <grey>" + team.getPlayers().size();
+                                scoreboardArgs.add(Msg.mm(s + " <grey>" + team.getPlayers().size()));
                             }
                         } else {
-                            s += " <red>✘";
+                            scoreboardArgs.add(Msg.mm(s + " <red>✘"));
                         }
-                        scoreboardArgs.add(Msg.mm(s));
                     });
                     scoreboardArgs.add(Msg.mm(""));
                     scoreboardArgs.add(Msg.yellow("www.cytonic.net"));
