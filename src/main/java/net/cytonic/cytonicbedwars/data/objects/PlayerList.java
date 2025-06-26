@@ -14,7 +14,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.minestom.server.network.packet.server.play.PlayerInfoUpdatePacket;
-import org.apache.logging.log4j.util.Cast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,8 @@ public class PlayerList implements PlayerlistCreator {
             return List.of(PlayerList.PLAYER_COLUMN.apply(player));
         }
         List<PlayerListEntry> players = new ArrayList<>();
-        Cytosis.getOnlinePlayers().stream().map(Cast::<BedwarsPlayer>cast).forEach(p -> {
+        Cytosis.getOnlinePlayers().forEach(forPlayer -> {
+            if (!(forPlayer instanceof BedwarsPlayer p)) return;
             if (CytonicBedWars.getGameManager().getPlayerTeam(p).isEmpty() && (CytonicBedWars.getGameManager().getSpectators().contains(player.getUuid()) || player.isStaff())) {
                 players.add(new PlayerListEntry(p.getRank().getPrefix().color(NamedTextColor.GRAY).append(p.getName()), p.getRank().ordinal(),
                         new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getSkin()).textures(), p.getSkin().signature())));

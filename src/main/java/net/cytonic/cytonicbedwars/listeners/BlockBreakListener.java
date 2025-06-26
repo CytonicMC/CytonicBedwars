@@ -20,7 +20,7 @@ public class BlockBreakListener {
 
     @Listener
     public void onBlockBreak(PlayerBlockBreakEvent e) {
-        BedwarsPlayer player = (BedwarsPlayer) e.getPlayer();
+        if (!(e.getPlayer() instanceof BedwarsPlayer player)) return;
         if (player.getGameMode() == GameMode.CREATIVE) return;
         if (CytonicBedWars.getGameManager().getSpectators().contains(player.getUuid())) {
             player.sendMessage(Msg.whoops("You cannot do this as a spectator!"));

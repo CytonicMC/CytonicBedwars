@@ -18,6 +18,7 @@ import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.npcs.NPC;
+import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
@@ -34,7 +35,6 @@ import net.minestom.server.registry.RegistryKey;
 import net.minestom.server.scoreboard.TeamBuilder;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.timer.TaskSchedule;
-import org.apache.logging.log4j.util.Cast;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -102,7 +101,7 @@ public class GameManager {
         setGameState(GameState.PLAY);
         Cytosis.getOnlinePlayers().forEach(player -> statsManager.addPlayer(player.getUuid()));
         // split players into teams
-        teams.addAll(splitPlayersIntoTeams(Cytosis.getOnlinePlayers().stream().map(Cast::<BedwarsPlayer>cast).map(BedwarsPlayer::getUuid).collect(Collectors.toList())));
+        teams.addAll(splitPlayersIntoTeams(Cytosis.getOnlinePlayers().stream().toList()));
 
         teams.forEach(team -> team.getPlayers().forEach(player -> {
             team.getMcTeam().addMember(player.getUsername());
@@ -141,7 +140,7 @@ public class GameManager {
         player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.get(String.format(player.getArmorLevel().getBootsID(), getPlayerTeam(player).orElseThrow().getColor().toString().toUpperCase())));
     }
 
-    private List<Team> splitPlayersIntoTeams(List<UUID> players) {
+    private List<Team> splitPlayersIntoTeams(List<CytosisPlayer> players) {
         int numTeams = Config.teams.size();
         int teamSize = players.size() / numTeams;
         int remainingPlayers = players.size() % numTeams;
@@ -160,7 +159,8 @@ public class GameManager {
             int currentTeamSize = teamSize + (remainingPlayers > 0 ? 1 : 0);
             for (int i = 0; i < currentTeamSize; i++) {
                 if (playerIndex < players.size()) {
-                    teamPlayers.add((BedwarsPlayer) Cytosis.getPlayer(players.get(playerIndex)).orElseThrow());
+                    if (!(players.get(playerIndex) instanceof BedwarsPlayer player)) return List.of();
+                    teamPlayers.add(player);
                     playerIndex++;
                 }
             }
@@ -186,7 +186,10 @@ public class GameManager {
         npcs.forEach((npc -> npc.getActions().clear()));
         generatorManager.removeGenerators();
         MinecraftServer.getSchedulerManager().buildTask(() -> {
-            Cytosis.getOnlinePlayers().forEach(player -> ((BedwarsPlayer) player).sendToLobby());
+            Cytosis.getOnlinePlayers().forEach(p -> {
+                if (!(p instanceof BedwarsPlayer player)) return;
+                player.sendToLobby();
+            });
             cleanup();
         }).delay(Duration.ofSeconds(10)).schedule();
     }

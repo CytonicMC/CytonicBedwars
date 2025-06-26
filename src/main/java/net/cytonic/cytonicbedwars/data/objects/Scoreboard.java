@@ -34,7 +34,7 @@ public class Scoreboard implements SideboardCreator {
 
     @Override
     public List<Component> lines(CytosisPlayer p) {
-        BedwarsPlayer player = (BedwarsPlayer) p;
+        if (!(p instanceof BedwarsPlayer player)) return List.of();
         List<Component> list = new ArrayList<>();
         try {
             switch (CytonicBedWars.getGameManager().getGameState()) {

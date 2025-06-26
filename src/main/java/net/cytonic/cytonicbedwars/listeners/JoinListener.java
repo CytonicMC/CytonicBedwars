@@ -18,7 +18,7 @@ public class JoinListener {
 
     @Listener
     public void onJoin(AsyncPlayerConfigurationEvent event) {
-        BedwarsPlayer player = (BedwarsPlayer) event.getPlayer();
+        if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
         event.setSpawningInstance(Cytosis.getDefaultInstance());
         player.setRespawnPoint(Config.spawnPlatformCenter.add(0, 1, 0));
     }

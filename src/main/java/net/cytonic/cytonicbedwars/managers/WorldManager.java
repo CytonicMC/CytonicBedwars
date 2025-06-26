@@ -3,7 +3,6 @@ package net.cytonic.cytonicbedwars.managers;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.data.objects.Team;
-import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
 import net.hollowcube.polar.PolarLoader;
@@ -11,7 +10,6 @@ import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.block.BlockFace;
-import org.apache.logging.log4j.util.Cast;
 
 @NoArgsConstructor
 public class WorldManager {
@@ -56,7 +54,6 @@ public class WorldManager {
     public void redoWorld() {
         loadWorld();
         createSpawnPlatform();
-        Cytosis.getOnlinePlayers().stream().map(Cast::<BedwarsPlayer>cast).forEach(player -> player.teleport(Config.spawnPlatformCenter));
     }
 
     public void createSpawnPlatform() {

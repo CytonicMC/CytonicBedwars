@@ -17,11 +17,12 @@ public class UseItemListener {
 
     @Listener
     public void onInteract(PlayerUseItemEvent event) {
+        if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
         ItemStack item = event.getPlayer().getItemInHand(event.getHand());
         if (item.has(DataComponents.CUSTOM_DATA)) {
             if (Objects.requireNonNull(item.get(DataComponents.CUSTOM_DATA)).nbt().get(Items.NAMESPACE) != null) {
                 String key = Objects.requireNonNull(item.get(DataComponents.CUSTOM_DATA)).nbt().getString(Items.NAMESPACE);
-                CytonicBedWars.getGameManager().getItemAbilityDispatcher().dispatch(key, (BedwarsPlayer) event.getPlayer(), event);
+                CytonicBedWars.getGameManager().getItemAbilityDispatcher().dispatch(key, player, event);
             }
         }
     }
