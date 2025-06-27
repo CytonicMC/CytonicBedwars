@@ -266,7 +266,6 @@ public class GameManager {
 
     public void kill(@NotNull BedwarsPlayer dead, @Nullable BedwarsPlayer killer, @NotNull RegistryKey<DamageType> damageType) {
         Team deadTeam = getPlayerTeam(dead).orElseThrow();
-        dead.setAlive(false);
         statsManager.getStats(dead.getUuid()).addDeath();
 
         //degrade tools
