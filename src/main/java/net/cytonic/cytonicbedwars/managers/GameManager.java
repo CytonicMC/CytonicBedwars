@@ -312,9 +312,9 @@ public class GameManager {
             Component finalMessage = message;
             dead.setGameMode(GameMode.SPECTATOR);
             Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
-            deadTeam.getPlayers().remove(dead);
-            if (deadTeam.getPlayers().isEmpty()) {
-                teams.remove(deadTeam);
+            dead.setAlive(false);
+            if (deadTeam.getAlivePlayers().isEmpty()) {
+                deadTeam.setAlive(false);
             }
             if (killer != null) {
                 statsManager.getStats(killer.getUuid()).addFinalKill();

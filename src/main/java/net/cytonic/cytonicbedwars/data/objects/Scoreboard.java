@@ -95,7 +95,7 @@ public class Scoreboard implements SideboardCreator {
                             if (team.hasBed()) {
                                 scoreboardArgs.add(Msg.mm(s + " <green>✔"));
                             } else {
-                                scoreboardArgs.add(Msg.mm(s + " <grey>" + team.getPlayers().size()));
+                                scoreboardArgs.add(Msg.mm(s + " <grey>" + team.getAlivePlayers().size()));
                             }
                         } else {
                             scoreboardArgs.add(Msg.mm(s + " <red>✘"));
