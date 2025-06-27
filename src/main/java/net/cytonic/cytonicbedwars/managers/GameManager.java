@@ -22,6 +22,7 @@ import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
 import net.minestom.server.MinecraftServer;
@@ -210,6 +211,15 @@ public class GameManager {
      */
     public Optional<Team> getPlayerTeam(BedwarsPlayer player) {
         return getPlayerTeam(player.getUuid());
+    }
+
+    public Optional<Team> getTeamFromColor(NamedTextColor color) {
+        for (Team team : teams) {
+            if (team.getColor().equals(color)) {
+                return Optional.of(team);
+            }
+        }
+        return Optional.empty();
     }
 
     /**
