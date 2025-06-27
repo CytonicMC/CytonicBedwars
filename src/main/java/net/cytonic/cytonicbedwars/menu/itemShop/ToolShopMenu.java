@@ -206,14 +206,14 @@ public class ToolShopMenu extends ViewProvider {
         ViewItem.bySlot(view, pattern.getSlot('P')).applyPrebuilt(pickaxe);
 
         ItemStack shearsItemStack;
-        if (player.isShears()) {
+        if (player.hasShears()) {
             shearsItemStack = Items.MENU_SHEARS.withLore(Msg.green("<bold>Already purchased!"));
         } else {
             shearsItemStack = Items.MENU_SHEARS;
         }
         PrebuiltItem shears = PrebuiltItem.of(shearsItemStack, action -> {
             action.getEvent().setCancelled(true);
-            if (player.isShears()) {
+            if (player.hasShears()) {
                 player.playSound(Sound.sound(SoundEvent.ENTITY_VILLAGER_NO, Sound.Source.MASTER, 1, 1));
                 player.sendMessage(Msg.red("You already purchased a pair of shears!"));
                 return;

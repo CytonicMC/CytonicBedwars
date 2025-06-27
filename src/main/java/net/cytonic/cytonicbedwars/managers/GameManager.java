@@ -349,7 +349,7 @@ public class GameManager {
         //todo: check for enchants / team upgrades
         dead.getInventory().addItemStack(Items.get(dead.getAxeLevel().getItemID()));
         dead.getInventory().addItemStack(Items.get(dead.getPickaxeLevel().getItemID()));
-        if (dead.isShears()) {
+        if (dead.hasShears()) {
             dead.getInventory().addItemStack(Items.SHEARS);
         }
         dead.setRespawning(false);
