@@ -17,7 +17,7 @@ import net.minestom.server.item.component.TooltipDisplay;
 import net.minestom.server.item.enchant.Enchantment;
 import net.minestom.server.potion.CustomPotionEffect;
 import net.minestom.server.potion.PotionEffect;
-import net.minestom.server.registry.DynamicRegistry;
+import net.minestom.server.registry.RegistryKey;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -225,7 +225,7 @@ public class Items {
     public static ItemStack JUMP_BOOST_POTION = createPotion("Jump Boost (60s)", "JUMP_BOOST_POT", PotionEffect.JUMP_BOOST, 1200, 5);
     public static ItemStack SPEED_POTION = createPotion("Speed (60s)", "SPEED_POT", PotionEffect.SPEED, 1200, 2);
 
-    private static ItemStack createItem(String displayName, String id, Material type, boolean noMove, boolean noDrop, List<Integer> allowedSlots, Map<DynamicRegistry.Key<Enchantment>, Integer> enchants, String... lore) {
+    private static ItemStack createItem(String displayName, String id, Material type, boolean noMove, boolean noDrop, List<Integer> allowedSlots, Map<RegistryKey<Enchantment>, Integer> enchants, String... lore) {
         List<Component> list = new ArrayList<>();
         for (String s : lore) list.add(Msg.mm(s));
         EnchantmentList enchantmentList = new EnchantmentList(enchants);
@@ -295,7 +295,7 @@ public class Items {
     }
 
     public static ItemStack getTeamMapped(MappableItem mappableItem, Team team) {
-        final String string = team.color().toString().toUpperCase();
+        final String string = team.getColor().toString().toUpperCase();
         switch (mappableItem) {
             case WOOL -> {
                 switch (string.toUpperCase()) {

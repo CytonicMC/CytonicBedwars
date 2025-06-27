@@ -1,39 +1,37 @@
 package net.cytonic.cytonicbedwars.managers;
 
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.Config;
+import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
-import net.cytonic.cytosis.player.CytosisPlayer;
 import net.hollowcube.polar.PolarLoader;
-import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.block.BlockFace;
-import net.minestom.server.world.DimensionType;
 
 @NoArgsConstructor
 public class WorldManager {
 
-    public void breakBed(Block block, BlockVec blockPos) {
-        CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
-            if (block.name().equals(team.bedType().name())) {
-                Cytosis.getDefaultInstance().setBlock(blockPos, Block.AIR);
-                BlockFace facing = BlockFace.valueOf(block.getProperty("facing").toUpperCase());
-                if (block.getProperty("part").equals("head")) {
-                    facing = facing.getOppositeFace();
-                }
-                Cytosis.getDefaultInstance().setBlock(blockPos.relative(facing), Block.AIR);
+    public void breakBed(Team team) {
+        Block block = Cytosis.getDefaultInstance().getBlock(team.getBedLocation());
+        BlockVec blockPos = new BlockVec(team.getBedLocation());
+        if (block.key().equals(team.getBedType().key())) {
+            Cytosis.getDefaultInstance().setBlock(blockPos, Block.AIR);
+            BlockFace facing = BlockFace.valueOf(block.getProperty("facing").toUpperCase());
+            if (block.getProperty("part").equals("head")) {
+                facing = facing.getOppositeFace();
             }
-        });
+            Cytosis.getDefaultInstance().setBlock(blockPos.relative(facing), Block.AIR);
+        }
     }
 
     public void loadWorld() {
         try {
-            var dimKey = MinecraftServer.getDimensionTypeRegistry().register("bedwars:" + Config.worldName, DimensionType.builder().ambientLight(100).build());
-            Cytosis.setDefaultInstance(Cytosis.getMinestomInstanceManager().createInstanceContainer(dimKey));
+            //fixme
+//            var dimKey = MinecraftServer.getDimensionTypeRegistry().register("bedwars:" + Config.worldName, DimensionType.builder().ambientLight(100).build());
+            Cytosis.setDefaultInstance(Cytosis.getMinestomInstanceManager().createInstanceContainer());
             Cytosis.getDatabaseManager().getMysqlDatabase().getWorld(Config.worldName, "bedwars_map_" + Config.mode)
                     .whenComplete((world, throwable) -> {
                         if (throwable != null) {
@@ -56,9 +54,6 @@ public class WorldManager {
     public void redoWorld() {
         loadWorld();
         createSpawnPlatform();
-        for (CytosisPlayer player : Cytosis.getOnlinePlayers()) {
-            player.teleport(Config.spawnPlatformCenter);
-        }
     }
 
     public void createSpawnPlatform() {

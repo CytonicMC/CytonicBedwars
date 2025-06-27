@@ -9,9 +9,9 @@ import eu.koboo.minestom.stomui.api.item.ViewItem;
 import eu.koboo.minestom.stomui.api.slots.ViewPattern;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.menu.MenuUtils;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
-import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.minestom.server.entity.Player;
@@ -22,7 +22,7 @@ public class PotionShopMenu extends ViewProvider {
 
     private static final PrebuiltItem fireResistance = PrebuiltItem.of(Items.MENU_FIRE_RESISTANCE_POTION, action -> {
         action.getEvent().setCancelled(true);
-        CytosisPlayer player = (CytosisPlayer) action.getPlayer();
+        if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, player)) {
                 player.getInventory().addItemStack(Items.MENU_FIRE_RESISTANCE_POTION);
@@ -40,7 +40,7 @@ public class PotionShopMenu extends ViewProvider {
 
     private static final PrebuiltItem invis = PrebuiltItem.of(Items.MENU_INVISIBILITY_POTION, action -> {
         action.getEvent().setCancelled(true);
-        CytosisPlayer player = (CytosisPlayer) action.getPlayer();
+        if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, player)) {
                 player.getInventory().addItemStack(Items.INVISIBILITY_POTION);
@@ -58,7 +58,7 @@ public class PotionShopMenu extends ViewProvider {
 
     private static final PrebuiltItem jumpBoost = PrebuiltItem.of(Items.MENU_JUMP_BOOST_POTION, action -> {
         action.getEvent().setCancelled(true);
-        CytosisPlayer player = (CytosisPlayer) action.getPlayer();
+        if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, player)) {
                 player.getInventory().addItemStack(Items.JUMP_BOOST_POTION);
@@ -76,7 +76,7 @@ public class PotionShopMenu extends ViewProvider {
 
     private static final PrebuiltItem speed = PrebuiltItem.of(Items.MENU_SPEED_POTION, action -> {
         action.getEvent().setCancelled(true);
-        CytosisPlayer player = (CytosisPlayer) action.getPlayer();
+        if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, player)) {
                 player.getInventory().addItemStack(Items.SPEED_POTION);

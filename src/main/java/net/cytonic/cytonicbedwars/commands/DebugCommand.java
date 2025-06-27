@@ -3,11 +3,11 @@ package net.cytonic.cytonicbedwars.commands;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.commands.utils.CommandUtils;
 import net.cytonic.cytosis.commands.utils.CytosisCommand;
-import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.command.builder.arguments.ArgumentType;
 import net.minestom.server.command.builder.suggestion.SuggestionEntry;
@@ -34,7 +34,7 @@ public class DebugCommand extends CytosisCommand {
         });
 
         addSyntax((sender, context) -> {
-            if (sender instanceof CytosisPlayer player) {
+            if (sender instanceof BedwarsPlayer player) {
                 String command = context.get(debugArgument);
 
                 switch (command.toLowerCase()) {
@@ -50,6 +50,10 @@ public class DebugCommand extends CytosisCommand {
                         if (CytonicBedWars.getGameManager().STARTED) {
                             player.sendMessage(Msg.red("The game has already been started! Use '/debug stop' to end it!"));
                         }
+                        if (CytonicBedWars.getGameManager().getWaitingRunnable() != null) {
+                            CytonicBedWars.getGameManager().getWaitingRunnable().stop();
+                            CytonicBedWars.getGameManager().setWaitingRunnable(null);
+                        }
                         CytonicBedWars.getGameManager().start();
                     }
                     case "end" -> {
@@ -61,7 +65,7 @@ public class DebugCommand extends CytosisCommand {
                         CytonicBedWars.getGameManager().cleanup();
                     }
                     case "listteams" ->
-                            CytonicBedWars.getGameManager().getTeamlist().forEach(team -> player.sendMessage(Msg.mm(team.prefix() + team.displayName())));
+                            CytonicBedWars.getGameManager().getTeams().forEach(team -> player.sendMessage(Msg.mm(team.getPrefix() + team.getDisplayName())));
                     case "freeze", "f" -> {
                         if (CytonicBedWars.getGameManager().getGameState() != GameState.FROZEN) {
                             Cytosis.getOnlinePlayers().forEach((player1) -> player1.sendMessage(Msg.yellow("The game is now <aqua><bold>FROZEN<reset><yellow>!")));

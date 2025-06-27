@@ -2,6 +2,7 @@ package net.cytonic.cytonicbedwars.data.objects;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.playerlist.Column;
@@ -27,39 +28,40 @@ public class PlayerList implements PlayerlistCreator {
             return List.of(PlayerList.PLAYER_COLUMN.apply(player));
         }
         List<PlayerListEntry> players = new ArrayList<>();
-        for (CytosisPlayer p : Cytosis.getOnlinePlayers()) {
-            if (CytonicBedWars.getGameManager().getPlayerTeam(p.getUuid()).isEmpty() && (CytonicBedWars.getGameManager().spectators.contains(player.getUuid()) || player.isStaff())) {
+        Cytosis.getOnlinePlayers().forEach(forPlayer -> {
+            if (!(forPlayer instanceof BedwarsPlayer p)) return;
+            if (CytonicBedWars.getGameManager().getPlayerTeam(p).isEmpty() && (CytonicBedWars.getGameManager().getSpectators().contains(player.getUuid()) || player.isStaff())) {
                 players.add(new PlayerListEntry(p.getRank().getPrefix().color(NamedTextColor.GRAY).append(p.getName()), p.getRank().ordinal(),
                         new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getSkin()).textures(), p.getSkin().signature())));
-                continue;
+                return;
             }
             if (p.isVanished()) {
-                if (!player.isStaff()) continue;
+                if (!player.isStaff()) return;
                 players.add(new PlayerListEntry(p.getRank().getPrefix().color(NamedTextColor.GRAY)
                         .decorate(TextDecoration.STRIKETHROUGH, TextDecoration.ITALIC).append(p.getName()), p.getRank().ordinal(),
                         new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getSkin()).textures(), p.getSkin().signature())));
-                continue;
+                return;
             }
-            Team team = CytonicBedWars.getGameManager().getPlayerTeam(p.getUuid()).orElseThrow();
+            Team team = CytonicBedWars.getGameManager().getPlayerTeam(p).orElseThrow();
             if (p.isNicked()) {
                 if (player.getUuid().equals(p.getUuid())) {
-                    players.add(new PlayerListEntry(Msg.mm("%s%s", team.prefix(), p.getTrueUsername()),
+                    players.add(new PlayerListEntry(Msg.mm("%s%s", team.getPrefix(), p.getTrueUsername()),
                             p.getTrueRank().ordinal(),
                             new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getTrueSkin()).textures(), p.getTrueSkin().signature())));
-                    continue;
+                    return;
                 }
 
                 if (player.isStaff()) {
-                    players.add(new PlayerListEntry(Msg.mm("%s %s \uD83C\uDFAD", team.prefix(), p.getUsername()),
+                    players.add(new PlayerListEntry(Msg.mm("%s %s \uD83C\uDFAD", team.getPrefix(), p.getUsername()),
                             p.getRank().ordinal(),
                             new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getTrueSkin()).textures(), p.getTrueSkin().signature())));
-                    continue;
+                    return;
                 }
             }
-            players.add(new PlayerListEntry(Msg.mm("%s%s", team.prefix(), p.getUsername()),
+            players.add(new PlayerListEntry(Msg.mm("%s%s", team.getPrefix(), p.getUsername()),
                     p.getRank().ordinal(),
                     new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getSkin()).textures(), p.getSkin().signature())));
-        }
+        });
 
         Column playerCol = new Column(Msg.purple("<b>        Players    "), PlayerListFavicon.PURPLE);
         playerCol.setEntries(new ArrayList<>(players));

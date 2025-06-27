@@ -1,23 +1,23 @@
 package net.cytonic.cytonicbedwars.runnables;
 
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.entity.Player;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.timer.Task;
 
 import java.time.Duration;
 
 public class RespawnRunnable {
-    private final Player player;
+    private final BedwarsPlayer player;
     private final Task task;
     private int timeLeft;
 
-    public RespawnRunnable(int timeLeft, Player player) {
+    public RespawnRunnable(int timeLeft, BedwarsPlayer player) {
         this.timeLeft = timeLeft;
         this.player = player;
         task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofSeconds(1)).schedule();

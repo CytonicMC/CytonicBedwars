@@ -1,8 +1,10 @@
 package net.cytonic.cytonicbedwars.data.objects;
 
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.Config;
+import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.GameManager;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor
 public class Scoreboard implements SideboardCreator {
@@ -30,7 +33,8 @@ public class Scoreboard implements SideboardCreator {
     }
 
     @Override
-    public List<Component> lines(CytosisPlayer player) {
+    public List<Component> lines(CytosisPlayer p) {
+        if (!(p instanceof BedwarsPlayer player)) return List.of();
         List<Component> list = new ArrayList<>();
         try {
             switch (CytonicBedWars.getGameManager().getGameState()) {
@@ -79,25 +83,23 @@ public class Scoreboard implements SideboardCreator {
                     scoreboardArgs.add(Msg.mm(""));
                     scoreboardArgs.add(Msg.mm("Time: coming soon:tm:"));
                     scoreboardArgs.add(Msg.mm(""));
-                    CytonicBedWars.getGameManager().getTeamlist().forEach(team -> {
-                        // todo: check if team is eliminated, or has final kills
-                        String s = "";
-                        s += team.prefix() + "<reset>" + team.displayName();
-                        if (CytonicBedWars.getGameManager().getBeds().get(team)) {
-                            s += " <green>✔";
-                        } else {
-                            if (CytonicBedWars.getGameManager().getPlayerTeams().get(team).isEmpty()) {
-                                s += " <red>✘";
-                            } else {
-                                if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow() != team) {
-                                    s += " <grey>" + CytonicBedWars.getGameManager().getPlayerTeams().get(team).size();
-                                }
+                    GameManager gameManager = CytonicBedWars.getGameManager();
+                    Optional<Team> playerTeam = gameManager.getPlayerTeam(player);
+                    Config.teams.values().forEach(team -> {
+                        String s = team.getPrefix() + "<reset>" + team.getDisplayName();
+                        if (gameManager.getTeams().stream().map(Team::getColor).toList().contains(team.getColor())) {
+                            if (playerTeam.isPresent() && playerTeam.get().equals(team)) {
+                                scoreboardArgs.add(Msg.mm(s + " <gray>YOU"));
+                                return;
                             }
+                            if (team.hasBed()) {
+                                scoreboardArgs.add(Msg.mm(s + " <green>✔"));
+                            } else {
+                                scoreboardArgs.add(Msg.mm(s + " <grey>" + team.getPlayers().size()));
+                            }
+                        } else {
+                            scoreboardArgs.add(Msg.mm(s + " <red>✘"));
                         }
-                        if (CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).isPresent() && CytonicBedWars.getGameManager().getPlayerTeam(player.getUuid()).orElseThrow() == team) {
-                            s += " <gray>YOU";
-                        }
-                        scoreboardArgs.add(Msg.mm(s));
                     });
                     scoreboardArgs.add(Msg.mm(""));
                     scoreboardArgs.add(Msg.yellow("www.cytonic.net"));
@@ -128,6 +130,6 @@ public class Scoreboard implements SideboardCreator {
     }
 
     private Component topLine() {
-        return Msg.grey("%s <dark_gray>%s", new SimpleDateFormat("M/d/y").format(Calendar.getInstance().getTime()), Cytosis.getRawID());
+        return Msg.grey("%s <dark_gray>%s", new SimpleDateFormat("M/d/yy").format(Calendar.getInstance().getTime()), Cytosis.getRawID());
     }
 }

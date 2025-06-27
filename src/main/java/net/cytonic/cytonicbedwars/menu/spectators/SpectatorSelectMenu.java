@@ -32,15 +32,15 @@ public class SpectatorSelectMenu extends ViewProvider {
     }
 
     @Override
-    public void onOpen(@NotNull PlayerView view, @NotNull Player player) {
+    public void onOpen(@NotNull PlayerView view, @NotNull Player p) {
         AtomicInteger i = new AtomicInteger(0);
-        CytonicBedWars.getGameManager().getAlivePlayers().forEach(uuid -> {
+        CytonicBedWars.getGameManager().getTeams().forEach(team -> team.getPlayers().forEach(player -> {
             ItemStack stack = ItemStack.builder(Material.PLAYER_HEAD)
-                    .set(DataComponents.PROFILE, new HeadProfile(Objects.requireNonNull(Cytosis.getPlayer(uuid).orElseThrow().getSkin())))
+                    .set(DataComponents.PROFILE, new HeadProfile(Objects.requireNonNull(player.getSkin())))
                     .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
-                    .set(DataComponents.ITEM_NAME, Msg.green(Cytosis.getPlayer(uuid).orElseThrow().getUsername()))
-                    .set(DataComponents.LORE, List.of((Msg.grey("Click to teleport to " + Cytosis.getPlayer(uuid).orElseThrow().getUsername()))))
-                    .set(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("uuid", uuid.toString()).build()))
+                    .set(DataComponents.ITEM_NAME, Msg.green(player.getUsername()))
+                    .set(DataComponents.LORE, List.of((Msg.grey("Click to teleport to %s", player.getUsername()))))
+                    .set(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString("uuid", player.getUuid().toString()).build()))
                     .build();
             PrebuiltItem item = PrebuiltItem.of(stack, action -> {
                 action.getEvent().setCancelled(true);
@@ -54,6 +54,6 @@ public class SpectatorSelectMenu extends ViewProvider {
                 }
             });
             ViewItem.bySlot(view, i.getAndIncrement()).applyPrebuilt(item);
-        });
+        }));
     }
 }

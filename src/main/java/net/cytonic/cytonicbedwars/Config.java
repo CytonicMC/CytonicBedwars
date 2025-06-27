@@ -5,8 +5,10 @@ import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.coordinate.Pos;
+import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.instance.block.Block;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
@@ -35,6 +37,8 @@ public final class Config {
     public static Map<GeneratorType, Integer> generatorsWaitTimeTicks = new HashMap<>();
     public static Map<GeneratorType, Integer> generatorsItemLimit = new HashMap<>();
     public static Map<GeneratorType, List<Pos>> generators = new HashMap<>();
+    public static PlayerSkin itemShopSkin;
+    public static PlayerSkin teamShopSkin;
 
     /**
      * Loads the config from a string
@@ -72,16 +76,16 @@ public final class Config {
                         String.valueOf(key),
                         teamNode.node("tab_prefix").getString(),
                         NamedTextColor.NAMES.value(Objects.requireNonNull(teamNode.node("team_color").getString())),
-                        Block.fromKey(Objects.requireNonNull(teamNode.node("bed_item").getString())),
                         Objects.requireNonNull(teamNode.node("spawn_location").get(Pos.class)),
                         teamNode.node("generation_location").get(Pos.class),
                         teamNode.node("item_shop_location").get(Pos.class),
                         teamNode.node("team_shop_location").get(Pos.class),
                         teamNode.node("team_chest_location").get(Pos.class),
                         teamNode.node("bed_location").get(Pos.class),
-                        Block.fromKey(Objects.requireNonNull(teamNode.node("wool_item").getString())),
-                        Block.fromKey(Objects.requireNonNull(teamNode.node("glass_item").getString())),
-                        Block.fromKey(Objects.requireNonNull(teamNode.node("terracotta_item").getString()))
+                        Block.fromKey(Objects.requireNonNull(teamNode.node("bed_item").get(Key.class))),
+                        Block.fromKey(Objects.requireNonNull(teamNode.node("wool_item").get(Key.class))),
+                        Block.fromKey(Objects.requireNonNull(teamNode.node("glass_item").get(Key.class))),
+                        Block.fromKey(Objects.requireNonNull(teamNode.node("terracotta_item").get(Key.class)))
                 );
                 teams.put(String.valueOf(key), team);
             } catch (SerializationException e) {
@@ -97,6 +101,12 @@ public final class Config {
                 Logger.error("Could not import generators!", e);
             }
         });
+        try {
+            itemShopSkin = new PlayerSkin(node.node("npc_skins", "item_shop", "textures").getString(), node.node("npc_skins", "item_shop", "signature").getString());
+            teamShopSkin = new PlayerSkin(node.node("npc_skins", "team_shop", "textures").getString(), node.node("npc_skins", "team_shop", "signature").getString());
+        } catch (Exception e) {
+            Logger.error("Could not import npc skins!", e);
+        }
         Logger.info("Finished importing bedwars config in %sms!", (System.currentTimeMillis() - time));
     }
 }

@@ -26,7 +26,7 @@ public class ArmorEquipListener {
                     playerInventory.setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.SPECTATOR_ARMOR);
                     playerInventory.setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), Items.SPECTATOR_ARMOR);
                     playerInventory.setEquipment(EquipmentSlot.CHESTPLATE, player.getHeldSlot(), Items.SPECTATOR_ARMOR);
-                }).delay(Duration.ofMillis(100));
+                }).delay(Duration.ofMillis(100)).schedule();
             }
         }
     }
