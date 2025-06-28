@@ -20,7 +20,7 @@ public class DebugCommand extends CytosisCommand {
         setCondition(CommandUtils.IS_ADMIN);
         setDefaultExecutor((sender, context) -> sender.sendMessage(Msg.whoops("You must specify a command!")));
 
-        var debugArgument = ArgumentType.Word("debug").from("start", "forceStart", "end", "cleanup", "listteams", "freeze", "f", "itemshop");
+        var debugArgument = ArgumentType.Word("debug").from("start", "forceStart", "end", "cleanup", "listteams", "freeze", "f", "itemshop", "teaminfo");
         debugArgument.setCallback((sender, exception) -> sender.sendMessage(Msg.whoops("The command " + exception.getInput() + " is invalid!")));
         debugArgument.setSuggestionCallback((commandSender, commandContext, suggestion) -> {
             suggestion.addEntry(new SuggestionEntry("start", Msg.green("Starts the game!")));
@@ -31,6 +31,7 @@ public class DebugCommand extends CytosisCommand {
             suggestion.addEntry(new SuggestionEntry("freeze", Msg.green("Freezes the game!")));
             suggestion.addEntry(new SuggestionEntry("f", Msg.green("Freezes the game!")));
             suggestion.addEntry(new SuggestionEntry("itemshop", Msg.green("Opens the item shop!")));
+            suggestion.addEntry(new SuggestionEntry("teaminfo", Msg.green("Shows information about the teams!")));
         });
 
         addSyntax((sender, context) -> {
@@ -81,6 +82,22 @@ public class DebugCommand extends CytosisCommand {
                         }
                         new BlocksShopMenu().open(player);
                     }
+                    case "teaminfo" -> CytonicBedWars.getGameManager().getTeams().forEach(team -> {
+                        player.sendMessage(Msg.mm("<%s><b>Team:</b> %s", team.getColor(), team.getName()));
+                        player.sendMessage(Msg.mm("Alive: %s", team.isAlive()));
+                        player.sendMessage(Msg.mm("Bed: %s", team.hasBed()));
+                        player.sendMessage(Msg.mm("MCTeam: %s", team.getMcTeam().getTeamName()));
+                        player.sendMessage(Msg.mm("Players:"));
+                        team.getPlayers().forEach(teamPlayer -> {
+                            player.sendMessage(Msg.mm(" Name: %s", teamPlayer.getUsername()));
+                            player.sendMessage(Msg.mm(" Armor Level: %s", teamPlayer.getArmorLevel().name()));
+                            player.sendMessage(Msg.mm(" Axe Level: %s", teamPlayer.getAxeLevel().name()));
+                            player.sendMessage(Msg.mm(" Pickaxe Level: %s", teamPlayer.getPickaxeLevel().name()));
+                            player.sendMessage(Msg.mm(" Shears: %s", teamPlayer.hasShears()));
+                            player.sendMessage(Msg.mm(" Alive: %s", teamPlayer.isAlive()));
+                            player.sendMessage(Msg.mm(" Respawning: %s", teamPlayer.isRespawning()));
+                        });
+                    });
                 }
             }
         }, debugArgument);

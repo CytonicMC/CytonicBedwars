@@ -21,7 +21,7 @@ public class DatabaseManager {
     public void saveStats() {
         CytonicBedWars.getGameManager().getStatsManager().getStats().forEach((uuid, kills) -> {
             try {
-                PreparedStatement ps = Cytosis.getDatabaseManager().getMysqlDatabase().prepare("INSERT INTO bedwars_stats (uuid, kills, deaths, finalKills, bedsBroken, damageDealt, damageTaken) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement ps = Cytosis.getDatabaseManager().getMysqlDatabase().prepare("INSERT IGNORE INTO bedwars_stats (uuid, kills, deaths, finalKills, bedsBroken, damageDealt, damageTaken) VALUES (?, ?, ?, ?, ?, ?, ?)");
                 ps.setString(1, uuid.toString());
                 ps.setInt(2, kills.getKills());
                 ps.setInt(3, kills.getDeaths());

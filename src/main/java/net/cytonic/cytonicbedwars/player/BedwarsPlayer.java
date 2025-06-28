@@ -1,5 +1,6 @@
 package net.cytonic.cytonicbedwars.player;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
@@ -20,6 +21,7 @@ public class BedwarsPlayer extends CytosisPlayer {
     private ArmorLevel armorLevel = ArmorLevel.NONE;
     private AxeLevel axeLevel = AxeLevel.NONE;
     private PickaxeLevel pickaxeLevel = PickaxeLevel.NONE;
+    @Getter(AccessLevel.NONE)
     private boolean shears = false;
     private boolean alive = true;
     private boolean respawning = false;
@@ -39,7 +41,7 @@ public class BedwarsPlayer extends CytosisPlayer {
             this.armorLevel = player.getArmorLevel();
             this.axeLevel = player.getAxeLevel();
             this.pickaxeLevel = player.getPickaxeLevel();
-            this.shears = player.isShears();
+            this.shears = player.hasShears();
             this.alive = player.isAlive();
             this.respawning = player.isRespawning();
         });
@@ -47,5 +49,9 @@ public class BedwarsPlayer extends CytosisPlayer {
 
     public void sendToLobby() {
         Cytosis.getNatsManager().sendPlayerToGenericServer(this.getUuid(), "cytonic", "lobby", "The Lobby");
+    }
+
+    public boolean hasShears() {
+        return shears;
     }
 }

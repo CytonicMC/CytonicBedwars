@@ -22,6 +22,7 @@ import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
 import net.minestom.server.MinecraftServer;
@@ -212,6 +213,15 @@ public class GameManager {
         return getPlayerTeam(player.getUuid());
     }
 
+    public Optional<Team> getTeamFromColor(NamedTextColor color) {
+        for (Team team : teams) {
+            if (team.getColor().equals(color)) {
+                return Optional.of(team);
+            }
+        }
+        return Optional.empty();
+    }
+
     /**
      * Gets the players team if they are on one
      */
@@ -256,7 +266,6 @@ public class GameManager {
 
     public void kill(@NotNull BedwarsPlayer dead, @Nullable BedwarsPlayer killer, @NotNull RegistryKey<DamageType> damageType) {
         Team deadTeam = getPlayerTeam(dead).orElseThrow();
-        dead.setAlive(false);
         statsManager.getStats(dead.getUuid()).addDeath();
 
         //degrade tools
@@ -312,9 +321,9 @@ public class GameManager {
             Component finalMessage = message;
             dead.setGameMode(GameMode.SPECTATOR);
             Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
-            deadTeam.getPlayers().remove(dead);
-            if (deadTeam.getPlayers().isEmpty()) {
-                teams.remove(deadTeam);
+            dead.setAlive(false);
+            if (deadTeam.getAlivePlayers().isEmpty()) {
+                deadTeam.setAlive(false);
             }
             if (killer != null) {
                 statsManager.getStats(killer.getUuid()).addFinalKill();
@@ -349,7 +358,7 @@ public class GameManager {
         //todo: check for enchants / team upgrades
         dead.getInventory().addItemStack(Items.get(dead.getAxeLevel().getItemID()));
         dead.getInventory().addItemStack(Items.get(dead.getPickaxeLevel().getItemID()));
-        if (dead.isShears()) {
+        if (dead.hasShears()) {
             dead.getInventory().addItemStack(Items.SHEARS);
         }
         dead.setRespawning(false);

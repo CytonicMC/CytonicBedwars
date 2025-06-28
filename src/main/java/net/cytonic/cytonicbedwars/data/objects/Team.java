@@ -54,4 +54,8 @@ public class Team {
     public boolean hasBed() {
         return bed;
     }
+
+    public List<BedwarsPlayer> getAlivePlayers() {
+        return players.stream().filter(BedwarsPlayer::isAlive).toList();
+    }
 }

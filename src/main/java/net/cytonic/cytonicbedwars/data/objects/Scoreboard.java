@@ -87,7 +87,7 @@ public class Scoreboard implements SideboardCreator {
                     Optional<Team> playerTeam = gameManager.getPlayerTeam(player);
                     Config.teams.values().forEach(team -> {
                         String s = team.getPrefix() + "<reset>" + team.getDisplayName();
-                        if (gameManager.getTeams().stream().map(Team::getColor).toList().contains(team.getColor())) {
+                        if (gameManager.getTeamFromColor(team.getColor()).isPresent() && gameManager.getTeamFromColor(team.getColor()).get().isAlive()) {
                             if (playerTeam.isPresent() && playerTeam.get().equals(team)) {
                                 scoreboardArgs.add(Msg.mm(s + " <gray>YOU"));
                                 return;
@@ -95,7 +95,7 @@ public class Scoreboard implements SideboardCreator {
                             if (team.hasBed()) {
                                 scoreboardArgs.add(Msg.mm(s + " <green>✔"));
                             } else {
-                                scoreboardArgs.add(Msg.mm(s + " <grey>" + team.getPlayers().size()));
+                                scoreboardArgs.add(Msg.mm(s + " <grey>" + team.getAlivePlayers().size()));
                             }
                         } else {
                             scoreboardArgs.add(Msg.mm(s + " <red>✘"));
