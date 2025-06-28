@@ -26,9 +26,11 @@ public class JoinListener {
     @Listener
     public void onJoin(PlayerSpawnEvent event) {
         if (!CytonicBedWars.getGameManager().STARTED) {
-            if (Cytosis.getOnlinePlayers().size() >= Config.minPlayers) {
-                CytonicBedWars.getGameManager().setGameState(GameState.STARTING);
-                CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable());
+            if (CytonicBedWars.getGameManager().getWaitingRunnable() == null) {
+                if (Cytosis.getOnlinePlayers().size() >= Config.minPlayers) {
+                    CytonicBedWars.getGameManager().setGameState(GameState.STARTING);
+                    CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable());
+                }
             }
         }
         if (CytonicBedWars.getGameManager().STARTED) {
