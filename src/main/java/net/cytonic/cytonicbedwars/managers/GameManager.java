@@ -249,7 +249,7 @@ public class GameManager {
     }
 
     public void breakBed(BedwarsPlayer player, Team team) {
-        Component message = Msg.whiteSplash("<newline>BED DESTRUCTION >", "<%s>%s Bed<reset><gray> was destroyed by <%s>%s<reset><gray>!<newline>", team.getColor().toString(), team.getName(), getPlayerTeam(player).orElseThrow().getColor(), player.getUsername());
+        Component message = Msg.whiteSplash("<newline>BED DESTRUCTION!", "<%s>%s Bed<reset><gray> was destroyed by <%s>%s<reset><gray>!<newline>", team.getColor().toString(), team.getName(), getPlayerTeam(player).orElseThrow().getColor(), player.getUsername());
         Cytosis.getOnlinePlayers().forEach(p -> {
             player.playSound(Sound.sound(SoundEvent.ENTITY_GENERIC_EXPLODE, Sound.Source.PLAYER, 1f, 100f));
             p.sendMessage(message);
