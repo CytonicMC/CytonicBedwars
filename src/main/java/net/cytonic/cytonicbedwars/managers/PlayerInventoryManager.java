@@ -4,8 +4,8 @@ import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.utils.Items;
-import net.minestom.server.entity.Player;
 import net.minestom.server.component.DataComponents;
+import net.minestom.server.entity.Player;
 import net.minestom.server.item.ItemStack;
 
 import java.util.Objects;
@@ -97,5 +97,10 @@ public class PlayerInventoryManager {
                 }
             }
         }
+    }
+
+    public void setSword(ItemStack sword, Player player) {
+        takeItem("DEFAULT_SWORD", 1, player);
+        player.getInventory().addItemStack(sword);
     }
 }

@@ -9,6 +9,7 @@ import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.data.objects.PlayerList;
 import net.cytonic.cytonicbedwars.data.objects.Scoreboard;
+import net.cytonic.cytonicbedwars.data.objects.Stats;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
@@ -31,6 +32,7 @@ import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
+import net.minestom.server.item.ItemStack;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.registry.RegistryKey;
 import net.minestom.server.scoreboard.TeamBuilder;
@@ -188,6 +190,30 @@ public class GameManager {
             });
             cleanup();
         }).delay(Duration.ofSeconds(10)).schedule();
+        Team winningTeam = teams.stream().filter(Team::isAlive).findFirst().orElseThrow();
+        List<BedwarsPlayer> winners = winningTeam.getPlayers();
+        Cytosis.getOnlinePlayers().forEach(player -> {
+            if (winners.stream().map(BedwarsPlayer::getUuid).toList().contains(player.getUuid())) {
+                player.showTitle(Title.title(Msg.gold("<b>VICTORY!"), Msg.mm(""), Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+            } else {
+                player.showTitle(Title.title(Msg.red("<b>GAME OVER!"), Msg.mm(""), Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+            }
+            player.sendMessage(Msg.mm(""));
+            player.sendMessage(Msg.goldSplash("GAME OVER!", "<%s>%s <gray>has won the game!", winningTeam.getColor(), winningTeam.getDisplayName()));
+            player.sendMessage(Msg.mm(""));
+            Stats stats = statsManager.getStats(player.getUuid());
+            if (stats == null) {
+                player.sendMessage(Msg.whoops("You don't have any stats!"));
+            } else {
+                player.sendMessage(Msg.gold("<b>STATS:"));
+                player.sendMessage(Msg.grey("   Kills: <white>%s", stats.getKills()));
+                player.sendMessage(Msg.grey("   Final Kills: <white>%s", stats.getFinalKills()));
+                player.sendMessage(Msg.grey("   Deaths: <white>%s", stats.getDeaths()));
+                player.sendMessage(Msg.grey("   Beds broken: <white>%s", stats.getBedsBroken()));
+                player.sendMessage(Msg.grey("   Damage Dealt: <white>%s", stats.getDamageDealt()));
+                player.sendMessage(Msg.grey("   Damage Taken: <white>%s", stats.getDamageTaken()));
+            }
+        });
     }
 
 
@@ -249,7 +275,7 @@ public class GameManager {
     }
 
     public void breakBed(BedwarsPlayer player, Team team) {
-        Component message = Msg.whiteSplash("<newline>BED DESTRUCTION >", "<%s>%s Bed<reset><gray> was destroyed by <%s>%s<reset><gray>!<newline>", team.getColor().toString(), team.getName(), getPlayerTeam(player).orElseThrow().getColor(), player.getUsername());
+        Component message = Msg.whiteSplash("<newline>BED DESTRUCTION!", "<%s>%s Bed<reset><gray> was destroyed by <%s>%s<reset><gray>!<newline>", team.getColor().toString(), team.getName(), getPlayerTeam(player).orElseThrow().getColor(), player.getUsername());
         Cytosis.getOnlinePlayers().forEach(p -> {
             player.playSound(Sound.sound(SoundEvent.ENTITY_GENERIC_EXPLODE, Sound.Source.PLAYER, 1f, 100f));
             p.sendMessage(message);
@@ -286,7 +312,9 @@ public class GameManager {
             if (killer == null) {
                 kill(dead, null, DamageType.OUT_OF_WORLD);
             } else {
-                statsManager.getStats(killer.getUuid()).addKill();
+                if (!finalKill) {
+                    statsManager.getStats(killer.getUuid()).addKill();
+                }
                 message = message.append(Msg.grey("was slain by %s%s", getPlayerTeam(killer).orElseThrow().getPrefix(), killer.getUsername()));
                 killer.getInventory().addItemStack(Items.get("IRON").withAmount(playerInventoryManager.itemCount(dead, "IRON")));
                 killer.getInventory().addItemStack(Items.get("GOLD").withAmount(playerInventoryManager.itemCount(dead, "GOLD")));
@@ -324,9 +352,17 @@ public class GameManager {
             dead.setAlive(false);
             if (deadTeam.getAlivePlayers().isEmpty()) {
                 deadTeam.setAlive(false);
+                Cytosis.getOnlinePlayers().forEach(player -> {
+                    player.sendMessage(Msg.mm(""));
+                    player.sendMessage(Msg.whiteSplash("TEAM ELIMINATED!", "<%s>%s <red>has been eliminated!", deadTeam.getColor(), deadTeam.getDisplayName()));
+                    player.sendMessage(Msg.mm(""));
+                });
             }
             if (killer != null) {
                 statsManager.getStats(killer.getUuid()).addFinalKill();
+            }
+            if (teams.stream().filter(Team::isAlive).count() == 1) {
+                end();
             }
             return;
         }
@@ -336,7 +372,9 @@ public class GameManager {
         Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
         dead.showTitle(Title.title(Msg.red("<b>You DIED!"), Msg.yellow("You will respawn soon"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
         dead.setGameMode(GameMode.SPECTATOR);
-        dead.getInventory().clear();
+        dead.getInventory().setItemStack(0, ItemStack.AIR);
+        dead.getInventory().setItemStack(6, ItemStack.AIR);
+        dead.getInventory().setItemStack(8, ItemStack.AIR);
         dead.setHealth(20);
         dead.setFireTicks(0); // reset fire
         new RespawnRunnable(6, dead);

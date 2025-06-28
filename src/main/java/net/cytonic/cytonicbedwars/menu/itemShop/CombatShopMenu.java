@@ -26,8 +26,7 @@ public class CombatShopMenu extends ViewProvider {
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("DEFAULT_SWORD", 1, player);
-                player.getInventory().addItemStack(Items.STONE_SWORD);
+                CytonicBedWars.getGameManager().getPlayerInventoryManager().setSword(Items.STONE_SWORD, player);
                 player.sendMessage(Msg.green("You bought a Stone Sword!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
@@ -44,8 +43,7 @@ public class CombatShopMenu extends ViewProvider {
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 7, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("STONE_SWORD", 1, player);
-                player.getInventory().addItemStack(Items.IRON_SWORD);
+                CytonicBedWars.getGameManager().getPlayerInventoryManager().setSword(Items.IRON_SWORD, player);
                 player.sendMessage(Msg.green("You bought an Iron Sword!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
@@ -63,8 +61,7 @@ public class CombatShopMenu extends ViewProvider {
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
         if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
             if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 6, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON_SWORD", 1, player);
-                player.getInventory().addItemStack(Items.DIAMOND_SWORD);
+                CytonicBedWars.getGameManager().getPlayerInventoryManager().setSword(Items.DIAMOND_SWORD, player);
                 player.sendMessage(Msg.green("You bought a Diamond Sword!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
