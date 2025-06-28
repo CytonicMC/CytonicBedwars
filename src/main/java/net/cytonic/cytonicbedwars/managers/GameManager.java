@@ -9,6 +9,7 @@ import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.data.objects.PlayerList;
 import net.cytonic.cytonicbedwars.data.objects.Scoreboard;
+import net.cytonic.cytonicbedwars.data.objects.Stats;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
@@ -188,6 +189,30 @@ public class GameManager {
             });
             cleanup();
         }).delay(Duration.ofSeconds(10)).schedule();
+        Team winningTeam = teams.stream().filter(Team::isAlive).findFirst().orElseThrow();
+        List<BedwarsPlayer> winners = winningTeam.getPlayers();
+        Cytosis.getOnlinePlayers().forEach(player -> {
+            if (winners.stream().map(BedwarsPlayer::getUuid).toList().contains(player.getUuid())) {
+                player.showTitle(Title.title(Msg.gold("<b>VICTORY!"), Msg.mm(""), Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+            } else {
+                player.showTitle(Title.title(Msg.red("<b>GAME OVER!"), Msg.mm(""), Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
+            }
+            player.sendMessage(Msg.mm(""));
+            player.sendMessage(Msg.goldSplash("GAME OVER!", "<%s>%s <gray>has won the game!", winningTeam.getColor(), winningTeam.getDisplayName()));
+            player.sendMessage(Msg.mm(""));
+            Stats stats = statsManager.getStats(player.getUuid());
+            if (stats == null) {
+                player.sendMessage(Msg.whoops("You don't have any stats!"));
+            } else {
+                player.sendMessage(Msg.gold("<b>STATS:"));
+                player.sendMessage(Msg.grey("   Kills: <white>%s", stats.getKills()));
+                player.sendMessage(Msg.grey("   Final Kills: <white>%s", stats.getFinalKills()));
+                player.sendMessage(Msg.grey("   Deaths: <white>%s", stats.getDeaths()));
+                player.sendMessage(Msg.grey("   Beds broken: <white>%s", stats.getBedsBroken()));
+                player.sendMessage(Msg.grey("   Damage Dealt: <white>%s", stats.getDamageDealt()));
+                player.sendMessage(Msg.grey("   Damage Taken: <white>%s", stats.getDamageTaken()));
+            }
+        });
     }
 
 
