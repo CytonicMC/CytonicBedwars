@@ -335,6 +335,9 @@ public class GameManager {
             if (killer != null) {
                 statsManager.getStats(killer.getUuid()).addFinalKill();
             }
+            if (teams.stream().filter(Team::isAlive).count() == 1) {
+                end();
+            }
             return;
         }
         Component finalMessage = message;
