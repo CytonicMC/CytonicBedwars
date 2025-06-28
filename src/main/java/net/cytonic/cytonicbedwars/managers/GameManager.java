@@ -32,6 +32,7 @@ import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
+import net.minestom.server.item.ItemStack;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.registry.RegistryKey;
 import net.minestom.server.scoreboard.TeamBuilder;
@@ -371,7 +372,9 @@ public class GameManager {
         Cytosis.getOnlinePlayers().forEach((player -> player.sendMessage(finalMessage)));
         dead.showTitle(Title.title(Msg.red("<b>You DIED!"), Msg.yellow("You will respawn soon"), Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
         dead.setGameMode(GameMode.SPECTATOR);
-        dead.getInventory().clear();
+        dead.getInventory().setItemStack(0, ItemStack.AIR);
+        dead.getInventory().setItemStack(6, ItemStack.AIR);
+        dead.getInventory().setItemStack(8, ItemStack.AIR);
         dead.setHealth(20);
         dead.setFireTicks(0); // reset fire
         new RespawnRunnable(6, dead);
