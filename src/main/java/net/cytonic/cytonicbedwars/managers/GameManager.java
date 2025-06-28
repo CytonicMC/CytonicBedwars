@@ -286,7 +286,9 @@ public class GameManager {
             if (killer == null) {
                 kill(dead, null, DamageType.OUT_OF_WORLD);
             } else {
-                statsManager.getStats(killer.getUuid()).addKill();
+                if (!finalKill) {
+                    statsManager.getStats(killer.getUuid()).addKill();
+                }
                 message = message.append(Msg.grey("was slain by %s%s", getPlayerTeam(killer).orElseThrow().getPrefix(), killer.getUsername()));
                 killer.getInventory().addItemStack(Items.get("IRON").withAmount(playerInventoryManager.itemCount(dead, "IRON")));
                 killer.getInventory().addItemStack(Items.get("GOLD").withAmount(playerInventoryManager.itemCount(dead, "GOLD")));
