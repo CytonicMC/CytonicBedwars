@@ -324,6 +324,11 @@ public class GameManager {
             dead.setAlive(false);
             if (deadTeam.getAlivePlayers().isEmpty()) {
                 deadTeam.setAlive(false);
+                Cytosis.getOnlinePlayers().forEach(player -> {
+                    player.sendMessage(Msg.mm(""));
+                    player.sendMessage(Msg.whiteSplash("TEAM ELIMINATED!", "<%s>%s <red>has been eliminated!", deadTeam.getColor(), deadTeam.getDisplayName()));
+                    player.sendMessage(Msg.mm(""));
+                });
             }
             if (killer != null) {
                 statsManager.getStats(killer.getUuid()).addFinalKill();
