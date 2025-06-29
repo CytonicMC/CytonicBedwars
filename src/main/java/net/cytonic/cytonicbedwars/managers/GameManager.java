@@ -13,6 +13,7 @@ import net.cytonic.cytonicbedwars.data.objects.Stats;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
+import net.cytonic.cytonicbedwars.runnables.GameRunnable;
 import net.cytonic.cytonicbedwars.runnables.RespawnRunnable;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytonicbedwars.utils.Items;
@@ -42,10 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -62,6 +60,7 @@ public class GameManager {
     private GameState beforeFrozen;
     private GameState gameState;
     private WaitingRunnable waitingRunnable;
+    private GameRunnable gameRunnable;
     private final ItemAbilityDispatcher itemAbilityDispatcher;
 
     public GameManager() {
@@ -128,7 +127,7 @@ public class GameManager {
                     .invulnerable()
                     .build();
             npcList.add(teamShop);
-
+            gameRunnable = new GameRunnable();
         }
     }
 
@@ -181,6 +180,8 @@ public class GameManager {
     public void end() {
         STARTED = false;
         setGameState(GameState.ENDED);
+        gameRunnable.stop();
+        gameRunnable = null;
         npcList.forEach((npc -> npc.getActions().clear()));
         generatorManager.removeGenerators();
         MinecraftServer.getSchedulerManager().buildTask(() -> {
@@ -401,5 +402,39 @@ public class GameManager {
         }
         dead.setRespawning(false);
         dead.setAlive(true);
+    }
+
+
+    public GameState nextGameState() {
+        gameState = gameState.getNext();
+        switch (Objects.requireNonNull(gameState)) {
+            case DIAMOND_2, DIAMOND_3 -> {
+                generatorManager.increaseDiamondsSpawnSpeed(gameState == GameState.DIAMOND_2 ? 20 : 12);
+                Cytosis.getOnlinePlayers().forEach(player -> player.sendMessage(Msg.aquaSplash("GENERATORS", "Diamonds generators have upgraded to Tier %s!", gameState == GameState.DIAMOND_2 ? "II" : "III")));
+            }
+            case EMERALD_2, EMERALD_3 -> {
+                generatorManager.increaseEmeraldsSpawnSpeed(gameState == GameState.EMERALD_2 ? 400 : 240);
+                Cytosis.getOnlinePlayers().forEach(player -> player.sendMessage(Msg.greenSplash("GENERATORS", "Emerald generators have upgraded to Tier %s!", gameState == GameState.DIAMOND_2 ? "II" : "III")));
+
+            }
+            case BED_DESTRUCTION -> {
+                teams.stream().filter(Team::isAlive).forEach(team -> {
+                    team.setBed(false);
+                    worldManager.breakBed(team);
+                });
+                Cytosis.getOnlinePlayers().forEach(player -> {
+                    player.sendMessage(Msg.redSplash("BED DESTROY", "All beds have been destroyed!"));
+                    player.sendMessage(Msg.yellow("You can no longer respawn!"));
+                });
+            }
+            case SUDDEN_DEATH -> {
+                //todo
+                Cytosis.getOnlinePlayers().forEach(player -> player.sendMessage(Msg.red("Wow ender dragons crazy so cool")));
+            }
+            case ENDED -> {
+                end();
+            }
+        }
+        return gameState;
     }
 }

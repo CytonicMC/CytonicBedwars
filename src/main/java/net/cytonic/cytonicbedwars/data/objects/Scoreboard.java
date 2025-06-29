@@ -5,6 +5,7 @@ import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
+import net.cytonic.cytonicbedwars.runnables.GameRunnable;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
@@ -77,11 +78,11 @@ public class Scoreboard implements SideboardCreator {
                         Msg.mm(""),
                         Msg.yellow("www.cytonic.net")
                 );
-                case PLAY -> {
+                case PLAY, DIAMOND_2, EMERALD_2, DIAMOND_3, EMERALD_3, BED_DESTRUCTION, SUDDEN_DEATH -> {
                     List<Component> scoreboardArgs = new ArrayList<>();
                     scoreboardArgs.add(topLine());
                     scoreboardArgs.add(Msg.mm(""));
-                    scoreboardArgs.add(Msg.mm("Time: coming soon:tm:"));
+                    scoreboardArgs.add(Msg.mm("%s in: <green>%s",CytonicBedWars.getGameManager().getGameState().getNext().getDisplayName(), GameRunnable.getFormattedTimeLeft()));
                     scoreboardArgs.add(Msg.mm(""));
                     GameManager gameManager = CytonicBedWars.getGameManager();
                     Optional<Team> playerTeam = gameManager.getPlayerTeam(player);
