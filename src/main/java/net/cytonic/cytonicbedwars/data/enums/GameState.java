@@ -4,21 +4,29 @@ import lombok.Getter;
 
 @Getter
 public enum GameState {
-    WAITING(-1), // not yet started
-    STARTING(-1),
-    PLAY(900), // 15 minutes
-    DEATHMATCH(300), // 5 minutes
-    SUDDEN_DEATH(180), // withers - 3 minutes
-    ENDED(30), // 30 sec
-    CLEANUP(-1),
-
-    // admin things
-    FROZEN(-1);
+    WAITING("Waiting", -1),
+    STARTING("Starting", -1),
+    PLAY("Play", 360), // 6 minutes
+    DIAMOND_2("Diamond II", 360),
+    EMERALD_2("Emerald II", 360),
+    DIAMOND_3("Diamond III", 360),
+    EMERALD_3("Emerald III", 360),
+    BED_DESTRUCTION("Bed Destruction", 360),
+    SUDDEN_DEATH("Sudden Death", 600), // 10 minutes
+    ENDED("Ending", -1),
+    CLEANUP("Cleanup", -1),
+    FROZEN("Frozen", -1);
 
     // in seconds
     private final int duration;
+    private final String displayName;
 
-    GameState(int duration) {
+    GameState(String displayName, int duration) {
         this.duration = duration;
+        this.displayName = displayName;
+    }
+
+    public GameState getNext() {
+        return values()[ordinal() + 1];
     }
 }

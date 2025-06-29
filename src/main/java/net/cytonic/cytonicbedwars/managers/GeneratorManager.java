@@ -42,6 +42,8 @@ public class GeneratorManager {
                     true
             );
             goldGenerators.put(t, goldGenerator);
+            ironGenerator.start();
+            goldGenerator.start();
         }
     }
 
@@ -56,6 +58,15 @@ public class GeneratorManager {
                     false
             );
             diamondGenerators.add(generator);
+            generator.start();
+        }
+    }
+
+    public void increaseDiamondsSpawnSpeed(int time) {
+        for (Generator diamondGenerator : diamondGenerators) {
+            diamondGenerator.stop();
+            diamondGenerator.setWaitTime(time);
+            diamondGenerator.start();
         }
     }
 
@@ -70,6 +81,15 @@ public class GeneratorManager {
                     false
             );
             emeraldGenerators.add(generator);
+            generator.start();
+        }
+    }
+
+    public void increaseEmeraldsSpawnSpeed(int time) {
+        for (Generator emeraldGenerator : emeraldGenerators) {
+            emeraldGenerator.stop();
+            emeraldGenerator.setWaitTime(time);
+            emeraldGenerator.start();
         }
     }
 

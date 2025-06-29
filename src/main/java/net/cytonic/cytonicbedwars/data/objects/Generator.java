@@ -1,5 +1,6 @@
 package net.cytonic.cytonicbedwars.data.objects;
 
+import lombok.Setter;
 import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.runnables.GeneratorVisualRunnable;
 import net.cytonic.cytonicbedwars.utils.Items;
@@ -29,20 +30,34 @@ public class Generator {
     public static String SPLIT_KEY = "split_key";
 
     private final List<ItemEntity> spawnedItems = new ArrayList<>();
-    private final Task runnable;
-    private final boolean hasVisual;
+    private Task runnable;
     private Entity visual;
     private GeneratorVisualRunnable visualRunnable;
     private Entity countDown;
     private Entity name;
     private Task countdownRunnable;
+    private final GeneratorType generatorType;
+    @Setter
+    private int waitTime;
+    private final int itemLimit;
+    private final Pos spawnLoc;
+    private final boolean hasVisual;
+    private final boolean splittable;
+
     private int toNext = 0; // in seconds
 
     //todo: Gen split by checking the players nearby and adding items to their inventory too
 
     public Generator(GeneratorType generatorType, int waitTime, int itemLimit, Pos spawnLoc, boolean hasVisual, boolean splittable) {
+        this.generatorType = generatorType;
+        this.waitTime = waitTime;
+        this.itemLimit = itemLimit;
+        this.spawnLoc = spawnLoc;
         this.hasVisual = hasVisual;
+        this.splittable = splittable;
+    }
 
+    public void start() {
         if (hasVisual) {
             visual = new Entity(EntityType.ITEM_DISPLAY);
             visual.setInstance(Cytosis.getDefaultInstance(), spawnLoc.add(0, 4, 0));
@@ -104,5 +119,6 @@ public class Generator {
             name.remove();
         }
         runnable.cancel();
+        toNext = 0;
     }
 }
