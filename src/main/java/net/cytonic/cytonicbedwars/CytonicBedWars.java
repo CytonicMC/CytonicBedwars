@@ -29,7 +29,7 @@ public final class CytonicBedWars implements CytosisPlugin {
             MinecraftServer.stopCleanly();
             return;
         }
-        Cytosis.setServerGroup(new ServerGroup("bedwars", gameType, false));
+        Cytosis.setServerGroup(new ServerGroup("bedwars", gameType));
         MinecraftServer.getConnectionManager().setPlayerProvider(BedwarsPlayer::new);
         Cytosis.getInstanceManager().getExtraData(worldName, worldType).whenComplete((extraData, throwable) -> {
             if (throwable != null) {
