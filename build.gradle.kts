@@ -11,6 +11,7 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven("https://repo.foxikle.dev/cytonic")
+    maven("https://jitpack.io")
 }
 
 dependencies {
