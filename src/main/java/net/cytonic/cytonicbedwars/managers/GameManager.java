@@ -431,9 +431,7 @@ public class GameManager {
                 //todo
                 Cytosis.getOnlinePlayers().forEach(player -> player.sendMessage(Msg.red("Wow ender dragons crazy so cool")));
             }
-            case ENDED -> {
-                end();
-            }
+            case ENDED -> end();
         }
         return gameState;
     }
