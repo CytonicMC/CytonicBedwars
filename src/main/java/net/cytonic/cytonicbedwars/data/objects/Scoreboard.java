@@ -14,7 +14,6 @@ import net.cytonic.cytosis.sideboard.Sideboard;
 import net.cytonic.cytosis.sideboard.SideboardCreator;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.text.Component;
-import org.jooq.tools.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,12 +41,12 @@ public class Scoreboard implements SideboardCreator {
                 case WAITING -> list = List.of(
                         topLine(),
                         Msg.mm(""),
-                        Msg.mm("Map: <green>" + StringUtils.toUC(Config.mapName)),
+                        Msg.mm("Map: <green>" + Config.mapName),
                         Msg.mm("Players: <green>" + Cytosis.getOnlinePlayers().size() + "/" + Config.maxPlayers),
                         Msg.mm(""),
                         Msg.mm("Waiting..."),
                         Msg.mm(""),
-                        Msg.mm("Mode: <green>" + StringUtils.toUC(Config.mode)),
+                        Msg.mm("Mode: <green>" + Config.mode),
                         Msg.mm("Version: <gray>" + CytonicBedWars.version),
                         Msg.mm(""),
                         Msg.yellow("www.cytonic.net")
@@ -56,12 +55,12 @@ public class Scoreboard implements SideboardCreator {
                 case STARTING -> list = List.of(
                         topLine(),
                         Msg.mm(""),
-                        Msg.mm("Map: <green>" + StringUtils.toUC(Config.mapName)),
+                        Msg.mm("Map: <green>" + Config.mapName),
                         Msg.mm("Players: <green>" + Cytosis.getOnlinePlayers().size() + "/" + Config.maxPlayers),
                         Msg.mm(""),
                         Msg.mm("Starting in <green>%ds", WaitingRunnable.getTimeLeft()),
                         Msg.mm(""),
-                        Msg.mm("Mode: <green>" + StringUtils.toUC(Config.mode)),
+                        Msg.mm("Mode: <green>" + Config.mode),
                         Msg.mm("Version: <gray>" + CytonicBedWars.version),
                         Msg.mm(""),
                         Msg.yellow("www.cytonic.net")
@@ -70,10 +69,10 @@ public class Scoreboard implements SideboardCreator {
                 case FROZEN -> list = List.of(
                         topLine(),
                         Msg.mm(""),
-                        Msg.mm("Map: <green>" + StringUtils.toUC(Config.mapName)),
+                        Msg.mm("Map: <green>" + Config.mapName),
                         Msg.mm(""),
                         Msg.aqua("<bold>FROZEN"),
-                        Msg.mm("Mode: <green>" + StringUtils.toUC(Config.mode)),
+                        Msg.mm("Mode: <green>" + Config.mode),
                         Msg.mm("Version: <gray>" + CytonicBedWars.version),
                         Msg.mm(""),
                         Msg.yellow("www.cytonic.net")
@@ -82,7 +81,7 @@ public class Scoreboard implements SideboardCreator {
                     List<Component> scoreboardArgs = new ArrayList<>();
                     scoreboardArgs.add(topLine());
                     scoreboardArgs.add(Msg.mm(""));
-                    scoreboardArgs.add(Msg.mm("%s in: <green>%s",CytonicBedWars.getGameManager().getGameState().getNext().getDisplayName(), GameRunnable.getFormattedTimeLeft()));
+                    scoreboardArgs.add(Msg.mm("%s in: <green>%s", CytonicBedWars.getGameManager().getGameState().getNext().getDisplayName(), GameRunnable.getFormattedTimeLeft()));
                     scoreboardArgs.add(Msg.mm(""));
                     GameManager gameManager = CytonicBedWars.getGameManager();
                     Optional<Team> playerTeam = gameManager.getPlayerTeam(player);
@@ -109,11 +108,11 @@ public class Scoreboard implements SideboardCreator {
                 case ENDED -> list = List.of(
                         topLine(),
                         Msg.mm(""),
-                        Msg.mm("Map: <green>" + StringUtils.toUC(Config.mapName)),
+                        Msg.mm("Map: <green>" + Config.mapName),
                         Msg.mm(""),
                         Msg.mm("The game has ended!"),
                         Msg.mm(""),
-                        Msg.mm("Mode: <green>" + StringUtils.toUC(Config.mode)),
+                        Msg.mm("Mode: <green>" + Config.mode),
                         Msg.mm("Version: <gray>" + CytonicBedWars.version),
                         Msg.mm(""),
                         Msg.yellow("www.cytonic.net")
