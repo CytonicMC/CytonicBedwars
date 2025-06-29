@@ -111,6 +111,8 @@ public class GameManager {
         generatorManager.registerDiamondGenerators();
         generatorManager.registerEmeraldGenerators();
 
+        gameRunnable = new GameRunnable();
+
         for (Team team : teams) {
             NPC itemShop = NPC.ofHumanoid(team.getItemShopLocation(), Cytosis.getDefaultInstance())
                     .interactTrigger((npc, npcInteractType, player) -> new BlocksShopMenu().open(player))
@@ -127,7 +129,6 @@ public class GameManager {
                     .invulnerable()
                     .build();
             npcList.add(teamShop);
-            gameRunnable = new GameRunnable();
         }
     }
 
