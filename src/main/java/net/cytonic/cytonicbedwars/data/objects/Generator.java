@@ -3,7 +3,6 @@ package net.cytonic.cytonicbedwars.data.objects;
 import lombok.Setter;
 import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.runnables.GeneratorVisualRunnable;
-import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.MinecraftServer;
@@ -23,7 +22,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class Generator {
 
@@ -98,7 +96,6 @@ public class Generator {
             ItemEntity itemEntity = new ItemEntity(generatorType.getItem());
             itemEntity.setInstance(Cytosis.getDefaultInstance(), spawnLoc.add(0, .5, 0));
             itemEntity.setVelocity(new Vec(0, 0, 0));
-            itemEntity.tagHandler().setTag(Tag.String(Items.NAMESPACE), UUID.randomUUID().toString());
             if (splittable) {
                 itemEntity.tagHandler().setTag(Tag.Boolean(SPLIT_KEY), true);
             }
