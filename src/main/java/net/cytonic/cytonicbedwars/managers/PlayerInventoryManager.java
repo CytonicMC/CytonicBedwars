@@ -4,11 +4,8 @@ import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.utils.Items;
-import net.minestom.server.component.DataComponents;
 import net.minestom.server.entity.Player;
 import net.minestom.server.item.ItemStack;
-
-import java.util.Objects;
 
 @NoArgsConstructor
 public class PlayerInventoryManager {
@@ -18,9 +15,9 @@ public class PlayerInventoryManager {
         if (itemCount(player, id) >= quantity) {
             int i = 0;
             for (ItemStack stack : player.getInventory().getItemStacks()) {
-                if (stack.has(DataComponents.CUSTOM_DATA)) {
+                if (stack.hasTag(Items.NAMESPACE)) {
                     if (stack.amount() <= toRemove) { // go ahead to remove the entire stack
-                        if (Objects.requireNonNull(stack.get(DataComponents.CUSTOM_DATA)).nbt().getString(Items.NAMESPACE).equals(id)) {
+                        if (stack.getTag(Items.NAMESPACE).equals(id)) {
                             toRemove -= stack.amount();
                             player.getInventory().setItemStack(i, stack.withAmount(0));
                         }
@@ -29,7 +26,7 @@ public class PlayerInventoryManager {
                             return true;
                         }
                     } else { // only remove some
-                        if (Objects.requireNonNull(stack.get(DataComponents.CUSTOM_DATA)).nbt().getString(Items.NAMESPACE).equals(id)) {
+                        if (stack.getTag(Items.NAMESPACE).equals(id)) {
                             player.getInventory().setItemStack(i, stack.withAmount(stack.amount() - toRemove));
                             return true;
                         }
@@ -46,8 +43,8 @@ public class PlayerInventoryManager {
     public int itemCount(Player player, String id) {
         int count = 0;
         for (ItemStack stack : player.getInventory().getItemStacks()) {
-            if (!stack.has(DataComponents.CUSTOM_DATA)) continue;
-            if (Objects.requireNonNull(stack.get(DataComponents.CUSTOM_DATA)).nbt().getString(Items.NAMESPACE).equals(id)) {
+            if (!stack.hasTag(Items.NAMESPACE)) continue;
+            if (stack.getTag(Items.NAMESPACE).equals(id)) {
                 count += stack.amount();
             }
         }
@@ -70,9 +67,9 @@ public class PlayerInventoryManager {
         }
         ItemStack[] items = player.getInventory().getItemStacks();
         for (int i = 0; i < player.getInventory().getItemStacks().length; i++) {
-            if (items[i].has(DataComponents.CUSTOM_DATA)) {
+            if (items[i].hasTag(Items.NAMESPACE)) {
                 String oldID = AxeLevel.getOrdered(level, -1).getItemID();
-                String id = Objects.requireNonNull(items[i].get(DataComponents.CUSTOM_DATA)).nbt().getString(Items.NAMESPACE);
+                String id = items[i].getTag(Items.NAMESPACE);
                 if (id.equals(oldID)) {
                     player.getInventory().setItemStack(i, Items.get(level.getItemID()));
                     return;
@@ -88,9 +85,9 @@ public class PlayerInventoryManager {
         }
         ItemStack[] items = player.getInventory().getItemStacks();
         for (int i = 0; i < player.getInventory().getItemStacks().length; i++) {
-            if (items[i].has(DataComponents.CUSTOM_DATA)) {
+            if (items[1].hasTag(Items.NAMESPACE)) {
                 String oldID = PickaxeLevel.getOrdered(level, -1).getItemID();
-                String id = Objects.requireNonNull(items[i].get(DataComponents.CUSTOM_DATA)).nbt().getString(Items.NAMESPACE);
+                String id = items[i].getTag(Items.NAMESPACE);
                 if (id.equals(oldID)) {
                     player.getInventory().setItemStack(i, Items.get(level.getItemID()));
                     return;

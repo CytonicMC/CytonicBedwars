@@ -5,14 +5,12 @@ import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.events.api.Listener;
-import net.minestom.server.component.DataComponents;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.ItemEntity;
 import net.minestom.server.event.item.ItemDropEvent;
 import net.minestom.server.item.ItemStack;
 
 import java.time.Duration;
-import java.util.Objects;
 
 @NoArgsConstructor
 @SuppressWarnings("unused")
@@ -21,8 +19,8 @@ public class DropItemListener {
     @Listener
     public void onDrop(ItemDropEvent event) {
         ItemStack item = event.getItemStack();
-        if (item.has(DataComponents.CUSTOM_DATA)) {
-            if (Objects.requireNonNull(item.get(DataComponents.CUSTOM_DATA)).nbt().getBoolean(Items.NO_DROP)) {
+        if (item.hasTag(Items.NO_DROP)) {
+            if (item.getTag(Items.NO_DROP)) {
                 event.setCancelled(true);
             }
         }

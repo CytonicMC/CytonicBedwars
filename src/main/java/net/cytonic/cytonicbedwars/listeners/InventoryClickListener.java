@@ -4,13 +4,12 @@ import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.utils.Msg;
-import net.minestom.server.component.DataComponents;
+import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.event.inventory.InventoryPreClickEvent;
 import net.minestom.server.item.ItemStack;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 @NoArgsConstructor
 @SuppressWarnings("unused")
@@ -20,16 +19,15 @@ public class InventoryClickListener {
     public void onInventoryClick(InventoryPreClickEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         ItemStack item = event.getClickedItem();
-        if (item.has(DataComponents.CUSTOM_DATA)) {
-            if (Objects.requireNonNull(item.get(DataComponents.CUSTOM_DATA)).nbt().getBoolean(Items.MOVE_BLACKLIST)) {
+        if (item.hasTag(Items.MOVE_BLACKLIST)) {
+            if (item.getTag(Items.MOVE_BLACKLIST)) {
                 event.setCancelled(true);
-                if (Objects.requireNonNull(item.get(DataComponents.CUSTOM_DATA)).nbt().getBoolean(Items.ALLOWED_SLOTS)) {
-                    int[] slots = Objects.requireNonNull(item.get(DataComponents.CUSTOM_DATA)).nbt().getIntArray(Items.ALLOWED_SLOTS);
-                    if (Arrays.stream(slots).allMatch(value -> value != event.getSlot())) {
-                        event.getPlayer().getInventory().setCursorItem(ItemStack.AIR);
-                        event.getPlayer().sendMessage(Msg.redSplash("HEY!", "We noticed a blacklisted item in your inventory, so we took it. Sorry! (slot %d)", event.getSlot()));
-                    }
-                }
+                return;
+            }
+            int[] slots = ((CompoundBinaryTag) item.getTag(Items.ALLOWED_SLOTS)).getIntArray("allowed_slots");
+            if (Arrays.stream(slots).allMatch(value -> value != event.getSlot())) {
+                event.getPlayer().getInventory().setCursorItem(ItemStack.AIR);
+                event.getPlayer().sendMessage(Msg.redSplash("HEY!", "We noticed a blacklisted item in your inventory, so we took it. Sorry! (slot %d)", event.getSlot()));
             }
         }
     }

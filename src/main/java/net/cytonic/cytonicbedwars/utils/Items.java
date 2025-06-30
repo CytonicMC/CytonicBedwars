@@ -4,13 +4,13 @@ import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.data.enums.MappableItem;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytosis.utils.Msg;
+import net.kyori.adventure.nbt.BinaryTag;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.component.DataComponents;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import net.minestom.server.item.component.CustomData;
 import net.minestom.server.item.component.EnchantmentList;
 import net.minestom.server.item.component.PotionContents;
 import net.minestom.server.item.component.TooltipDisplay;
@@ -18,22 +18,17 @@ import net.minestom.server.item.enchant.Enchantment;
 import net.minestom.server.potion.CustomPotionEffect;
 import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.registry.RegistryKey;
+import net.minestom.server.tag.Tag;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @NoArgsConstructor
 public class Items {
     private static final Map<String, ItemStack> itemRegistry = new HashMap<>();
-    public static String NAMESPACE = "bwID";
-    public static String MOVE_BLACKLIST = "move_blacklist";
-    public static String ALLOWED_SLOTS = "allowed_slots";
-    public static String NO_DROP = "no_drop";
-    public static String PRICE_AMOUNT = "price_amount";
-    public static String PRICE = "price";
-    public static String AMOUNT = "amount";
-
-    // item constants
+    public static Tag<String> NAMESPACE = Tag.String("bwID");
+    public static Tag<Boolean> MOVE_BLACKLIST = Tag.Boolean("move_blacklist");
+    public static Tag<BinaryTag> ALLOWED_SLOTS = Tag.NBT("allowed_slots");
+    public static Tag<Boolean> NO_DROP = Tag.Boolean("no_drop");
 
     // spectator items
     public static ItemStack SPECTATOR_TARGET_SELECTOR = createItem("<GREEN>Target Selector", "SPECTATOR_COMPASS", Material.COMPASS, true, true, List.of(0), new HashMap<>(), "<gray>Right click to teleport to a player!");
@@ -229,41 +224,36 @@ public class Items {
         List<Component> list = new ArrayList<>();
         for (String s : lore) list.add(Msg.mm(s));
         EnchantmentList enchantmentList = new EnchantmentList(enchants);
-        CompoundBinaryTag.Builder builder = CompoundBinaryTag.builder();
+        ItemStack.Builder builder = ItemStack.builder(type);
+        builder.set(DataComponents.ITEM_NAME, Msg.mm(displayName));
+        builder.set(DataComponents.LORE, list);
+        builder.set(DataComponents.UNBREAKABLE);
+        builder.set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)));
+        builder.set(DataComponents.ENCHANTMENTS, enchantmentList);
         if (noDrop) {
-            builder.putBoolean(NO_DROP, true);
+            builder.setTag(NO_DROP, true);
         }
         if (noMove) {
-            builder.putBoolean(MOVE_BLACKLIST, true);
-            builder.putIntArray(ALLOWED_SLOTS, allowedSlots.stream().mapToInt(Integer::intValue).toArray());
+            builder.set(MOVE_BLACKLIST, true);
+            builder.set(ALLOWED_SLOTS, CompoundBinaryTag.builder().putIntArray("allowed_slots", allowedSlots.stream().mapToInt(Integer::intValue).toArray()).build());
         }
-        builder.putString(NAMESPACE, id);
-        ItemStack item = ItemStack.builder(type)
-                .set(DataComponents.ITEM_NAME, Msg.mm(displayName))
-                .set(DataComponents.LORE, list)
-                .set(DataComponents.UNBREAKABLE)
-                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
-                .set(DataComponents.ENCHANTMENTS, enchantmentList)
-                .set(DataComponents.CUSTOM_DATA, new CustomData(builder.build()))
-                .build();
+        builder.setTag(NAMESPACE, id);
+        ItemStack item = builder.build();
         itemRegistry.put(id, item);
         return item;
     }
 
     private static ItemStack createArmor(String name, String id, Material type, NamedTextColor color) {
-        CompoundBinaryTag.Builder builder = CompoundBinaryTag.builder();
-        builder.putBoolean(NO_DROP, true);
-        builder.putBoolean(MOVE_BLACKLIST, true);
-        builder.putIntArray(ALLOWED_SLOTS, Stream.of(36, 37, 38, 39).mapToInt(Integer::intValue).toArray());
-        builder.putString(NAMESPACE, id);
-
-        ItemStack item = ItemStack.builder(type)
-                .set(DataComponents.ITEM_NAME, Msg.mm(name))
-                .set(DataComponents.UNBREAKABLE)
-                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
-                .set(DataComponents.DYED_COLOR, color)
-                .set(DataComponents.CUSTOM_DATA, new CustomData(builder.build()))
-                .build();
+        ItemStack.Builder builder = ItemStack.builder(type);
+        builder.set(DataComponents.ITEM_NAME, Msg.mm(name));
+        builder.set(DataComponents.UNBREAKABLE);
+        builder.set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)));
+        builder.set(DataComponents.DYED_COLOR, color);
+        builder.setTag(NO_DROP, true);
+        builder.setTag(MOVE_BLACKLIST, true);
+        builder.setTag(ALLOWED_SLOTS, CompoundBinaryTag.builder().putIntArray("allowed_slots", new int[]{36, 37, 38, 39}).build());
+        builder.setTag(NAMESPACE, id);
+        ItemStack item = builder.build();
         itemRegistry.put(id, item);
         return item;
     }
@@ -271,16 +261,15 @@ public class Items {
     private static ItemStack createPotion(String name, String id, PotionEffect pot, int duration, int amplifier, String... lore) {
         List<Component> list = new ArrayList<>();
         for (String s : lore) list.add(Msg.mm(s));
-        CustomPotionEffect effect = new CustomPotionEffect(pot, Byte.parseByte(String.valueOf(amplifier - 1)), duration, true, true, true);
-        PotionContents contents = new PotionContents(effect);
-        ItemStack item = ItemStack.builder(Material.POTION)
-                .set(DataComponents.POTION_CONTENTS, contents)
-                .set(DataComponents.CUSTOM_NAME, Msg.mm(name))
-                .set(DataComponents.UNBREAKABLE)
-                .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))
-                .set(DataComponents.LORE, list)
-                .set(DataComponents.CUSTOM_DATA, new CustomData(CompoundBinaryTag.builder().putString(NAMESPACE, id).build()))
-                .build();
+        PotionContents effect = new PotionContents(new CustomPotionEffect(pot, amplifier, duration, true, true, true));
+        ItemStack.Builder builder = ItemStack.builder(Material.POTION);
+        builder.set(DataComponents.ITEM_NAME, Msg.mm(name));
+        builder.set(DataComponents.LORE, list);
+        builder.set(DataComponents.UNBREAKABLE);
+        builder.set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)));
+        builder.set(DataComponents.POTION_CONTENTS, effect);
+        builder.setTag(NAMESPACE, id);
+        ItemStack item = builder.build();
         itemRegistry.put(id, item);
         return item;
     }

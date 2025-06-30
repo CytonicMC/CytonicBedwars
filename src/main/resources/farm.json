@@ -1,7 +1,7 @@
 {
   "world_name": "farm",
   "map_name": "Farm",
-  "mode": "solos",
+  "mode": "Solos",
   "min_players": 2,
   "max_players": 4,
   "bridge_egg_block_despawn": 3600,
