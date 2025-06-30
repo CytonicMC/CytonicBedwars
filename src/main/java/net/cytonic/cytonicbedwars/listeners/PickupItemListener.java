@@ -20,10 +20,8 @@ public class PickupItemListener {
                 event.setCancelled(true);
             }
             final ItemStack item = event.getItemEntity().getItemStack();
-            Logger.debug("item name = %s namespace = %s", item.material().name(), item.getTag(Items.NAMESPACE));
             if (item.hasTag(Items.NAMESPACE) && item.getTag(Items.NAMESPACE).contains("SWORD") && !item.getTag(Items.NAMESPACE).contains("MENU")) {
                 CytonicBedWars.getGameManager().getPlayerInventoryManager().setSword(item, player);
-                Logger.debug("set sword");
                 event.getItemEntity().setItemStack(ItemStack.AIR);
                 event.setCancelled(true);
                 return;

@@ -39,7 +39,6 @@ public class DropItemListener {
                     swords++;
                 }
             }
-            Logger.debug("you have %s swords", swords);
             if (swords == 0) {
                 MinecraftServer.getSchedulerManager().buildTask(() -> event.getPlayer().getInventory().addItemStack(Items.DEFAULT_SWORD)).delay(Duration.ofMillis(1)).schedule();
             }
