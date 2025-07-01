@@ -61,7 +61,7 @@
       "generation_location": "Pos{x=-65.5, y=0, z=0.5, yaw=0, pitch=90}",
       "item_shop_location": "Pos{x=-60.5, y=0, z=5.5, yaw=180, pitch=0}",
       "team_shop_location": "Pos{x=-62.5, y=0, z=5.5, yaw=180, pitch=0}",
-      "team_chest_location": "Pos{x=0, y=0, z=0, yaw=0, pitch=90}",
+      "team_chest_location": "Pos{x=-61, y=0, z=-5, yaw=0, pitch=90}",
       "bed_location": "Pos{x=-55, y=0, z=0, yaw=0, pitch=90}"
     },
     "Yellow Team": {
@@ -75,7 +75,7 @@
       "generation_location": "Pos{x=0.5, y=0, z=-65.5, yaw=0, pitch=0}",
       "item_shop_location": "Pos{x=-4.5, y=0, z=-60.5, yaw=-90, pitch=0}",
       "team_shop_location": "Pos{x=-4.5, y=0, z=-62.5, yaw=-90, pitch=0}",
-      "team_chest_location": "Pos{x=0, y=0, z=0, yaw=0, pitch=0}",
+      "team_chest_location": "Pos{x=5, y=0, z=-61, yaw=0, pitch=0}",
       "bed_location": "Pos{x=0, y=0, z=-55, yaw=0, pitch=90}"
     },
     "Green Team": {
@@ -89,7 +89,7 @@
       "generation_location": "Pos{x=66.5, y=0, z=0.5, yaw=90, pitch=0}",
       "item_shop_location": "Pos{x=61.5, y=0, z=-4.5, yaw=0, pitch=0}",
       "team_shop_location": "Pos{x=63.5, y=0, z=-4.5, yaw=0, pitch=0}",
-      "team_chest_location": "Pos{x=0, y=0, z=0, yaw=0, pitch=90}",
+      "team_chest_location": "Pos{x=61, y=0, z=5, yaw=0, pitch=90}",
       "bed_location": "Pos{x=55, y=0, z=0, yaw=0, pitch=90}"
     },
     "Blue Team": {
@@ -103,7 +103,7 @@
       "generation_location": "Pos{x=0.5, y=0, z=66.5, yaw=0, pitch=0}",
       "item_shop_location": "Pos{x=5.5, y=0, z=61.5, yaw=90, pitch=0}",
       "team_shop_location": "Pos{x=5.5, y=0, z=63.5, yaw=90, pitch=0}",
-      "team_chest_location": "Pos{x=0, y=0, z=0, yaw=0, pitch=90}",
+      "team_chest_location": "Pos{x=-5, y=0, z=61, yaw=0, pitch=90}",
       "bed_location": "Pos{x=0, y=0, z=55, yaw=0, pitch=90}"
     }
   }
