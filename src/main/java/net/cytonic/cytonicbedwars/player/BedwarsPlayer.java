@@ -9,6 +9,8 @@ import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.player.CytosisPlayer;
+import net.minestom.server.inventory.Inventory;
+import net.minestom.server.inventory.InventoryType;
 import net.minestom.server.network.player.GameProfile;
 import net.minestom.server.network.player.PlayerConnection;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +27,7 @@ public class BedwarsPlayer extends CytosisPlayer {
     private boolean shears = false;
     private boolean alive = true;
     private boolean respawning = false;
+    private Inventory enderChest = new Inventory(InventoryType.CHEST_3_ROW, "Ender Chest");
 
     public BedwarsPlayer(@NotNull PlayerConnection playerConnection, GameProfile gameProfile) {
         super(playerConnection, gameProfile);
@@ -44,6 +47,7 @@ public class BedwarsPlayer extends CytosisPlayer {
             this.shears = player.hasShears();
             this.alive = player.isAlive();
             this.respawning = player.isRespawning();
+            this.enderChest = player.getEnderChest();
         });
     }
 
@@ -53,5 +57,9 @@ public class BedwarsPlayer extends CytosisPlayer {
 
     public boolean hasShears() {
         return shears;
+    }
+
+    public void openEnderChest() {
+        openInventory(enderChest);
     }
 }
