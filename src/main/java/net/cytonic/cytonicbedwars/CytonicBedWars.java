@@ -1,6 +1,8 @@
 package net.cytonic.cytonicbedwars;
 
 import lombok.Getter;
+import net.cytonic.cytonicbedwars.blockHandlers.ChestBlockHandler;
+import net.cytonic.cytonicbedwars.blockHandlers.EnderChestBlockHandler;
 import net.cytonic.cytonicbedwars.commands.DebugCommand;
 import net.cytonic.cytonicbedwars.commands.ItemCommand;
 import net.cytonic.cytonicbedwars.managers.GameManager;
@@ -9,6 +11,7 @@ import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.data.objects.ServerGroup;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.plugins.CytosisPlugin;
+import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 
 @Getter
@@ -31,6 +34,8 @@ public final class CytonicBedWars implements CytosisPlugin {
         }
         Cytosis.setServerGroup(new ServerGroup("bedwars", gameType));
         MinecraftServer.getConnectionManager().setPlayerProvider(BedwarsPlayer::new);
+        MinecraftServer.getBlockManager().registerHandler(Key.key("minecraft:ender_chest"), EnderChestBlockHandler::new);
+        MinecraftServer.getBlockManager().registerHandler(Key.key("minecraft:chest"), ChestBlockHandler::new);
         Cytosis.getInstanceManager().getExtraData(worldName, worldType).whenComplete((extraData, throwable) -> {
             if (throwable != null) {
                 Logger.error("error", throwable);

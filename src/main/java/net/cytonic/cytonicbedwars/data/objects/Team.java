@@ -7,6 +7,8 @@ import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.block.Block;
+import net.minestom.server.inventory.Inventory;
+import net.minestom.server.inventory.InventoryType;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class Team {
     private net.minestom.server.scoreboard.Team mcTeam;
     private List<BedwarsPlayer> players;
     private boolean alive = true;
+    private Inventory teamChest = new Inventory(InventoryType.CHEST_3_ROW, "Team Chest");
     private final String displayName;
     private final String name;
     private final String prefix;

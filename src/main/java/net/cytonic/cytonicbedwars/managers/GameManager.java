@@ -33,6 +33,7 @@ import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
+import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.registry.RegistryKey;
@@ -169,6 +170,7 @@ public class GameManager {
                 result.add(team);
             } else {
                 worldManager.breakBed(team);
+                Cytosis.getDefaultInstance().setBlock(team.getChestLocation(), Block.AIR);
             }
             if (remainingPlayers > 0) {
                 remainingPlayers--;
