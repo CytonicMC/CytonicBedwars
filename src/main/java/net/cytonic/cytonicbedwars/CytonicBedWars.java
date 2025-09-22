@@ -10,16 +10,16 @@ import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.data.objects.ServerGroup;
 import net.cytonic.cytosis.logging.Logger;
+import net.cytonic.cytosis.managers.InstanceManager;
 import net.cytonic.cytosis.plugins.CytosisPlugin;
 import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.command.CommandManager;
 
 @Getter
 public final class CytonicBedWars implements CytosisPlugin {
 
     public static final String version = "0.1";
-    @Getter
-    private static GameManager gameManager;
 
     @Override
     public void initialize() {
@@ -32,19 +32,21 @@ public final class CytonicBedWars implements CytosisPlugin {
             MinecraftServer.stopCleanly();
             return;
         }
-        Cytosis.setServerGroup(new ServerGroup("bedwars", gameType));
+        Cytosis.CONTEXT.setServerGroup(new ServerGroup("bedwars", gameType));
         MinecraftServer.getConnectionManager().setPlayerProvider(BedwarsPlayer::new);
         MinecraftServer.getBlockManager().registerHandler(Key.key("minecraft:ender_chest"), EnderChestBlockHandler::new);
         MinecraftServer.getBlockManager().registerHandler(Key.key("minecraft:chest"), ChestBlockHandler::new);
-        Cytosis.getInstanceManager().getExtraData(worldName, worldType).whenComplete((extraData, throwable) -> {
+        Logger.debug("HEY");
+        Cytosis.CONTEXT.getComponent(InstanceManager.class).getExtraData(worldName, worldType).whenComplete((extraData, throwable) -> {
+            Logger.debug("HEY AGAIN");
             if (throwable != null) {
                 Logger.error("error", throwable);
                 return;
             }
             Config.importConfig(extraData);
             Logger.info("Loading game manager");
-            gameManager = new GameManager();
-            gameManager.setup();
+            Cytosis.CONTEXT.registerComponent(GameManager.class);
+            Cytosis.CONTEXT.getComponent(GameManager.class).setup();
             Logger.info("Registering commands");
             registerCommands();
             Logger.info("Registering listeners");
@@ -53,11 +55,11 @@ public final class CytonicBedWars implements CytosisPlugin {
 
     @Override
     public void shutdown() {
-        gameManager.cleanup();
+        Cytosis.CONTEXT.getComponent(GameManager.class).cleanup();
     }
 
     private void registerCommands() {
-        Cytosis.getCommandManager().register(new DebugCommand());
-        Cytosis.getCommandManager().register(new ItemCommand());
+        Cytosis.CONTEXT.getComponent(CommandManager.class).register(new DebugCommand());
+        Cytosis.CONTEXT.getComponent(CommandManager.class).register(new ItemCommand());
     }
 }

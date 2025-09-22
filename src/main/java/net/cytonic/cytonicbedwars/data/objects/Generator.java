@@ -14,6 +14,7 @@ import net.minestom.server.entity.ItemEntity;
 import net.minestom.server.entity.metadata.display.AbstractDisplayMeta;
 import net.minestom.server.entity.metadata.display.ItemDisplayMeta;
 import net.minestom.server.entity.metadata.display.TextDisplayMeta;
+import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.tag.Tag;
 import net.minestom.server.timer.Task;
 import net.minestom.server.timer.TaskSchedule;
@@ -58,7 +59,7 @@ public class Generator {
     public void start() {
         if (hasVisual) {
             visual = new Entity(EntityType.ITEM_DISPLAY);
-            visual.setInstance(Cytosis.getDefaultInstance(), spawnLoc.add(0, 4, 0));
+            visual.setInstance(Cytosis.CONTEXT.getComponent(InstanceContainer.class), spawnLoc.add(0, 4, 0));
             visual.editEntityMeta(ItemDisplayMeta.class, meta -> {
                 meta.setItemStack(generatorType.getVisualItem());
                 meta.setHasNoGravity(true);
@@ -66,7 +67,7 @@ public class Generator {
             visualRunnable = new GeneratorVisualRunnable(visual);
 
             name = new Entity(EntityType.TEXT_DISPLAY);
-            name.setInstance(Cytosis.getDefaultInstance(), spawnLoc.add(0, 2.5, 0));
+            name.setInstance(Cytosis.CONTEXT.getComponent(InstanceContainer.class), spawnLoc.add(0, 2.5, 0));
             name.editEntityMeta(TextDisplayMeta.class, meta -> {
                 meta.setText(Objects.requireNonNull(generatorType.getName()));
                 meta.setBillboardRenderConstraints(AbstractDisplayMeta.BillboardConstraints.CENTER);
@@ -74,7 +75,7 @@ public class Generator {
             });
 
             countDown = new Entity(EntityType.TEXT_DISPLAY);
-            countDown.setInstance(Cytosis.getDefaultInstance(), spawnLoc.add(0, 2.2, 0));
+            countDown.setInstance(Cytosis.CONTEXT.getComponent(InstanceContainer.class), spawnLoc.add(0, 2.2, 0));
             countDown.editEntityMeta(TextDisplayMeta.class, meta -> {
                 meta.setBillboardRenderConstraints(AbstractDisplayMeta.BillboardConstraints.CENTER);
                 meta.setHasNoGravity(true);
@@ -94,7 +95,7 @@ public class Generator {
             spawnedItems.removeIf(itemEntity -> itemEntity != null && itemEntity.isRemoved());
             if (spawnedItems.size() > itemLimit) return;
             ItemEntity itemEntity = new ItemEntity(generatorType.getItem());
-            itemEntity.setInstance(Cytosis.getDefaultInstance(), spawnLoc.add(0, .5, 0));
+            itemEntity.setInstance(Cytosis.CONTEXT.getComponent(InstanceContainer.class), spawnLoc.add(0, .5, 0));
             itemEntity.setVelocity(new Vec(0, 0, 0));
             if (splittable) {
                 itemEntity.tagHandler().setTag(Tag.Boolean(SPLIT_KEY), true);

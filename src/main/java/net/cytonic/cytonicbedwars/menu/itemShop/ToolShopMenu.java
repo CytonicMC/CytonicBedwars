@@ -10,6 +10,8 @@ import eu.koboo.minestom.stomui.api.slots.ViewPattern;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
+import net.cytonic.cytonicbedwars.managers.GameManager;
+import net.cytonic.cytonicbedwars.managers.PlayerInventoryManager;
 import net.cytonic.cytonicbedwars.menu.MenuUtils;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Items;
@@ -35,7 +37,7 @@ public class ToolShopMenu extends ViewProvider {
     @Override
     public void onOpen(@NotNull PlayerView view, @NotNull Player p) {
         if (!(p instanceof BedwarsPlayer player)) return;
-        if (!CytonicBedWars.getGameManager().STARTED)
+        if (!Cytosis.CONTEXT.getComponent(GameManager.class).STARTED)
             throw new IllegalStateException("The game must be started to generate a tool shop!");
         ViewPattern pattern = Cytosis.VIEW_REGISTRY.pattern(
                 "#bcatpur#",
@@ -59,12 +61,13 @@ public class ToolShopMenu extends ViewProvider {
         };
         PrebuiltItem axe = PrebuiltItem.of(axeItemStack, action -> {
             action.getEvent().setCancelled(true);
+            PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
             switch (AxeLevel.valueOf(Objects.requireNonNull(action.getEvent().getClickedItem().get(DataComponents.CUSTOM_DATA)).nbt().getString("type"))) {
                 case WOODEN -> {
-                    if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-                        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, player)) {
+                    if (playerInventoryManager.hasSpace(player)) {
+                        if (playerInventoryManager.takeItem("IRON", 10, player)) {
                             player.setAxeLevel(AxeLevel.WOODEN);
-                            CytonicBedWars.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.WOODEN, player);
+                            playerInventoryManager.setAxe(AxeLevel.WOODEN, player);
                             player.sendMessage(Msg.green("You purchased a wooden axe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
@@ -75,10 +78,10 @@ public class ToolShopMenu extends ViewProvider {
                     }
                 }
                 case STONE -> {
-                    if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-                        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, player)) {
+                    if (playerInventoryManager.hasSpace(player)) {
+                        if (playerInventoryManager.takeItem("IRON", 20, player)) {
                             player.setAxeLevel(AxeLevel.STONE);
-                            CytonicBedWars.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.STONE, player);
+                            playerInventoryManager.setAxe(AxeLevel.STONE, player);
                             player.sendMessage(Msg.green("You purchased a stone axe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
@@ -89,10 +92,10 @@ public class ToolShopMenu extends ViewProvider {
                     }
                 }
                 case IRON -> {
-                    if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-                        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, player)) {
+                    if (playerInventoryManager.hasSpace(player)) {
+                        if (playerInventoryManager.takeItem("GOLD", 6, player)) {
                             player.setAxeLevel(AxeLevel.IRON);
-                            CytonicBedWars.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.IRON, player);
+                            playerInventoryManager.setAxe(AxeLevel.IRON, player);
                             player.sendMessage(Msg.green("You purchased an iron axe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
@@ -108,10 +111,10 @@ public class ToolShopMenu extends ViewProvider {
                         player.sendMessage(Msg.red("You already purchased a diamond axe!"));
                         return;
                     }
-                    if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-                        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 3, player)) {
+                    if (playerInventoryManager.hasSpace(player)) {
+                        if (playerInventoryManager.takeItem("EMERALD", 3, player)) {
                             player.setAxeLevel(AxeLevel.DIAMOND);
-                            CytonicBedWars.getGameManager().getPlayerInventoryManager().setAxe(AxeLevel.DIAMOND, player);
+                            playerInventoryManager.setAxe(AxeLevel.DIAMOND, player);
                             player.sendMessage(Msg.green("You purchased a diamond axe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
@@ -139,12 +142,13 @@ public class ToolShopMenu extends ViewProvider {
         };
         PrebuiltItem pickaxe = PrebuiltItem.of(pickaxeItemStack, action -> {
             action.getEvent().setCancelled(true);
+            PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
             switch (PickaxeLevel.valueOf(Objects.requireNonNull(action.getEvent().getClickedItem().get(DataComponents.CUSTOM_DATA)).nbt().getString("type"))) {
                 case WOODEN -> {
-                    if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-                        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, player)) {
+                    if (playerInventoryManager.hasSpace(player)) {
+                        if (playerInventoryManager.takeItem("IRON", 10, player)) {
                             player.setPickaxeLevel(PickaxeLevel.WOODEN);
-                            CytonicBedWars.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.WOODEN, player);
+                            playerInventoryManager.setPickaxe(PickaxeLevel.WOODEN, player);
                             player.sendMessage(Msg.green("You purchased a wooden pickaxe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
@@ -155,10 +159,10 @@ public class ToolShopMenu extends ViewProvider {
                     }
                 }
                 case STONE -> {
-                    if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-                        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 20, player)) {
+                    if (playerInventoryManager.hasSpace(player)) {
+                        if (playerInventoryManager.takeItem("IRON", 20, player)) {
                             player.setPickaxeLevel(PickaxeLevel.STONE);
-                            CytonicBedWars.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.STONE, player);
+                            playerInventoryManager.setPickaxe(PickaxeLevel.STONE, player);
                             player.sendMessage(Msg.green("You purchased a stone pickaxe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
@@ -169,10 +173,10 @@ public class ToolShopMenu extends ViewProvider {
                     }
                 }
                 case IRON -> {
-                    if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-                        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, player)) {
+                    if (playerInventoryManager.hasSpace(player)) {
+                        if (playerInventoryManager.takeItem("GOLD", 6, player)) {
                             player.setPickaxeLevel(PickaxeLevel.IRON);
-                            CytonicBedWars.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.IRON, player);
+                            playerInventoryManager.setPickaxe(PickaxeLevel.IRON, player);
                             player.sendMessage(Msg.green("You purchased an iron pickaxe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
@@ -188,10 +192,10 @@ public class ToolShopMenu extends ViewProvider {
                         player.sendMessage(Msg.red("You already purchased a diamond pickaxe!"));
                         return;
                     }
-                    if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-                        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 3, player)) {
+                    if (playerInventoryManager.hasSpace(player)) {
+                        if (playerInventoryManager.takeItem("EMERALD", 3, player)) {
                             player.setPickaxeLevel(PickaxeLevel.DIAMOND);
-                            CytonicBedWars.getGameManager().getPlayerInventoryManager().setPickaxe(PickaxeLevel.DIAMOND, player);
+                            playerInventoryManager.setPickaxe(PickaxeLevel.DIAMOND, player);
                             player.sendMessage(Msg.green("You purchased a diamond pickaxe!"));
                             player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
                             open(player);
@@ -218,8 +222,9 @@ public class ToolShopMenu extends ViewProvider {
                 player.sendMessage(Msg.red("You already purchased a pair of shears!"));
                 return;
             }
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-                if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 24, player)) {
+            PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+            if (playerInventoryManager.hasSpace(player)) {
+                if (playerInventoryManager.takeItem("IRON", 24, player)) {
                     player.setShears(true);
                     player.getInventory().addItemStack(Items.SHEARS);
                     player.sendMessage(Msg.green("You purchased a pair of shears!"));

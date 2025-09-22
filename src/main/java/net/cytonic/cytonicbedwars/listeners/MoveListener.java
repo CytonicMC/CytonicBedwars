@@ -3,7 +3,9 @@ package net.cytonic.cytonicbedwars.listeners;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
+import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.coordinate.Pos;
@@ -18,13 +20,13 @@ public class MoveListener {
     @Listener
     public static void onMove(PlayerMoveEvent event) {
         if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (!CytonicBedWars.getGameManager().STARTED) return;
+        if (!Cytosis.CONTEXT.getComponent(GameManager.class).STARTED) return;
         if (event.getNewPosition().y() <= -40) {
-            if (CytonicBedWars.getGameManager().getSpectators().contains(player.getUuid())) {
+            if (Cytosis.CONTEXT.getComponent(GameManager.class).getSpectators().contains(player.getUuid())) {
                 player.teleport(Config.spawnPlatformCenter);
                 event.setCancelled(true);
             } else {
-                CytonicBedWars.getGameManager().kill(player, null, DamageType.OUT_OF_WORLD);
+                Cytosis.CONTEXT.getComponent(GameManager.class).kill(player, null, DamageType.OUT_OF_WORLD);
                 event.setCancelled(true);
             }
         }

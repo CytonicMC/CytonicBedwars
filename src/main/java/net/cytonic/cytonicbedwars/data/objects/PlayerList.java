@@ -2,6 +2,7 @@ package net.cytonic.cytonicbedwars.data.objects;
 
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.player.CytosisPlayer;
@@ -24,13 +25,13 @@ public class PlayerList implements PlayerlistCreator {
 
     @Override
     public List<Column> createColumns(CytosisPlayer player) {
-        if (!CytonicBedWars.getGameManager().STARTED) {
+        if (!Cytosis.CONTEXT.getComponent(GameManager.class).STARTED) {
             return List.of(PlayerList.PLAYER_COLUMN.apply(player));
         }
         List<PlayerListEntry> players = new ArrayList<>();
         Cytosis.getOnlinePlayers().forEach(forPlayer -> {
             if (!(forPlayer instanceof BedwarsPlayer p)) return;
-            if (CytonicBedWars.getGameManager().getPlayerTeam(p).isEmpty() && (CytonicBedWars.getGameManager().getSpectators().contains(player.getUuid()) || player.isStaff())) {
+            if (Cytosis.CONTEXT.getComponent(GameManager.class).getPlayerTeam(p).isEmpty() && (Cytosis.CONTEXT.getComponent(GameManager.class).getSpectators().contains(player.getUuid()) || player.isStaff())) {
                 players.add(new PlayerListEntry(p.getRank().getPrefix().color(NamedTextColor.GRAY).append(p.getName()), p.getRank().ordinal(),
                         new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getSkin()).textures(), p.getSkin().signature())));
                 return;
@@ -42,7 +43,7 @@ public class PlayerList implements PlayerlistCreator {
                         new PlayerInfoUpdatePacket.Property("textures", Objects.requireNonNull(p.getSkin()).textures(), p.getSkin().signature())));
                 return;
             }
-            Team team = CytonicBedWars.getGameManager().getPlayerTeam(p).orElseThrow();
+            Team team = Cytosis.CONTEXT.getComponent(GameManager.class).getPlayerTeam(p).orElseThrow();
             if (p.isNicked()) {
                 if (player.getUuid().equals(p.getUuid())) {
                     players.add(new PlayerListEntry(Msg.mm("%s%s", team.getPrefix(), p.getTrueUsername()),

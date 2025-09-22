@@ -7,8 +7,8 @@ import eu.koboo.minestom.stomui.api.component.ViewProvider;
 import eu.koboo.minestom.stomui.api.item.PrebuiltItem;
 import eu.koboo.minestom.stomui.api.item.ViewItem;
 import eu.koboo.minestom.stomui.api.slots.ViewPattern;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
+import net.cytonic.cytonicbedwars.managers.PlayerInventoryManager;
 import net.cytonic.cytonicbedwars.menu.MenuUtils;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Items;
@@ -25,7 +25,8 @@ public class ArmorShopMenu extends ViewProvider {
     private static final PrebuiltItem chainArmor = PrebuiltItem.of(Items.MENU_CHAINMAIL_BOOTS, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 40, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.takeItem("IRON", 40, player)) {
             player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), Items.CHAINMAIL_LEGS);
             player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.CHAINMAIL_BOOTS);
             player.setArmorLevel(ArmorLevel.CHAINMAIL);
@@ -40,7 +41,8 @@ public class ArmorShopMenu extends ViewProvider {
     private static final PrebuiltItem ironArmor = PrebuiltItem.of(Items.MENU_IRON_BOOTS, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 12, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.takeItem("GOLD", 12, player)) {
             player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), Items.IRON_LEGS);
             player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.IRON_BOOTS);
             player.setArmorLevel(ArmorLevel.IRON);
@@ -55,7 +57,8 @@ public class ArmorShopMenu extends ViewProvider {
     private static final PrebuiltItem diamondArmor = PrebuiltItem.of(Items.MENU_DIAMOND_BOOTS, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 6, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.takeItem("EMERALD", 6, player)) {
             player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), Items.DIAMOND_LEGS);
             player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.DIAMOND_BOOTS);
             player.setArmorLevel(ArmorLevel.DIAMOND);
@@ -70,7 +73,8 @@ public class ArmorShopMenu extends ViewProvider {
     private static final PrebuiltItem netheriteArmor = PrebuiltItem.of(Items.MENU_NETHERITE_BOOTS, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 16, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.takeItem("EMERALD", 16, player)) {
             player.getInventory().setEquipment(EquipmentSlot.LEGGINGS, player.getHeldSlot(), Items.NETHERITE_LEGS);
             player.getInventory().setEquipment(EquipmentSlot.BOOTS, player.getHeldSlot(), Items.NETHERITE_BOOTS);
             player.setArmorLevel(ArmorLevel.NETHERITE);

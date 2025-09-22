@@ -9,6 +9,8 @@ import eu.koboo.minestom.stomui.api.item.ViewItem;
 import eu.koboo.minestom.stomui.api.slots.ViewPattern;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.MappableItem;
+import net.cytonic.cytonicbedwars.managers.GameManager;
+import net.cytonic.cytonicbedwars.managers.PlayerInventoryManager;
 import net.cytonic.cytonicbedwars.menu.MenuUtils;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Items;
@@ -25,9 +27,10 @@ public class BlocksShopMenu extends ViewProvider {
     private static final PrebuiltItem wool = PrebuiltItem.of(Items.MENU_WOOL, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 4, player)) {
-                ItemStack itemStack = Items.getTeamMapped(MappableItem.WOOL, CytonicBedWars.getGameManager().getPlayerTeam(player).orElseThrow());
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("IRON", 4, player)) {
+                ItemStack itemStack = Items.getTeamMapped(MappableItem.WOOL, Cytosis.CONTEXT.getComponent(GameManager.class).getPlayerTeam(player).orElseThrow());
                 itemStack = itemStack.withAmount(16);
                 player.getInventory().addItemStack(itemStack);
                 player.sendMessage(Msg.green("You bought 16 wool!"));
@@ -46,9 +49,10 @@ public class BlocksShopMenu extends ViewProvider {
     private static final PrebuiltItem blastGlass = PrebuiltItem.of(Items.MENU_BLAST_GLASS, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 12, player)) {
-                ItemStack item = Items.getTeamMapped(MappableItem.GLASS, CytonicBedWars.getGameManager().getPlayerTeam(player).orElseThrow());
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("IRON", 12, player)) {
+                ItemStack item = Items.getTeamMapped(MappableItem.GLASS, Cytosis.CONTEXT.getComponent(GameManager.class).getPlayerTeam(player).orElseThrow());
                 item = item.withAmount(4);
                 player.getInventory().addItemStack(item);
                 player.sendMessage(Msg.green("You bought 4 Blast-Proof Glass!"));
@@ -66,8 +70,9 @@ public class BlocksShopMenu extends ViewProvider {
     private static final PrebuiltItem endStone = PrebuiltItem.of(Items.MENU_END_STONE, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 24, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("IRON", 24, player)) {
                 ItemStack item = Items.END_STONE;
                 item = item.withAmount(12);
                 player.getInventory().addItemStack(item);
@@ -86,9 +91,10 @@ public class BlocksShopMenu extends ViewProvider {
     private static final PrebuiltItem terracotta = PrebuiltItem.of(Items.MENU_TERRACOTTA, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, player)) {
-                ItemStack item = Items.getTeamMapped(MappableItem.TERRACOTTA, CytonicBedWars.getGameManager().getPlayerTeam(player).orElseThrow());
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("IRON", 10, player)) {
+                ItemStack item = Items.getTeamMapped(MappableItem.TERRACOTTA, Cytosis.CONTEXT.getComponent(GameManager.class).getPlayerTeam(player).orElseThrow());
                 item = item.withAmount(12);
                 player.getInventory().addItemStack(item);
                 player.sendMessage(Msg.green("You bought 12 terracotta!"));
@@ -106,8 +112,9 @@ public class BlocksShopMenu extends ViewProvider {
     private static final PrebuiltItem obsidian = PrebuiltItem.of(Items.MENU_OBSIDIAN, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 6, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("EMERALD", 6, player)) {
                 ItemStack item = Items.OBSIDIAN;
                 item = item.withAmount(6);
                 player.getInventory().addItemStack(item);
@@ -126,8 +133,9 @@ public class BlocksShopMenu extends ViewProvider {
     private static final PrebuiltItem planks = PrebuiltItem.of(Items.MENU_PLANKS, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 4, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 4, player)) {
                 ItemStack item = Items.PLANKS;
                 item = item.withAmount(8);
                 player.getInventory().addItemStack(item);

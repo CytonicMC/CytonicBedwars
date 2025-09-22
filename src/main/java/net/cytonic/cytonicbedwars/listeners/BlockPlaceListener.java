@@ -13,6 +13,7 @@ import net.minestom.server.entity.EntityType;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerBlockPlaceEvent;
+import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
 
@@ -31,7 +32,7 @@ public class BlockPlaceListener {
                 ItemStack item = player.getItemInHand(e.getHand());
                 player.setItemInHand(e.getHand(), item.withAmount(item.amount() - 1));
                 Entity entity = new Entity(EntityType.TNT);
-                entity.setInstance(Cytosis.getDefaultInstance(), e.getBlockPosition());
+                entity.setInstance(Cytosis.CONTEXT.getComponent(InstanceContainer.class), e.getBlockPosition());
                 e.setBlock(Block.AIR);
             }
             Block block;

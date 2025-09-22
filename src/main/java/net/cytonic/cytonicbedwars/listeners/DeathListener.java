@@ -3,7 +3,9 @@ package net.cytonic.cytonicbedwars.listeners;
 import io.github.togar2.pvp.events.EntityPreDeathEvent;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
+import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.events.api.Listener;
 
 @NoArgsConstructor
@@ -15,9 +17,9 @@ public class DeathListener {
         event.setCancelDeath(true);
         if (event.getEntity() instanceof BedwarsPlayer player) {
             if (event.getDamage().getAttacker() != null && event.getDamage().getAttacker() instanceof BedwarsPlayer attacker) {
-                CytonicBedWars.getGameManager().kill(player, attacker, event.getDamage().getType());
+                Cytosis.CONTEXT.getComponent(GameManager.class).kill(player, attacker, event.getDamage().getType());
             } else {
-                CytonicBedWars.getGameManager().kill(player, null, event.getDamage().getType());
+                Cytosis.CONTEXT.getComponent(GameManager.class).kill(player, null, event.getDamage().getType());
             }
         }
 

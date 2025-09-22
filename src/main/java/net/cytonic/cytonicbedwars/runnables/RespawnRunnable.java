@@ -1,7 +1,9 @@
 package net.cytonic.cytonicbedwars.runnables;
 
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
+import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
@@ -28,7 +30,7 @@ public class RespawnRunnable {
         timeLeft--;
         if (timeLeft <= 0) {
             task.cancel();
-            CytonicBedWars.getGameManager().respawnPlayer(player);
+            Cytosis.CONTEXT.getComponent(GameManager.class).respawnPlayer(player);
             return;
         }
 

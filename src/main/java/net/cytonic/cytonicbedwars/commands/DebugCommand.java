@@ -2,6 +2,7 @@ package net.cytonic.cytonicbedwars.commands;
 
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
@@ -40,49 +41,49 @@ public class DebugCommand extends CytosisCommand {
 
                 switch (command.toLowerCase()) {
                     case "start" -> {
-                        if (CytonicBedWars.getGameManager().STARTED) {
+                        if (Cytosis.CONTEXT.getComponent(GameManager.class).STARTED) {
                             player.sendMessage(Msg.red("The game has already been started! Use '/debug stop' to end it!"));
                             player.sendMessage(Msg.red("Starting the game anyway!"));
                         }
-                        CytonicBedWars.getGameManager().setGameState(GameState.STARTING);
-                        CytonicBedWars.getGameManager().setWaitingRunnable(new WaitingRunnable());
+                        Cytosis.CONTEXT.getComponent(GameManager.class).setGameState(GameState.STARTING);
+                        Cytosis.CONTEXT.getComponent(GameManager.class).setWaitingRunnable(new WaitingRunnable());
                     }
                     case "forcestart" -> {
-                        if (CytonicBedWars.getGameManager().STARTED) {
+                        if (Cytosis.CONTEXT.getComponent(GameManager.class).STARTED) {
                             player.sendMessage(Msg.red("The game has already been started! Use '/debug stop' to end it!"));
                         }
-                        if (CytonicBedWars.getGameManager().getWaitingRunnable() != null) {
-                            CytonicBedWars.getGameManager().getWaitingRunnable().stop();
-                            CytonicBedWars.getGameManager().setWaitingRunnable(null);
+                        if (Cytosis.CONTEXT.getComponent(GameManager.class).getWaitingRunnable() != null) {
+                            Cytosis.CONTEXT.getComponent(GameManager.class).getWaitingRunnable().stop();
+                            Cytosis.CONTEXT.getComponent(GameManager.class).setWaitingRunnable(null);
                         }
-                        CytonicBedWars.getGameManager().start();
+                        Cytosis.CONTEXT.getComponent(GameManager.class).start();
                     }
                     case "end" -> {
                         player.sendMessage(Msg.green("Ending game!"));
-                        CytonicBedWars.getGameManager().end();
+                        Cytosis.CONTEXT.getComponent(GameManager.class).end();
                     }
                     case "cleanup" -> {
                         player.sendMessage(Msg.green("Cleaning up game!"));
-                        CytonicBedWars.getGameManager().cleanup();
+                        Cytosis.CONTEXT.getComponent(GameManager.class).cleanup();
                     }
                     case "listteams" ->
-                            CytonicBedWars.getGameManager().getTeams().forEach(team -> player.sendMessage(Msg.mm(team.getPrefix() + team.getDisplayName())));
+                            Cytosis.CONTEXT.getComponent(GameManager.class).getTeams().forEach(team -> player.sendMessage(Msg.mm(team.getPrefix() + team.getDisplayName())));
                     case "freeze", "f" -> {
-                        if (CytonicBedWars.getGameManager().getGameState() != GameState.FROZEN) {
+                        if (Cytosis.CONTEXT.getComponent(GameManager.class).getGameState() != GameState.FROZEN) {
                             Cytosis.getOnlinePlayers().forEach((player1) -> player1.sendMessage(Msg.yellow("The game is now <aqua><bold>FROZEN<reset><yellow>!")));
-                            CytonicBedWars.getGameManager().freeze();
+                            Cytosis.CONTEXT.getComponent(GameManager.class).freeze();
                         } else {
                             Cytosis.getOnlinePlayers().forEach((player1) -> player1.sendMessage(Msg.yellow("The game is now <gold><bold>THAWED<reset><yellow>!")));
-                            CytonicBedWars.getGameManager().thaw();
+                            Cytosis.CONTEXT.getComponent(GameManager.class).thaw();
                         }
                     }
                     case "itemshop" -> {
-                        if (!CytonicBedWars.getGameManager().STARTED) {
+                        if (!Cytosis.CONTEXT.getComponent(GameManager.class).STARTED) {
                             player.sendMessage(Msg.redSplash("!! WARNING !!", "The game has not been started. Some shop pages may not work!"));
                         }
                         new BlocksShopMenu().open(player);
                     }
-                    case "teaminfo" -> CytonicBedWars.getGameManager().getTeams().forEach(team -> {
+                    case "teaminfo" -> Cytosis.CONTEXT.getComponent(GameManager.class).getTeams().forEach(team -> {
                         player.sendMessage(Msg.mm("<%s><b>Team:</b> %s", team.getColor(), team.getName()));
                         player.sendMessage(Msg.mm("Alive: %s", team.isAlive()));
                         player.sendMessage(Msg.mm("Bed: %s", team.hasBed()));

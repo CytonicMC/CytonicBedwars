@@ -3,6 +3,7 @@ package net.cytonic.cytonicbedwars.runnables;
 import lombok.Getter;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
 import net.minestom.server.MinecraftServer;
@@ -23,9 +24,9 @@ public class GameRunnable {
     public void run() {
         timeLeft--;
         if (timeLeft <= -1) {
-            timeLeft = CytonicBedWars.getGameManager().nextGameState().getDuration();
+            timeLeft = Cytosis.CONTEXT.getComponent(GameManager.class).nextGameState().getDuration();
         }
-        if (CytonicBedWars.getGameManager().getGameState() == GameState.BED_DESTRUCTION && timeLeft == 59) {
+        if (Cytosis.CONTEXT.getComponent(GameManager.class).getGameState() == GameState.BED_DESTRUCTION && timeLeft == 59) {
             Cytosis.getOnlinePlayers().forEach(player -> player.sendMessage(Msg.yellow("All beds will be destroyed in <red>60 seconds!")));
         }
     }

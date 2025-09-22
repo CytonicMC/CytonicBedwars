@@ -7,7 +7,7 @@ import eu.koboo.minestom.stomui.api.component.ViewProvider;
 import eu.koboo.minestom.stomui.api.item.PrebuiltItem;
 import eu.koboo.minestom.stomui.api.item.ViewItem;
 import eu.koboo.minestom.stomui.api.slots.ViewPattern;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.PlayerInventoryManager;
 import net.cytonic.cytonicbedwars.menu.MenuUtils;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Items;
@@ -24,9 +24,10 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem stoneSword = PrebuiltItem.of(Items.MENU_STONE_SWORD, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("IRON", 10, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().setSword(Items.STONE_SWORD, player);
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("IRON", 10, player)) {
+                playerInventoryManager.setSword(Items.STONE_SWORD, player);
                 player.sendMessage(Msg.green("You bought a Stone Sword!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
@@ -41,9 +42,10 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem ironSword = PrebuiltItem.of(Items.MENU_IRON_SWORD, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 7, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().setSword(Items.IRON_SWORD, player);
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 7, player)) {
+                playerInventoryManager.setSword(Items.IRON_SWORD, player);
                 player.sendMessage(Msg.green("You bought an Iron Sword!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
@@ -59,9 +61,10 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem diamondSword = PrebuiltItem.of(Items.MENU_DIAMOND_SWORD, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 6, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().setSword(Items.DIAMOND_SWORD, player);
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("EMERALD", 6, player)) {
+                playerInventoryManager.setSword(Items.DIAMOND_SWORD, player);
                 player.sendMessage(Msg.green("You bought a Diamond Sword!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
             } else {
@@ -77,8 +80,9 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem shield = PrebuiltItem.of(Items.MENU_SHIELD, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 3, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 3, player)) {
                 player.getInventory().addItemStack(Items.SHIELD);
                 player.sendMessage(Msg.green("You bought a Shield!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
@@ -95,8 +99,9 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem crossbow1 = PrebuiltItem.of(Items.MENU_CROSSBOW_1, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 12, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 12, player)) {
                 player.getInventory().addItemStack(Items.CROSSBOW_1);
                 player.sendMessage(Msg.green("You bought a Crossbow!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
@@ -113,9 +118,10 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem crossbow2 = PrebuiltItem.of(Items.MENU_CROSSBOW_2, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 20, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("CROSSBOW_1", 1, player);
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 20, player)) {
+                playerInventoryManager.takeItem("CROSSBOW_1", 1, player);
                 player.getInventory().addItemStack(Items.CROSSBOW_2);
                 player.sendMessage(Msg.green("You bought a Crossbow!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
@@ -132,9 +138,10 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem crossbow3 = PrebuiltItem.of(Items.MENU_CROSSBOW_3, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 6, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("CROSSBOW_2", 1, player);
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("EMERALD", 6, player)) {
+                playerInventoryManager.takeItem("CROSSBOW_2", 1, player);
                 player.getInventory().addItemStack(Items.CROSSBOW_3);
                 player.sendMessage(Msg.green("You bought a Crossbow!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
@@ -151,8 +158,9 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem bow1 = PrebuiltItem.of(Items.MENU_BOW_1, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 10, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 10, player)) {
                 player.getInventory().addItemStack(Items.BOW_1);
                 player.sendMessage(Msg.green("You bought a bow!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
@@ -169,9 +177,10 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem bow2 = PrebuiltItem.of(Items.MENU_BOW_2, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 18, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("BOW_1", 1, player);
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 18, player)) {
+                playerInventoryManager.takeItem("BOW_1", 1, player);
                 player.getInventory().addItemStack(Items.BOW_2);
                 player.sendMessage(Msg.green("You bought a bow!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
@@ -188,9 +197,10 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem bow3 = PrebuiltItem.of(Items.MENU_BOW_3, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 5, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("BOW_2", 1, player);
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("EMERALD", 5, player)) {
+                playerInventoryManager.takeItem("BOW_2", 1, player);
                 player.getInventory().addItemStack(Items.BOW_3);
                 player.sendMessage(Msg.green("You bought a bow!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
@@ -207,8 +217,9 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem arrow = PrebuiltItem.of(Items.MENU_ARROW, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 2, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 2, player)) {
                 ItemStack item = Items.ARROW;
                 item = item.withAmount(8);
                 player.getInventory().addItemStack(item);
@@ -227,8 +238,9 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem trident1 = PrebuiltItem.of(Items.MENU_TRIDENT_1, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 12, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 12, player)) {
                 player.getInventory().addItemStack(Items.TRIDENT_1);
                 player.sendMessage(Msg.green("You bought a trident!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
@@ -245,9 +257,10 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem trident2 = PrebuiltItem.of(Items.MENU_TRIDENT_2, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 5, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("TRIDENT_1", 1, player);
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("EMERALD", 5, player)) {
+                playerInventoryManager.takeItem("TRIDENT_1", 1, player);
                 player.getInventory().addItemStack(Items.TRIDENT_2);
                 player.sendMessage(Msg.green("You bought a trident!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));
@@ -264,9 +277,10 @@ public class CombatShopMenu extends ViewProvider {
     private static final PrebuiltItem trident3 = PrebuiltItem.of(Items.MENU_TRIDENT_3, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 5, player)) {
-                CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("TRIDENT_2", 1, player);
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("EMERALD", 5, player)) {
+                playerInventoryManager.takeItem("TRIDENT_2", 1, player);
                 player.getInventory().addItemStack(Items.TRIDENT_3);
                 player.sendMessage(Msg.green("You bought a trident!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1));

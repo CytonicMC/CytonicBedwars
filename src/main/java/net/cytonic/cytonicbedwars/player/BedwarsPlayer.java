@@ -3,11 +3,12 @@ package net.cytonic.cytonicbedwars.player;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.messaging.NatsManager;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.minestom.server.inventory.Inventory;
 import net.minestom.server.inventory.InventoryType;
@@ -40,7 +41,7 @@ public class BedwarsPlayer extends CytosisPlayer {
     }
 
     public void load() {
-        CytonicBedWars.getGameManager().getPlayer(getUuid()).ifPresent(player -> {
+        Cytosis.CONTEXT.getComponent(GameManager.class).getPlayer(getUuid()).ifPresent(player -> {
             this.armorLevel = player.getArmorLevel();
             this.axeLevel = player.getAxeLevel();
             this.pickaxeLevel = player.getPickaxeLevel();
@@ -52,7 +53,7 @@ public class BedwarsPlayer extends CytosisPlayer {
     }
 
     public void sendToLobby() {
-        Cytosis.getNatsManager().sendPlayerToGenericServer(this.getUuid(), "cytonic", "lobby", "The Lobby");
+        Cytosis.CONTEXT.getComponent(NatsManager.class).sendPlayerToGenericServer(this.getUuid(), "cytonic", "lobby", "The Lobby");
     }
 
     public boolean hasShears() {

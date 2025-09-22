@@ -17,8 +17,12 @@ import net.cytonic.cytonicbedwars.runnables.GameRunnable;
 import net.cytonic.cytonicbedwars.runnables.RespawnRunnable;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytonicbedwars.utils.Items;
+import net.cytonic.cytosis.Bootstrappable;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.logging.Logger;
+import net.cytonic.cytosis.managers.NPCManager;
+import net.cytonic.cytosis.managers.PlayerListManager;
+import net.cytonic.cytosis.managers.SideboardManager;
 import net.cytonic.cytosis.npcs.NPC;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
@@ -33,6 +37,7 @@ import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
+import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.network.packet.server.play.TeamsPacket;
@@ -48,38 +53,35 @@ import java.util.*;
 
 @Getter
 @Setter
-public class GameManager {
+public class GameManager implements Bootstrappable {
     private final List<Team> teams = new ArrayList<>();
     private final List<UUID> spectators = new ArrayList<>();
     private final List<NPC> npcList = new ArrayList<>();
-    private final StatsManager statsManager;
-    private final WorldManager worldManager;
-    private final PlayerInventoryManager playerInventoryManager;
-    private final GeneratorManager generatorManager;
-    private final DatabaseManager databaseManager;
     public boolean STARTED = false;
     private GameState beforeFrozen;
     private GameState gameState;
     private WaitingRunnable waitingRunnable;
     private GameRunnable gameRunnable;
-    private final ItemAbilityDispatcher itemAbilityDispatcher;
+    private ItemAbilityDispatcher itemAbilityDispatcher;
 
-    public GameManager() {
-        statsManager = new StatsManager();
-        worldManager = new WorldManager();
-        playerInventoryManager = new PlayerInventoryManager();
-        generatorManager = new GeneratorManager();
-        databaseManager = new DatabaseManager();
-        databaseManager.createTables();
-        itemAbilityDispatcher = new ItemAbilityDispatcher();
-        Cytosis.getSideboardManager().setSideboardCreator(new Scoreboard());
-        Cytosis.getSideboardManager().cancelUpdates();
-        Cytosis.getSideboardManager().autoUpdateBoards(TaskSchedule.tick(1));
-        Cytosis.getPlayerListManager().setCreator(new PlayerList());
+    @Override
+    public void init() {
+        Cytosis.CONTEXT.registerComponent(StatsManager.class);
+        Cytosis.CONTEXT.registerComponent(WorldManager.class);
+        Cytosis.CONTEXT.registerComponent(PlayerInventoryManager.class);
+        Cytosis.CONTEXT.registerComponent(GeneratorManager.class);
+        Cytosis.CONTEXT.registerComponent(DatabaseManager.class);
+        Cytosis.CONTEXT.registerComponent(ItemAbilityDispatcher.class);
+
+        SideboardManager sideboardManager = Cytosis.CONTEXT.getComponent(SideboardManager.class);
+        sideboardManager.setSideboardCreator(new Scoreboard());
+        sideboardManager.cancelUpdates();
+        sideboardManager.autoUpdateBoards(TaskSchedule.tick(1));
+        Cytosis.CONTEXT.getComponent(PlayerListManager.class).setCreator(new PlayerList());
     }
 
     public void setup() {
-        worldManager.loadWorld();
+        Cytosis.CONTEXT.getComponent(WorldManager.class).loadWorld();
         gameState = GameState.WAITING;
     }
 
@@ -94,10 +96,10 @@ public class GameManager {
     }
 
     public void start() {
-        worldManager.removeSpawnPlatform();
+        Cytosis.CONTEXT.getComponent(WorldManager.class).removeSpawnPlatform();
         STARTED = true;
         setGameState(GameState.PLAY);
-        Cytosis.getOnlinePlayers().forEach(player -> statsManager.addPlayer(player.getUuid()));
+        Cytosis.getOnlinePlayers().forEach(player -> Cytosis.CONTEXT.getComponent(StatsManager.class).addPlayer(player.getUuid()));
         // split players into teams
         teams.addAll(splitPlayersIntoTeams(Cytosis.getOnlinePlayers().stream().toList()));
 
@@ -108,6 +110,7 @@ public class GameManager {
             player.getInventory().setItemStack(0, Items.DEFAULT_SWORD);
             setEquipment(player);
         }));
+        GeneratorManager generatorManager = Cytosis.CONTEXT.getComponent(GeneratorManager.class);
         generatorManager.registerTeamGenerators();
         generatorManager.registerDiamondGenerators();
         generatorManager.registerEmeraldGenerators();
@@ -115,7 +118,7 @@ public class GameManager {
         gameRunnable = new GameRunnable();
 
         for (Team team : teams) {
-            NPC itemShop = NPC.ofHumanoid(team.getItemShopLocation(), Cytosis.getDefaultInstance())
+            NPC itemShop = NPC.ofHumanoid(team.getItemShopLocation(), Cytosis.CONTEXT.getComponent(InstanceContainer.class))
                     .interactTrigger((npc, npcInteractType, player) -> new BlocksShopMenu().open(player))
                     .skin(Config.itemShopSkin)
                     .lines(Msg.gold("<b>ITEM SHOP"))
@@ -123,7 +126,7 @@ public class GameManager {
                     .build();
             npcList.add(itemShop);
 
-            NPC teamShop = NPC.ofHumanoid(team.getTeamShopLocation(), Cytosis.getDefaultInstance())
+            NPC teamShop = NPC.ofHumanoid(team.getTeamShopLocation(), Cytosis.CONTEXT.getComponent(InstanceContainer.class))
                     .interactTrigger((npc, npcInteractType, player) -> player.sendMessage(Msg.red("Coming soon")))
                     .skin(Config.teamShopSkin)
                     .lines(Msg.red("Coming soon"))
@@ -169,8 +172,8 @@ public class GameManager {
                 team.setBed(true);
                 result.add(team);
             } else {
-                worldManager.breakBed(team);
-                Cytosis.getDefaultInstance().setBlock(team.getChestLocation(), Block.AIR);
+                Cytosis.CONTEXT.getComponent(WorldManager.class).breakBed(team);
+                Cytosis.CONTEXT.getComponent(InstanceContainer.class).setBlock(team.getChestLocation(), Block.AIR);
             }
             if (remainingPlayers > 0) {
                 remainingPlayers--;
@@ -186,7 +189,7 @@ public class GameManager {
         gameRunnable.stop();
         gameRunnable = null;
         npcList.forEach((npc -> npc.getActions().clear()));
-        generatorManager.removeGenerators();
+        Cytosis.CONTEXT.getComponent(GeneratorManager.class).removeGenerators();
         MinecraftServer.getSchedulerManager().buildTask(() -> {
             Cytosis.getOnlinePlayers().forEach(p -> {
                 if (!(p instanceof BedwarsPlayer player)) return;
@@ -205,7 +208,7 @@ public class GameManager {
             player.sendMessage(Msg.mm(""));
             player.sendMessage(Msg.goldSplash("GAME OVER!", "<%s>%s <gray>has won the game!", winningTeam.getColor(), winningTeam.getDisplayName()));
             player.sendMessage(Msg.mm(""));
-            Stats stats = statsManager.getStats(player.getUuid());
+            Stats stats = Cytosis.CONTEXT.getComponent(StatsManager.class).getStats(player.getUuid());
             if (stats == null) {
                 player.sendMessage(Msg.whoops("You don't have any stats!"));
             } else {
@@ -224,15 +227,15 @@ public class GameManager {
     public void cleanup() {
         STARTED = false;
         setGameState(GameState.CLEANUP);
-        worldManager.redoWorld();
-        npcList.forEach((npc -> Cytosis.getNpcManager().removeNPC(npc)));
-        for (Entity entity : Cytosis.getDefaultInstance().getEntities()) {
+        Cytosis.CONTEXT.getComponent(WorldManager.class).redoWorld();
+        npcList.forEach((npc -> Cytosis.CONTEXT.getComponent(NPCManager.class).removeNPC(npc)));
+        for (Entity entity : Cytosis.CONTEXT.getComponent(InstanceContainer.class).getEntities()) {
             if (entity instanceof BedwarsPlayer) continue;
             entity.remove();
         }
         teams.clear();
-        databaseManager.saveStats();
-        statsManager.getStats().clear();
+        Cytosis.CONTEXT.getComponent(DatabaseManager.class).saveStats();
+        Cytosis.CONTEXT.getComponent(StatsManager.class).getStats().clear();
         setup();
     }
 
@@ -290,13 +293,13 @@ public class GameManager {
             p.showTitle(title);
         }
         // todo: display animations, messages, etc.
-        statsManager.getStats(player.getUuid()).addBedBreak();
+        Cytosis.CONTEXT.getComponent(StatsManager.class).getStats(player.getUuid()).addBedBreak();
         team.setBed(false);
     }
 
-    public void kill(@NotNull BedwarsPlayer dead, @Nullable BedwarsPlayer killer, @NotNull RegistryKey<DamageType> damageType) {
+    public void kill(@NotNull BedwarsPlayer dead, @Nullable BedwarsPlayer killer, @NotNull RegistryKey<@NotNull DamageType> damageType) {
         Team deadTeam = getPlayerTeam(dead).orElseThrow();
-        statsManager.getStats(dead.getUuid()).addDeath();
+        Cytosis.CONTEXT.getComponent(StatsManager.class).getStats(dead.getUuid()).addDeath();
 
         //degrade tools
         if (AxeLevel.getOrdered(dead.getAxeLevel(), -1) != null) {
@@ -317,8 +320,9 @@ public class GameManager {
                 kill(dead, null, DamageType.OUT_OF_WORLD);
             } else {
                 if (!finalKill) {
-                    statsManager.getStats(killer.getUuid()).addKill();
+                    Cytosis.CONTEXT.getComponent(StatsManager.class).getStats(killer.getUuid()).addKill();
                 }
+                PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
                 message = message.append(Msg.grey("was slain by %s%s", getPlayerTeam(killer).orElseThrow().getPrefix(), killer.getUsername()));
                 killer.getInventory().addItemStack(Items.get("IRON").withAmount(playerInventoryManager.itemCount(dead, "IRON")));
                 killer.getInventory().addItemStack(Items.get("GOLD").withAmount(playerInventoryManager.itemCount(dead, "GOLD")));
@@ -363,7 +367,7 @@ public class GameManager {
                 });
             }
             if (killer != null) {
-                statsManager.getStats(killer.getUuid()).addFinalKill();
+                Cytosis.CONTEXT.getComponent(StatsManager.class).getStats(killer.getUuid()).addFinalKill();
             }
             if (teams.stream().filter(Team::isAlive).count() == 1) {
                 end();
@@ -410,6 +414,7 @@ public class GameManager {
 
     public GameState nextGameState() {
         gameState = gameState.getNext();
+        GeneratorManager generatorManager = Cytosis.CONTEXT.getComponent(GeneratorManager.class);
         switch (Objects.requireNonNull(gameState)) {
             case DIAMOND_2, DIAMOND_3 -> {
                 generatorManager.increaseDiamondsSpawnSpeed(gameState == GameState.DIAMOND_2 ? 20 : 12);
@@ -423,7 +428,7 @@ public class GameManager {
             case BED_DESTRUCTION -> {
                 teams.stream().filter(Team::isAlive).forEach(team -> {
                     team.setBed(false);
-                    worldManager.breakBed(team);
+                    Cytosis.CONTEXT.getComponent(WorldManager.class).breakBed(team);
                 });
                 Cytosis.getOnlinePlayers().forEach(player -> {
                     player.sendMessage(Msg.redSplash("BED DESTROY", "All beds have been destroyed!"));

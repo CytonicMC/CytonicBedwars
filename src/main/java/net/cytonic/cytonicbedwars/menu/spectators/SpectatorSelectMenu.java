@@ -7,6 +7,7 @@ import eu.koboo.minestom.stomui.api.component.ViewProvider;
 import eu.koboo.minestom.stomui.api.item.PrebuiltItem;
 import eu.koboo.minestom.stomui.api.item.ViewItem;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
@@ -34,7 +35,7 @@ public class SpectatorSelectMenu extends ViewProvider {
     @Override
     public void onOpen(@NotNull PlayerView view, @NotNull Player p) {
         AtomicInteger i = new AtomicInteger(0);
-        CytonicBedWars.getGameManager().getTeams().forEach(team -> team.getPlayers().forEach(player -> {
+        Cytosis.CONTEXT.getComponent(GameManager.class).getTeams().forEach(team -> team.getPlayers().forEach(player -> {
             ItemStack stack = ItemStack.builder(Material.PLAYER_HEAD)
                     .set(DataComponents.PROFILE, new HeadProfile(Objects.requireNonNull(player.getSkin())))
                     .set(DataComponents.TOOLTIP_DISPLAY, new TooltipDisplay(false, Set.of(DataComponents.EQUIPPABLE, DataComponents.UNBREAKABLE)))

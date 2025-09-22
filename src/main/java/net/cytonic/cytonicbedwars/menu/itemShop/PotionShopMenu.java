@@ -7,7 +7,7 @@ import eu.koboo.minestom.stomui.api.component.ViewProvider;
 import eu.koboo.minestom.stomui.api.item.PrebuiltItem;
 import eu.koboo.minestom.stomui.api.item.ViewItem;
 import eu.koboo.minestom.stomui.api.slots.ViewPattern;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.PlayerInventoryManager;
 import net.cytonic.cytonicbedwars.menu.MenuUtils;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Items;
@@ -23,8 +23,9 @@ public class PotionShopMenu extends ViewProvider {
     private static final PrebuiltItem fireResistance = PrebuiltItem.of(Items.MENU_FIRE_RESISTANCE_POTION, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("GOLD", 6, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("GOLD", 6, player)) {
                 player.getInventory().addItemStack(Items.MENU_FIRE_RESISTANCE_POTION);
                 player.sendMessage(Msg.green("You bought a Fire Resistance potion!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1), player.getPosition());
@@ -41,8 +42,9 @@ public class PotionShopMenu extends ViewProvider {
     private static final PrebuiltItem invis = PrebuiltItem.of(Items.MENU_INVISIBILITY_POTION, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("EMERALD", 1, player)) {
                 player.getInventory().addItemStack(Items.INVISIBILITY_POTION);
                 player.sendMessage(Msg.green("You bought an Invisibility potion!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1), player.getPosition());
@@ -59,8 +61,9 @@ public class PotionShopMenu extends ViewProvider {
     private static final PrebuiltItem jumpBoost = PrebuiltItem.of(Items.MENU_JUMP_BOOST_POTION, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("EMERALD", 1, player)) {
                 player.getInventory().addItemStack(Items.JUMP_BOOST_POTION);
                 player.sendMessage(Msg.green("You bought a Jump Boost potion!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1), player.getPosition());
@@ -77,8 +80,9 @@ public class PotionShopMenu extends ViewProvider {
     private static final PrebuiltItem speed = PrebuiltItem.of(Items.MENU_SPEED_POTION, action -> {
         action.getEvent().setCancelled(true);
         if (!(action.getPlayer() instanceof BedwarsPlayer player)) return;
-        if (CytonicBedWars.getGameManager().getPlayerInventoryManager().hasSpace(player)) {
-            if (CytonicBedWars.getGameManager().getPlayerInventoryManager().takeItem("EMERALD", 1, player)) {
+        PlayerInventoryManager playerInventoryManager = Cytosis.CONTEXT.getComponent(PlayerInventoryManager.class);
+        if (playerInventoryManager.hasSpace(player)) {
+            if (playerInventoryManager.takeItem("EMERALD", 1, player)) {
                 player.getInventory().addItemStack(Items.SPEED_POTION);
                 player.sendMessage(Msg.green("You bought a Speed potion!"));
                 player.playSound(Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_PLING, Sound.Source.MASTER, 1, 1), player.getPosition());
