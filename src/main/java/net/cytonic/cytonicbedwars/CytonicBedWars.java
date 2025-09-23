@@ -41,17 +41,13 @@ public final class CytonicBedWars implements CytosisPlugin {
                 Logger.error("error", throwable);
                 return;
             }
-            try {
-                Config.importConfig(extraData);
-                Logger.info("Loading game manager");
-                Cytosis.CONTEXT.registerComponent(new GameManager());
-                Cytosis.CONTEXT.getComponent(GameManager.class).setup();
-                Logger.info("Registering commands");
-                registerCommands();
-                Logger.info("Registering listeners");
-            } catch (Throwable e) {
-                Logger.error("ERROR", e);
-            }
+            Config.importConfig(extraData);
+            Logger.info("Loading game manager");
+            Cytosis.CONTEXT.registerComponent(new GameManager());
+            Cytosis.CONTEXT.getComponent(GameManager.class).setup();
+            Logger.info("Registering commands");
+            registerCommands();
+            Logger.info("Registering listeners");
         });
     }
 
