@@ -4,7 +4,6 @@ package net.cytonic.cytonicbedwars.managers;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.Config;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.data.objects.Generator;
 import net.cytonic.cytonicbedwars.data.objects.Team;

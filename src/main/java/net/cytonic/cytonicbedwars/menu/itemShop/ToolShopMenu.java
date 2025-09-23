@@ -7,7 +7,6 @@ import eu.koboo.minestom.stomui.api.component.ViewProvider;
 import eu.koboo.minestom.stomui.api.item.PrebuiltItem;
 import eu.koboo.minestom.stomui.api.item.ViewItem;
 import eu.koboo.minestom.stomui.api.slots.ViewPattern;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.managers.GameManager;

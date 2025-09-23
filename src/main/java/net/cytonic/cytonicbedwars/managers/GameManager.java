@@ -66,12 +66,12 @@ public class GameManager implements Bootstrappable {
 
     @Override
     public void init() {
-        Cytosis.CONTEXT.registerComponent(StatsManager.class);
-        Cytosis.CONTEXT.registerComponent(WorldManager.class);
-        Cytosis.CONTEXT.registerComponent(PlayerInventoryManager.class);
-        Cytosis.CONTEXT.registerComponent(GeneratorManager.class);
-        Cytosis.CONTEXT.registerComponent(DatabaseManager.class);
-        Cytosis.CONTEXT.registerComponent(ItemAbilityDispatcher.class);
+        Cytosis.CONTEXT.registerComponent(new StatsManager());
+        Cytosis.CONTEXT.registerComponent(new WorldManager());
+        Cytosis.CONTEXT.registerComponent(new PlayerInventoryManager());
+        Cytosis.CONTEXT.registerComponent(new GeneratorManager());
+        Cytosis.CONTEXT.registerComponent(new DatabaseManager());
+        Cytosis.CONTEXT.registerComponent(new ItemAbilityDispatcher());
 
         SideboardManager sideboardManager = Cytosis.CONTEXT.getComponent(SideboardManager.class);
         sideboardManager.setSideboardCreator(new Scoreboard());

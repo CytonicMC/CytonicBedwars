@@ -1,6 +1,5 @@
 package net.cytonic.cytonicbedwars.runnables;
 
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.Cytosis;

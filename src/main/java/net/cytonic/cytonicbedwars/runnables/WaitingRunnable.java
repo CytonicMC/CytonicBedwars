@@ -2,7 +2,6 @@ package net.cytonic.cytonicbedwars.runnables;
 
 
 import lombok.Getter;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.managers.SideboardManager;
@@ -16,9 +15,9 @@ import net.minestom.server.timer.Task;
 import java.time.Duration;
 
 public class WaitingRunnable {
-    private final Task task;
     @Getter
     private static int timeLeft = 6;
+    private final Task task;
 
     public WaitingRunnable() {
         task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofSeconds(1)).schedule();

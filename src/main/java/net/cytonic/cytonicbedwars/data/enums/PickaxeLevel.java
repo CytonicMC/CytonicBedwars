@@ -12,14 +12,15 @@ public enum PickaxeLevel {
 
     private final int order;
     private final String itemID;
+
     PickaxeLevel(int order, String itemID) {
         this.order = order;
         this.itemID = itemID;
     }
 
     public static PickaxeLevel getOrdered(PickaxeLevel level, int i) {
-        if(level == null) level = NONE;
-        if(level.getOrder() == 0 && i < 1) return WOODEN; // can't go below wooden
+        if (level == null) level = NONE;
+        if (level.getOrder() == 0 && i < 1) return WOODEN; // can't go below wooden
         return getByOrder(level.getOrder() + i);
     }
 

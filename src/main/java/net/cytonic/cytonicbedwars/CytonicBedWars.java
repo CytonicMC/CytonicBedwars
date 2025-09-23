@@ -36,20 +36,22 @@ public final class CytonicBedWars implements CytosisPlugin {
         MinecraftServer.getConnectionManager().setPlayerProvider(BedwarsPlayer::new);
         MinecraftServer.getBlockManager().registerHandler(Key.key("minecraft:ender_chest"), EnderChestBlockHandler::new);
         MinecraftServer.getBlockManager().registerHandler(Key.key("minecraft:chest"), ChestBlockHandler::new);
-        Logger.debug("HEY");
         Cytosis.CONTEXT.getComponent(InstanceManager.class).getExtraData(worldName, worldType).whenComplete((extraData, throwable) -> {
-            Logger.debug("HEY AGAIN");
             if (throwable != null) {
                 Logger.error("error", throwable);
                 return;
             }
-            Config.importConfig(extraData);
-            Logger.info("Loading game manager");
-            Cytosis.CONTEXT.registerComponent(GameManager.class);
-            Cytosis.CONTEXT.getComponent(GameManager.class).setup();
-            Logger.info("Registering commands");
-            registerCommands();
-            Logger.info("Registering listeners");
+            try {
+                Config.importConfig(extraData);
+                Logger.info("Loading game manager");
+                Cytosis.CONTEXT.registerComponent(new GameManager());
+                Cytosis.CONTEXT.getComponent(GameManager.class).setup();
+                Logger.info("Registering commands");
+                registerCommands();
+                Logger.info("Registering listeners");
+            } catch (Throwable e) {
+                Logger.error("ERROR", e);
+            }
         });
     }
 

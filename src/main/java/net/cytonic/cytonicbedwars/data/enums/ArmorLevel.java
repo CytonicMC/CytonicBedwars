@@ -17,7 +17,7 @@ public enum ArmorLevel {
 
     ArmorLevel(String bootsID, String legsID) {
         this.bootsID = bootsID;
-        this.legsID =  legsID;
+        this.legsID = legsID;
     }
 
 }

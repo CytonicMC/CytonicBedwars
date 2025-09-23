@@ -1,6 +1,5 @@
 package net.cytonic.cytonicbedwars.commands;
 
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;

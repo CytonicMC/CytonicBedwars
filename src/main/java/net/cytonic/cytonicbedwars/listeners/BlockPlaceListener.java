@@ -23,6 +23,10 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public class BlockPlaceListener {
 
+    private static double distance(double x1, double x2, double z1, double z2) {
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
+    }
+
     @Listener
     public void onBlockPlace(PlayerBlockPlaceEvent e) {
         Player player = e.getPlayer();
@@ -49,9 +53,5 @@ public class BlockPlaceListener {
             e.setCancelled(true);
             player.sendMessage(Msg.whoops("You cannot place blocks that far from the map!"));
         }
-    }
-
-    private static double distance(double x1, double x2, double z1, double z2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(z1 - z2, 2));
     }
 }

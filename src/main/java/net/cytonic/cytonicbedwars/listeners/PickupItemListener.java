@@ -1,6 +1,5 @@
 package net.cytonic.cytonicbedwars.listeners;
 
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.managers.PlayerInventoryManager;
 import net.cytonic.cytonicbedwars.utils.Items;

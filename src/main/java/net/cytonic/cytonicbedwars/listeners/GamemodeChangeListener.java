@@ -2,7 +2,6 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import io.github.togar2.pvp.utils.PotionFlags;
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;

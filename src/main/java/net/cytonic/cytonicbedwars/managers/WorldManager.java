@@ -36,8 +36,6 @@ public class WorldManager {
             //fixme
 //            var dimKey = MinecraftServer.getDimensionTypeRegistry().register("bedwars:" + Config.worldName, DimensionType.builder().ambientLight(100).build());
             Cytosis.CONTEXT.registerComponent(MinecraftServer.getInstanceManager().createInstanceContainer());
-            Logger.info("TEST");
-            Logger.debug("Worldname = '%s' worldType = '%s'", Config.worldName, Config.mode.toLowerCase());
             Cytosis.CONTEXT.getComponent(DatabaseManager.class).getMysqlDatabase().getWorld(Config.worldName, "bedwars_map_" + Config.mode.toLowerCase())
                     .whenComplete((world, throwable) -> {
                         if (throwable != null) {

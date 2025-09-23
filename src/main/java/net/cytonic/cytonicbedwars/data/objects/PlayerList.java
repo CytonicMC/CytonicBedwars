@@ -1,7 +1,6 @@
 package net.cytonic.cytonicbedwars.data.objects;
 
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.Cytosis;

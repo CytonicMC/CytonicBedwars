@@ -29,20 +29,19 @@ public class Generator {
     public static String SPLIT_KEY = "split_key";
 
     private final List<ItemEntity> spawnedItems = new ArrayList<>();
+    private final GeneratorType generatorType;
+    private final int itemLimit;
+    private final Pos spawnLoc;
+    private final boolean hasVisual;
+    private final boolean splittable;
     private Task runnable;
     private Entity visual;
     private GeneratorVisualRunnable visualRunnable;
     private Entity countDown;
     private Entity name;
     private Task countdownRunnable;
-    private final GeneratorType generatorType;
     @Setter
     private int waitTime;
-    private final int itemLimit;
-    private final Pos spawnLoc;
-    private final boolean hasVisual;
-    private final boolean splittable;
-
     private int toNext = 0; // in seconds
 
     //todo: Gen split by checking the players nearby and adding items to their inventory too

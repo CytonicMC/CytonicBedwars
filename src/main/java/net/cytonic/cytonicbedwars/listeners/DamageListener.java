@@ -2,7 +2,6 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import io.github.togar2.pvp.events.FinalDamageEvent;
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.managers.StatsManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;

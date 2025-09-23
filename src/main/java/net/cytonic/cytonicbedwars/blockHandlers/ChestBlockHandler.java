@@ -1,6 +1,5 @@
 package net.cytonic.cytonicbedwars.blockHandlers;
 
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
@@ -24,11 +23,12 @@ public class ChestBlockHandler implements BlockHandler {
     @Override
     public boolean onInteract(@NotNull Interaction interaction) {
         if (!Cytosis.CONTEXT.getComponent(GameManager.class).isSTARTED()) return false;
-        if (Cytosis.CONTEXT.getComponent(GameManager.class).getSpectators().contains(interaction.getPlayer().getUuid())) return false;
+        if (Cytosis.CONTEXT.getComponent(GameManager.class).getSpectators().contains(interaction.getPlayer().getUuid()))
+            return false;
         BedwarsPlayer player = (BedwarsPlayer) interaction.getPlayer();
         Team team = Cytosis.CONTEXT.getComponent(GameManager.class).getPlayerTeam(player).orElseThrow();
         if (!team.getChestLocation().sameBlock(interaction.getBlockPosition())) return false;
-        EventListener<InventoryPreClickEvent> listener = EventListener.of(InventoryPreClickEvent.class, event -> {
+        EventListener<@NotNull InventoryPreClickEvent> listener = EventListener.of(InventoryPreClickEvent.class, event -> {
             ItemStack item = event.getClickedItem();
             if (item.hasTag(Items.NAMESPACE) && item.getTag(Items.NAMESPACE).equals("DEFAULT_SWORD")) {
                 event.setCancelled(true);

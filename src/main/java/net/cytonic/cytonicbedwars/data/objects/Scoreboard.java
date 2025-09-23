@@ -129,8 +129,6 @@ public class Scoreboard implements SideboardCreator {
     }
 
     private Component topLine() {
-        return Msg.grey("%s <dark_gray>%s", new SimpleDateFormat("M/d/yy").format(Calendar.getInstance().getTime()), rawServerID);
+        return Msg.grey("%s <dark_gray>%s", new SimpleDateFormat("M/d/yy").format(Calendar.getInstance().getTime()), CytosisContext.SERVER_ID);
     }
-
-    private static final String rawServerID = CytosisContext.SERVER_ID.substring("Cytosis-".length());
 }
