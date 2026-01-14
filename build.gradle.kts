@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("com.gradleup.shadow") version "9.0.1"
-    id("io.freefair.lombok") version "8.14"
+    id("io.freefair.lombok") version "8.14.4"
 }
 
 group = "net.cyonic"
