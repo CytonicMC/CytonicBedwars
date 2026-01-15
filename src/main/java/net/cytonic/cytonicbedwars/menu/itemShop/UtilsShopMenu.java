@@ -1,31 +1,31 @@
 package net.cytonic.cytonicbedwars.menu.itemShop;
 
-import eu.koboo.minestom.stomui.api.PlayerView;
-import eu.koboo.minestom.stomui.api.ViewBuilder;
-import eu.koboo.minestom.stomui.api.ViewType;
-import eu.koboo.minestom.stomui.api.component.ViewProvider;
-import eu.koboo.minestom.stomui.api.slots.ViewPattern;
-import net.cytonic.cytonicbedwars.menu.MenuUtils;
-import net.cytonic.cytosis.Cytosis;
-import net.cytonic.cytosis.utils.Msg;
-import net.minestom.server.entity.Player;
+import me.devnatan.inventoryframework.View;
+import me.devnatan.inventoryframework.ViewConfigBuilder;
+import me.devnatan.inventoryframework.context.RenderContext;
 import org.jetbrains.annotations.NotNull;
 
-public class UtilsShopMenu extends ViewProvider {
+import net.cytonic.cytonicbedwars.menu.MenuUtils;
+import net.cytonic.cytosis.utils.Msg;
 
-    public UtilsShopMenu() {
-        super(Cytosis.VIEW_REGISTRY, ViewBuilder.of(ViewType.SIZE_5_X_9).title(Msg.mm("Item Shop ➜ Utilities")));
+public class UtilsShopMenu extends View {
+
+    @Override
+    public void onInit(@NotNull ViewConfigBuilder config) {
+        config.layout(
+            "#bcatpur#",
+            "######s##",
+            "#########",
+            "#########",
+            "#########"
+        );
+        config.title(Msg.mm("Item Shop ➜ Utilities"));
+        config.cancelInteractions();
+        config.size(5);
     }
 
     @Override
-    public void onOpen(@NotNull PlayerView view, @NotNull Player player) {
-        ViewPattern pattern = Cytosis.VIEW_REGISTRY.pattern(
-                "#bcatpur#",
-                "######s##",
-                "#########",
-                "#########",
-                "#########"
-        );
-        MenuUtils.setItemShopItems(view, pattern);
+    public void onFirstRender(@NotNull RenderContext context) {
+        MenuUtils.setItemShopItems(context);
     }
 }

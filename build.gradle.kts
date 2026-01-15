@@ -25,7 +25,13 @@ tasks {
     runCytosis {
         cytosisVersion = findProperty("cytosis-version") as String
     }
-    jar {
+    assemble {
+        dependsOn(shadowJar)
+    }
+    shadowJar {
         archiveFileName.set("CytonicBedwars.jar")
+    }
+    jar {
+        enabled = false
     }
 }

@@ -8,6 +8,8 @@ import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.data.objects.Generator;
 import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.bootstrap.annotations.CytosisComponent;
+
 import net.minestom.server.coordinate.Pos;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.Map;
 
 @Getter
 @NoArgsConstructor
+@CytosisComponent
 public class GeneratorManager {
     private final Map<Team, Generator> ironGenerators = new HashMap<>();
     private final Map<Team, Generator> goldGenerators = new HashMap<>();

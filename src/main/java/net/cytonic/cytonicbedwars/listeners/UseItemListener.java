@@ -1,7 +1,7 @@
 package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.managers.GameManager;
+import net.cytonic.cytonicbedwars.ItemAbilityDispatcher;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
@@ -19,7 +19,7 @@ public class UseItemListener {
         ItemStack item = event.getPlayer().getItemInHand(event.getHand());
         if (item.hasTag(Items.NAMESPACE)) {
             String key = item.getTag(Items.NAMESPACE);
-            Cytosis.CONTEXT.getComponent(GameManager.class).getItemAbilityDispatcher().dispatch(key, player, event);
+            Cytosis.CONTEXT.getComponent(ItemAbilityDispatcher.class).dispatch(key, player, event);
         }
     }
 }

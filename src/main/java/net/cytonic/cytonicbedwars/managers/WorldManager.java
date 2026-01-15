@@ -1,11 +1,5 @@
 package net.cytonic.cytonicbedwars.managers;
 
-import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.Config;
-import net.cytonic.cytonicbedwars.data.objects.Team;
-import net.cytonic.cytosis.Cytosis;
-import net.cytonic.cytosis.data.DatabaseManager;
-import net.cytonic.cytosis.logging.Logger;
 import net.hollowcube.polar.PolarLoader;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.BlockVec;
@@ -14,7 +8,14 @@ import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.block.BlockFace;
 
-@NoArgsConstructor
+import net.cytonic.cytonicbedwars.Config;
+import net.cytonic.cytonicbedwars.data.objects.Team;
+import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.bootstrap.annotations.CytosisComponent;
+import net.cytonic.cytosis.data.MysqlDatabase;
+import net.cytonic.cytosis.logging.Logger;
+
+@CytosisComponent(dependsOn = InstanceContainer.class)
 public class WorldManager {
 
     public void breakBed(Team team) {
@@ -36,20 +37,22 @@ public class WorldManager {
             //fixme
 //            var dimKey = MinecraftServer.getDimensionTypeRegistry().register("bedwars:" + Config.worldName, DimensionType.builder().ambientLight(100).build());
             Cytosis.CONTEXT.registerComponent(MinecraftServer.getInstanceManager().createInstanceContainer());
-            Cytosis.CONTEXT.getComponent(DatabaseManager.class).getMysqlDatabase().getWorld(Config.worldName, "bedwars_map_" + Config.mode.toLowerCase())
-                    .whenComplete((world, throwable) -> {
-                        if (throwable != null) {
-                            Logger.error("error", throwable);
-                        } else {
-                            Cytosis.CONTEXT.registerComponent(MinecraftServer.getInstanceManager().createInstanceContainer());
-                            InstanceContainer instance = Cytosis.CONTEXT.getComponent(InstanceContainer.class);
-                            instance.setChunkLoader(new PolarLoader(world));
-                            instance.setTimeRate(0);
-                            instance.setTime(6000);
-                            Logger.info("loading spawn platform");
-                            createSpawnPlatform();
-                        }
-                    });
+            Cytosis.CONTEXT.getComponent(MysqlDatabase.class)
+                .getWorld(Config.worldName, "bedwars_map_" + Config.mode.toLowerCase())
+                .whenComplete((world, throwable) -> {
+                    if (throwable != null) {
+                        Logger.error("error", throwable);
+                    } else {
+                        Cytosis.CONTEXT.registerComponent(
+                            MinecraftServer.getInstanceManager().createInstanceContainer());
+                        InstanceContainer instance = Cytosis.CONTEXT.getComponent(InstanceContainer.class);
+                        instance.setChunkLoader(new PolarLoader(world));
+                        instance.setTimeRate(0);
+                        instance.setTime(6000);
+                        Logger.info("loading spawn platform");
+                        createSpawnPlatform();
+                    }
+                });
 
         } catch (Exception e) {
             Logger.error("error", e);

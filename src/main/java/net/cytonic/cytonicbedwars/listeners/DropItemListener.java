@@ -1,10 +1,9 @@
 package net.cytonic.cytonicbedwars.listeners;
 
+import java.time.Duration;
+
 import io.github.togar2.pvp.feature.fall.VanillaFallFeature;
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.utils.Items;
-import net.cytonic.cytosis.Cytosis;
-import net.cytonic.cytosis.events.api.Listener;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.ItemEntity;
@@ -12,7 +11,9 @@ import net.minestom.server.event.item.ItemDropEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.item.ItemStack;
 
-import java.time.Duration;
+import net.cytonic.cytonicbedwars.utils.Items;
+import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.events.api.Listener;
 
 @NoArgsConstructor
 @SuppressWarnings("unused")
@@ -32,15 +33,19 @@ public class DropItemListener {
             return;
         }
 
-        if (item.hasTag(Items.NAMESPACE) && item.getTag(Items.NAMESPACE).contains("SWORD") && !item.getTag(Items.NAMESPACE).contains("MENU")) {
+        if (item.hasTag(Items.NAMESPACE) && item.getTag(Items.NAMESPACE).contains("SWORD") && !item.getTag(
+            Items.NAMESPACE).contains("MENU")) {
             int swords = -1; //the sword in the event is still in the inventory
             for (ItemStack itemStack : event.getPlayer().getInventory().getItemStacks()) {
-                if (itemStack.hasTag(Items.NAMESPACE) && itemStack.getTag(Items.NAMESPACE).contains("SWORD") && !itemStack.getTag(Items.NAMESPACE).contains("MENU")) {
+                if (itemStack.hasTag(Items.NAMESPACE) && itemStack.getTag(Items.NAMESPACE).contains("SWORD")
+                    && !itemStack.getTag(Items.NAMESPACE).contains("MENU")) {
                     swords++;
                 }
             }
             if (swords == 0) {
-                MinecraftServer.getSchedulerManager().buildTask(() -> event.getPlayer().getInventory().addItemStack(Items.DEFAULT_SWORD)).delay(Duration.ofMillis(1)).schedule();
+                MinecraftServer.getSchedulerManager()
+                    .buildTask(() -> event.getPlayer().getInventory().addItemStack(Items.DEFAULT_SWORD))
+                    .delay(Duration.ofMillis(1)).schedule();
             }
         }
 
