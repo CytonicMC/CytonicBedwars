@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.devnatan.inventoryframework.ViewFrame;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -40,7 +39,8 @@ import net.cytonic.cytonicbedwars.data.objects.PlayerList;
 import net.cytonic.cytonicbedwars.data.objects.Scoreboard;
 import net.cytonic.cytonicbedwars.data.objects.Stats;
 import net.cytonic.cytonicbedwars.data.objects.Team;
-import net.cytonic.cytonicbedwars.menu.itemShop.BlocksShopMenu;
+import net.cytonic.cytonicbedwars.npcs.ItemShopNPC;
+import net.cytonic.cytonicbedwars.npcs.TeamShopNPC;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.runnables.GameRunnable;
 import net.cytonic.cytonicbedwars.runnables.RespawnRunnable;
@@ -49,11 +49,10 @@ import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Bootstrappable;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.bootstrap.annotations.CytosisComponent;
+import net.cytonic.cytosis.entity.npc.NPC;
 import net.cytonic.cytosis.logging.Logger;
-import net.cytonic.cytosis.managers.NpcManager;
 import net.cytonic.cytosis.managers.PlayerListManager;
 import net.cytonic.cytosis.managers.SideboardManager;
-import net.cytonic.cytosis.npcs.Npc;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 
@@ -64,7 +63,7 @@ public class GameManager implements Bootstrappable {
 
     private final List<Team> teams = new ArrayList<>();
     private final List<UUID> spectators = new ArrayList<>();
-    private final List<Npc> npcList = new ArrayList<>();
+    private final List<NPC> npcList = new ArrayList<>();
     public boolean STARTED = false;
     private GameState beforeFrozen;
     private GameState gameState;
@@ -120,23 +119,12 @@ public class GameManager implements Bootstrappable {
         gameRunnable = new GameRunnable();
 
         for (Team team : teams) {
-            Npc itemShop = Npc.ofHumanoid(team.getItemShopLocation(),
-                    Cytosis.CONTEXT.getComponent(InstanceContainer.class))
-                .interactTrigger((_, _, player) -> Cytosis.CONTEXT.getComponent(ViewFrame.class)
-                    .open(BlocksShopMenu.class, player))
-                .skin(Config.itemShopSkin)
-                .lines(Msg.gold("<b>ITEM SHOP"))
-                .invulnerable()
-                .build();
+            NPC itemShop = new ItemShopNPC(team.getItemShopLocation());
+            itemShop.register();
             npcList.add(itemShop);
 
-            Npc teamShop = Npc.ofHumanoid(team.getTeamShopLocation(),
-                    Cytosis.CONTEXT.getComponent(InstanceContainer.class))
-                .interactTrigger((_, _, player) -> player.sendMessage(Msg.red("Coming soon")))
-                .skin(Config.teamShopSkin)
-                .lines(Msg.red("Coming soon"))
-                .invulnerable()
-                .build();
+            NPC teamShop = new TeamShopNPC(team.getTeamShopLocation());
+            teamShop.register();
             npcList.add(teamShop);
         }
     }
@@ -199,7 +187,7 @@ public class GameManager implements Bootstrappable {
         setGameState(GameState.ENDED);
         gameRunnable.stop();
         gameRunnable = null;
-        npcList.forEach((npc -> npc.getActions().clear()));
+        npcList.forEach(NPC::remove);
         Cytosis.CONTEXT.getComponent(GeneratorManager.class).removeGenerators();
         MinecraftServer.getSchedulerManager().buildTask(() -> {
             Cytosis.getOnlinePlayers().forEach(p -> {
@@ -246,7 +234,7 @@ public class GameManager implements Bootstrappable {
         STARTED = false;
         setGameState(GameState.CLEANUP);
         Cytosis.CONTEXT.getComponent(WorldManager.class).redoWorld();
-        npcList.forEach((npc -> Cytosis.CONTEXT.getComponent(NpcManager.class).removeNpc(npc)));
+        npcList.forEach(NPC::remove);
         for (Entity entity : Cytosis.CONTEXT.getComponent(InstanceContainer.class).getEntities()) {
             if (entity instanceof BedwarsPlayer) continue;
             entity.remove();
