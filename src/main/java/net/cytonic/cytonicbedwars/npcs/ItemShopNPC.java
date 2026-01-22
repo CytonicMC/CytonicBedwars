@@ -14,7 +14,7 @@ import net.cytonic.cytosis.entity.npc.configuration.NPCConfiguration;
 import net.cytonic.cytosis.events.npcs.NPCInteractEvent;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
-import net.cytonic.protocol.ExcludeFromClassGraph;
+import net.cytonic.protocol.utils.ExcludeFromClassGraph;
 
 @ExcludeFromClassGraph
 public class ItemShopNPC extends NPC {

@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("net.cytonic:Cytosis:${findProperty("cytosis-version") as String}")
+    compileOnly("net.cytonic:Cytosis:${findProperty("cytosis-version")}")
 }
 
 java {
@@ -25,11 +25,10 @@ tasks {
     runCytosis {
         cytosisVersion = findProperty("cytosis-version") as String
     }
-    assemble {
-        dependsOn(shadowJar)
-    }
     shadowJar {
         archiveFileName.set("CytonicBedwars.jar")
+        archiveClassifier.set("")
+        mergeServiceFiles()
     }
     jar {
         enabled = false
