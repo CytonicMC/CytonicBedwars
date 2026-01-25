@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - master
+  repository_dispatch:
+    types: [ trigger-workflow ]
 
 jobs:
   docker:
