@@ -4,7 +4,6 @@ import me.devnatan.inventoryframework.View;
 import me.devnatan.inventoryframework.ViewConfigBuilder;
 import me.devnatan.inventoryframework.context.OpenContext;
 import me.devnatan.inventoryframework.context.RenderContext;
-import me.devnatan.inventoryframework.context.SlotClickContext;
 import net.kyori.adventure.sound.Sound;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.sound.SoundEvent;
@@ -20,6 +19,7 @@ import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
+import net.cytonic.minestomInventoryFramework.context.SlotClickContext;
 
 public class ToolShopMenu extends View {
 
