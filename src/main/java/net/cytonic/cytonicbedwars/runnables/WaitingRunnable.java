@@ -2,8 +2,9 @@ package net.cytonic.cytonicbedwars.runnables;
 
 
 import lombok.Getter;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.managers.SideboardManager;
 import net.cytonic.cytosis.utils.Msg;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.title.Title;
@@ -14,9 +15,9 @@ import net.minestom.server.timer.Task;
 import java.time.Duration;
 
 public class WaitingRunnable {
-    private final Task task;
     @Getter
     private static int timeLeft = 6;
+    private final Task task;
 
     public WaitingRunnable() {
         task = MinecraftServer.getSchedulerManager().buildTask(this::run).repeat(Duration.ofSeconds(1)).schedule();
@@ -26,13 +27,13 @@ public class WaitingRunnable {
         timeLeft--;
         if (timeLeft <= 0) {
             task.cancel();
-            CytonicBedWars.getGameManager().start();
+            Cytosis.CONTEXT.getComponent(GameManager.class).start();
             return;
         }
 
         switch (timeLeft) {
             case 1, 2, 3, 4, 5 -> {
-                Cytosis.getSideboardManager().updatePlayersNow();
+                Cytosis.CONTEXT.getComponent(SideboardManager.class).updatePlayersNow();
                 Cytosis.getOnlinePlayers().forEach(player -> {
                     player.sendMessage(Msg.yellow("The game starts in <red>%s <yellow>seconds!", timeLeft));
                     player.showTitle(Title.title(Msg.red(String.valueOf(timeLeft)), Msg.mm(""), Title.Times.times(Duration.ofMillis(0), Duration.ofSeconds(1), Duration.ofMillis(0))));

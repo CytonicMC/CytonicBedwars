@@ -2,8 +2,9 @@ package net.cytonic.cytonicbedwars.listeners;
 
 import io.github.togar2.pvp.utils.PotionFlags;
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
+import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.utils.Items;
+import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.events.api.Listener;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
@@ -31,7 +32,7 @@ public class GamemodeChangeListener {
             player.addEffect(new Potion(PotionEffect.INVISIBILITY, PotionFlags.create(false, false, true), Potion.INFINITE_DURATION));
             player.setAllowFlying(true);
             player.setFlying(true);
-            CytonicBedWars.getGameManager().getSpectators().add(player.getUuid());
+            Cytosis.CONTEXT.getComponent(GameManager.class).getSpectators().add(player.getUuid());
             player.getInventory().setItemStack(0, Items.SPECTATOR_TARGET_SELECTOR);
             player.getInventory().setItemStack(4, Items.SPECTATOR_SPEED_SELECTOR);
             player.getInventory().setItemStack(8, Items.SPECTATOR_LOBBY_REQUEST);
@@ -39,7 +40,7 @@ public class GamemodeChangeListener {
             // un-ivisafy if they are respawning, etc.
             if (event.getPlayer().getGameMode() == GameMode.ADVENTURE)
                 player.getInventory().clear(); // only clear the inventory if they are coming from a spectator
-            CytonicBedWars.getGameManager().getSpectators().remove(player.getUuid());
+            Cytosis.CONTEXT.getComponent(GameManager.class).getSpectators().remove(player.getUuid());
             player.removeEffect(PotionEffect.INVISIBILITY);
             if (event.getNewGameMode() != GameMode.CREATIVE) {
                 player.setAllowFlying(false);

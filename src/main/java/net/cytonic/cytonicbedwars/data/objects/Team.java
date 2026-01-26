@@ -15,12 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Team {
-    @Getter(AccessLevel.NONE)
-    private boolean bed = false;
-    private net.minestom.server.scoreboard.Team mcTeam;
-    private List<BedwarsPlayer> players;
-    private boolean alive = true;
-    private Inventory teamChest = new Inventory(InventoryType.CHEST_3_ROW, "Team Chest");
     private final String displayName;
     private final String name;
     private final String prefix;
@@ -35,6 +29,12 @@ public class Team {
     private final Block woolType;
     private final Block glassType;
     private final Block terracottaType;
+    @Getter(AccessLevel.NONE)
+    private boolean bed = false;
+    private net.minestom.server.scoreboard.Team mcTeam;
+    private List<BedwarsPlayer> players;
+    private boolean alive = true;
+    private Inventory teamChest = new Inventory(InventoryType.CHEST_3_ROW, "Team Chest");
 
     public Team(String displayName, String prefix, NamedTextColor color, Pos spawnLocation, Pos generatorLocation,
                 Pos itemShopLocation, Pos teamShopLocation, Pos chestLocation, Pos bedLocation, Block bedType, Block woolType, Block glassType, Block terracottaType) {

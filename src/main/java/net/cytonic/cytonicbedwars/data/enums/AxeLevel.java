@@ -12,14 +12,15 @@ public enum AxeLevel {
 
     private final int order;
     private final String itemID;
+
     AxeLevel(int order, String itemID) {
         this.order = order;
         this.itemID = itemID;
     }
 
     public static AxeLevel getOrdered(AxeLevel level, int i) {
-        if(level == null) level = NONE;
-        if(level.getOrder() == 0 && i < 1) return WOODEN; // can't go below wooden
+        if (level == null) level = NONE;
+        if (level.getOrder() == 0 && i < 1) return WOODEN; // can't go below wooden
         return getByOrder(level.getOrder() + i);
     }
 

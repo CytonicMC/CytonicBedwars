@@ -1,6 +1,5 @@
 package net.cytonic.cytonicbedwars.data.objects;
 
-import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.managers.GameManager;
@@ -8,6 +7,7 @@ import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.runnables.GameRunnable;
 import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.CytosisContext;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.sideboard.Sideboard;
@@ -21,7 +21,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-@NoArgsConstructor
 public class Scoreboard implements SideboardCreator {
 
     @Override
@@ -37,7 +36,7 @@ public class Scoreboard implements SideboardCreator {
         if (!(p instanceof BedwarsPlayer player)) return List.of();
         List<Component> list = new ArrayList<>();
         try {
-            switch (CytonicBedWars.getGameManager().getGameState()) {
+            switch (Cytosis.CONTEXT.getComponent(GameManager.class).getGameState()) {
                 case WAITING -> list = List.of(
                         topLine(),
                         Msg.mm(""),
@@ -81,9 +80,9 @@ public class Scoreboard implements SideboardCreator {
                     List<Component> scoreboardArgs = new ArrayList<>();
                     scoreboardArgs.add(topLine());
                     scoreboardArgs.add(Msg.mm(""));
-                    scoreboardArgs.add(Msg.mm("%s in: <green>%s", CytonicBedWars.getGameManager().getGameState().getNext().getDisplayName(), GameRunnable.getFormattedTimeLeft()));
+                    scoreboardArgs.add(Msg.mm("%s in: <green>%s", Cytosis.CONTEXT.getComponent(GameManager.class).getGameState().getNext().getDisplayName(), GameRunnable.getFormattedTimeLeft()));
                     scoreboardArgs.add(Msg.mm(""));
-                    GameManager gameManager = CytonicBedWars.getGameManager();
+                    GameManager gameManager = Cytosis.CONTEXT.getComponent(GameManager.class);
                     Optional<Team> playerTeam = gameManager.getPlayerTeam(player);
                     Config.teams.values().forEach(team -> {
                         String s = team.getPrefix() + "<reset>" + team.getDisplayName();
@@ -130,6 +129,6 @@ public class Scoreboard implements SideboardCreator {
     }
 
     private Component topLine() {
-        return Msg.grey("%s <dark_gray>%s", new SimpleDateFormat("M/d/yy").format(Calendar.getInstance().getTime()), Cytosis.getRawID());
+        return Msg.grey("%s <dark_gray>%s", new SimpleDateFormat("M/d/yy").format(Calendar.getInstance().getTime()), CytosisContext.SERVER_ID);
     }
 }

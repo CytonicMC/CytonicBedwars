@@ -4,10 +4,12 @@ package net.cytonic.cytonicbedwars.managers;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.cytonic.cytonicbedwars.Config;
-import net.cytonic.cytonicbedwars.CytonicBedWars;
 import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.data.objects.Generator;
 import net.cytonic.cytonicbedwars.data.objects.Team;
+import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.bootstrap.annotations.CytosisComponent;
+
 import net.minestom.server.coordinate.Pos;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.Map;
 
 @Getter
 @NoArgsConstructor
+@CytosisComponent
 public class GeneratorManager {
     private final Map<Team, Generator> ironGenerators = new HashMap<>();
     private final Map<Team, Generator> goldGenerators = new HashMap<>();
@@ -24,7 +27,7 @@ public class GeneratorManager {
     private final List<Generator> emeraldGenerators = new ArrayList<>();
 
     public void registerTeamGenerators() {
-        for (Team t : CytonicBedWars.getGameManager().getTeams()) {
+        for (Team t : Cytosis.CONTEXT.getComponent(GameManager.class).getTeams()) {
             Pos loc = t.getGeneratorLocation();
             Generator ironGenerator = new Generator(
                     GeneratorType.IRON,
