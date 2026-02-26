@@ -21,7 +21,7 @@ jobs:
         run: ./gradlew --no-daemon assemble
 
       - name: Upload jar
-        uses: actions/upload-artifact@v6.0.0
+        uses: actions/upload-artifact@v7.0.0
         with:
           name: jar
           path: build/libs/CytonicBedwars.jar
