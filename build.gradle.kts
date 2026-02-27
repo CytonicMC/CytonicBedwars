@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("com.gradleup.shadow") version "9.3.1"
+    id("com.gradleup.shadow") version "9.3.2"
     id("io.freefair.lombok") version "9.2.0"
     id("net.cytonic.run-cytosis") version "1.0"
 }
