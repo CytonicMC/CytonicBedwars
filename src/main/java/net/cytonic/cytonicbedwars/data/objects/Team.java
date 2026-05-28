@@ -1,30 +1,31 @@
 package net.cytonic.cytonicbedwars.data.objects;
 
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.Component;
+import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.inventory.Inventory;
 import net.minestom.server.inventory.InventoryType;
 
-import java.util.List;
+import net.cytonic.cytonicbedwars.config.TeamColor;
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 
 @Getter
 @Setter
 public class Team {
-    private final String displayName;
-    private final String name;
-    private final String prefix;
-    private final NamedTextColor color;
-    private final Pos spawnLocation;
-    private final Pos generatorLocation;
-    private final Pos itemShopLocation;
-    private final Pos teamShopLocation;
-    private final Pos chestLocation;
-    private final Pos bedLocation;
+
+    private final TeamColor color;
+    private final Component prefix;
+    private final Pos spawnPos;
+    private final Pos itemShopPos;
+    private final Pos teamShopPos;
+    private final BlockVec teamChestPos;
+    private final Pos generatorPos;
     private final Block bedType;
     private final Block woolType;
     private final Block glassType;
@@ -36,22 +37,25 @@ public class Team {
     private boolean alive = true;
     private Inventory teamChest = new Inventory(InventoryType.CHEST_3_ROW, "Team Chest");
 
-    public Team(String displayName, String prefix, NamedTextColor color, Pos spawnLocation, Pos generatorLocation,
-                Pos itemShopLocation, Pos teamShopLocation, Pos chestLocation, Pos bedLocation, Block bedType, Block woolType, Block glassType, Block terracottaType) {
-        this.displayName = displayName;
-        this.name = displayName.split(" ")[0];
-        this.prefix = prefix;
+    public Team(
+        TeamColor color,
+        Pos spawnPos,
+        Pos itemShopPos,
+        Pos teamShopPos,
+        BlockVec teamChestPos,
+        Pos generatorPos
+    ) {
         this.color = color;
-        this.spawnLocation = spawnLocation;
-        this.generatorLocation = generatorLocation;
-        this.itemShopLocation = itemShopLocation;
-        this.teamShopLocation = teamShopLocation;
-        this.chestLocation = chestLocation;
-        this.bedLocation = bedLocation;
-        this.bedType = bedType;
-        this.woolType = woolType;
-        this.glassType = glassType;
-        this.terracottaType = terracottaType;
+        this.prefix = color.getPrefix();
+        this.spawnPos = spawnPos;
+        this.itemShopPos = itemShopPos;
+        this.teamShopPos = teamShopPos;
+        this.teamChestPos = teamChestPos;
+        this.generatorPos = generatorPos;
+        this.bedType = color.getBedBlock();
+        this.woolType = color.getWoolBlock();
+        this.glassType = color.getGlassBlock();
+        this.terracottaType = color.getTerracottaType();
     }
 
     public boolean hasBed() {

@@ -8,7 +8,7 @@ import net.minestom.server.item.ItemStack;
 import net.minestom.server.tag.Tag;
 import org.jetbrains.annotations.NotNull;
 
-import net.cytonic.cytonicbedwars.Config;
+import net.cytonic.cytonicbedwars.BedwarsConfig;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.events.api.Listener;
 import net.cytonic.cytosis.utils.Msg;
@@ -28,7 +28,8 @@ public class BlockPlaceListener {
     public void onBlockPlace(PlayerBlockPlaceEvent event) {
         if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
         if (player.getGameMode() == GameMode.CREATIVE) return;
-        Pos spawn = Config.spawnPlatformCenter;
+        Pos spawn = new Pos(0,0,0);
+        //todo make distance configurable
         if (distance(event.getBlockPosition().x(), spawn.x(), event.getBlockPosition().z(), spawn.z()) > 105.0
             || event.getBlockPosition().y() >= 50) {
             event.setCancelled(true);

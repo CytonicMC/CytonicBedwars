@@ -14,7 +14,6 @@ import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.network.packet.server.play.BlockActionPacket;
 import net.minestom.server.sound.SoundEvent;
-import org.jetbrains.annotations.NotNull;
 
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
@@ -23,12 +22,12 @@ import net.cytonic.cytosis.Cytosis;
 public class EnderChestBlockHandler implements BlockHandler {
 
     @Override
-    public boolean onInteract(@NotNull Interaction interaction) {
+    public boolean onInteract(Interaction interaction) {
         if (!Cytosis.CONTEXT.getComponent(GameManager.class).isSTARTED()) return false;
         if (Cytosis.CONTEXT.getComponent(GameManager.class).getSpectators().contains(interaction.getPlayer().getUuid()))
             return false;
         BedwarsPlayer player = (BedwarsPlayer) interaction.getPlayer();
-        EventListener<@NotNull InventoryPreClickEvent> listener = EventListener.of(InventoryPreClickEvent.class,
+        EventListener<InventoryPreClickEvent> listener = EventListener.of(InventoryPreClickEvent.class,
             event -> {
                 ItemStack item = event.getClickedItem();
                 if (item.material().equals(Material.WOODEN_SWORD)) {
@@ -56,7 +55,9 @@ public class EnderChestBlockHandler implements BlockHandler {
     }
 
     @Override
-    public @NotNull Key getKey() {
+    public Key getKey() {
+        //todo remove once adventure fixes pattern
+        //noinspection PatternValidation
         return Key.key("minecraft:ender_chest");
     }
 }

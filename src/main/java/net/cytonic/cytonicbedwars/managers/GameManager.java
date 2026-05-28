@@ -9,11 +9,9 @@ import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
-import net.kyori.adventure.util.Ticks;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.Entity;
@@ -21,17 +19,12 @@ import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.instance.InstanceContainer;
-import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
-import net.minestom.server.network.packet.server.play.TeamsPacket;
 import net.minestom.server.registry.RegistryKey;
-import net.minestom.server.scoreboard.TeamBuilder;
-import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.timer.TaskSchedule;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
@@ -39,8 +32,6 @@ import net.cytonic.cytonicbedwars.data.objects.PlayerList;
 import net.cytonic.cytonicbedwars.data.objects.PlayerStats;
 import net.cytonic.cytonicbedwars.data.objects.Scoreboard;
 import net.cytonic.cytonicbedwars.data.objects.Team;
-import net.cytonic.cytonicbedwars.npcs.ItemShopNPC;
-import net.cytonic.cytonicbedwars.npcs.TeamShopNPC;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.runnables.GameRunnable;
 import net.cytonic.cytonicbedwars.runnables.RespawnRunnable;
@@ -73,7 +64,7 @@ public class GameManager implements Bootstrappable {
     @Override
     public void init() {
         SideboardManager sideboardManager = Cytosis.CONTEXT.getComponent(SideboardManager.class);
-        sideboardManager.setSideboardCreator(new Scoreboard());
+//        sideboardManager.setSideboardCreator(new Scoreboard());
         sideboardManager.cancelUpdates();
         sideboardManager.autoUpdateBoards(TaskSchedule.tick(1));
         Cytosis.CONTEXT.getComponent(PlayerListManager.class).setCreator(new PlayerList());
@@ -96,7 +87,7 @@ public class GameManager implements Bootstrappable {
     }
 
     public void start() {
-        Cytosis.CONTEXT.getComponent(WorldManager.class).removeSpawnPlatform();
+//        Cytosis.CONTEXT.getComponent(WorldManager.class).removeSpawnPlatform();
         STARTED = true;
         setGameState(GameState.PLAY);
         // split players into teams
@@ -104,7 +95,7 @@ public class GameManager implements Bootstrappable {
 
         teams.forEach(team -> team.getPlayers().forEach(player -> {
             team.getMcTeam().addMember(player.getUsername());
-            player.teleport(team.getSpawnLocation());
+            player.teleport(team.getSpawnPos());
             player.setGameMode(GameMode.SURVIVAL);
             player.getInventory().setItemStack(0, Items.DEFAULT_SWORD);
             setEquipment(player);
@@ -117,13 +108,14 @@ public class GameManager implements Bootstrappable {
         gameRunnable = new GameRunnable();
 
         for (Team team : teams) {
-            NPC itemShop = new ItemShopNPC(team.getItemShopLocation());
-            itemShop.register();
-            npcList.add(itemShop);
-
-            NPC teamShop = new TeamShopNPC(team.getTeamShopLocation());
-            teamShop.register();
-            npcList.add(teamShop);
+            //todo
+//            NPC itemShop = new ItemShopNPC(team.getItemShopLocation());
+//            itemShop.register();
+//            npcList.add(itemShop);
+//
+//            NPC teamShop = new TeamShopNPC(team.getTeamShopLocation());
+//            teamShop.register();
+//            npcList.add(teamShop);
         }
     }
 
@@ -139,45 +131,47 @@ public class GameManager implements Bootstrappable {
     }
 
     private List<Team> splitPlayersIntoTeams(List<CytosisPlayer> players) {
-        int numTeams = Config.teams.size();
-        int teamSize = players.size() / numTeams;
-        int remainingPlayers = players.size() % numTeams;
-        List<Team> result = new ArrayList<>();
+        //todo
+        //        int numTeams = BedwarsConfig.teams.size();
+//        int teamSize = players.size() / numTeams;
+//        int remainingPlayers = players.size() % numTeams;
+//        List<Team> result = new ArrayList<>();
+//
+//        int playerIndex = 0;
+//        for (Team team : BedwarsConfig.teams.values()) {
+//            net.minestom.server.scoreboard.Team mcTeam = new TeamBuilder(team.getDisplayName(),
+//                MinecraftServer.getTeamManager())
+//                .collisionRule(TeamsPacket.CollisionRule.PUSH_OTHER_TEAMS)
+//                .teamColor(team.getColor())
+//                .prefix(Msg.mm(team.getPrefix()))
+//                .build();
+//            mcTeam.setSeeInvisiblePlayers(true);
+//            mcTeam.setAllowFriendlyFire(false);
+//            List<BedwarsPlayer> teamPlayers = new ArrayList<>();
+//            int currentTeamSize = teamSize + (remainingPlayers > 0 ? 1 : 0);
+//            for (int i = 0; i < currentTeamSize; i++) {
+//                if (playerIndex < players.size()) {
+//                    if (!(players.get(playerIndex) instanceof BedwarsPlayer player)) return List.of();
+//                    teamPlayers.add(player);
+//                    playerIndex++;
+//                }
+//            }
+//            team.setPlayers(teamPlayers);
+//            if (!team.getPlayers().isEmpty()) {
+//                team.setMcTeam(mcTeam);
+//                team.setBed(true);
+//                result.add(team);
+//            } else {
+//                Cytosis.CONTEXT.getComponent(WorldManager.class).breakBed(team);
+//                Cytosis.CONTEXT.getComponent(InstanceContainer.class).setBlock(team.getChestLocation(), Block.AIR);
+//            }
+//            if (remainingPlayers > 0) {
+//                remainingPlayers--;
+//            }
+//        }
 
-        int playerIndex = 0;
-        for (Team team : Config.teams.values()) {
-            net.minestom.server.scoreboard.Team mcTeam = new TeamBuilder(team.getDisplayName(),
-                MinecraftServer.getTeamManager())
-                .collisionRule(TeamsPacket.CollisionRule.PUSH_OTHER_TEAMS)
-                .teamColor(team.getColor())
-                .prefix(Msg.mm(team.getPrefix()))
-                .build();
-            mcTeam.setSeeInvisiblePlayers(true);
-            mcTeam.setAllowFriendlyFire(false);
-            List<BedwarsPlayer> teamPlayers = new ArrayList<>();
-            int currentTeamSize = teamSize + (remainingPlayers > 0 ? 1 : 0);
-            for (int i = 0; i < currentTeamSize; i++) {
-                if (playerIndex < players.size()) {
-                    if (!(players.get(playerIndex) instanceof BedwarsPlayer player)) return List.of();
-                    teamPlayers.add(player);
-                    playerIndex++;
-                }
-            }
-            team.setPlayers(teamPlayers);
-            if (!team.getPlayers().isEmpty()) {
-                team.setMcTeam(mcTeam);
-                team.setBed(true);
-                result.add(team);
-            } else {
-                Cytosis.CONTEXT.getComponent(WorldManager.class).breakBed(team);
-                Cytosis.CONTEXT.getComponent(InstanceContainer.class).setBlock(team.getChestLocation(), Block.AIR);
-            }
-            if (remainingPlayers > 0) {
-                remainingPlayers--;
-            }
-        }
-
-        return result;
+//        return result;
+        return null;
     }
 
     public void end() {
@@ -209,8 +203,8 @@ public class GameManager implements Bootstrappable {
                     Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(2), Duration.ofSeconds(1))));
             }
             player.sendMessage(Msg.mm(""));
-            player.sendMessage(Msg.goldSplash("GAME OVER!", "<%s>%s <gray>has won the game!", winningTeam.getColor(),
-                winningTeam.getDisplayName()));
+//            player.sendMessage(Msg.goldSplash("GAME OVER!", "<%s>%s <gray>has won the game!", winningTeam.getColor(),
+//                winningTeam.getDisplayName()));
             player.sendMessage(Msg.mm(""));
             PlayerStats stats = player.getStats();
             player.sendMessage(Msg.gold("<b>STATS:"));
@@ -287,22 +281,22 @@ public class GameManager implements Bootstrappable {
     }
 
     public void breakBed(BedwarsPlayer player, Team team) {
-        Component message = Msg.whiteSplash("<newline>BED DESTRUCTION!",
-            "<%s>%s Bed<reset><gray> was destroyed by <%s>%s<reset><gray>!<newline>", team.getColor().toString(),
-            team.getName(), getPlayerTeam(player).orElseThrow().getColor(), player.getUsername());
-        Cytosis.getOnlinePlayers().forEach(p -> {
-            player.playSound(Sound.sound(SoundEvent.ENTITY_GENERIC_EXPLODE, Sound.Source.PLAYER, 1f, 100f));
-            p.sendMessage(message);
-        });
-        for (BedwarsPlayer p : team.getPlayers()) {
-            p.getStats().addBedLost();
-            Title title = Title.title(Msg.red("<b>BED DESTROYED!"), Msg.white("You will no longer respawn!"),
-                Title.Times.times(Ticks.duration(10L), Ticks.duration(100L), Ticks.duration(20L)));
-            p.showTitle(title);
-        }
-        // todo: display animations, messages, etc.
-        player.getStats().addBedBreak();
-        team.setBed(false);
+//        Component message = Msg.whiteSplash("<newline>BED DESTRUCTION!",
+//            "<%s>%s Bed<reset><gray> was destroyed by <%s>%s<reset><gray>!<newline>", team.getColor().toString(),
+//            team.getName(), getPlayerTeam(player).orElseThrow().getColor(), player.getUsername());
+//        Cytosis.getOnlinePlayers().forEach(p -> {
+//            player.playSound(Sound.sound(SoundEvent.ENTITY_GENERIC_EXPLODE, Sound.Source.PLAYER, 1f, 100f));
+//            p.sendMessage(message);
+//        });
+//        for (BedwarsPlayer p : team.getPlayers()) {
+//            p.getStats().addBedLost();
+//            Title title = Title.title(Msg.red("<b>BED DESTROYED!"), Msg.white("You will no longer respawn!"),
+//                Title.Times.times(Ticks.duration(10L), Ticks.duration(100L), Ticks.duration(20L)));
+//            p.showTitle(title);
+//        }
+//         todo: display animations, messages, etc.
+//        player.getStats().addBedBreak();
+//        team.setBed(false);
     }
 
     public void kill(@NotNull BedwarsPlayer dead, @Nullable BedwarsPlayer killer,
@@ -363,8 +357,8 @@ public class GameManager implements Bootstrappable {
             Logger.error("unknown damage type: " + damageType.key());
             message = message.append(Msg.grey("died under mysterious circumstances"));
         }
-
-        dead.teleport(Config.spawnPlatformCenter);
+//todo
+//        dead.teleport(BedwarsConfig.spawnPlatformCenter);
         if (finalKill) {
             dead.showTitle(Title.title(Msg.red("<b>YOU DIED!"), Msg.yellow("You won't respawn"),
                 Title.Times.times(Duration.ofMillis(100), Duration.ofMillis(2750), Duration.ofMillis(100))));
@@ -378,9 +372,9 @@ public class GameManager implements Bootstrappable {
                 deadTeam.setAlive(false);
                 Cytosis.getOnlinePlayers().forEach(player -> {
                     player.sendMessage(Msg.mm(""));
-                    player.sendMessage(
-                        Msg.whiteSplash("TEAM ELIMINATED!", "<%s>%s <red>has been eliminated!", deadTeam.getColor(),
-                            deadTeam.getDisplayName()));
+//                    player.sendMessage(
+//                        Msg.whiteSplash("TEAM ELIMINATED!", "<%s>%s <red>has been eliminated!", deadTeam.getColor(),
+//                            deadTeam.getDisplayName()));
                     player.sendMessage(Msg.mm(""));
                 });
             }
@@ -413,7 +407,7 @@ public class GameManager implements Bootstrappable {
         MinecraftServer.getSchedulerManager().buildTask(() -> dead.setInvulnerable(false)).delay(Duration.ofSeconds(5))
             .schedule();
         dead.setVelocity(Vec.ZERO);
-        dead.teleport(getPlayerTeam(dead).orElseThrow().getSpawnLocation());
+//        dead.teleport(getPlayerTeam(dead).orElseThrow().getSpawnLocation());
 
         dead.getInventory().setItemStack(0, Items.DEFAULT_SWORD);
 

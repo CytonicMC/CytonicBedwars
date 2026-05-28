@@ -3,7 +3,7 @@ package net.cytonic.cytonicbedwars.managers;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.Config;
+import net.cytonic.cytonicbedwars.BedwarsConfig;
 import net.cytonic.cytonicbedwars.data.enums.GeneratorType;
 import net.cytonic.cytonicbedwars.data.objects.Generator;
 import net.cytonic.cytonicbedwars.data.objects.Team;
@@ -27,42 +27,44 @@ public class GeneratorManager {
     private final List<Generator> emeraldGenerators = new ArrayList<>();
 
     public void registerTeamGenerators() {
-        for (Team t : Cytosis.CONTEXT.getComponent(GameManager.class).getTeams()) {
-            Pos loc = t.getGeneratorLocation();
-            Generator ironGenerator = new Generator(
-                    GeneratorType.IRON,
-                    Config.generatorsWaitTimeTicks.get(GeneratorType.IRON), Config.generatorsItemLimit.get(GeneratorType.IRON),
-                    loc,
-                    false,
-                    true
-            );
-            ironGenerators.put(t, ironGenerator);
-            Generator goldGenerator = new Generator(
-                    GeneratorType.GOLD,
-                    Config.generatorsWaitTimeTicks.get(GeneratorType.GOLD), Config.generatorsItemLimit.get(GeneratorType.GOLD),
-                    loc,
-                    false,
-                    true
-            );
-            goldGenerators.put(t, goldGenerator);
-            ironGenerator.start();
-            goldGenerator.start();
-        }
+        //todo
+//        for (Team t : Cytosis.CONTEXT.getComponent(GameManager.class).getTeams()) {
+//            Pos loc = t.getGeneratorLocation();
+//            Generator ironGenerator = new Generator(
+//                    GeneratorType.IRON,
+//                    BedwarsConfig.generatorsWaitTimeTicks.get(GeneratorType.IRON), BedwarsConfig.generatorsItemLimit.get(GeneratorType.IRON),
+//                    loc,
+//                    false,
+//                    true
+//            );
+//            ironGenerators.put(t, ironGenerator);
+//            Generator goldGenerator = new Generator(
+//                    GeneratorType.GOLD,
+//                    BedwarsConfig.generatorsWaitTimeTicks.get(GeneratorType.GOLD), BedwarsConfig.generatorsItemLimit.get(GeneratorType.GOLD),
+//                    loc,
+//                    false,
+//                    true
+//            );
+//            goldGenerators.put(t, goldGenerator);
+//            ironGenerator.start();
+//            goldGenerator.start();
+//        }
     }
 
     public void registerDiamondGenerators() {
-        List<Pos> diamondGeneratorsPositions = Config.generators.get(GeneratorType.DIAMOND);
-        for (Pos diamondGeneratorsPosition : diamondGeneratorsPositions) {
-            Generator generator = new Generator(
-                    GeneratorType.DIAMOND,
-                    Config.generatorsWaitTimeTicks.get(GeneratorType.DIAMOND), Config.generatorsItemLimit.get(GeneratorType.DIAMOND),
-                    diamondGeneratorsPosition,
-                    true,
-                    false
-            );
-            diamondGenerators.add(generator);
-            generator.start();
-        }
+        //todo
+//        List<Pos> diamondGeneratorsPositions = BedwarsConfig.generators.get(GeneratorType.DIAMOND);
+//        for (Pos diamondGeneratorsPosition : diamondGeneratorsPositions) {
+//            Generator generator = new Generator(
+//                    GeneratorType.DIAMOND,
+//                    BedwarsConfig.generatorsWaitTimeTicks.get(GeneratorType.DIAMOND), BedwarsConfig.generatorsItemLimit.get(GeneratorType.DIAMOND),
+//                    diamondGeneratorsPosition,
+//                    true,
+//                    false
+//            );
+//            diamondGenerators.add(generator);
+//            generator.start();
+//        }
     }
 
     public void increaseDiamondsSpawnSpeed(int time) {
@@ -74,18 +76,19 @@ public class GeneratorManager {
     }
 
     public void registerEmeraldGenerators() {
-        List<Pos> posList = Config.generators.get(GeneratorType.EMERALD);
-        for (Pos pos : posList) {
-            Generator generator = new Generator(
-                    GeneratorType.EMERALD,
-                    Config.generatorsWaitTimeTicks.get(GeneratorType.EMERALD), Config.generatorsItemLimit.get(GeneratorType.EMERALD),
-                    pos,
-                    true,
-                    false
-            );
-            emeraldGenerators.add(generator);
-            generator.start();
-        }
+        //todo
+//        List<Pos> posList = BedwarsConfig.generators.get(GeneratorType.EMERALD);
+//        for (Pos pos : posList) {
+//            Generator generator = new Generator(
+//                    GeneratorType.EMERALD,
+//                    BedwarsConfig.generatorsWaitTimeTicks.get(GeneratorType.EMERALD), BedwarsConfig.generatorsItemLimit.get(GeneratorType.EMERALD),
+//                    pos,
+//                    true,
+//                    false
+//            );
+//            emeraldGenerators.add(generator);
+//            generator.start();
+//        }
     }
 
     public void increaseEmeraldsSpawnSpeed(int time) {

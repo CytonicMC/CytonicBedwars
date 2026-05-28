@@ -1,6 +1,8 @@
 package net.cytonic.cytonicbedwars.commands;
 
 import me.devnatan.inventoryframework.ViewFrame;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.minestom.server.command.builder.arguments.ArgumentType;
 import net.minestom.server.command.builder.suggestion.SuggestionEntry;
 
@@ -67,12 +69,21 @@ public class DebugCommand extends CytosisCommand {
                         player.sendMessage(Msg.green("Ending game!"));
                         Cytosis.CONTEXT.getComponent(GameManager.class).end();
                     }
+                    case "test" -> {
+                        player.sendMessage(Component.text("Click to copy").clickEvent(ClickEvent.copyToClipboard("""
+                            {
+                              "x": %d,
+                              "y": %d,
+                              "z": %d
+                            }
+                            """)));
+                    }
                     case "cleanup" -> {
                         player.sendMessage(Msg.green("Cleaning up game!"));
                         Cytosis.CONTEXT.getComponent(GameManager.class).cleanup();
                     }
-                    case "listteams" -> Cytosis.CONTEXT.getComponent(GameManager.class).getTeams()
-                        .forEach(team -> player.sendMessage(Msg.mm(team.getPrefix() + team.getDisplayName())));
+//                    case "listteams" -> Cytosis.CONTEXT.getComponent(GameManager.class).getTeams()
+//                        .forEach(team -> player.sendMessage(Msg.mm(team.getPrefix() + team.getDisplayName())));
                     case "freeze", "f" -> {
                         if (Cytosis.CONTEXT.getComponent(GameManager.class).getGameState() != GameState.FROZEN) {
                             Cytosis.getOnlinePlayers().forEach((player1) -> player1.sendMessage(
@@ -92,7 +103,7 @@ public class DebugCommand extends CytosisCommand {
                         Cytosis.CONTEXT.getComponent(ViewFrame.class).open(ItemShopMenu.class, player);
                     }
                     case "teaminfo" -> Cytosis.CONTEXT.getComponent(GameManager.class).getTeams().forEach(team -> {
-                        player.sendMessage(Msg.mm("<%s><b>Team:</b> %s", team.getColor(), team.getName()));
+//                        player.sendMessage(Msg.mm("<%s><b>Team:</b> %s", team.getColor(), team.getName()));
                         player.sendMessage(Msg.mm("Alive: %s", team.isAlive()));
                         player.sendMessage(Msg.mm("Bed: %s", team.hasBed()));
                         player.sendMessage(Msg.mm("MCTeam: %s", team.getMcTeam().getTeamName()));

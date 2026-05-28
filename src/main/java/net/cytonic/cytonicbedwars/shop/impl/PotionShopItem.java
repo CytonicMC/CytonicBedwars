@@ -14,9 +14,9 @@ import net.minestom.server.potion.PotionEffect;
 import net.cytonic.cytonicbedwars.data.enums.Currency;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.shop.ItemShopPage;
-import net.cytonic.protocol.utils.ExcludeFromClassGraph;
+import net.cytonic.protocol.utils.ExcludeFromIndex;
 
-@ExcludeFromClassGraph
+@ExcludeFromIndex
 public class PotionShopItem extends BasicShopItem {
 
     private final PotionEffect potionEffect;

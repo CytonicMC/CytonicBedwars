@@ -2,7 +2,6 @@ package net.cytonic.cytonicbedwars.player;
 
 import java.util.UUID;
 
-import io.ebean.DB;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,12 +14,15 @@ import net.minestom.server.network.player.PlayerConnection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import net.cytonic.cytonicbedwars.config.TeamColor;
 import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.data.objects.PlayerStats;
 import net.cytonic.cytonicbedwars.data.objects.Team;
+import net.cytonic.cytonicbedwars.game.Game;
 import net.cytonic.cytonicbedwars.managers.GameManager;
+import net.cytonic.cytonicbedwars.server.BedwarsServer;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.player.CytosisPlayer;
@@ -38,16 +40,14 @@ public class BedwarsPlayer extends CytosisPlayer {
     private boolean alive = true;
     private boolean respawning = false;
     private Inventory enderChest = new Inventory(InventoryType.CHEST_3_ROW, "Ender Chest");
-    private PlayerStats stats = DB.find(PlayerStats.class, getUuid());
+    private PlayerStats stats = null;
+    @Getter(AccessLevel.NONE)
+    private UUID gameId;
+    private TeamColor teamColor;
 
     public BedwarsPlayer(@NotNull PlayerConnection playerConnection, GameProfile gameProfile) {
         super(playerConnection, gameProfile);
-        load();
-    }
-
-    public BedwarsPlayer(@NotNull UUID uuid, @NotNull String username, @NotNull PlayerConnection playerConnection) {
-        super(uuid, username, playerConnection);
-        load();
+//        load();
     }
 
     public void load() {
@@ -61,6 +61,11 @@ public class BedwarsPlayer extends CytosisPlayer {
             this.enderChest = player.getEnderChest();
             this.stats = player.getStats();
         });
+    }
+
+    public void UNSAFE_joinGame(UUID gameId, TeamColor teamColor) {
+        this.gameId = gameId;
+        this.teamColor = teamColor;
     }
 
     public void sendToLobby() {
@@ -105,7 +110,13 @@ public class BedwarsPlayer extends CytosisPlayer {
 
     @Nullable
     public Team getBedwarsTeam() {
-        return Cytosis.get(GameManager.class).getPlayerTeam(this).orElse(null);
+        if (getGame() == null) return null;
+        return getGame().getTeam(teamColor);
+    }
+
+    @Nullable
+    public Game getGame() {
+        return Cytosis.get(BedwarsServer.class).getGame(gameId);
     }
 
     public void giveAxe() {

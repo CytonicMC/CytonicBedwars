@@ -1,0 +1,20 @@
+package net.cytonic.cytonicbedwars.server.sideboard;
+
+import org.jspecify.annotations.Nullable;
+
+import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
+import net.cytonic.cytosis.server.sideboard.SideboardService;
+import net.cytonic.cytosis.sideboard.SideboardCreator;
+
+public class SideboardServiceImpl implements SideboardService<BedwarsPlayer> {
+
+    @Override
+    public boolean supportsSideboard() {
+        return false;
+    }
+
+    @Override
+    public @Nullable SideboardCreator<BedwarsPlayer> sideboardCreator() {
+        return null;
+    }
+}

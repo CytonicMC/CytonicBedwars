@@ -5,8 +5,9 @@ import java.util.List;
 import me.devnatan.inventoryframework.ViewFrame;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.coordinate.Pos;
+import net.minestom.server.entity.PlayerSkin;
+import org.jetbrains.annotations.Nullable;
 
-import net.cytonic.cytonicbedwars.Config;
 import net.cytonic.cytonicbedwars.menu.ItemShopMenu;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.entity.npc.NPC;
@@ -14,9 +15,9 @@ import net.cytonic.cytosis.entity.npc.configuration.NPCConfiguration;
 import net.cytonic.cytosis.events.npcs.NPCInteractEvent;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
-import net.cytonic.protocol.utils.ExcludeFromClassGraph;
+import net.cytonic.protocol.utils.ExcludeFromIndex;
 
-@ExcludeFromClassGraph
+@ExcludeFromIndex
 public class ItemShopNPC extends NPC {
 
     public ItemShopNPC(Pos pos) {
@@ -32,13 +33,9 @@ public class ItemShopNPC extends NPC {
             }
 
             @Override
-            public String texture(CytosisPlayer player) {
-                return Config.itemShopSkin.textures();
-            }
-
-            @Override
-            public String signature(CytosisPlayer player) {
-                return Config.itemShopSkin.signature();
+            public @Nullable PlayerSkin skin(CytosisPlayer player) {
+                //todo figure out skin
+                return null;
             }
 
             @Override

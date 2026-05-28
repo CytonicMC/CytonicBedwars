@@ -1,5 +1,6 @@
 package net.cytonic.cytonicbedwars.shop;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import net.minestom.server.item.Material;
 import net.minestom.server.item.component.EnchantmentList;
 import net.minestom.server.item.enchant.Enchantment;
 import net.minestom.server.potion.PotionEffect;
+import org.jboss.jandex.DotName;
 
 import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
 import net.cytonic.cytonicbedwars.data.enums.Currency;
@@ -18,8 +20,10 @@ import net.cytonic.cytonicbedwars.shop.impl.ArmorShopItem;
 import net.cytonic.cytonicbedwars.shop.impl.BasicShopItem;
 import net.cytonic.cytonicbedwars.shop.impl.PotionShopItem;
 import net.cytonic.cytonicbedwars.shop.impl.ReplaceAdderShopItem;
+import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.utils.Msg;
-import net.cytonic.protocol.utils.ClassGraphUtils;
+import net.cytonic.cytosis.utils.Utils;
+import net.cytonic.protocol.utils.IndexHolder;
 
 public class ItemShopItemRegistry {
 
@@ -27,9 +31,20 @@ public class ItemShopItemRegistry {
     private static final Map<ItemShopPage, Map<Integer, ShopItem>> itemMap = new HashMap<>();
 
     static {
-        for (ShopItem shopItem : ClassGraphUtils.getExtendedClasses(ShopItem.class, "net.cytonic")) {
-            itemMap.computeIfAbsent(shopItem.getItemShopPage(), _ -> new HashMap<>()).put(shopItem.getSlot(), shopItem);
-        }
+        IndexHolder.get().getAllKnownSubclasses(ShopItem.class).stream()
+            .filter(ci -> ci.name().startsWith(DotName.createSimple("net.cytonic")))
+            .forEach(ci -> {
+                try {
+                    Class<?> clazz = Utils.loadClass(ci.name().toString());
+                    Constructor<?> constructor = clazz.getDeclaredConstructor();
+                    constructor.setAccessible(true);
+                    ShopItem instance = (ShopItem) constructor.newInstance();
+                    itemMap.computeIfAbsent(instance.getItemShopPage(), _ -> new HashMap<>())
+                        .put(instance.getSlot(), instance);
+                } catch (Exception e) {
+                    Logger.error("An error occurred whilst loading menu views!", e);
+                }
+            });
 
         itemMap.computeIfAbsent(ItemShopPage.ARMOR, _ -> new HashMap<>()).put(22,
             new ArmorShopItem("chainmail_armor", Msg.mm("Permanent Chainmail Armor"), List.of(), 24, Currency.IRON,

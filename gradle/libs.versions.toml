@@ -1,0 +1,5 @@
+[versions]
+schem = "2.0.1"
+
+[libraries]
+schem = { module = "dev.hollowcube:schem", version.ref = "schem" }
