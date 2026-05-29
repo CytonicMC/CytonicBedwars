@@ -77,6 +77,10 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
         return sideboardService;
     }
 
+    @Override
+    public void onShutdown() {
+    }
+
     private Schematic loadSpawnPlatformSchematic() {
         try (InputStream stream = getClass().getResourceAsStream("/schematics/spawn_platform.schem")) {
             if (stream == null) {

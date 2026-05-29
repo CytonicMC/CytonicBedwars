@@ -232,9 +232,9 @@ public class GameManager implements Bootstrappable {
             entity.remove();
         }
         teams.clear();
-        Cytosis.getOnlinePlayersAs(BedwarsPlayer.class).stream().map(BedwarsPlayer::getStats).forEach(model -> {
-            model.update();
-        });
+//        Cytosis.getOnlinePlayersAs(BedwarsPlayer.class).stream().map(BedwarsPlayer::getStats).forEach(model -> {
+//            model.update();
+//        });
         setup();
     }
 

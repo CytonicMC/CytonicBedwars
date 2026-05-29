@@ -8,7 +8,6 @@ import java.util.UUID;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.minestom.server.command.builder.Command;
-import net.minestom.server.entity.Player;
 
 import net.cytonic.cytonicbedwars.game.GameWorld;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
