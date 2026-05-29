@@ -1,9 +1,9 @@
 plugins {
     id("java")
     application
-    id("com.gradleup.shadow") version "9.4.1"
-    id("io.freefair.lombok") version "9.2.0"
-    id("io.ebean") version "17.2.0"
+    id("com.gradleup.shadow") version "9.4.2"
+    id("io.freefair.lombok") version "9.5.0"
+    id("io.ebean") version "17.6.0"
     id("net.cytonic.migration-generator") version "1.0-SNAPSHOT"
     id("dev.minestomunited.minestom-events") version "0.0.1-SNAPSHOT"
 }
