@@ -7,26 +7,27 @@ import java.util.List;
 
 import com.google.gson.JsonParser;
 import lombok.Getter;
-import net.hollowcube.polar.PolarReader;
 import net.hollowcube.polar.PolarWorld;
-import net.minestom.server.codec.Codec;
+import net.kyori.adventure.key.Key;
 import net.minestom.server.codec.Transcoder;
+
+import net.cytonic.cytosis.Cytosis;
+import net.cytonic.cytosis.managers.WorldManager;
 
 @Getter
 public enum BedwarsMap {
-    FARM("farm.json", "farm.polar", TeamSize.SOLOS, BedwarsMode.NORMAL),
-    LUSH_RUSH("farm.json", "farm.polar", TeamSize.DOUBLES, BedwarsMode.NORMAL);
+    FARM("farm.json", "farm", TeamSize.SOLOS, BedwarsMode.NORMAL),
+    LUSH_RUSH("farm.json", "lush-rush", TeamSize.DOUBLES, BedwarsMode.NORMAL);
     private final String file;
-    private final String worldFile;
+    private final String worldName;
     private final PolarWorld world;
     private final TeamSize supportedTeamSize;
     private final List<BedwarsMode> supportedModes;
     private final BedwarsMapConfig config;
-    public static final Codec<BedwarsMap> CODEC = Codec.Enum(BedwarsMap.class);
 
-    BedwarsMap(String file, String worldFile, TeamSize supportedTeamSize, BedwarsMode... supportedModes) {
+    BedwarsMap(String file, String worldName, TeamSize supportedTeamSize, BedwarsMode... supportedModes) {
         this.file = file;
-        this.worldFile = worldFile;
+        this.worldName = worldName;
         this.world = readWorld();
         this.supportedTeamSize = supportedTeamSize;
         this.supportedModes = List.of(supportedModes);
@@ -34,10 +35,9 @@ public enum BedwarsMap {
     }
 
     private PolarWorld readWorld() {
-        try (InputStream stream = this.getClass().getResourceAsStream("/worlds/" + worldFile)) {
-            if (stream == null) throw new IllegalStateException("World file not found for " + worldFile);
-            return PolarReader.read(stream.readAllBytes());
-        } catch (IOException e) {
+        try {
+            return Cytosis.get(WorldManager.class).loadWorld(Key.key("bedwars", worldName)).get();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
