@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import dev.minestomunited.entrypoint.config.ConfigRegistry;
-import dev.minestomunited.minestomevents.EventsNode;
 import lombok.Getter;
 import net.hollowcube.schem.Schematic;
 import net.hollowcube.schem.reader.SchematicReader;
@@ -94,10 +93,9 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
 
 
     public void afterSetup() {
-        Cytosis.CONTEXT.registerComponent(this);
         Cytosis.init(this);
+
         FullbrightDimensionType.init();
-        EventsNode.init(minestomService().eventNode());
 
         MinecraftServer.getBlockManager().registerHandler("minecraft:ender_chest", EnderChestBlockHandler::new);
         MinecraftServer.getBlockManager().registerHandler("minecraft:chest", ChestBlockHandler::new);
