@@ -3,12 +3,14 @@ package net.cytonic.cytonicbedwars.config;
 import java.time.Duration;
 import java.util.List;
 
-import dev.minestomunited.entrypoint.codec.ExtraCodecs;
+import dev.minestomunited.common.codecUtils.CodecUtils;
 import net.minestom.server.codec.Codec;
 import net.minestom.server.codec.StructCodec;
 import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.PlayerSkin;
+
+import net.cytonic.cytonicbedwars.codec.DurationCodec;
 
 public interface BedwarsMapConfig {
 
@@ -39,8 +41,8 @@ public interface BedwarsMapConfig {
     record GeneratorConfig(List<Pos> positions, Duration time, int limit) {
 
         public static final Codec<GeneratorConfig> CODEC = StructCodec.struct(
-            "positions", ExtraCodecs.CENTERED_POS.list(), GeneratorConfig::positions,
-            "time", ExtraCodecs.DURATION, GeneratorConfig::time,
+            "positions", CodecUtils.CENTERED_POS.list(), GeneratorConfig::positions,
+            "time", DurationCodec.INSTANCE, GeneratorConfig::time,
             "limit", Codec.INT, GeneratorConfig::limit,
             GeneratorConfig::new
         );
@@ -75,8 +77,8 @@ public interface BedwarsMapConfig {
         public static final StructCodec<Normal> CODEC = StructCodec.struct(
             "mode", BedwarsMode.CODEC, Normal::mode,
             "team_size", TeamSize.CODEC, Normal::teamSize,
-            "item_shop_skin", ExtraCodecs.PLAYER_SKIN, Normal::itemShopSkin,
-            "team_shop_skin", ExtraCodecs.PLAYER_SKIN, Normal::teamShopSkin,
+            "item_shop_skin", CodecUtils.PLAYER_SKIN, Normal::itemShopSkin,
+            "team_shop_skin", CodecUtils.PLAYER_SKIN, Normal::teamShopSkin,
             "teams", TeamConfig.CODEC.list(), Normal::teams,
             "diamond_generators", GeneratorConfig.CODEC, Normal::diamondGenerators,
             "emerald_generators", GeneratorConfig.CODEC, Normal::emeraldGenerators,
@@ -94,11 +96,11 @@ public interface BedwarsMapConfig {
 
             public static final Codec<TeamConfig> CODEC = StructCodec.struct(
                 "color", TeamColor.CODEC, BedwarsMapConfig.TeamConfig::color,
-                "spawn_pos", ExtraCodecs.CENTERED_POS, BedwarsMapConfig.TeamConfig::spawnPos,
-                "item_shop_pos", ExtraCodecs.CENTERED_POS, BedwarsMapConfig.TeamConfig::itemShopPos,
-                "team_shop_pos", ExtraCodecs.CENTERED_POS, BedwarsMapConfig.TeamConfig::teamShopPos,
-                "team_chest_pos", ExtraCodecs.BLOCK_VEC, BedwarsMapConfig.TeamConfig::teamChestPos,
-                "generator_pos", ExtraCodecs.CENTERED_POS, BedwarsMapConfig.TeamConfig::generatorPos,
+                "spawn_pos", CodecUtils.CENTERED_POS, BedwarsMapConfig.TeamConfig::spawnPos,
+                "item_shop_pos", CodecUtils.CENTERED_POS, BedwarsMapConfig.TeamConfig::itemShopPos,
+                "team_shop_pos", CodecUtils.CENTERED_POS, BedwarsMapConfig.TeamConfig::teamShopPos,
+                "team_chest_pos", CodecUtils.BLOCK_VEC, BedwarsMapConfig.TeamConfig::teamChestPos,
+                "generator_pos", CodecUtils.CENTERED_POS, BedwarsMapConfig.TeamConfig::generatorPos,
                 TeamConfig::new
             );
         }

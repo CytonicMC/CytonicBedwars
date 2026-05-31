@@ -1,5 +1,7 @@
 [versions]
+cytosis = "0.7.1-SNAPSHOT-ENTRYPOINT"
 schem = "2.0.1"
 
 [libraries]
+cytosis = { module = "net.cytonic:Cytosis", version.ref = "cytosis" }
 schem = { module = "dev.hollowcube:schem", version.ref = "schem" }

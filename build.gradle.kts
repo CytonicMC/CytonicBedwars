@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.cytonic:Cytosis:0.7.1-SNAPSHOT-NO-PLUGINS")
+    implementation(libs.cytosis)
     implementation(libs.schem)
 }
 

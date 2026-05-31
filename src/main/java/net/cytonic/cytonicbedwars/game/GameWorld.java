@@ -3,7 +3,6 @@ package net.cytonic.cytonicbedwars.game;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import dev.minestomunited.entrypoint.world.AbstractWorld;
 import net.hollowcube.polar.PolarLoader;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
@@ -16,6 +15,7 @@ import net.cytonic.cytonicbedwars.FullbrightDimensionType;
 import net.cytonic.cytonicbedwars.config.BedwarsMap;
 import net.cytonic.cytonicbedwars.config.BedwarsMapConfig;
 import net.cytonic.cytonicbedwars.config.BedwarsMapConfig.TeamConfig;
+import net.cytonic.cytosis.world.AbstractWorld;
 
 public class GameWorld extends AbstractWorld {
 
