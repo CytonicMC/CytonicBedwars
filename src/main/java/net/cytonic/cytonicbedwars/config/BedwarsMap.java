@@ -17,7 +17,7 @@ import net.cytonic.cytosis.managers.WorldManager;
 @Getter
 public enum BedwarsMap {
     FARM("farm.json", "farm", TeamSize.SOLOS, BedwarsMode.NORMAL),
-    LUSH_RUSH("farm.json", "lush-rush", TeamSize.DOUBLES, BedwarsMode.NORMAL);
+    LUSH_RUSH("farm.json", "lush_rush", TeamSize.DOUBLES, BedwarsMode.NORMAL);
     private final String file;
     private final String worldName;
     private final PolarWorld world;

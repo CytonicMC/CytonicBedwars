@@ -18,6 +18,7 @@ public class Game {
 
     @Getter
     private final UUID id = UUID.randomUUID();
+    @Getter
     private final BedwarsMap map;
     private final BedwarsMode mode;
     @Getter

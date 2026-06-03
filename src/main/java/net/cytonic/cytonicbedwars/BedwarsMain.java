@@ -2,8 +2,8 @@ package net.cytonic.cytonicbedwars;
 
 import java.util.Map;
 
+import dev.minestomunited.common.config.format.JsonCodecConfigFormat;
 import dev.minestomunited.entrypoint.EntryPoint;
-import dev.minestomunited.entrypoint.config.format.JsonCodecConfigFormat;
 
 import net.cytonic.cytonicbedwars.server.BedwarsServer;
 import net.cytonic.cytosis.Cytosis;

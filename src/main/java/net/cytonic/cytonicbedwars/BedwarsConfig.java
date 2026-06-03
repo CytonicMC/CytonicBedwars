@@ -1,7 +1,7 @@
 package net.cytonic.cytonicbedwars;
 
-import dev.minestomunited.entrypoint.config.Config;
-import dev.minestomunited.entrypoint.config.ConfigFile;
+import dev.minestomunited.common.config.Config;
+import dev.minestomunited.common.config.ConfigFile;
 import net.minestom.server.codec.Codec;
 import net.minestom.server.codec.StructCodec;
 

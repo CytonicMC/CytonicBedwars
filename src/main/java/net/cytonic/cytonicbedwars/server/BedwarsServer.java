@@ -115,7 +115,8 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
         Events.onAsyncPlayerConfiguration(
             event -> {
                 event.getPlayer().setPermissionLevel(4);
-                Game game = new ArrayList<>(games.values()).getFirst();
+                Game game = new ArrayList<>(games.values()).stream().filter(it -> it.getMap() == BedwarsMap.LUSH_RUSH)
+                    .findFirst().orElseThrow();
                 event.setSpawningInstance(game.getWorld());
                 ((BedwarsPlayer) event.getPlayer()).UNSAFE_joinGame(game.getId(), TeamColor.RED);
             });

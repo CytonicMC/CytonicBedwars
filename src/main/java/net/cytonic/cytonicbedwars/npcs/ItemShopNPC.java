@@ -6,6 +6,7 @@ import me.devnatan.inventoryframework.ViewFrame;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.PlayerSkin;
+import net.minestom.server.instance.Instance;
 import org.jetbrains.annotations.Nullable;
 
 import net.cytonic.cytonicbedwars.menu.ItemShopMenu;
@@ -20,7 +21,7 @@ import net.cytonic.protocol.utils.ExcludeFromIndex;
 @ExcludeFromIndex
 public class ItemShopNPC extends NPC {
 
-    public ItemShopNPC(Pos pos) {
+    public ItemShopNPC(Pos pos, Instance instance) {
         super(new NPCConfiguration() {
             @Override
             public List<Component> holograms(CytosisPlayer player) {
@@ -30,6 +31,11 @@ public class ItemShopNPC extends NPC {
             @Override
             public Pos position(CytosisPlayer player) {
                 return pos;
+            }
+
+            @Override
+            public Instance instance() {
+                return instance;
             }
 
             @Override
