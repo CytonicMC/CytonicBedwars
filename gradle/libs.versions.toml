@@ -1,5 +1,5 @@
 [versions]
-cytosis = "0.7.1-SNAPSHOT-ENTRYPOINT"
+cytosis = "0.8.2-SNAPSHOT-MONGO"
 schem = "2.0.1"
 
 [libraries]

@@ -5,6 +5,7 @@ import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.key.Key;
 import net.minestom.server.inventory.Inventory;
 import net.minestom.server.inventory.InventoryType;
 import net.minestom.server.item.ItemStack;
@@ -70,7 +71,7 @@ public class BedwarsPlayer extends CytosisPlayer {
 
     public void sendToLobby() {
         Cytosis.get(SendPlayerToServerPacketPublisher.class)
-            .sendPlayerToGenericServer(getUuid(), "cytonic", "lobby", "The Lobby");
+            .sendPlayerToGenericServer(getUuid(), Key.key("lobby", "lobby"), "The Lobby");
     }
 
     public boolean hasShears() {

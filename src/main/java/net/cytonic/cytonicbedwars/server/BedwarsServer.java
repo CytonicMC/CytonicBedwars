@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import dev.minestomunited.entrypoint.config.ConfigRegistry;
+import dev.minestomunited.common.config.ConfigRegistry;
 import lombok.Getter;
 import net.hollowcube.schem.Schematic;
 import net.hollowcube.schem.reader.SchematicReader;
+import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -34,7 +35,9 @@ import net.cytonic.cytonicbedwars.server.sideboard.SideboardServiceImpl;
 import net.cytonic.cytonicbedwars.utils.Events;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.server.AbstractCytosisServer;
+import net.cytonic.cytosis.server.actionBar.ActionBarService;
 import net.cytonic.cytosis.server.chat.ChatService;
+import net.cytonic.cytosis.server.menu.MenuService;
 import net.cytonic.cytosis.server.playerList.PlayerListService;
 import net.cytonic.cytosis.server.sideboard.SideboardService;
 
@@ -42,19 +45,73 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
 
     @UnknownNullability
     public static Schematic SPAWN_PLATFORM;
+    private final BedwarsConfig config;
     @Getter
     private final Map<UUID, Game> games = new HashMap<>();
     private final ChatService<BedwarsPlayer> chatService;
     private final PlayerListService<BedwarsPlayer> playerListService;
     private final SideboardService<BedwarsPlayer> sideboardService;
+    private final ActionBarService<BedwarsPlayer> actionBarService;
+    private final MenuService menuService;
 
     public BedwarsServer(ConfigRegistry registry) {
         super(registry, BedwarsPlayer::new);
 
+        config = getConfigOrThrow(BedwarsConfig.class);
         SPAWN_PLATFORM = loadSpawnPlatformSchematic();
         chatService = new ChatServiceImpl();
         playerListService = new PlayerListServiceImpl();
         sideboardService = new SideboardServiceImpl();
+        actionBarService = new ActionBarService.Noop<>();
+        menuService = new MenuService.Noop();
+    }
+
+    public void afterSetup() {
+        Cytosis.init(this);
+
+        FullbrightDimensionType.init();
+
+        MinecraftServer.getBlockManager().registerHandler("minecraft:ender_chest", EnderChestBlockHandler::new);
+        MinecraftServer.getBlockManager().registerHandler("minecraft:chest", ChestBlockHandler::new);
+        MinecraftServer.getBlockManager().registerHandler("minecraft:bell", BellBlockHandler::new);
+
+        registerCommands();
+
+        BedwarsConfig config = getConfigOrThrow(BedwarsConfig.class);
+        BedwarsMode mode = config.mode();
+        List<BedwarsMap> maps = mode.getMaps();
+        for (BedwarsMap map : maps) {
+            Game game = new Game(map, mode);
+            games.put(game.getId(), game);
+        }
+
+        //debugging stuff
+        Events.onPlayerGameModeRequest(event -> event.getPlayer().setGameMode(event.getRequestedGameMode()));
+        Events.onAsyncPlayerConfiguration(
+            event -> {
+                event.getPlayer().setPermissionLevel(4);
+                Game game = new ArrayList<>(games.values()).stream().filter(it -> it.getMap() == BedwarsMap.LUSH_RUSH)
+                    .findFirst().orElseThrow();
+                event.setSpawningInstance(game.getWorld());
+                ((BedwarsPlayer) event.getPlayer()).UNSAFE_joinGame(game.getId(), TeamColor.RED);
+            });
+    }
+
+    private Schematic loadSpawnPlatformSchematic() {
+        try (InputStream stream = getClass().getResourceAsStream("/schematics/spawn_platform.schem")) {
+            if (stream == null) {
+                throw new IllegalStateException("Spawn platform schematic file not found");
+            }
+            return SchematicReader.sponge().read(stream.readAllBytes());
+        } catch (IOException e) {
+            throw new IllegalStateException("An error occurred whilst trying to load spawn platform schematic");
+        }
+    }
+
+    private void registerCommands() {
+        MinecraftServer.getCommandManager().register(new MapBuilderCommand());
+        MinecraftServer.getCommandManager().register(new DebugCommand());
+        MinecraftServer.getCommandManager().register(new ItemCommand());
     }
 
     public Game getGame(UUID uuid) {
@@ -77,54 +134,21 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
     }
 
     @Override
+    public ActionBarService<BedwarsPlayer> actionBarService() {
+        return actionBarService;
+    }
+
+    @Override
+    public MenuService menuService() {
+        return menuService;
+    }
+
+    @Override
+    public Key serverType() {
+        return Key.key("bedwars", config.mode().name().toLowerCase());
+    }
+
+    @Override
     public void onShutdown() {
-    }
-
-    private Schematic loadSpawnPlatformSchematic() {
-        try (InputStream stream = getClass().getResourceAsStream("/schematics/spawn_platform.schem")) {
-            if (stream == null) {
-                throw new IllegalStateException("Spawn platform schematic file not found");
-            }
-            return SchematicReader.sponge().read(stream.readAllBytes());
-        } catch (IOException e) {
-            throw new IllegalStateException("An error occurred whilst trying to load spawn platform schematic");
-        }
-    }
-
-
-    public void afterSetup() {
-        Cytosis.init(this);
-
-        FullbrightDimensionType.init();
-
-        MinecraftServer.getBlockManager().registerHandler("minecraft:ender_chest", EnderChestBlockHandler::new);
-        MinecraftServer.getBlockManager().registerHandler("minecraft:chest", ChestBlockHandler::new);
-        MinecraftServer.getBlockManager().registerHandler("minecraft:bell", BellBlockHandler::new);
-
-        registerCommands();
-
-        BedwarsConfig config = getConfigOrThrow(BedwarsConfig.class);
-        BedwarsMode mode = config.mode();
-        List<BedwarsMap> maps = mode.getMaps();
-        for (BedwarsMap map : maps) {
-            Game game = new Game(map, mode);
-            games.put(game.getId(), game);
-        }
-
-        Events.onPlayerGameModeRequest(event -> event.getPlayer().setGameMode(event.getRequestedGameMode()));
-        Events.onAsyncPlayerConfiguration(
-            event -> {
-                event.getPlayer().setPermissionLevel(4);
-                Game game = new ArrayList<>(games.values()).stream().filter(it -> it.getMap() == BedwarsMap.LUSH_RUSH)
-                    .findFirst().orElseThrow();
-                event.setSpawningInstance(game.getWorld());
-                ((BedwarsPlayer) event.getPlayer()).UNSAFE_joinGame(game.getId(), TeamColor.RED);
-            });
-    }
-
-    private void registerCommands() {
-        MinecraftServer.getCommandManager().register(new MapBuilderCommand());
-        MinecraftServer.getCommandManager().register(new DebugCommand());
-        MinecraftServer.getCommandManager().register(new ItemCommand());
     }
 }

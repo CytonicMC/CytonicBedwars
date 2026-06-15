@@ -5,7 +5,7 @@ plugins {
     id("io.freefair.lombok") version "9.5.0"
     id("io.ebean") version "17.6.0"
     id("net.cytonic.migration-generator") version "1.0-SNAPSHOT"
-    id("dev.minestomunited.minestom-events") version "0.0.1-SNAPSHOT"
+    id("dev.minestom-united.minestom-events") version "0.0.2"
 }
 
 group = "net.cytonic"
