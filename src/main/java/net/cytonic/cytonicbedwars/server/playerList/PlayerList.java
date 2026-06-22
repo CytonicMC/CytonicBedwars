@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.kyori.adventure.text.Component;
 
-import net.cytonic.cytonicbedwars.data.objects.Team;
+import net.cytonic.cytonicbedwars.game.Team;
 import net.cytonic.cytonicbedwars.game.Game;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.playerlist.Column;

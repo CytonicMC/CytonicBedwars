@@ -9,7 +9,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.minestom.server.command.builder.Command;
 
-import net.cytonic.cytonicbedwars.game.GameWorld;
+import net.cytonic.cytonicbedwars.game.BedwarsWorld;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.utils.Events;
 
@@ -23,14 +23,14 @@ public class MapBuilderCommand extends Command {
             BedwarsPlayer player = (BedwarsPlayer) sender;
             if (ENABLED.contains(player.getUuid())) {
                 ENABLED.remove(player.getUuid());
-                if (player.getInstance() instanceof GameWorld world) {
+                if (player.getInstance() instanceof BedwarsWorld world) {
                     world.removeSpawnPlatform();
                     Objects.requireNonNull(player.getGame()).setStarted(true);
                     System.out.println("REMOVE");
                 }
             } else {
                 ENABLED.add(player.getUuid());
-                if (player.getInstance() instanceof GameWorld world) {
+                if (player.getInstance() instanceof BedwarsWorld world) {
                     world.placeSpawnPlatform();
                     Objects.requireNonNull(player.getGame()).setStarted(false);
                     System.out.println("PLACE");

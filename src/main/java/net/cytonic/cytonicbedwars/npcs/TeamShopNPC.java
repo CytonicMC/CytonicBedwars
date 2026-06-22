@@ -6,7 +6,6 @@ import net.kyori.adventure.text.Component;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.instance.Instance;
-import org.jetbrains.annotations.Nullable;
 
 import net.cytonic.cytosis.entity.npc.NPC;
 import net.cytonic.cytosis.entity.npc.configuration.NPCConfiguration;
@@ -18,7 +17,7 @@ import net.cytonic.protocol.utils.ExcludeFromIndex;
 @ExcludeFromIndex
 public class TeamShopNPC extends NPC {
 
-    public TeamShopNPC(Pos pos, Instance instance) {
+    public TeamShopNPC(Pos pos, Instance instance, PlayerSkin skin) {
         super(new NPCConfiguration() {
             @Override
             public List<Component> holograms(CytosisPlayer player) {
@@ -36,9 +35,8 @@ public class TeamShopNPC extends NPC {
             }
 
             @Override
-            public @Nullable PlayerSkin skin(CytosisPlayer player) {
-                //todo figure out skin
-                return null;
+            public PlayerSkin skin(CytosisPlayer player) {
+                return skin;
             }
 
             @Override

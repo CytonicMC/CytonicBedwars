@@ -8,7 +8,7 @@ import net.cytonic.cytosis.events.api.Listener;
 @SuppressWarnings("unused")
 public class ExhaustListener {
 
-    @Listener
+    //todo @Listener
     private void onHunger(PlayerExhaustEvent event) {
         event.setCancelled(true);
     }

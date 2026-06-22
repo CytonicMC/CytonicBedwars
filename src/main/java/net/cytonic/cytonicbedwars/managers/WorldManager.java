@@ -1,22 +1,13 @@
 package net.cytonic.cytonicbedwars.managers;
 
-import net.hollowcube.polar.PolarLoader;
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.coordinate.BlockVec;
-import net.minestom.server.coordinate.Pos;
 import net.minestom.server.instance.InstanceContainer;
-import net.minestom.server.instance.block.Block;
-import net.minestom.server.instance.block.BlockFace;
-import net.minestom.server.world.clock.WorldClock;
 
-import net.cytonic.cytonicbedwars.BedwarsConfig;
-import net.cytonic.cytonicbedwars.data.objects.Team;
+import net.cytonic.cytonicbedwars.game.Team;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.bootstrap.annotations.CytosisComponent;
-import net.cytonic.cytosis.data.EnvironmentDatabase;
 import net.cytonic.cytosis.logging.Logger;
 
-@CytosisComponent(dependsOn = InstanceContainer.class)
 public class WorldManager {
 
     public void breakBed(Team team) {

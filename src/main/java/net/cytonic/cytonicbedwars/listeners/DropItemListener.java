@@ -20,7 +20,7 @@ import net.cytonic.cytosis.events.api.Listener;
 @SuppressWarnings("unused")
 public class DropItemListener {
 
-    @Listener
+    //todo @Listener
     public void onDrop(ItemDropEvent event) {
         ItemStack item = event.getItemStack();
         if (item.hasTag(Items.NO_DROP) && item.getTag(Items.NO_DROP)) {

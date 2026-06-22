@@ -20,8 +20,6 @@ public class BellBlockHandler implements BlockHandler {
 
     @Override
     public Key getKey() {
-        //todo remove once adventure fixes pattern
-        //noinspection PatternValidation
         return Key.key("minecraft:bell");
     }
 }

@@ -13,7 +13,7 @@ import net.minestom.server.item.ItemStack;
 @SuppressWarnings("unused")
 public class UseItemListener {
 
-    @Listener
+    //todo @Listener
     public void onInteract(PlayerUseItemEvent event) {
         if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
         ItemStack item = event.getPlayer().getItemInHand(event.getHand());

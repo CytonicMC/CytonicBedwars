@@ -18,8 +18,6 @@ import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.Player;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.shop.ItemShopItemRegistry;
@@ -42,23 +40,23 @@ public class ItemShopMenu extends View {
     private final MutableState<ItemShopPage> itemShopPageState = mutableState(ItemShopPage.BLOCKS);
 
     @Override
-    public void onInit(@NotNull ViewConfigBuilder config) {
+    public void onInit(ViewConfigBuilder config) {
         config.cancelInteractions();
         config.size(5);
     }
 
     @Override
-    public void onOpen(@NonNull OpenContext context) {
+    public void onOpen(OpenContext context) {
         context.modifyConfig().title(Msg.mm("Item Shop ➜ %s", itemShopPageState.get(context).getTitle()));
     }
 
     @Override
-    public void onUpdate(@NonNull Context context) {
+    public void onUpdate(Context context) {
         context.updateTitleForPlayer(Msg.mm("Item Shop ➜ %s", itemShopPageState.get(context).getTitle()));
     }
 
     @Override
-    public void onFirstRender(@NonNull RenderContext context) {
+    public void onFirstRender(RenderContext context) {
         context.unsetSlot().onRender(slotRenderContext -> {
             slotRenderContext.setItem(selectedPage);
             slotRenderContext.setSlot(itemShopPageState.get(slotRenderContext).ordinal() + 10);
@@ -85,6 +83,7 @@ public class ItemShopMenu extends View {
                                     .mapToInt(ItemStack::amount)
                                     .sum();
                                 int needed = nextTier.price() - owned;
+                                playErrorSound(player);
                                 player.sendMessage(
                                     Msg.red("You don't have enough %s! Needed %d more!",
                                         nextTier.currency().getName(nextTier.price() > 1),
@@ -100,6 +99,7 @@ public class ItemShopMenu extends View {
 
                         if (shopItem instanceof SinglePurchaseShopItem singlePurchaseShopItem) {
                             if (singlePurchaseShopItem.getHasPurchased().apply(player)) {
+                                playErrorSound(player);
                                 player.sendMessage(Msg.red("You have already purchased this item!"));
                                 return;
                             }
@@ -110,16 +110,19 @@ public class ItemShopMenu extends View {
                         }
 
                         if (!hasPlayerEnoughCurrency(player, shopItem)) {
+                            playErrorSound(player);
                             player.sendMessage(Msg.red("You don't have enough %s!",
                                 shopItem.getCurrency().getName(shopItem.getPrice() > 1)));
                             return;
                         }
                         if (shopItem.doesNotHave(player)) {
+                            playErrorSound(player);
                             player.sendMessage(Msg.red("You already have the highest tier available!"));
                             return;
                         }
 
                         if (hasBetterItem(player, shopItem.getDisplay().material())) {
+                            playErrorSound(player);
                             player.sendMessage(Msg.red("You already have a better item!"));
                             return;
                         }
@@ -137,8 +140,7 @@ public class ItemShopMenu extends View {
                             lore.add(Msg.grey("Cost: %s %s", nextTier.currency().getColor() + nextTier.price(),
                                 nextTier.currency().getName(nextTier.price() > 1)));
                             lore.add(Component.empty());
-                            if (upgradableShopItem.getDescription() != null &&
-                                !upgradableShopItem.getDescription().isEmpty()) {
+                            if (!upgradableShopItem.getDescription().isEmpty()) {
                                 lore.addAll(
                                     upgradableShopItem.getDescription().stream().map(it -> it.color(NamedTextColor.GRAY))
                                         .toList());
@@ -165,8 +167,7 @@ public class ItemShopMenu extends View {
                         lore.add(Msg.grey("Cost: %s %s", shopItem.getCurrency().getColor() + shopItem.getPrice(),
                             shopItem.getCurrency().getName(shopItem.getPrice() > 1)));
                         lore.add(Component.empty());
-                        if (shopItem.getDescription() != null &&
-                            !shopItem.getDescription().isEmpty()) {
+                        if (!shopItem.getDescription().isEmpty()) {
                             lore.addAll(
                                 shopItem.getDescription().stream().map(it -> it.color(NamedTextColor.GRAY))
                                     .toList());
@@ -221,6 +222,10 @@ public class ItemShopMenu extends View {
             if (it.material() == cur) have += it.amount();
         }
         return have >= tier.price();
+    }
+
+    private static void playErrorSound(BedwarsPlayer player) {
+        player.playSound(Sound.sound(Key.key("entity.villager.no"), Sound.Source.MASTER, 1.0f, 1.0f));
     }
 
     private static void playBuySound(BedwarsPlayer player) {

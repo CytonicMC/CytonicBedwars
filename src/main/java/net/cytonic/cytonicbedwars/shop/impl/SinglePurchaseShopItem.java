@@ -11,8 +11,10 @@ import net.cytonic.cytonicbedwars.data.enums.Currency;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.shop.ItemShopPage;
 import net.cytonic.cytonicbedwars.shop.ShopItem;
+import net.cytonic.protocol.utils.ExcludeFromIndex;
 
 @Getter
+@ExcludeFromIndex
 public abstract class SinglePurchaseShopItem extends ShopItem {
 
     private final Function<BedwarsPlayer, Boolean> hasPurchased;

@@ -2,13 +2,15 @@ package net.cytonic.cytonicbedwars.server;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import dev.minestomunited.common.config.ConfigRegistry;
+import io.github.togar2.pvp.MinestomPvP;
+import io.github.togar2.pvp.feature.CombatFeatureSet;
+import io.github.togar2.pvp.feature.CombatFeatures;
 import lombok.Getter;
 import net.hollowcube.schem.Schematic;
 import net.hollowcube.schem.reader.SchematicReader;
@@ -16,7 +18,6 @@ import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 import org.jetbrains.annotations.UnknownNullability;
 
-import net.cytonic.cytonicbedwars.BedwarsConfig;
 import net.cytonic.cytonicbedwars.FullbrightDimensionType;
 import net.cytonic.cytonicbedwars.blockHandlers.BellBlockHandler;
 import net.cytonic.cytonicbedwars.blockHandlers.ChestBlockHandler;
@@ -24,22 +25,23 @@ import net.cytonic.cytonicbedwars.blockHandlers.EnderChestBlockHandler;
 import net.cytonic.cytonicbedwars.commands.DebugCommand;
 import net.cytonic.cytonicbedwars.commands.ItemCommand;
 import net.cytonic.cytonicbedwars.commands.MapBuilderCommand;
+import net.cytonic.cytonicbedwars.commands.SwitchGameCommand;
+import net.cytonic.cytonicbedwars.config.BedwarsConfig;
 import net.cytonic.cytonicbedwars.config.BedwarsMap;
 import net.cytonic.cytonicbedwars.config.BedwarsMode;
-import net.cytonic.cytonicbedwars.config.TeamColor;
+import net.cytonic.cytonicbedwars.events.BedwarsListeners;
 import net.cytonic.cytonicbedwars.game.Game;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.server.chat.ChatServiceImpl;
 import net.cytonic.cytonicbedwars.server.playerList.PlayerListServiceImpl;
 import net.cytonic.cytonicbedwars.server.sideboard.SideboardServiceImpl;
-import net.cytonic.cytonicbedwars.utils.Events;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.server.AbstractCytosisServer;
 import net.cytonic.cytosis.server.actionBar.ActionBarService;
 import net.cytonic.cytosis.server.chat.ChatService;
-import net.cytonic.cytosis.server.menu.MenuService;
 import net.cytonic.cytosis.server.playerList.PlayerListService;
 import net.cytonic.cytosis.server.sideboard.SideboardService;
+import net.cytonic.cytosis.utils.Msg;
 
 public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
 
@@ -52,7 +54,6 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
     private final PlayerListService<BedwarsPlayer> playerListService;
     private final SideboardService<BedwarsPlayer> sideboardService;
     private final ActionBarService<BedwarsPlayer> actionBarService;
-    private final MenuService menuService;
 
     public BedwarsServer(ConfigRegistry registry) {
         super(registry, BedwarsPlayer::new);
@@ -63,11 +64,15 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
         playerListService = new PlayerListServiceImpl();
         sideboardService = new SideboardServiceImpl();
         actionBarService = new ActionBarService.Noop<>();
-        menuService = new MenuService.Noop();
     }
 
     public void afterSetup() {
         Cytosis.init(this);
+
+        MinestomPvP.init(false, true);
+
+        CombatFeatureSet modernVanilla = CombatFeatures.modernVanilla();
+        MinecraftServer.getGlobalEventHandler().addChild(modernVanilla.createNode());
 
         FullbrightDimensionType.init();
 
@@ -85,16 +90,7 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
             games.put(game.getId(), game);
         }
 
-        //debugging stuff
-        Events.onPlayerGameModeRequest(event -> event.getPlayer().setGameMode(event.getRequestedGameMode()));
-        Events.onAsyncPlayerConfiguration(
-            event -> {
-                event.getPlayer().setPermissionLevel(4);
-                Game game = new ArrayList<>(games.values()).stream().filter(it -> it.getMap() == BedwarsMap.LUSH_RUSH)
-                    .findFirst().orElseThrow();
-                event.setSpawningInstance(game.getWorld());
-                ((BedwarsPlayer) event.getPlayer()).UNSAFE_joinGame(game.getId(), TeamColor.RED);
-            });
+        BedwarsListeners.init(this);
     }
 
     private Schematic loadSpawnPlatformSchematic() {
@@ -112,10 +108,24 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
         MinecraftServer.getCommandManager().register(new MapBuilderCommand());
         MinecraftServer.getCommandManager().register(new DebugCommand());
         MinecraftServer.getCommandManager().register(new ItemCommand());
+        MinecraftServer.getCommandManager().register(new SwitchGameCommand());
     }
 
     public Game getGame(UUID uuid) {
+        if (!games.containsKey(uuid)) {
+            throw new IllegalStateException("Game with id " + uuid + " does not exist");
+        }
         return games.get(uuid);
+    }
+
+    public void swapGame(BedwarsPlayer player, Game newGame) {
+        if (player.getGame().equals(newGame)) {
+            player.sendMessage(Msg.whoops("You tried to swap to the game you are already in!"));
+            return;
+        }
+        Game currentGame = player.getGame();
+
+        player.sendMessage(Msg.success("Moved you to game '%s'!", newGame.getId()));
     }
 
     @Override
@@ -136,11 +146,6 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
     @Override
     public ActionBarService<BedwarsPlayer> actionBarService() {
         return actionBarService;
-    }
-
-    @Override
-    public MenuService menuService() {
-        return menuService;
     }
 
     @Override

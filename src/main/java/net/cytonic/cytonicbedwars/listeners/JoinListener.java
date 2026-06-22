@@ -1,28 +1,23 @@
 package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
-import net.cytonic.cytonicbedwars.BedwarsConfig;
-import net.cytonic.cytonicbedwars.data.enums.GameState;
-import net.cytonic.cytonicbedwars.managers.GameManager;
-import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
-import net.cytonic.cytosis.Cytosis;
+
 import net.cytonic.cytosis.events.api.Listener;
-import net.minestom.server.entity.GameMode;
+
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
-import net.minestom.server.instance.InstanceContainer;
 
 @NoArgsConstructor
 @SuppressWarnings("unused")
 public class JoinListener {
 
-    @Listener
+    //todo @Listener
     public void onJoin(AsyncPlayerConfigurationEvent event) {
 //        event.setSpawningInstance(Cytosis.CONTEXT.getComponent(InstanceContainer.class));
 //        event.getPlayer().setRespawnPoint(BedwarsConfig.spawnPlatformCenter.add(0, 1, 0));
     }
 
-    @Listener
+    //todo @Listener
     public void onJoin(PlayerSpawnEvent event) {
 //        if (!Cytosis.CONTEXT.getComponent(GameManager.class).STARTED) {
 //            if (Cytosis.CONTEXT.getComponent(GameManager.class).getWaitingRunnable() == null) {

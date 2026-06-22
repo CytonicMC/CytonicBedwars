@@ -5,6 +5,7 @@ import java.util.Map;
 import dev.minestomunited.common.config.format.JsonCodecConfigFormat;
 import dev.minestomunited.entrypoint.EntryPoint;
 
+import net.cytonic.cytonicbedwars.config.BedwarsConfig;
 import net.cytonic.cytonicbedwars.server.BedwarsServer;
 import net.cytonic.cytosis.Cytosis;
 

@@ -13,10 +13,7 @@ public enum GameState {
     EMERALD_3("Emerald III", 360),
     BED_DESTRUCTION("Bed Destruction", 360),
     SUDDEN_DEATH("Sudden Death", 600), // 10 minutes
-    ENDED("Ending", -1),
-    CLEANUP("Cleanup", -1),
-    FROZEN("Frozen", -1);
-
+    ENDED("Ended", -1);
     // in seconds
     private final int duration;
     private final String displayName;

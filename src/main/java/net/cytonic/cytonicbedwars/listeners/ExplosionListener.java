@@ -11,7 +11,7 @@ import java.util.Objects;
 //this does not currently work because minestom pvp explosions are broken
 public class ExplosionListener {
 
-    @Listener
+    //todo @Listener
     public void onExplode(ExplosionEvent event) {
         if (event.getDamageObject().getAttacker() == null) return;
         if (event.getDamageObject().getAttacker().getEntityType().equals(EntityType.TNT) || event.getDamageObject().getAttacker().getEntityType().equals(EntityType.FIREBALL)) {

@@ -1,11 +1,9 @@
-package net.cytonic.cytonicbedwars;
+package net.cytonic.cytonicbedwars.config;
 
 import dev.minestomunited.common.config.Config;
 import dev.minestomunited.common.config.ConfigFile;
 import net.minestom.server.codec.Codec;
 import net.minestom.server.codec.StructCodec;
-
-import net.cytonic.cytonicbedwars.config.BedwarsMode;
 
 @ConfigFile("bedwars_config")
 public record BedwarsConfig(

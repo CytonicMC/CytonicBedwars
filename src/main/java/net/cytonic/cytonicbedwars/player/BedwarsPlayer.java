@@ -1,33 +1,42 @@
 package net.cytonic.cytonicbedwars.player;
 
+import java.util.Random;
 import java.util.UUID;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.Component;
+import net.minestom.server.coordinate.Point;
+import net.minestom.server.entity.EquipmentSlot;
+import net.minestom.server.event.EventListener;
+import net.minestom.server.event.inventory.InventoryCloseEvent;
+import net.minestom.server.instance.block.Block;
 import net.minestom.server.inventory.Inventory;
 import net.minestom.server.inventory.InventoryType;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
+import net.minestom.server.network.packet.server.play.BlockActionPacket;
 import net.minestom.server.network.player.GameProfile;
 import net.minestom.server.network.player.PlayerConnection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minestom.server.sound.SoundEvent;
+import org.jetbrains.annotations.UnknownNullability;
 
 import net.cytonic.cytonicbedwars.config.TeamColor;
 import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.data.objects.PlayerStats;
-import net.cytonic.cytonicbedwars.data.objects.Team;
 import net.cytonic.cytonicbedwars.game.Game;
+import net.cytonic.cytonicbedwars.game.Team;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.server.BedwarsServer;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.player.CytosisPlayer;
-import net.cytonic.cytosis.protocol.publishers.SendPlayerToServerPacketPublisher;
+import net.cytonic.cytosis.utils.Msg;
 
 @Getter
 @Setter
@@ -40,15 +49,24 @@ public class BedwarsPlayer extends CytosisPlayer {
     private boolean shears = false;
     private boolean alive = true;
     private boolean respawning = false;
+    private int respawnTime;
     private Inventory enderChest = new Inventory(InventoryType.CHEST_3_ROW, "Ender Chest");
+    @UnknownNullability
+    private Point enderChestPos;
     private PlayerStats stats = null;
     @Getter(AccessLevel.NONE)
     private UUID gameId;
     private TeamColor teamColor;
 
-    public BedwarsPlayer(@NotNull PlayerConnection playerConnection, GameProfile gameProfile) {
+    public BedwarsPlayer(PlayerConnection playerConnection, GameProfile gameProfile) {
         super(playerConnection, gameProfile);
-//        load();
+
+        enderChest.eventNode().addListener(EventListener.of(InventoryCloseEvent.class, _ -> {
+            instance.sendGroupedPacket(
+                new BlockActionPacket(enderChestPos, (byte) 1, (byte) 0, Block.ENDER_CHEST));
+            instance.playSound(Sound.sound(SoundEvent.BLOCK_ENDER_CHEST_CLOSE, Sound.Source.MASTER, 0.5f,
+                new Random().nextFloat() * 0.1F + 0.9F), enderChestPos);
+        }));
     }
 
     public void load() {
@@ -64,14 +82,20 @@ public class BedwarsPlayer extends CytosisPlayer {
         });
     }
 
-    public void UNSAFE_joinGame(UUID gameId, TeamColor teamColor) {
+    public void UNSAFE_joinGame(UUID gameId) {
         this.gameId = gameId;
-        this.teamColor = teamColor;
+    }
+
+    public void UNSAFE_joinTeam(TeamColor color) {
+        this.teamColor = color;
     }
 
     public void sendToLobby() {
-        Cytosis.get(SendPlayerToServerPacketPublisher.class)
-            .sendPlayerToGenericServer(getUuid(), Key.key("lobby", "lobby"), "The Lobby");
+        if (Cytosis.isStandalone()) {
+            kickInternal(Msg.mm("Sent to lobby"));
+            return;
+        }
+        sendToGenericServer(Key.key("lobby:lobby"), " The Lobby");
     }
 
     public boolean hasShears() {
@@ -109,24 +133,38 @@ public class BedwarsPlayer extends CytosisPlayer {
         return count;
     }
 
-    @Nullable
-    public Team getBedwarsTeam() {
-        if (getGame() == null) return null;
-        return getGame().getTeam(teamColor);
+    public Component getBedwarsFormattedName() {
+        return getBedwarsTeam().getColor().getName()
+            .appendSpace()
+            .append(formattedName());
     }
 
-    @Nullable
     public Game getGame() {
         return Cytosis.get(BedwarsServer.class).getGame(gameId);
     }
 
-    public void giveAxe() {
-        if (axeLevel == AxeLevel.NONE) return;
-        inventory.addItemStack(Items.get(axeLevel.getItemID()));
+    public Team getBedwarsTeam() {
+        Team team = getGame().getTeam(teamColor);
+        if (team == null) {
+            throw new IllegalStateException("Team with id " + teamColor + " does not exist on game " + gameId);
+        }
+        return team;
     }
 
-    public void givePickaxe() {
-        if (pickaxeLevel == PickaxeLevel.NONE) return;
-        inventory.addItemStack(Items.get(pickaxeLevel.getItemID()));
+    public boolean isSpectator() {
+        return getGame().isSpectator(this);
+    }
+
+    public void applyItems() {
+        inventory.setItemStack(0, ItemStack.of(Material.WOODEN_SWORD));
+
+        inventory.setEquipment(EquipmentSlot.HELMET, getHeldSlot(), ItemStack.of(armorLevel.getHead()));
+        inventory.setEquipment(EquipmentSlot.CHESTPLATE, getHeldSlot(), ItemStack.of(armorLevel.getChest()));
+        inventory.setEquipment(EquipmentSlot.LEGGINGS, getHeldSlot(), ItemStack.of(Material.LEATHER_LEGGINGS));
+        inventory.setEquipment(EquipmentSlot.BOOTS, getHeldSlot(), ItemStack.of(Material.LEATHER_BOOTS));
+
+        if (shears) {
+            inventory.addItemStack(ItemStack.of(Material.SHEARS));
+        }
     }
 }

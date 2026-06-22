@@ -1,11 +1,10 @@
 plugins {
     id("java")
     application
-    id("com.gradleup.shadow") version "9.4.2"
-    id("io.freefair.lombok") version "9.5.0"
-    id("io.ebean") version "17.6.0"
-    id("net.cytonic.migration-generator") version "1.0-SNAPSHOT"
-    id("dev.minestom-united.minestom-events") version "0.0.2"
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.lombok)
+    alias(libs.plugins.minestomEvents)
+    alias(libs.plugins.jandex)
 }
 
 group = "net.cytonic"
@@ -21,11 +20,6 @@ dependencies {
     implementation(libs.schem)
 }
 
-migration {
-    id = "cytonicbedwars"
-    platform = io.ebean.annotation.Platform.POSTGRES
-}
-
 minestomEvents {
     outputPackage = "net.cytonic.cytonicbedwars.utils"
 }
@@ -36,6 +30,9 @@ java {
 
 tasks.named<JavaExec>("run") {
     workingDir = file("run")
+    dependsOn("generateEvents")
+    dependsOn("jandex")
+    jvmArgs("-XX:+AllowEnhancedClassRedefinition")
 }
 
 tasks {
@@ -44,6 +41,7 @@ tasks {
     }
     shadowJar {
         archiveFileName.set("CytonicBedwars.jar")
+        dependsOn("jandex")
         archiveClassifier.set("")
         mergeServiceFiles()
     }

@@ -1,7 +1,6 @@
 package net.cytonic.cytonicbedwars.shop.impl;
 
 import java.util.List;
-import java.util.Objects;
 
 import com.google.j2objc.annotations.UsedByReflection;
 import net.minestom.server.item.ItemStack;
@@ -23,27 +22,8 @@ public class TerracottaShopItem extends ShopItem {
             ItemShopPage.BLOCKS, 30);
     }
 
-    private Material mapTeamToTerracotta(String teamColor) {
-        return switch (teamColor.toUpperCase()) {
-            case "RED" -> Material.RED_TERRACOTTA;
-            case "BLUE" -> Material.BLUE_TERRACOTTA;
-            case "GREEN" -> Material.GREEN_TERRACOTTA;
-            case "YELLOW" -> Material.YELLOW_TERRACOTTA;
-            case "AQUA" -> Material.LIGHT_BLUE_TERRACOTTA;
-            case "PINK" -> Material.PINK_TERRACOTTA;
-            case "WHITE" -> Material.WHITE_TERRACOTTA;
-            case "GRAY" -> Material.GRAY_TERRACOTTA;
-            default -> throw new IllegalStateException("Unexpected value: " + teamColor);
-        };
-    }
-
     @Override
     public void onPurchase(BedwarsPlayer player) {
-        Material terracottaMaterial = mapTeamToTerracotta(
-            Objects.requireNonNull(player.getBedwarsTeam()).getColor().toString());
-        player.getInventory().addItemStack(ItemStack.builder(terracottaMaterial)
-            .amount(16)
-            .build());
+        player.getInventory().addItemStack(ItemStack.of(player.getBedwarsTeam().getTerracottaType()).withAmount(16));
     }
-
 }

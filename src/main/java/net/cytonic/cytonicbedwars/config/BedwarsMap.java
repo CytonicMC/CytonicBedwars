@@ -10,6 +10,7 @@ import lombok.Getter;
 import net.hollowcube.polar.PolarWorld;
 import net.kyori.adventure.key.Key;
 import net.minestom.server.codec.Transcoder;
+import org.jetbrains.annotations.UnknownNullability;
 
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.managers.WorldManager;
@@ -20,7 +21,8 @@ public enum BedwarsMap {
     LUSH_RUSH("farm.json", "lush_rush", TeamSize.DOUBLES, BedwarsMode.NORMAL);
     private final String file;
     private final String worldName;
-    private final PolarWorld world;
+    @UnknownNullability
+    private PolarWorld world;
     private final TeamSize supportedTeamSize;
     private final List<BedwarsMode> supportedModes;
     private final BedwarsMapConfig config;
@@ -28,10 +30,16 @@ public enum BedwarsMap {
     BedwarsMap(String file, String worldName, TeamSize supportedTeamSize, BedwarsMode... supportedModes) {
         this.file = file;
         this.worldName = worldName;
-        this.world = readWorld();
         this.supportedTeamSize = supportedTeamSize;
         this.supportedModes = List.of(supportedModes);
         this.config = readConfig();
+    }
+
+    public PolarWorld getWorld() {
+        if (world == null) {
+            world = readWorld();
+        }
+        return world;
     }
 
     private PolarWorld readWorld() {

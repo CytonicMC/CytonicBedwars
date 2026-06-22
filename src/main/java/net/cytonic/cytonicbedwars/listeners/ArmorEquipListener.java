@@ -19,7 +19,7 @@ import java.time.Duration;
 @SuppressWarnings("unused")
 public class ArmorEquipListener {
 
-    @Listener
+    //todo @Listener
     public void onArmorEquip(InventoryItemChangeEvent event) {
         if (!(event.getInventory() instanceof PlayerInventory playerInventory)) return;
         for (Player player : playerInventory.getViewers()) {

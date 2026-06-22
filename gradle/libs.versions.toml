@@ -1,7 +1,17 @@
 [versions]
-cytosis = "0.8.2-SNAPSHOT-MONGO"
+cytosis = "0.8.2-SNAPSHOT"
 schem = "2.0.1"
+shadow = "9.4.2"
+lombok = "9.5.0"
+minestomEvents = "0.0.2"
+jandex = "2.3.0"
 
 [libraries]
 cytosis = { module = "net.cytonic:Cytosis", version.ref = "cytosis" }
 schem = { module = "dev.hollowcube:schem", version.ref = "schem" }
+
+[plugins]
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+lombok = { id = "io.freefair.lombok", version.ref = "lombok" }
+minestomEvents = { id = "dev.minestom-united.minestom-events", version.ref = "minestomEvents" }
+jandex = { id = "org.kordamp.gradle.jandex", version.ref = "jandex" }

@@ -13,7 +13,7 @@
 //@SuppressWarnings("unused")
 //public class PotionDrinkListener {
 //
-//    @Listener
+//    //todo @Listener
 //    public static void onEat(PlayerPreEatEvent e) {
 //        if (e.getItemStack().material() == Material.POTION || e.getItemStack().material() == Material.GLASS_BOTTLE) {
 //            MinecraftServer.getSchedulerManager().buildTask(() -> e.getPlayer().setItemInHand(e.getHand(), ItemStack.AIR)).delay(Duration.ofMillis(100));

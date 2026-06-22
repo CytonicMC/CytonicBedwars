@@ -15,7 +15,7 @@ import net.minestom.server.network.player.ResolvableProfile;
 import net.minestom.server.tag.Tag;
 import org.jetbrains.annotations.NotNull;
 
-import net.cytonic.cytonicbedwars.data.objects.Team;
+import net.cytonic.cytonicbedwars.game.Team;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytosis.Cytosis;

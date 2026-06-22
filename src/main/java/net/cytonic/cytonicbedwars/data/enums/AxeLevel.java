@@ -20,6 +20,6 @@ public enum AxeLevel {
                 return level;
             }
         }
-        return null;
+        return WOODEN;
     }
 }

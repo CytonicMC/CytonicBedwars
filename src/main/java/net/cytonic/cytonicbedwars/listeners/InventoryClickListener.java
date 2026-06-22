@@ -15,7 +15,7 @@ import java.util.Arrays;
 @SuppressWarnings("unused")
 public class InventoryClickListener {
 
-    @Listener
+    //todo @Listener
     public void onInventoryClick(InventoryPreClickEvent event) {
         if (event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         ItemStack item = event.getClickedItem();

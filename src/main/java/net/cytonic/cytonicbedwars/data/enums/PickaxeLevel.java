@@ -20,6 +20,6 @@ public enum PickaxeLevel {
                 return level;
             }
         }
-        return null;
+        return WOODEN;
     }
 }

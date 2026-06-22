@@ -7,7 +7,6 @@ import net.kyori.adventure.text.Component;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.instance.Instance;
-import org.jetbrains.annotations.Nullable;
 
 import net.cytonic.cytonicbedwars.menu.ItemShopMenu;
 import net.cytonic.cytosis.Cytosis;
@@ -21,7 +20,7 @@ import net.cytonic.protocol.utils.ExcludeFromIndex;
 @ExcludeFromIndex
 public class ItemShopNPC extends NPC {
 
-    public ItemShopNPC(Pos pos, Instance instance) {
+    public ItemShopNPC(Pos pos, Instance instance, PlayerSkin skin) {
         super(new NPCConfiguration() {
             @Override
             public List<Component> holograms(CytosisPlayer player) {
@@ -39,9 +38,8 @@ public class ItemShopNPC extends NPC {
             }
 
             @Override
-            public @Nullable PlayerSkin skin(CytosisPlayer player) {
-                //todo figure out skin
-                return null;
+            public PlayerSkin skin(CytosisPlayer player) {
+                return skin;
             }
 
             @Override
@@ -53,6 +51,8 @@ public class ItemShopNPC extends NPC {
 
     @Override
     public void onClick(NPCInteractEvent event) {
-        Cytosis.CONTEXT.getComponent(ViewFrame.class).open(ItemShopMenu.class, event.player());
+        if (Cytosis.get(ViewFrame.class).getViewer(event.player()) == null) {
+            Cytosis.get(ViewFrame.class).open(ItemShopMenu.class, event.player());
+        }
     }
 }

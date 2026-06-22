@@ -17,7 +17,7 @@ import net.minestom.server.potion.PotionEffect;
 @SuppressWarnings("unused")
 public class GamemodeChangeListener {
 
-    @Listener
+    //todo @Listener
     public void onGamemodeChange(PlayerGameModeChangeEvent event) {
         Player player = event.getPlayer();
         if (event.getNewGameMode() == GameMode.SPECTATOR) {

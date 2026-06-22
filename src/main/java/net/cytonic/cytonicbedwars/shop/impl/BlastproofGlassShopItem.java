@@ -1,7 +1,6 @@
 package net.cytonic.cytonicbedwars.shop.impl;
 
 import java.util.List;
-import java.util.Objects;
 
 import com.google.j2objc.annotations.UsedByReflection;
 import net.minestom.server.item.ItemStack;
@@ -21,26 +20,8 @@ public class BlastproofGlassShopItem extends ShopItem {
             ItemShopPage.BLOCKS, 22);
     }
 
-    private Material mapTeamToGlass(String teamColor) {
-        return switch (teamColor.toUpperCase()) {
-            case "RED" -> Material.RED_STAINED_GLASS;
-            case "BLUE" -> Material.BLUE_STAINED_GLASS;
-            case "GREEN" -> Material.LIME_STAINED_GLASS;
-            case "YELLOW" -> Material.YELLOW_STAINED_GLASS;
-            case "AQUA" -> Material.LIGHT_BLUE_STAINED_GLASS;
-            case "PINK" -> Material.PINK_STAINED_GLASS;
-            case "WHITE" -> Material.WHITE_STAINED_GLASS;
-            case "GRAY" -> Material.GRAY_STAINED_GLASS;
-            default -> throw new IllegalStateException("Unexpected value: " + teamColor);
-        };
-    }
-
     @Override
     public void onPurchase(BedwarsPlayer player) {
-        Material glassMaterial = mapTeamToGlass(
-            Objects.requireNonNull(player.getBedwarsTeam()).getColor().toString());
-        player.getInventory().addItemStack(ItemStack.builder(glassMaterial)
-            .amount(16)
-            .build());
+        player.getInventory().addItemStack(ItemStack.of(player.getBedwarsTeam().getGlassType()).withAmount(16));
     }
 }

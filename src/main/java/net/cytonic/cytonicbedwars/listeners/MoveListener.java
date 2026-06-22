@@ -1,23 +1,14 @@
 package net.cytonic.cytonicbedwars.listeners;
 
 import lombok.NoArgsConstructor;
-import net.minestom.server.coordinate.Pos;
-import net.minestom.server.entity.GameMode;
-import net.minestom.server.entity.damage.DamageType;
-import net.minestom.server.event.player.PlayerMoveEvent;
 
-import net.cytonic.cytonicbedwars.BedwarsConfig;
-import net.cytonic.cytonicbedwars.managers.GameManager;
-import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
-import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.events.api.Listener;
-import net.cytonic.cytosis.utils.Msg;
 
 @NoArgsConstructor
 @SuppressWarnings("unused")
 public class MoveListener {
 
-    @Listener
+    //todo @Listener
 //    public static void onMove(PlayerMoveEvent event) {
 //        if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
 //        if (!Cytosis.CONTEXT.getComponent(GameManager.class).STARTED) return;

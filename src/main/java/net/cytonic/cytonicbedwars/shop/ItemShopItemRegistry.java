@@ -23,6 +23,7 @@ import net.cytonic.cytonicbedwars.shop.impl.ReplaceAdderShopItem;
 import net.cytonic.cytosis.logging.Logger;
 import net.cytonic.cytosis.utils.Msg;
 import net.cytonic.cytosis.utils.Utils;
+import net.cytonic.protocol.utils.ExcludeFromIndex;
 import net.cytonic.protocol.utils.IndexHolder;
 
 public class ItemShopItemRegistry {
@@ -33,6 +34,7 @@ public class ItemShopItemRegistry {
     static {
         IndexHolder.get().getAllKnownSubclasses(ShopItem.class).stream()
             .filter(ci -> ci.name().startsWith(DotName.createSimple("net.cytonic")))
+            .filter(ci -> !ci.hasAnnotation(ExcludeFromIndex.class))
             .forEach(ci -> {
                 try {
                     Class<?> clazz = Utils.loadClass(ci.name().toString());
