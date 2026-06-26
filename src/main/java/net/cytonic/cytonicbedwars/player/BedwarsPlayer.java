@@ -3,6 +3,7 @@ package net.cytonic.cytonicbedwars.player;
 import java.util.Random;
 import java.util.UUID;
 
+import io.github.togar2.pvp.utils.PotionFlags;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,8 @@ import net.minestom.server.item.Material;
 import net.minestom.server.network.packet.server.play.BlockActionPacket;
 import net.minestom.server.network.player.GameProfile;
 import net.minestom.server.network.player.PlayerConnection;
+import net.minestom.server.potion.Potion;
+import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.sound.SoundEvent;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -166,5 +169,14 @@ public class BedwarsPlayer extends CytosisPlayer {
         if (shears) {
             inventory.addItemStack(ItemStack.of(Material.SHEARS));
         }
+    }
+
+    public void applyInvisibility() {
+        addEffect(
+            new Potion(PotionEffect.INVISIBILITY, PotionFlags.create(false, false, true), Potion.INFINITE_DURATION));
+    }
+
+    public void removeInvisibility() {
+        removeEffect(PotionEffect.INVISIBILITY);
     }
 }

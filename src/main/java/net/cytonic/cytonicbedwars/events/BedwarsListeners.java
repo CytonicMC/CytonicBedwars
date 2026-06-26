@@ -1,6 +1,5 @@
 package net.cytonic.cytonicbedwars.events;
 
-import io.github.togar2.pvp.utils.PotionFlags;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
@@ -11,8 +10,6 @@ import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
-import net.minestom.server.potion.Potion;
-import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.tag.Tag;
 
@@ -123,14 +120,12 @@ public class BedwarsListeners {
 
             if (player.isSpectator() || !player.getGame().isStarted()) {
                 event.setCancelled(true);
+                return;
             }
-        });
 
-        Events.onPlayerGameModeChange(event -> {
-            if (event.getNewGameMode().equals(GameMode.SPECTATOR)) {
-                event.getPlayer().addEffect(
-                    new Potion(PotionEffect.INVISIBILITY, PotionFlags.create(false, false, true),
-                        Potion.INFINITE_DURATION));
+            if (event.getDamage().getAttacker() instanceof BedwarsPlayer attacker && attacker.isInvulnerable()) {
+                player.sendMessage(Msg.grey("You attacked someone and lost your invincibility!"));
+                player.setInvulnerable(false);
             }
         });
 

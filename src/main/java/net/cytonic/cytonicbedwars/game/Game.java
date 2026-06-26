@@ -270,7 +270,10 @@ public class Game {
             for (BedwarsPlayer bedwarsPlayer : getPlayers()) {
                 bedwarsPlayer.sendMessage(component);
             }
+
             player.setGameMode(GameMode.SPECTATOR);
+            player.applyInvisibility();
+
             player.setAlive(false);
 
             if (!team.hasBed() && team.getAlivePlayers().isEmpty()) {
@@ -299,6 +302,7 @@ public class Game {
         player.setRespawning(true);
         player.getInventory().clear();
         player.setGameMode(GameMode.SPECTATOR);
+        player.applyInvisibility();
         player.setAxeLevel(AxeLevel.getByOrdinal(player.getAxeLevel().ordinal() - 1));
         player.setPickaxeLevel(PickaxeLevel.getByOrdinal(player.getPickaxeLevel().ordinal() - 1));
         player.setHealth(20);
@@ -316,8 +320,9 @@ public class Game {
                 player.setGameMode(GameMode.SURVIVAL);
                 player.setInvulnerable(true);
                 MinecraftServer.getSchedulerManager()
-                    .buildTask(() -> player.setInvulnerable(false)).delay(TaskSchedule.seconds(5)).schedule();
+                    .buildTask(() -> player.setInvulnerable(false)).delay(TaskSchedule.seconds(10)).schedule();
                 player.setVelocity(Vec.ZERO);
+                player.removeInvisibility();
                 player.teleport(team.getSpawnPos());
                 player.applyItems();
                 player.setRespawning(false);
