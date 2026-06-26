@@ -1,7 +1,7 @@
 [versions]
-cytosis = "0.8.2-SNAPSHOT"
+cytosis = "0.8.4-SNAPSHOT"
 schem = "2.0.1"
-shadow = "9.4.2"
+shadow = "9.4.3"
 lombok = "9.5.0"
 minestomEvents = "0.0.2"
 jandex = "2.3.0"
