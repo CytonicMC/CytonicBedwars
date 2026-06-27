@@ -105,8 +105,15 @@ public class BedwarsPlayer extends CytosisPlayer {
         return shears;
     }
 
-    public void openEnderChest() {
-        openInventory(enderChest);
+
+    public int itemCount(Material material) {
+        int count = 0;
+        for (ItemStack itemStack : inventory.getItemStacks()) {
+            if (itemStack.material() == material) {
+                count += itemStack.amount();
+            }
+        }
+        return count;
     }
 
     public void removeItems(Material material, int amount) {

@@ -20,6 +20,8 @@ import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.instance.block.Block;
+import net.minestom.server.item.ItemStack;
+import net.minestom.server.item.Material;
 import net.minestom.server.registry.RegistryKey;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.timer.Task;
@@ -232,14 +234,14 @@ public class Game {
         }).delay(TaskSchedule.seconds(10)).schedule();
     }
 
-    public void kill(BedwarsPlayer player, @Nullable BedwarsPlayer attacker, RegistryKey<DamageType> damageType) {
+    public void kill(BedwarsPlayer player, @Nullable BedwarsPlayer killer, RegistryKey<DamageType> damageType) {
         Component component = player.getBedwarsFormattedName().appendSpace();
         if (damageType.equals(DamageType.PLAYER_ATTACK)) {
-            if (attacker == null) {
+            if (killer == null) {
                 kill(player, null, DamageType.OUT_OF_WORLD);
                 return;
             }
-            component = component.append(Msg.grey("was slain by ")).append(attacker.getBedwarsFormattedName());
+            component = component.append(Msg.grey("was slain by ")).append(killer.getBedwarsFormattedName());
         } else if (damageType.equals(DamageType.FALL)) {
             component = component.append(Msg.grey("has fallen to their death"));
         } else if (damageType.equals(DamageType.ON_FIRE)) {
@@ -297,6 +299,17 @@ public class Game {
 
         for (BedwarsPlayer bedwarsPlayer : getPlayers()) {
             bedwarsPlayer.sendMessage(component);
+        }
+
+        if (killer != null) {
+            killer.getInventory()
+                .addItemStack(ItemStack.of(Material.IRON_INGOT).withAmount(player.itemCount(Material.IRON_INGOT)));
+            killer.getInventory()
+                .addItemStack(ItemStack.of(Material.GOLD_INGOT).withAmount(player.itemCount(Material.GOLD_INGOT)));
+            killer.getInventory()
+                .addItemStack(ItemStack.of(Material.DIAMOND).withAmount(player.itemCount(Material.DIAMOND)));
+            killer.getInventory()
+                .addItemStack(ItemStack.of(Material.EMERALD).withAmount(player.itemCount(Material.EMERALD)));
         }
 
         player.setRespawning(true);
