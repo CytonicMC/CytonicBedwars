@@ -23,7 +23,6 @@ import net.cytonic.cytonicbedwars.blockHandlers.BellBlockHandler;
 import net.cytonic.cytonicbedwars.blockHandlers.ChestBlockHandler;
 import net.cytonic.cytonicbedwars.blockHandlers.EnderChestBlockHandler;
 import net.cytonic.cytonicbedwars.commands.DebugCommand;
-import net.cytonic.cytonicbedwars.commands.ItemCommand;
 import net.cytonic.cytonicbedwars.commands.MapBuilderCommand;
 import net.cytonic.cytonicbedwars.commands.SwitchGameCommand;
 import net.cytonic.cytonicbedwars.config.BedwarsConfig;
@@ -107,7 +106,6 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
     private void registerCommands() {
         MinecraftServer.getCommandManager().register(new MapBuilderCommand());
         MinecraftServer.getCommandManager().register(new DebugCommand());
-        MinecraftServer.getCommandManager().register(new ItemCommand());
         MinecraftServer.getCommandManager().register(new SwitchGameCommand());
     }
 
