@@ -1,5 +1,5 @@
 [versions]
-cytosis = "0.8.4-SNAPSHOT"
+cytosis = "0.8.5-SNAPSHOT"
 schem = "2.0.1"
 shadow = "9.4.3"
 lombok = "9.5.0"
