@@ -160,6 +160,42 @@ public class BedwarsListeners {
                 event.setCancelled(true);
             }
         });
+
+        Events.onPlayerSpawn(event -> {
+            if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
+            if (player.getGame().isStarted()) {
+                //todo: data loading stuff for rejoining players
+                player.setGameMode(GameMode.SPECTATOR);
+                player.applyInvisibility();
+                player.getGame().getSpectators().add(player.getUuid());
+                return;
+            }
+
+            Game game = player.getGame();
+            if (game.getPlayers().size() >= game.getConfig().teamSize().getPlayersPerTeam() * 2) {
+                game.waitStart();
+            }
+        });
+
+        Events.onPlayerDisconnect(event -> {
+            if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
+            Game game = player.getGame();
+            if (game.isStarted()) {
+                //todo kill them and stuff
+                return;
+            }
+
+            for (BedwarsPlayer bedwarsPlayer : game.getPlayers()) {
+                bedwarsPlayer.sendMessage(
+                    Msg.grey("%s has left! (%s/%s)", player.getUsername(), game.getPlayers().size(),
+                        game.getConfig().teams().size()));
+            }
+            //we remove one since the disconnecting player is still in the world
+            int onlinePlayers = game.getPlayers().size() - 1;
+            if (game.getConfig().teamSize().getPlayersPerTeam() * 2 > onlinePlayers) {
+                game.cancelStart();
+            }
+        });
     }
 
     private static double distance(double x1, double x2, double z1, double z2) {

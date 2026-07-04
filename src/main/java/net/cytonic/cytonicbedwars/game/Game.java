@@ -103,7 +103,7 @@ public class Game {
     }
 
     public void waitStart() {
-        this.state = GameState.WAITING;
+        this.state = GameState.STARTING;
 
         this.startTime = 5;
         this.startTask = MinecraftServer.getSchedulerManager().submitTask(() -> {
@@ -135,8 +135,8 @@ public class Game {
         }
         this.startTask = null;
 
-        //todo show player count here
-        getPlayers().forEach(player -> player.sendMessage(Msg.redSplash("CANCELED!", "Start has been cancelled!")));
+        getPlayers().forEach(player -> player.sendMessage(
+            Msg.redSplash("START CANCELED!", "There are not enough players to start the game!")));
     }
 
     public void start() {
