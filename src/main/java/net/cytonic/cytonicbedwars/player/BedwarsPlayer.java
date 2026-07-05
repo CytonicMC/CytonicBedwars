@@ -105,7 +105,6 @@ public class BedwarsPlayer extends CytosisPlayer {
         return shears;
     }
 
-
     public int itemCount(Material material) {
         int count = 0;
         for (ItemStack itemStack : inventory.getItemStacks()) {
@@ -144,7 +143,7 @@ public class BedwarsPlayer extends CytosisPlayer {
     }
 
     public Component getBedwarsFormattedName() {
-        return getBedwarsTeam().getColor().getName()
+        return getBedwarsTeam().getName()
             .appendSpace()
             .append(formattedName());
     }
@@ -168,11 +167,13 @@ public class BedwarsPlayer extends CytosisPlayer {
     public void applyItems() {
         inventory.setItemStack(0, ItemStack.of(Material.WOODEN_SWORD));
 
-        inventory.setEquipment(EquipmentSlot.HELMET, getHeldSlot(), ItemStack.of(armorLevel.getHead()));
-        inventory.setEquipment(EquipmentSlot.CHESTPLATE, getHeldSlot(), ItemStack.of(armorLevel.getChest()));
+        inventory.setEquipment(EquipmentSlot.HELMET, getHeldSlot(), armorLevel.getHead());
+        inventory.setEquipment(EquipmentSlot.CHESTPLATE, getHeldSlot(), armorLevel.getChest());
         inventory.setEquipment(EquipmentSlot.LEGGINGS, getHeldSlot(), ItemStack.of(Material.LEATHER_LEGGINGS));
         inventory.setEquipment(EquipmentSlot.BOOTS, getHeldSlot(), ItemStack.of(Material.LEATHER_BOOTS));
 
+        inventory.addItemStack(axeLevel.getItemStack());
+        inventory.addItemStack(pickaxeLevel.getItemStack());
         if (shears) {
             inventory.addItemStack(ItemStack.of(Material.SHEARS));
         }
