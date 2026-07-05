@@ -20,7 +20,6 @@ import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.instance.block.Block;
-import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.registry.RegistryKey;
 import net.minestom.server.sound.SoundEvent;
@@ -233,8 +232,12 @@ public class Game {
         MinecraftServer.getSchedulerManager().buildTask(() -> {
             getPlayers().forEach(BedwarsPlayer::sendToLobby);
 
-            server.getGames().remove(id);
+            MinecraftServer.getSchedulerManager().buildTask(() -> server.getGames().remove(id))
+                .delay(TaskSchedule.seconds(2)).schedule();
         }).delay(TaskSchedule.seconds(10)).schedule();
+
+        Game newGame = new Game(map, mode);
+        server.getGames().put(newGame.getId(), newGame);
     }
 
     public void kill(BedwarsPlayer player, @Nullable BedwarsPlayer killer, RegistryKey<DamageType> damageType) {

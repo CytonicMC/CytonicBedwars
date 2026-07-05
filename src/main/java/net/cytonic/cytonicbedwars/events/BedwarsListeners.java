@@ -5,15 +5,19 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.Title.Times;
 import net.kyori.adventure.util.Ticks;
+import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
+import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.tag.Tag;
+import net.minestom.server.timer.TaskSchedule;
 
 import net.cytonic.cytonicbedwars.config.BedwarsMap;
+import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.game.Game;
 import net.cytonic.cytonicbedwars.game.Team;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
@@ -27,17 +31,25 @@ public class BedwarsListeners {
     public static final Tag<Boolean> PLACED_BY_PLAYER_TAG = Tag.Boolean("placed_by_player");
 
     public static void init(BedwarsServer server) {
+        InstanceContainer instance = MinecraftServer.getInstanceManager().createInstanceContainer();
         Events.onPlayerGameModeRequest(event -> event.getPlayer().setGameMode(event.getRequestedGameMode()));
-        Events.onAsyncPlayerConfiguration(
-            event -> {
-                event.getPlayer().setPermissionLevel(4);
-                Game game = server.getGames().values().stream().filter(it -> it.getMap() == BedwarsMap.FARM)
-                    .findFirst().orElseThrow();
+        Events.onAsyncPlayerConfiguration(event -> {
+            if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
+            player.setPermissionLevel(4);
+            Game game = server.getGames().values().stream()
+                .filter(it -> !it.isStarted() && it.getMap() == BedwarsMap.FARM)
+                .findFirst().orElse(null);
 
-                event.setSpawningInstance(game.getWorld());
-                event.getPlayer().setRespawnPoint(Game.SPAWN_POS);
-                ((BedwarsPlayer) event.getPlayer()).UNSAFE_joinGame(game.getId());
-            });
+            if (game == null) {
+                player.setKicking(Msg.error("You were sent to the wrong bedwars server! Please report this!"));
+                event.setSpawningInstance(instance);
+                return;
+            }
+
+            event.setSpawningInstance(game.getWorld());
+            player.setRespawnPoint(Game.SPAWN_POS);
+            player.UNSAFE_joinGame(game.getId());
+        });
         Events.onPlayerExhaust(event -> event.setCancelled(true));
         Events.onEntityItemMerge(event -> event.setCancelled(true));
         Events.onPickupItem(event -> {
@@ -165,13 +177,24 @@ public class BedwarsListeners {
 
         Events.onPlayerSpawn(event -> {
             if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
+            if (player.getKicking() != null) {
+                MinecraftServer.getSchedulerManager().buildTask(() -> {
+                    player.sendMessage(player.getKicking());
+                    player.sendToLobby();
+                }).delay(TaskSchedule.seconds(1)).schedule();
+                return;
+            }
             if (player.getGame().isStarted()) {
+                event.getPlayer().setFlying(true);
+                event.getPlayer().setAllowFlying(true);
                 //todo: data loading stuff for rejoining players
                 player.setGameMode(GameMode.SPECTATOR);
                 player.applyInvisibility();
                 player.getGame().getSpectators().add(player.getUuid());
                 return;
             }
+            event.getPlayer().setFlying(false);
+            event.getPlayer().setAllowFlying(false);
 
             Game game = player.getGame();
             if (game.getPlayers().size() >= game.getConfig().teamSize().getPlayersPerTeam() * 2) {
@@ -180,7 +203,7 @@ public class BedwarsListeners {
         });
 
         Events.onPlayerDisconnect(event -> {
-            if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
+            if (!(event.getPlayer() instanceof BedwarsPlayer player) || player.getKicking() != null) return;
             Game game = player.getGame();
             if (game.isStarted()) {
                 //todo kill them and stuff

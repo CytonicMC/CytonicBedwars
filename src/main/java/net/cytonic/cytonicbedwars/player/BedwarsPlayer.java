@@ -28,6 +28,7 @@ import net.minestom.server.network.player.PlayerConnection;
 import net.minestom.server.potion.Potion;
 import net.minestom.server.potion.PotionEffect;
 import net.minestom.server.sound.SoundEvent;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
 import net.cytonic.cytonicbedwars.config.TeamColor;
@@ -39,7 +40,6 @@ import net.cytonic.cytonicbedwars.game.Game;
 import net.cytonic.cytonicbedwars.game.Team;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytonicbedwars.server.BedwarsServer;
-import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
@@ -63,6 +63,8 @@ public class BedwarsPlayer extends CytosisPlayer {
     @Getter(AccessLevel.NONE)
     private UUID gameId;
     private TeamColor teamColor;
+    @Nullable
+    private Component kicking;
 
     public BedwarsPlayer(PlayerConnection playerConnection, GameProfile gameProfile) {
         super(playerConnection, gameProfile);
@@ -132,17 +134,6 @@ public class BedwarsPlayer extends CytosisPlayer {
                 remaining -= remove;
             }
         }
-    }
-
-    public int itemCount(String id) {
-        int count = 0;
-        for (ItemStack stack : inventory.getItemStacks()) {
-            if (!stack.hasTag(Items.NAMESPACE)) continue;
-            if (stack.getTag(Items.NAMESPACE).equals(id)) {
-                count += stack.amount();
-            }
-        }
-        return count;
     }
 
     public Component getBedwarsFormattedName() {
