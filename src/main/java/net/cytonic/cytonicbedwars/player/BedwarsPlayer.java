@@ -187,4 +187,8 @@ public class BedwarsPlayer extends CytosisPlayer {
     public void removeInvisibility() {
         removeEffect(PotionEffect.INVISIBILITY);
     }
+
+    public void swapItems(BedwarsPlayer player, Material material) {
+        player.getInventory().addItemStack(ItemStack.of(material).withAmount(itemCount(material)));
+    }
 }

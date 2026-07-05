@@ -195,7 +195,6 @@ public class Game {
     }
 
     public void end() {
-        this.started = false;
         this.state = GameState.ENDED;
 
         for (Team team : teams.values()) {
@@ -302,14 +301,10 @@ public class Game {
         }
 
         if (killer != null) {
-            killer.getInventory()
-                .addItemStack(ItemStack.of(Material.IRON_INGOT).withAmount(player.itemCount(Material.IRON_INGOT)));
-            killer.getInventory()
-                .addItemStack(ItemStack.of(Material.GOLD_INGOT).withAmount(player.itemCount(Material.GOLD_INGOT)));
-            killer.getInventory()
-                .addItemStack(ItemStack.of(Material.DIAMOND).withAmount(player.itemCount(Material.DIAMOND)));
-            killer.getInventory()
-                .addItemStack(ItemStack.of(Material.EMERALD).withAmount(player.itemCount(Material.EMERALD)));
+            player.swapItems(killer, Material.IRON_INGOT);
+            player.swapItems(killer, Material.GOLD_INGOT);
+            player.swapItems(killer, Material.DIAMOND);
+            player.swapItems(killer, Material.EMERALD);
         }
 
         player.setRespawning(true);
