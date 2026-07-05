@@ -1,5 +1,6 @@
 package net.cytonic.cytonicbedwars.player;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -20,6 +21,7 @@ import net.minestom.server.inventory.InventoryType;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.network.packet.server.play.BlockActionPacket;
+import net.minestom.server.network.packet.server.play.PlayerInfoUpdatePacket;
 import net.minestom.server.network.player.GameProfile;
 import net.minestom.server.network.player.PlayerConnection;
 import net.minestom.server.potion.Potion;
@@ -190,5 +192,10 @@ public class BedwarsPlayer extends CytosisPlayer {
 
     public void swapItems(BedwarsPlayer player, Material material) {
         player.getInventory().addItemStack(ItemStack.of(material).withAmount(itemCount(material)));
+    }
+
+    public PlayerInfoUpdatePacket.Property getHeadProperty() {
+        PlayerSkin skin = Objects.requireNonNull(getSkin());
+        return new PlayerInfoUpdatePacket.Property("textures", skin.textures(), skin.signature());
     }
 }
