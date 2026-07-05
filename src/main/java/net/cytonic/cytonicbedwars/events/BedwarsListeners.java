@@ -38,6 +38,7 @@ public class BedwarsListeners {
                 event.getPlayer().setRespawnPoint(Game.SPAWN_POS);
                 ((BedwarsPlayer) event.getPlayer()).UNSAFE_joinGame(game.getId());
             });
+        Events.onPlayerExhaust(event -> event.setCancelled(true));
         Events.onEntityItemMerge(event -> event.setCancelled(true));
         Events.onPickupItem(event -> {
             if (!(event.getEntity() instanceof BedwarsPlayer player)) return;
