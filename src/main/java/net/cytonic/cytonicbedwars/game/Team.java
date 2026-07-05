@@ -145,4 +145,9 @@ public class Team {
             teamShopNpc.remove();
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Team team && team.color == color;
+    }
 }

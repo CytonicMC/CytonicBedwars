@@ -13,6 +13,7 @@ import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.entity.EquipmentSlot;
+import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.event.EventListener;
 import net.minestom.server.event.inventory.InventoryCloseEvent;
 import net.minestom.server.instance.block.Block;

@@ -14,6 +14,7 @@ import org.jetbrains.annotations.UnknownNullability;
 
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.managers.WorldManager;
+import net.cytonic.cytosis.utils.Utils;
 
 @Getter
 public enum BedwarsMap {
@@ -40,6 +41,10 @@ public enum BedwarsMap {
             world = readWorld();
         }
         return world;
+    }
+
+    public String getHumanName() {
+        return Utils.captializeFirstLetters(name().toLowerCase().replace("_", " "));
     }
 
     private PolarWorld readWorld() {

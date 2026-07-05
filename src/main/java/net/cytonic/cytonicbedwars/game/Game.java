@@ -102,6 +102,10 @@ public class Game {
         return players;
     }
 
+    public int getMaxPlayers() {
+        return config.teamSize().getPlayersPerTeam() * config.teams().size();
+    }
+
     public void waitStart() {
         this.state = GameState.STARTING;
 

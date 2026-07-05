@@ -10,11 +10,11 @@ public class SideboardServiceImpl implements SideboardService<BedwarsPlayer> {
 
     @Override
     public boolean supportsSideboard() {
-        return false;
+        return true;
     }
 
     @Override
     public @Nullable SideboardCreator<BedwarsPlayer> sideboardCreator() {
-        return null;
+        return new SideboardImpl();
     }
 }
