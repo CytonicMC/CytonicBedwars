@@ -20,7 +20,7 @@ if [ -z "$VERSION" ]; then
 fi
 
 # Login to GitHub Container Registry
-#echo "$GHCR_TOKEN" | docker login ghcr.io --username "$GHCR_USERNAME" --password-stdin
+echo "$GHCR_TOKEN" | docker login ghcr.io --username "$GHCR_USERNAME" --password-stdin
 
 # Create a multi-arch builder, reusing it if it already exists
 BUILDER_NAME="multi-arch-builder"
@@ -37,9 +37,9 @@ GHCR_IMAGE="ghcr.io/$GHCR_USERNAME_LOWER/$IMAGE_NAME"
 docker buildx build \
     --platform linux/amd64,linux/arm64 \
     --tag "$GHCR_IMAGE:$VERSION" \
+    --tag "$GHCR_IMAGE:latest" \
     --push \
     .
-#    --tag "$GHCR_IMAGE:latest" \
 
 # Clean up the builder
 docker buildx rm "$BUILDER_NAME"
