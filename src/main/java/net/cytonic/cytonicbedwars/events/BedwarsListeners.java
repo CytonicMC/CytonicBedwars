@@ -124,8 +124,8 @@ public class BedwarsListeners {
             }
 
             if (event.getDamage().getAttacker() instanceof BedwarsPlayer attacker && attacker.isInvulnerable()) {
-                player.sendMessage(Msg.grey("You attacked someone and lost your invincibility!"));
-                player.setInvulnerable(false);
+                attacker.sendMessage(Msg.grey("You attacked someone and lost your invincibility!"));
+                attacker.setInvulnerable(false);
             }
         });
 
