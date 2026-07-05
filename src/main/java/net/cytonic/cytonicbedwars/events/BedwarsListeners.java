@@ -112,6 +112,7 @@ public class BedwarsListeners {
             if (!(event.getEntity() instanceof BedwarsPlayer player)) return;
             if (!(event.getDamage().getAttacker() instanceof BedwarsPlayer attacker)) return;
             event.setCancelDeath(true);
+            if (player.getGame().getState() == GameState.ENDED) return;
 
             player.getGame().kill(player, attacker, event.getDamage().getType());
         });
