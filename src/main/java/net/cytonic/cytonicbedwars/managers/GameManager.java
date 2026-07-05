@@ -14,20 +14,17 @@ import net.kyori.adventure.title.Title;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.Entity;
-import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.registry.RegistryKey;
-import net.minestom.server.timer.TaskSchedule;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
-import net.cytonic.cytonicbedwars.data.objects.PlayerList;
 import net.cytonic.cytonicbedwars.data.objects.PlayerStats;
 import net.cytonic.cytonicbedwars.game.Team;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
@@ -37,11 +34,8 @@ import net.cytonic.cytonicbedwars.runnables.WaitingRunnable;
 import net.cytonic.cytonicbedwars.utils.Items;
 import net.cytonic.cytosis.Bootstrappable;
 import net.cytonic.cytosis.Cytosis;
-import net.cytonic.cytosis.bootstrap.annotations.CytosisComponent;
 import net.cytonic.cytosis.entity.npc.NPC;
 import net.cytonic.cytosis.logging.Logger;
-import net.cytonic.cytosis.managers.PlayerListManager;
-import net.cytonic.cytosis.managers.SideboardManager;
 import net.cytonic.cytosis.player.CytosisPlayer;
 import net.cytonic.cytosis.utils.Msg;
 
@@ -60,12 +54,12 @@ public class GameManager implements Bootstrappable {
 
     @Override
     public void init() {
-        SideboardManager sideboardManager = Cytosis.CONTEXT.getComponent(SideboardManager.class);
+//        SideboardManager sideboardManager = Cytosis.CONTEXT.getComponent(SideboardManager.class);
 //        sideboardManager.setSideboardCreator(new Scoreboard());
-        sideboardManager.cancelUpdates();
-        sideboardManager.autoUpdateBoards(TaskSchedule.tick(1));
-        Cytosis.CONTEXT.getComponent(PlayerListManager.class).setCreator(new PlayerList());
-        setup();
+//        sideboardManager.cancelUpdates();
+//        sideboardManager.autoUpdateBoards(TaskSchedule.tick(1));
+//        Cytosis.CONTEXT.getComponent(PlayerListManager.class).setCreator(new PlayerList());
+//        setup();
     }
 
     public void setup() {
@@ -326,14 +320,14 @@ public class GameManager implements Bootstrappable {
                 message = message.append(Msg.grey("was slain by %s%s", getPlayerTeam(killer).orElseThrow().getPrefix(),
                     killer.getUsername()));
 
-                killer.getInventory()
-                    .addItemStack(Items.get("IRON").withAmount(dead.itemCount("IRON")));
-                killer.getInventory()
-                    .addItemStack(Items.get("GOLD").withAmount(dead.itemCount("GOLD")));
-                killer.getInventory()
-                    .addItemStack(Items.get("DIAMOND").withAmount(dead.itemCount("DIAMOND")));
-                killer.getInventory()
-                    .addItemStack(Items.get("EMERALD").withAmount(dead.itemCount("EMERALD")));
+//                killer.getInventory()
+//                    .addItemStack(Items.get("IRON").withAmount(dead.itemCount("IRON")));
+//                killer.getInventory()
+//                    .addItemStack(Items.get("GOLD").withAmount(dead.itemCount("GOLD")));
+//                killer.getInventory()
+//                    .addItemStack(Items.get("DIAMOND").withAmount(dead.itemCount("DIAMOND")));
+//                killer.getInventory()
+//                    .addItemStack(Items.get("EMERALD").withAmount(dead.itemCount("EMERALD")));
             }
         } else if (damageType.equals(DamageType.FALL)) {
             message = message.append(Msg.grey("has fallen to their death"));

@@ -1,16 +1,18 @@
 package net.cytonic.cytonicbedwars.runnables;
 
+import java.time.Duration;
+
 import lombok.Getter;
+import net.minestom.server.MinecraftServer;
+import net.minestom.server.timer.Task;
+
 import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.managers.GameManager;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
-import net.minestom.server.MinecraftServer;
-import net.minestom.server.timer.Task;
-
-import java.time.Duration;
 
 public class GameRunnable {
+
     @Getter
     private static int timeLeft = GameState.PLAY.getDuration() + 1;
     private final Task task;
@@ -31,8 +33,10 @@ public class GameRunnable {
         if (timeLeft <= -1) {
             timeLeft = Cytosis.CONTEXT.getComponent(GameManager.class).nextGameState().getDuration();
         }
-        if (Cytosis.CONTEXT.getComponent(GameManager.class).getGameState() == GameState.BED_DESTRUCTION && timeLeft == 59) {
-            Cytosis.getOnlinePlayers().forEach(player -> player.sendMessage(Msg.yellow("All beds will be destroyed in <red>60 seconds!")));
+        if (Cytosis.CONTEXT.getComponent(GameManager.class).getGameState() == GameState.BED_DESTRUCTION
+            && timeLeft == 59) {
+            Cytosis.getOnlinePlayers()
+                .forEach(player -> player.sendMessage(Msg.yellow("All beds will be destroyed in <red>60 seconds!")));
         }
     }
 
