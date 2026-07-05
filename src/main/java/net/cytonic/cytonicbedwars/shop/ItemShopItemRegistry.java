@@ -80,10 +80,11 @@ public class ItemShopItemRegistry {
                 Material.STONE_SWORD, ItemShopPage.COMBAT, 19));
         itemMap.computeIfAbsent(ItemShopPage.COMBAT, _ -> new HashMap<>()).put(20,
             new ReplaceAdderShopItem("iron_sword", Msg.mm("Iron Sword"), List.of(), 7, Currency.GOLD,
-                Material.IRON_SWORD, Material.STONE_SWORD, ItemShopPage.COMBAT, 20));
+                Material.IRON_SWORD, List.of(Material.WOODEN_SWORD, Material.STONE_SWORD), ItemShopPage.COMBAT, 20));
         itemMap.computeIfAbsent(ItemShopPage.COMBAT, _ -> new HashMap<>()).put(21,
             new ReplaceAdderShopItem("diamond_sword", Msg.mm("Diamond Sword"), List.of(), 6, Currency.EMERALD,
-                Material.DIAMOND_SWORD, Material.IRON_SWORD, ItemShopPage.COMBAT, 21));
+                Material.DIAMOND_SWORD, List.of(Material.WOODEN_SWORD, Material.STONE_SWORD, Material.IRON_SWORD),
+                ItemShopPage.COMBAT, 21));
 
         itemMap.computeIfAbsent(ItemShopPage.COMBAT, _ -> new HashMap<>()).put(22,
             new BasicShopItem("shield", Msg.mm("Shield"), List.of(), 3, Currency.GOLD, 1,
@@ -91,19 +92,19 @@ public class ItemShopItemRegistry {
 
         itemMap.computeIfAbsent(ItemShopPage.COMBAT, _ -> new HashMap<>()).put(23,
             new ReplaceAdderShopItem("crossbow_1", Msg.mm("Crossbow"), List.of(), 12, Currency.GOLD,
-                Material.CROSSBOW, Material.CROSSBOW, ItemShopPage.COMBAT, 23));
+                Material.CROSSBOW, List.of(Material.CROSSBOW), ItemShopPage.COMBAT, 23));
         itemMap.computeIfAbsent(ItemShopPage.COMBAT, _ -> new HashMap<>()).put(24,
             new ReplaceAdderShopItem("crossbow_2", Msg.mm("Crossbow"), List.of(), 20, Currency.GOLD,
                 ItemStack.builder(Material.CROSSBOW)
                     .set(DataComponents.ENCHANTMENTS,
                         new EnchantmentList(Map.of(Enchantment.QUICK_CHARGE, 1))).build(),
-                Material.CROSSBOW, ItemShopPage.COMBAT, 24));
+                List.of(Material.CROSSBOW), ItemShopPage.COMBAT, 24));
         itemMap.computeIfAbsent(ItemShopPage.COMBAT, _ -> new HashMap<>()).put(25,
             new ReplaceAdderShopItem("crossbow_3", Msg.mm("Crossbow"), List.of(), 6, Currency.EMERALD,
                 ItemStack.builder(Material.CROSSBOW)
                     .set(DataComponents.ENCHANTMENTS,
                         new EnchantmentList(Map.of(Enchantment.QUICK_CHARGE, 2, Enchantment.MULTISHOT, 1))).build(),
-                Material.CROSSBOW, ItemShopPage.COMBAT, 25));
+                List.of(Material.CROSSBOW), ItemShopPage.COMBAT, 25));
 
         itemMap.computeIfAbsent(ItemShopPage.COMBAT, _ -> new HashMap<>()).put(28,
             new BasicShopItem("bow_1", Msg.mm("Bow"), List.of(), 10, Currency.GOLD, 1,
@@ -132,21 +133,21 @@ public class ItemShopItemRegistry {
                 ItemStack.builder(Material.TRIDENT)
                     .set(DataComponents.ENCHANTMENTS,
                         new EnchantmentList(Map.of(Enchantment.LOYALTY, 1))).build(),
-                Material.TRIDENT, ItemShopPage.COMBAT, 32));
+                List.of(Material.TRIDENT), ItemShopPage.COMBAT, 32));
 
         itemMap.computeIfAbsent(ItemShopPage.COMBAT, _ -> new HashMap<>()).put(33,
             new ReplaceAdderShopItem("trident_2", Msg.mm("Trident"), List.of(), 5, Currency.EMERALD,
                 ItemStack.builder(Material.TRIDENT)
                     .set(DataComponents.ENCHANTMENTS,
                         new EnchantmentList(Map.of(Enchantment.RIPTIDE, 1))).build(),
-                Material.TRIDENT, ItemShopPage.COMBAT, 33));
+                List.of(Material.TRIDENT), ItemShopPage.COMBAT, 33));
 
         itemMap.computeIfAbsent(ItemShopPage.COMBAT, _ -> new HashMap<>()).put(34,
             new ReplaceAdderShopItem("trident_3", Msg.mm("Trident"), List.of(), 5, Currency.GOLD,
                 ItemStack.builder(Material.TRIDENT)
                     .set(DataComponents.ENCHANTMENTS,
                         new EnchantmentList(Map.of(Enchantment.LOYALTY, 2, Enchantment.CHANNELING, 1))).build(),
-                Material.TRIDENT, ItemShopPage.COMBAT, 34));
+                List.of(Material.TRIDENT), ItemShopPage.COMBAT, 34));
 
         itemMap.computeIfAbsent(ItemShopPage.POTIONS, _ -> new HashMap<>()).put(22,
             new PotionShopItem("invisibility", Msg.mm("Invisibility (30s)"), List.of(), 1, Currency.EMERALD,
