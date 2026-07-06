@@ -20,7 +20,7 @@ import net.cytonic.protocol.utils.ExcludeFromIndex;
 public class PotionShopItem extends BasicShopItem {
 
     private final PotionEffect potionEffect;
-    private final int duation;
+    private final int duration;
     private final int amplifier;
 
     public PotionShopItem(String id, Component name,
@@ -30,14 +30,14 @@ public class PotionShopItem extends BasicShopItem {
         int amplifier) {
         super(id, name, description, cost, currency, 1, material, itemShopPage, slot);
         this.potionEffect = potionEffect;
-        this.duation = duration;
+        this.duration = duration;
         this.amplifier = amplifier;
     }
 
     @Override
     public void onPurchase(BedwarsPlayer player) {
         CustomPotionEffect effect = new CustomPotionEffect(potionEffect,
-            new Settings(amplifier, duation, false, false, true, null));
+            new Settings(amplifier, duration, false, false, true, null));
         ItemStack itemStack = ItemStack.builder(Material.POTION)
             .set(DataComponents.POTION_CONTENTS, new PotionContents(effect))
             .build();

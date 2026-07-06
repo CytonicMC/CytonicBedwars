@@ -65,7 +65,7 @@ public class ItemShopMenu extends View {
             context.slot(value.ordinal() + 1, value.getItemStack()).onClick(slotClickContext ->
                 itemShopPageState.set(value, slotClickContext)).updateOnClick();
 
-            ItemShopItemRegistry.getItemMap().getOrDefault(value, new HashMap<>()).forEach((_, shopItem) ->
+            ItemShopItemRegistry.REGISTRY.getOrDefault(value, new HashMap<>()).forEach((_, shopItem) ->
                 context.slot(shopItem.getSlot(), shopItem.getDisplay()).updateOnClick()
                     .displayIf(displayContext -> value.equals(itemShopPageState.get(displayContext)))
                     .onClick(slotClickContext -> {
@@ -193,7 +193,7 @@ public class ItemShopMenu extends View {
             int finalI = i;
             context.availableSlot(MenuUtils.BORDER)
                 .hideIf(displayContext ->
-                    ItemShopItemRegistry.getItemMap()
+                    ItemShopItemRegistry.REGISTRY
                         .getOrDefault(itemShopPageState.get(displayContext), new HashMap<>())
                         .containsKey(finalI) ||
                         Arrays.stream(ItemShopPage.values()).map(ItemShopPage::ordinal)

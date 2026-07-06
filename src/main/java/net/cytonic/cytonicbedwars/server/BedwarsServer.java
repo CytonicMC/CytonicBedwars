@@ -71,6 +71,7 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
         MinestomPvP.init(false, true);
 
         CombatFeatureSet modernVanilla = CombatFeatures.modernVanilla();
+        Cytosis.CONTEXT.registerComponent(modernVanilla);
         MinecraftServer.getGlobalEventHandler().addChild(modernVanilla.createNode());
 
         FullbrightDimensionType.init();

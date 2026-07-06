@@ -4,12 +4,15 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import io.github.togar2.pvp.feature.CombatFeatureSet;
+import io.github.togar2.pvp.feature.FeatureType;
 import net.hollowcube.polar.PolarLoader;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.entity.EntityType;
+import net.minestom.server.instance.ExplosionSupplier;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.block.BlockFace;
 import org.apache.commons.lang3.function.Consumers;
@@ -32,6 +35,10 @@ public class BedwarsWorld extends AbstractWorld {
 //            spawnDebugMarkers(map.getConfig());
         }
         placeSpawnPlatform();
+
+        ExplosionSupplier explosionSupplier = Cytosis.get(CombatFeatureSet.class).get(FeatureType.EXPLOSION)
+            .getExplosionSupplier();
+        setExplosionSupplier(explosionSupplier);
     }
 
     private void spawnDebugMarkers(BedwarsMapConfig config) {

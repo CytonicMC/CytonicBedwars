@@ -12,6 +12,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.minestom.server.coordinate.Point;
+import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.PlayerSkin;
 import net.minestom.server.event.EventListener;
@@ -36,6 +37,7 @@ import net.cytonic.cytonicbedwars.data.enums.ArmorLevel;
 import net.cytonic.cytonicbedwars.data.enums.AxeLevel;
 import net.cytonic.cytonicbedwars.data.enums.PickaxeLevel;
 import net.cytonic.cytonicbedwars.data.objects.PlayerStats;
+import net.cytonic.cytonicbedwars.game.BedwarsWorld;
 import net.cytonic.cytonicbedwars.game.Game;
 import net.cytonic.cytonicbedwars.game.Team;
 import net.cytonic.cytonicbedwars.managers.GameManager;
@@ -186,8 +188,18 @@ public class BedwarsPlayer extends CytosisPlayer {
         player.getInventory().addItemStack(ItemStack.of(material).withAmount(itemCount(material)));
     }
 
+    //todo move to cytosis
     public PlayerInfoUpdatePacket.Property getHeadProperty() {
         PlayerSkin skin = Objects.requireNonNull(getSkin());
         return new PlayerInfoUpdatePacket.Property("textures", skin.textures(), skin.signature());
+    }
+
+    //todo move to cytosis
+    public Pos getEyeLocation() {
+        return position.add(0, getEyeHeight(), 0);
+    }
+
+    public BedwarsWorld getWorld() {
+        return (BedwarsWorld) instance;
     }
 }

@@ -9,7 +9,10 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.damage.DamageType;
+import net.minestom.server.event.player.PlayerUseItemEvent;
 import net.minestom.server.instance.InstanceContainer;
+import net.minestom.server.instance.block.Block;
+import net.minestom.server.instance.block.BlockEntityType;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.sound.SoundEvent;
@@ -20,6 +23,7 @@ import net.cytonic.cytonicbedwars.config.BedwarsMap;
 import net.cytonic.cytonicbedwars.data.enums.GameState;
 import net.cytonic.cytonicbedwars.game.Game;
 import net.cytonic.cytonicbedwars.game.Team;
+import net.cytonic.cytonicbedwars.itemAbility.ItemAbility;
 import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.server.BedwarsServer;
 import net.cytonic.cytonicbedwars.utils.Events;
@@ -115,6 +119,13 @@ public class BedwarsListeners {
 
         Events.onPlayerBlockPlace(event -> {
             if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
+            ItemStack itemStack = event.getPlayer().getItemInHand(event.getHand());
+            String itemAbilityId = itemStack.getTag(ItemAbility.TAG);
+            if (itemAbilityId == null) return;
+
+            ItemAbility itemAbility = ItemAbility.REGISTRY.get(itemAbilityId);
+            itemAbility.place(player, player.getWorld(), event);
+
             if (player.getGameMode() == GameMode.CREATIVE) return;
 
             event.setBlock(event.getBlock().withTag(PLACED_BY_PLAYER_TAG, true));
@@ -181,7 +192,7 @@ public class BedwarsListeners {
                 MinecraftServer.getSchedulerManager().buildTask(() -> {
                     player.sendMessage(player.getKicking());
                     player.sendToLobby();
-                }).delay(TaskSchedule.seconds(1)).schedule();
+                }).delay(TaskSchedule.tick(5)).schedule();
                 return;
             }
             if (player.getGame().isStarted()) {
@@ -220,6 +231,37 @@ public class BedwarsListeners {
             if (game.getConfig().teamSize().getPlayersPerTeam() * 2 > onlinePlayers) {
                 game.cancelStart();
             }
+        });
+
+        Events.onPlayerUseItem(event -> {
+            if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
+            String itemAbilityId = event.getItemStack().getTag(ItemAbility.TAG);
+            if (itemAbilityId == null) return;
+
+            ItemAbility itemAbility = ItemAbility.REGISTRY.get(itemAbilityId);
+            itemAbility.use(player, player.getWorld(), event);
+        });
+        Events.onPlayerUseItemOnBlock(event -> {
+            if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
+            String itemAbilityId = event.getItemStack().getTag(ItemAbility.TAG);
+            if (itemAbilityId == null) return;
+
+            ItemAbility itemAbility = ItemAbility.REGISTRY.get(itemAbilityId);
+            itemAbility.use(player, player.getWorld(),
+                new PlayerUseItemEvent(player, event.getHand(), event.getItemStack(), -1));
+        });
+
+        Events.onExplosion(event -> {
+            if (!(event.getDamageObject().getAttacker() instanceof BedwarsPlayer player)) return;
+
+            boolean isCreative = player.getGameMode() == GameMode.CREATIVE;
+            event.getAffectedBlocks().removeIf(point -> {
+                Block block = event.getInstance().getBlock(point);
+                if (isCreative && !BlockEntityType.BED.equals(block.registry().blockEntityType())) {
+                    return false;
+                }
+                return !block.hasTag(PLACED_BY_PLAYER_TAG);
+            });
         });
     }
 
