@@ -60,6 +60,7 @@ public class Generator {
                 assert type.getVisualItem() != null;
                 meta.setItemStack(type.getVisualItem());
                 meta.setHasNoGravity(true);
+                meta.setPosRotInterpolationDuration(10);
             });
 
             visualTask = MinecraftServer.getSchedulerManager().scheduleTask(() -> {
