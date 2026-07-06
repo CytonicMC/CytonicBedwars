@@ -49,7 +49,7 @@ public class SideboardImpl implements SideboardCreator<BedwarsPlayer> {
                 Msg.mm("Starting in <green>%ds", WaitingRunnable.getTimeLeft())
             );
             case ENDED -> List.of(
-                Msg.mm("Map: <green>", game.getMap().getHumanName()),
+                Msg.mm("Map: <green>%s", game.getMap().getHumanName()),
                 Msg.mm(""),
                 Msg.mm("The game has ended!")
             );
