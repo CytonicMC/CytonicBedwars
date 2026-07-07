@@ -161,7 +161,7 @@ public class BedwarsListeners {
             if (event.getNewPosition().y() <= -40) {
                 event.setCancelled(true);
 
-                if (player.isSpectator()) {
+                if (player.isSpectator() || player.isRespawning()) {
                     player.teleport(Game.SPAWN_POS);
                     return;
                 }
