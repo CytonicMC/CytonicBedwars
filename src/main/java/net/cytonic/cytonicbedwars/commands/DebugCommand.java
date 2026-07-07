@@ -62,8 +62,8 @@ public class DebugCommand extends CytosisCommand {
                 case "gameinfo" -> sendGameInfo(player, player.getGame());
                 case "listgames" -> {
                     BedwarsServer server = Cytosis.getServer();
-                    player.sendMessage(Msg.green("Games running on this server: %s", server.getGames().size()));
-                    server.getGames().forEach((_, game) -> sendGameInfo(player, game));
+                    player.sendMessage(Msg.green("Games running on this server: %s", server.games().size()));
+                    server.games().forEach((_, game) -> sendGameInfo(player, game));
                 }
             }
         }, debugArgument);

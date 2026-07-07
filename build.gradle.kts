@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.lombok)
     alias(libs.plugins.minestomEvents)
     alias(libs.plugins.jandex)
+    alias(libs.plugins.blossom)
+    alias(libs.plugins.indragit)
 }
 
 group = "net.cytonic"
@@ -33,6 +35,18 @@ tasks.named<JavaExec>("run") {
     dependsOn("generateEvents")
     dependsOn("jandex")
     jvmArgs("-XX:+AllowEnhancedClassRedefinition")
+}
+
+sourceSets {
+    main {
+        blossom {
+            javaSources {
+                property("buildVersion", project.version.toString())
+                property("gitCommit", indraGit.commit().get().name())
+                properties.put("builtAt", System.currentTimeMillis())
+            }
+        }
+    }
 }
 
 tasks {

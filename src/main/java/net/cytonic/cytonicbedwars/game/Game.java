@@ -232,12 +232,12 @@ public class Game {
         MinecraftServer.getSchedulerManager().buildTask(() -> {
             getPlayers().forEach(BedwarsPlayer::sendToLobby);
 
-            MinecraftServer.getSchedulerManager().buildTask(() -> server.getGames().remove(id))
+            MinecraftServer.getSchedulerManager().buildTask(() -> server.games().remove(id))
                 .delay(TaskSchedule.seconds(2)).schedule();
         }).delay(TaskSchedule.seconds(10)).schedule();
 
         Game newGame = new Game(map, mode);
-        server.getGames().put(newGame.getId(), newGame);
+        server.games().put(newGame.getId(), newGame);
     }
 
     public void kill(BedwarsPlayer player, @Nullable BedwarsPlayer killer, RegistryKey<DamageType> damageType) {

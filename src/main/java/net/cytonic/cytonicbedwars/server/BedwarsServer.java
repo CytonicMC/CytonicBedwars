@@ -12,6 +12,7 @@ import io.github.togar2.pvp.MinestomPvP;
 import io.github.togar2.pvp.feature.CombatFeatureSet;
 import io.github.togar2.pvp.feature.CombatFeatures;
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import net.hollowcube.schem.Schematic;
 import net.hollowcube.schem.reader.SchematicReader;
 import net.kyori.adventure.key.Key;
@@ -34,6 +35,7 @@ import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
 import net.cytonic.cytonicbedwars.server.chat.ChatServiceImpl;
 import net.cytonic.cytonicbedwars.server.playerList.PlayerListServiceImpl;
 import net.cytonic.cytonicbedwars.server.sideboard.SideboardServiceImpl;
+import net.cytonic.cytonicbedwars.utils.BuildInfo;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.server.AbstractCytosisServer;
 import net.cytonic.cytosis.server.actionBar.ActionBarService;
@@ -42,6 +44,8 @@ import net.cytonic.cytosis.server.playerList.PlayerListService;
 import net.cytonic.cytosis.server.sideboard.SideboardService;
 import net.cytonic.cytosis.utils.Msg;
 
+@Getter
+@Accessors(fluent = true)
 public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
 
     @UnknownNullability
@@ -63,6 +67,20 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
         playerListService = new PlayerListServiceImpl();
         sideboardService = new SideboardServiceImpl();
         actionBarService = new ActionBarService.Noop<>();
+    }
+
+    @Override
+    public Key serverType() {
+        return Key.key("bedwars", config.mode().name().toLowerCase());
+    }
+
+    @Override
+    public String version() {
+        return BuildInfo.BUILD_VERSION;
+    }
+
+    @Override
+    public void onShutdown() {
     }
 
     public void afterSetup() {
@@ -125,34 +143,5 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
         Game currentGame = player.getGame();
 
         player.sendMessage(Msg.success("Moved you to game '%s'!", newGame.getId()));
-    }
-
-    @Override
-    public ChatService<BedwarsPlayer> chatService() {
-        return chatService;
-    }
-
-    @Override
-    public PlayerListService<BedwarsPlayer> playerListService() {
-        return playerListService;
-    }
-
-    @Override
-    public SideboardService<BedwarsPlayer> sideboardService() {
-        return sideboardService;
-    }
-
-    @Override
-    public ActionBarService<BedwarsPlayer> actionBarService() {
-        return actionBarService;
-    }
-
-    @Override
-    public Key serverType() {
-        return Key.key("bedwars", config.mode().name().toLowerCase());
-    }
-
-    @Override
-    public void onShutdown() {
     }
 }

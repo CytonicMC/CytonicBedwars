@@ -25,7 +25,7 @@ public class SwitchGameCommand extends CytosisCommand {
         ArgumentUUID gameArg = ArgumentType.UUID("game");
         gameArg.setSuggestionCallback((_, _, suggestion) -> {
             BedwarsServer server = Cytosis.getServer();
-            server.getGames().forEach((id, game) ->
+            server.games().forEach((id, game) ->
                 suggestion.addEntry(new SuggestionEntry(id.toString(),
                     Msg.mm("Map: %s", game.getMap().name().toLowerCase()))));
         });
@@ -34,7 +34,7 @@ public class SwitchGameCommand extends CytosisCommand {
             if (!(sender instanceof BedwarsPlayer player)) return;
             BedwarsServer server = Cytosis.getServer();
             UUID game = context.get(gameArg);
-            if (!server.getGames().containsKey(game)) {
+            if (!server.games().containsKey(game)) {
                 player.sendMessage(Msg.whoops("The game with id '%s' does not exist!", game));
                 return;
             }

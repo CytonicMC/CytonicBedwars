@@ -40,7 +40,7 @@ public class BedwarsListeners {
         Events.onAsyncPlayerConfiguration(event -> {
             if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
             player.setPermissionLevel(4);
-            Game game = server.getGames().values().stream()
+            Game game = server.games().values().stream()
                 .filter(it -> !it.isStarted() && it.getMap() == BedwarsMap.FARM)
                 .findFirst().orElse(null);
 

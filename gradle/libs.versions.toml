@@ -1,10 +1,12 @@
 [versions]
-cytosis = "0.9.0-SNAPSHOT"
+cytosis = "0.9.1-SNAPSHOT"
 schem = "2.0.1"
 shadow = "9.4.3"
 lombok = "9.5.0"
 minestomEvents = "0.0.2"
 jandex = "2.3.0"
+blossom = "2.2.0"
+indragit = "4.0.0"
 
 [libraries]
 cytosis = { module = "net.cytonic:Cytosis", version.ref = "cytosis" }
@@ -15,3 +17,5 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 lombok = { id = "io.freefair.lombok", version.ref = "lombok" }
 minestomEvents = { id = "dev.minestom-united.minestom-events", version.ref = "minestomEvents" }
 jandex = { id = "org.kordamp.gradle.jandex", version.ref = "jandex" }
+blossom = { id = "net.kyori.blossom", version.ref = "blossom" }
+indragit = { id = "net.kyori.indra.git", version.ref = "indragit" }
