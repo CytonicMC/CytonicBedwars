@@ -241,6 +241,7 @@ public class Game {
     }
 
     public void kill(BedwarsPlayer player, @Nullable BedwarsPlayer killer, RegistryKey<DamageType> damageType) {
+        player.clearLastDamage();
         Component component = player.getBedwarsFormattedName().appendSpace();
         if (damageType.equals(DamageType.PLAYER_ATTACK)) {
             if (killer == null) {
@@ -255,7 +256,12 @@ public class Game {
         } else if (damageType.equals(DamageType.LAVA)) {
             component = component.append(Msg.grey("discovered lava is hot"));
         } else if (damageType.equals(DamageType.OUT_OF_WORLD)) {
-            component = component.append(Msg.grey("fell into the abyss"));
+            if (killer != null) {
+                component = component.append(Msg.grey("was knocked into the void by "))
+                    .append(killer.getBedwarsFormattedName());
+            } else {
+                component = component.append(Msg.grey("fell into the abyss"));
+            }
         } else if (damageType.equals(DamageType.FREEZE)) {
             component = component.append(Msg.grey("turned into an ice cube"));
         } else if (damageType.equals(DamageType.DROWN)) {

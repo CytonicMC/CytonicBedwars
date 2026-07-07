@@ -165,7 +165,7 @@ public class BedwarsListeners {
                     player.teleport(Game.SPAWN_POS);
                     return;
                 }
-                player.getGame().kill(player, null, DamageType.OUT_OF_WORLD);
+                player.getGame().kill(player, player.getCombatTagger(), DamageType.OUT_OF_WORLD);
             }
 
             if (player.getGameMode() == GameMode.CREATIVE) return;

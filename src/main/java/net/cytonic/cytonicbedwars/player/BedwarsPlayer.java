@@ -15,6 +15,7 @@ import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.EquipmentSlot;
 import net.minestom.server.entity.PlayerSkin;
+import net.minestom.server.entity.damage.Damage;
 import net.minestom.server.event.EventListener;
 import net.minestom.server.event.inventory.InventoryCloseEvent;
 import net.minestom.server.instance.block.Block;
@@ -110,6 +111,20 @@ public class BedwarsPlayer extends CytosisPlayer {
 
     public boolean hasShears() {
         return shears;
+    }
+
+    @Nullable
+    public BedwarsPlayer getCombatTagger() {
+        Damage last = getLastDamageSource();
+        if (last != null && last.getAttacker() instanceof BedwarsPlayer attacker && attacker != this) {
+            return attacker;
+        }
+        return null;
+    }
+
+    public void clearLastDamage() {
+        //noinspection DataFlowIssue
+        this.lastDamage = null;
     }
 
     public int itemCount(Material material) {
