@@ -37,6 +37,10 @@ tasks.named<JavaExec>("run") {
     jvmArgs("-XX:+AllowEnhancedClassRedefinition")
 }
 
+jandex {
+    toolVersion = "3.6.0"
+}
+
 sourceSets {
     main {
         blossom {
