@@ -119,10 +119,14 @@ public class ItemShopItemRegistry {
         register(new PotionShopItem("speed", Msg.mm("Speed (60s)"), List.of(), 1, Currency.EMERALD,
             Material.POTION, ItemShopPage.POTIONS, 32, PotionEffect.JUMP_BOOST, 1200, 2));
 
+        register(new BasicShopItem("golden_apple", Msg.mm("Golden Apple"), List.of(), 3, Currency.GOLD,
+            1, Material.GOLDEN_APPLE, ItemShopPage.UTILS, 20));
+        register(new BasicShopItem("ender_pearl", Msg.mm("Ender Pearl"), List.of(), 4, Currency.EMERALD,
+            1, Material.ENDER_PEARL, ItemShopPage.UTILS, 21));
         register(new AbilityShopItem("fireball", Msg.mm("Fireball"), List.of(), 40, Currency.IRON, Material.FIRE_CHARGE,
-            ItemShopPage.UTILS, 21));
-        register(new AbilityShopItem("tnt", Msg.mm("TNT"), List.of(), 4, Currency.GOLD, Material.TNT,
             ItemShopPage.UTILS, 23));
+        register(new AbilityShopItem("tnt", Msg.mm("TNT"), List.of(), 4, Currency.GOLD, Material.TNT,
+            ItemShopPage.UTILS, 24));
     }
 
     private static void register(ShopItem item) {
