@@ -25,14 +25,12 @@ public interface BedwarsMapConfig {
     BedwarsMode mode();
 
     TeamSize teamSize();
-    //todo use teams list size to determine max players
 
     PlayerSkin itemShopSkin();
 
     PlayerSkin teamShopSkin();
 
     List<? extends TeamConfig> teams();
-    //todo figure out generator stuff
 
     Duration ironGeneratorTime();
 
@@ -70,7 +68,6 @@ public interface BedwarsMapConfig {
         BlockVec teamChestPos();
 
         Pos generatorPos();
-        //todo use block type to determine the bed broken
 
         BlockVec bedPos();
     }
