@@ -257,7 +257,7 @@ public class BedwarsListeners {
             boolean isCreative = player.getGameMode() == GameMode.CREATIVE;
             event.getAffectedBlocks().removeIf(point -> {
                 Block block = event.getInstance().getBlock(point);
-                if (isCreative && !BlockEntityType.BED.equals(block.registry().blockEntityType())) {
+                if (isCreative && !block.key().namespace().endsWith("_bed")) {
                     return false;
                 }
                 return !block.hasTag(PLACED_BY_PLAYER_TAG);

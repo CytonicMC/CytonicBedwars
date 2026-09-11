@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.google.gson.JsonParser;
 import lombok.Getter;
-import net.hollowcube.polar.PolarWorld;
+import net.hollowcube.polar.PolarLoader;
 import net.kyori.adventure.key.Key;
 import net.minestom.server.codec.Transcoder;
 import org.jetbrains.annotations.UnknownNullability;
@@ -23,7 +23,7 @@ public enum BedwarsMap {
     private final String file;
     private final String worldName;
     @UnknownNullability
-    private PolarWorld world;
+    private PolarLoader world;
     private final TeamSize supportedTeamSize;
     private final List<BedwarsMode> supportedModes;
     private final BedwarsMapConfig config;
@@ -36,7 +36,7 @@ public enum BedwarsMap {
         this.config = readConfig();
     }
 
-    public PolarWorld getWorld() {
+    public PolarLoader getWorld() {
         if (world == null) {
             world = readWorld();
         }
@@ -47,7 +47,7 @@ public enum BedwarsMap {
         return Utils.captializeFirstLetters(name().toLowerCase().replace("_", " "));
     }
 
-    private PolarWorld readWorld() {
+    private PolarLoader readWorld() {
         try {
             return Cytosis.get(WorldManager.class).loadWorld(Key.key("bedwars", worldName)).get();
         } catch (Exception e) {

@@ -6,7 +6,6 @@ import java.util.concurrent.CompletableFuture;
 
 import io.github.togar2.pvp.feature.CombatFeatureSet;
 import io.github.togar2.pvp.feature.FeatureType;
-import net.hollowcube.polar.PolarLoader;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Pos;
@@ -29,7 +28,7 @@ public class BedwarsWorld extends AbstractWorld {
 
     public BedwarsWorld(UUID uuid, BedwarsMap map) {
         super(uuid, FullbrightDimensionType.INSTANCE);
-        setChunkLoader(new PolarLoader(map.getWorld()));
+        setChunkLoader(map.getWorld());
         MinecraftServer.getInstanceManager().registerInstance(this);
         if (Cytosis.isDev() && Cytosis.isStandalone()) {
 //            spawnDebugMarkers(map.getConfig());

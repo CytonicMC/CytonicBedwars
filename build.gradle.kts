@@ -7,10 +7,10 @@ plugins {
     alias(libs.plugins.jandex)
     alias(libs.plugins.blossom)
     alias(libs.plugins.indragit)
+    alias(libs.plugins.graalvm)
 }
 
 group = "net.cytonic"
-version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -34,7 +34,6 @@ tasks.named<JavaExec>("run") {
     workingDir = file("run")
     dependsOn("generateEvents")
     dependsOn("jandex")
-    jvmArgs("-XX:+AllowEnhancedClassRedefinition")
 }
 
 jandex {

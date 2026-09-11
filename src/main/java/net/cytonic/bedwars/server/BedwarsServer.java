@@ -61,7 +61,7 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
     public BedwarsServer(ConfigRegistry registry) {
         super(registry, BedwarsPlayer::new);
 
-        config = getConfigOrThrow(BedwarsConfig.class);
+        config = super.getConfigOrThrow(BedwarsConfig.class);
         SPAWN_PLATFORM = loadSpawnPlatformSchematic();
         chatService = new ChatServiceImpl();
         playerListService = new PlayerListServiceImpl();
@@ -98,9 +98,6 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
         MinecraftServer.getBlockManager().registerHandler("minecraft:chest", ChestBlockHandler::new);
         MinecraftServer.getBlockManager().registerHandler("minecraft:bell", BellBlockHandler::new);
 
-        registerCommands();
-
-        BedwarsConfig config = getConfigOrThrow(BedwarsConfig.class);
         BedwarsMode mode = config.mode();
         List<BedwarsMap> maps = mode.getMaps();
         for (BedwarsMap map : maps) {
@@ -120,12 +117,6 @@ public class BedwarsServer extends AbstractCytosisServer<BedwarsPlayer> {
         } catch (IOException e) {
             throw new IllegalStateException("An error occurred whilst trying to load spawn platform schematic");
         }
-    }
-
-    private void registerCommands() {
-        MinecraftServer.getCommandManager().register(new MapBuilderCommand());
-        MinecraftServer.getCommandManager().register(new DebugCommand());
-        MinecraftServer.getCommandManager().register(new SwitchGameCommand());
     }
 
     public Game getGame(UUID uuid) {
