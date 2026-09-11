@@ -1,4 +1,4 @@
-package net.cytonic.cytonicbedwars.game;
+package net.cytonic.bedwars.game;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -16,11 +16,11 @@ import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.block.BlockFace;
 import org.apache.commons.lang3.function.Consumers;
 
-import net.cytonic.cytonicbedwars.FullbrightDimensionType;
-import net.cytonic.cytonicbedwars.config.BedwarsMap;
-import net.cytonic.cytonicbedwars.config.BedwarsMapConfig;
-import net.cytonic.cytonicbedwars.config.BedwarsMapConfig.TeamConfig;
-import net.cytonic.cytonicbedwars.server.BedwarsServer;
+import net.cytonic.bedwars.FullbrightDimensionType;
+import net.cytonic.bedwars.config.BedwarsMap;
+import net.cytonic.bedwars.config.BedwarsMapConfig;
+import net.cytonic.bedwars.config.BedwarsMapConfig.TeamConfig;
+import net.cytonic.bedwars.server.BedwarsServer;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.world.AbstractWorld;
 

@@ -1,0 +1,25 @@
+package net.cytonic.bedwars.listeners;
+
+import lombok.NoArgsConstructor;
+import net.cytonic.bedwars.ItemAbilityDispatcher;
+import net.cytonic.bedwars.player.BedwarsPlayer;
+import net.cytonic.bedwars.utils.Items;
+import net.cytonic.cytosis.Cytosis;
+
+import net.minestom.server.event.player.PlayerUseItemEvent;
+import net.minestom.server.item.ItemStack;
+
+@NoArgsConstructor
+@SuppressWarnings("unused")
+public class UseItemListener {
+
+    //todo @Listener
+    public void onInteract(PlayerUseItemEvent event) {
+        if (!(event.getPlayer() instanceof BedwarsPlayer player)) return;
+        ItemStack item = event.getPlayer().getItemInHand(event.getHand());
+        if (item.hasTag(Items.NAMESPACE)) {
+            String key = item.getTag(Items.NAMESPACE);
+            Cytosis.CONTEXT.getComponent(ItemAbilityDispatcher.class).dispatch(key, player, event);
+        }
+    }
+}

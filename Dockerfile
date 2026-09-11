@@ -4,9 +4,9 @@ LABEL authors="CytonicMC"
 
 WORKDIR /app
 
-ADD build/libs/CytonicBedwars.jar .
+ADD build/libs/Bedwars.jar .
 
 # Expose the port
 EXPOSE 25565
 
-CMD ["java", "-jar", "CytonicBedwars.jar"]
+CMD ["java","-Dminestom.shutdown-on-signal=false", "-jar", "Bedwars.jar"]

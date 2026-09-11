@@ -1,4 +1,4 @@
-package net.cytonic.cytonicbedwars.events;
+package net.cytonic.bedwars.events;
 
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
@@ -12,21 +12,20 @@ import net.minestom.server.entity.damage.DamageType;
 import net.minestom.server.event.player.PlayerUseItemEvent;
 import net.minestom.server.instance.InstanceContainer;
 import net.minestom.server.instance.block.Block;
-import net.minestom.server.instance.block.BlockEntityType;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.tag.Tag;
 import net.minestom.server.timer.TaskSchedule;
 
-import net.cytonic.cytonicbedwars.config.BedwarsMap;
-import net.cytonic.cytonicbedwars.data.enums.GameState;
-import net.cytonic.cytonicbedwars.game.Game;
-import net.cytonic.cytonicbedwars.game.Team;
-import net.cytonic.cytonicbedwars.itemAbility.ItemAbility;
-import net.cytonic.cytonicbedwars.player.BedwarsPlayer;
-import net.cytonic.cytonicbedwars.server.BedwarsServer;
-import net.cytonic.cytonicbedwars.utils.Events;
+import net.cytonic.bedwars.config.BedwarsMap;
+import net.cytonic.bedwars.data.enums.GameState;
+import net.cytonic.bedwars.game.Game;
+import net.cytonic.bedwars.game.Team;
+import net.cytonic.bedwars.itemAbility.ItemAbility;
+import net.cytonic.bedwars.player.BedwarsPlayer;
+import net.cytonic.bedwars.server.BedwarsServer;
+import net.cytonic.bedwars.utils.Events;
 import net.cytonic.cytosis.Cytosis;
 import net.cytonic.cytosis.utils.Msg;
 

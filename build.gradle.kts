@@ -23,7 +23,7 @@ dependencies {
 }
 
 minestomEvents {
-    outputPackage = "net.cytonic.cytonicbedwars.utils"
+    outputPackage = "net.cytonic.bedwars.utils"
 }
 
 java {
@@ -54,10 +54,10 @@ sourceSets {
 
 tasks {
     application {
-        mainClass.set("net.cytonic.cytonicbedwars.BedwarsMain")
+        mainClass.set("net.cytonic.bedwars.BedwarsMain")
     }
     shadowJar {
-        archiveFileName.set("CytonicBedwars.jar")
+        archiveFileName.set("Bedwars.jar")
         dependsOn("jandex")
         archiveClassifier.set("")
         mergeServiceFiles()

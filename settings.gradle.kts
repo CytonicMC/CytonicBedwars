@@ -1,4 +1,4 @@
-rootProject.name = "CytonicBedwars"
+rootProject.name = "Bedwars"
 
 pluginManagement {
     repositories {

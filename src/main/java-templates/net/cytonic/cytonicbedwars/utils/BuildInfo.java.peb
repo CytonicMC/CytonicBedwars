@@ -1,4 +1,4 @@
-package net.cytonic.cytonicbedwars.utils;
+package net.cytonic.bedwars.utils;
 
 import java.time.Instant;
 

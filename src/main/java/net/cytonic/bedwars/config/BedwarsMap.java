@@ -1,4 +1,4 @@
-package net.cytonic.cytonicbedwars.config;
+package net.cytonic.bedwars.config;
 
 import java.io.IOException;
 import java.io.InputStream;
