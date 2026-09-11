@@ -62,7 +62,34 @@ tasks {
         archiveClassifier.set("")
         mergeServiceFiles()
     }
-    jar {
-        enabled = false
+}
+
+// stolen from HC
+graalvmNative {
+    binaries {
+        named("main") {
+            javaLauncher.set(
+                javaToolchains.launcherFor {
+                    languageVersion.set(JavaLanguageVersion.of(25))
+                    vendor = JvmVendorSpec.GRAAL_VM
+                    nativeImageCapable = true
+                }
+            )
+            buildArgs(
+                listOf(
+                    "-DSERVER_SECRET=${System.getenv("SERVER_SECRET") ?: "testsecret"}",
+                    "--enable-native-access=ALL-UNNAMED", "--enable-monitoring=jfr",
+                    "--features=net.cytonic.cytosis.nativeimage.NativeImageFeature",
+                    "-H:+UseCompressedReferences", "-R:MaxHeapSize=200m",
+                    "--static-nolibc", "--no-fallback",
+                    "--enable-url-protocols=http,https",
+                    "--initialize-at-build-time=net.cytonic.cytosis.StaticInitializers",
+                    "--report-unsupported-elements-at-runtime",
+                    "--initialize-at-build-time=it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap",
+                    $$"--initialize-at-build-time=it.unimi.dsi.fastutil.ints.Int2ObjectMaps$EmptyMap",
+                    "--initialize-at-build-time=ch.qos.logback.classic.spi.LogbackServiceProvider",
+                )
+            )
+        }
     }
 }
