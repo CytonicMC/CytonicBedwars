@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <createTable name="bedwars_stats" identityType="external" pkName="pk_bedwars_stats">
+            <column name="id" type="uuid" primaryKey="true" identity="true"/>
+            <column name="wins" type="integer" notnull="true"/>
+            <column name="final_kills" type="integer" notnull="true"/>
+            <column name="beds_broken" type="integer" notnull="true"/>
+            <column name="losses" type="integer" notnull="true"/>
+            <column name="beds_lost" type="integer" notnull="true"/>
+            <column name="kills" type="integer" notnull="true"/>
+            <column name="deaths" type="integer" notnull="true"/>
+            <column name="final_deaths" type="integer" notnull="true"/>
+            <column name="damage_dealt" type="double" notnull="true"/>
+            <column name="damage_taken" type="double" notnull="true"/>
+        </createTable>
+    </changeSet>
+</migration>

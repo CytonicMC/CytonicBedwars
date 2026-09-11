@@ -1,0 +1,23 @@
+[versions]
+cytosis = "1.0.0-SNAPSHOT"
+schem = "2.0.1"
+shadow = "9.6.1"
+lombok = "9.5.0"
+minestomEvents = "0.0.3"
+jandex = "4.0.0"
+blossom = "2.2.0"
+indragit = "4.1.0"
+graalvm-plugin = "1.1.9"
+
+[libraries]
+cytosis = { module = "net.cytonic:Cytosis", version.ref = "cytosis" }
+schem = { module = "dev.hollowcube:schem", version.ref = "schem" }
+
+[plugins]
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+lombok = { id = "io.freefair.lombok", version.ref = "lombok" }
+minestomEvents = { id = "dev.minestom-united.minestom-events", version.ref = "minestomEvents" }
+jandex = { id = "com.github.vlsi.jandex", version.ref = "jandex" }
+blossom = { id = "net.kyori.blossom", version.ref = "blossom" }
+indragit = { id = "net.kyori.indra.git", version.ref = "indragit" }
+graalvm = { id = "org.graalvm.buildtools.native", version.ref = "graalvm-plugin"}
